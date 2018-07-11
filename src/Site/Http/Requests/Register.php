@@ -35,11 +35,12 @@ class Register extends FormRequest
             }
             case 'POST': {
                 return [
-                    'name'                      => 'required|string|max:255',
-                    'email'                     => 'required|string|email|max:255|unique:users',
-                    'password'                  => 'required|string|min:6|confirmed',
-                    'sc'                        => 'required|string|max:255',
-                    'web'                       => 'max:255',
+                    'name'                 => 'required|string|max:255',
+                    'email'                => 'required|string|email|max:255|unique:' . $prefix . 'users',
+                    'password'             => 'required|string|min:6|confirmed',
+                    'sc'                   => 'required|string|max:255',
+                    'web'                  => 'max:255',
+                    'type_id'              => 'required|exists:' . $prefix . 'contragent_types,id',
                     //
                     'contact.name'              => 'required|string|max:255',
                     'contact.position'          => 'max:255',
@@ -80,6 +81,7 @@ class Register extends FormRequest
                     'contragent.inn'            => array(
                         'required',
                         'numeric',
+                        'unique:' . $prefix . 'contragents,inn',
                         'regex:/\d{10}|\d{12}/'
                     ),
                     'contragent.ogrn'           => array(
@@ -93,8 +95,14 @@ class Register extends FormRequest
                         'regex:/\d{8}|\d{10}/'
                     ),
                     'contragent.kpp'            => array(
+                        'sometimes',
                         'required_if:contragent.type_id,1',
-                        'regex:/^(([0-9]){9})?$/'
+                        function ($attribute, $value, $fail) {
+                            if ($this->input('contragent.type_id') == 1 && strlen($value) != 9) {
+                                return $fail(trans('site::contragent.kpp') . ': ' . trans('site::contragent.placeholder.kpp'));
+                            }
+                        }
+                        //'regex:/^([0-9]{9})?$/'
                     ),
                     'contragent.ks'             => 'sometimes|digits:20',
                     'contragent.rs'             => 'required|numeric|digits:20',
@@ -140,22 +148,23 @@ class Register extends FormRequest
     public function attributes()
     {
         return [
-            'name'                      => trans('site::user.name'),
-            'email'                     => trans('site::user.email'),
-            'password'                  => trans('site::user.password'),
-            'sc'                        => trans('site::user.sc'),
-            'web'                       => trans('site::user.web'),
+            'name'                 => trans('site::user.name'),
+            'email'                => trans('site::user.email'),
+            'password'             => trans('site::user.password'),
+            'sc'                   => trans('site::user.sc'),
+            'web'                  => trans('site::user.web'),
+            'type_id'              => trans('site::user.type_id'),
             //
             'contact.name'              => trans('site::contact.name'),
             'contact.position'          => trans('site::contact.position'),
             //
-            'phone.contact.country_id'  => trans('site::contact.country_id'),
-            'phone.contact.number'      => trans('site::contact.number'),
-            'phone.contact.extra'       => trans('site::contact.extra'),
+            'phone.contact.country_id'  => trans('site::phone.country_id'),
+            'phone.contact.number'      => trans('site::phone.number'),
+            'phone.contact.extra'       => trans('site::phone.extra'),
             //
-            'phone.user.country_id'     => trans('site::contact.country_id'),
-            'phone.user.number'         => trans('site::contact.number'),
-            'phone.user.extra'          => trans('site::contact.extra'),
+            'phone.user.country_id'     => trans('site::phone.country_id'),
+            'phone.user.number'         => trans('site::phone.number'),
+            'phone.user.extra'          => trans('site::phone.extra'),
             //
             'contragent.type_id'        => trans('site::contragent.type_id'),
             'contragent.name'           => trans('site::contragent.name'),

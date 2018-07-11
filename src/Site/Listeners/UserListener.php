@@ -29,8 +29,6 @@ class UserListener
             'action_id' => 1,
             'url' => route('api.users.show', $event->user)
         ]);
-        $event->user->guid = 0;
-        $event->user->save();
     }
 
     public function subscribe(Dispatcher $events)

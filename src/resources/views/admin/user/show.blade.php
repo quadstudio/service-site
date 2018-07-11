@@ -58,6 +58,10 @@
                                 <td>{{ $user->name }}</td>
                             </tr>
                             <tr>
+                                <td>@lang('site::user.type_id')</td>
+                                <td>{{ $user->type->name }}</td>
+                            </tr>
+                            <tr>
                                 <td>@lang('site::user.sc')</td>
                                 <td>{{ $user->sc }}</td>
                             </tr>

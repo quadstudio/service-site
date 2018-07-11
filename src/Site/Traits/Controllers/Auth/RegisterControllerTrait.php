@@ -15,7 +15,7 @@ use QuadStudio\Service\Site\Models\Contragent;
 use QuadStudio\Service\Site\Models\ContragentType;
 use QuadStudio\Service\Site\Models\Country;
 use QuadStudio\Service\Site\Models\Phone;
-use QuadStudio\Service\Site\Models\Service;
+use QuadStudio\Service\Site\Models\Region;
 use QuadStudio\Service\Site\Models\User;
 
 //use QuadStudio\Service\Site\Http\Requests\User as Request;
@@ -45,9 +45,20 @@ trait RegisterControllerTrait
     public function showRegistrationForm()
     {
         $countries = Country::enabled()->orderBy('sort_order')->get();
+        $address_user_regions = $address_legal_regions = $address_postal_regions = collect([]);
+        if(old('address.user.country_id', false)){
+            $address_user_regions = Region::where('country_id',old('address.user.country_id') )->orderBy('name')->get();
+        }
+        if(old('address.legal.country_id', false)){
+            $address_legal_regions = Region::where('country_id',old('address.legal.country_id') )->orderBy('name')->get();
+        }
+        if(old('address.postal.country_id', false)){
+            $address_postal_regions = Region::where('country_id',old('address.postal.country_id') )->orderBy('name')->get();
+        }
+
         $types = ContragentType::all();
 
-        return view('site::auth.register', compact('countries', 'types'));
+        return view('site::auth.register', compact('countries', 'types', 'address_user_regions', 'address_legal_regions', 'address_postal_regions'));
     }
 
     /**

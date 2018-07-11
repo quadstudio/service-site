@@ -35,6 +35,7 @@ class CreateUsersTable extends Migration
             $table->boolean('display')->default(false);
             $table->string('guid', 36)->nullable(true)->unique(true);
             $table->string('price_type_id', 36)->nullable(true);
+            $table->unsignedInteger('type_id');
             $table->string('warehouse_id', 36)->nullable(true);
             $table->boolean('verified')->default(false);
             $table->string('verify_token')->nullable(true);
@@ -45,6 +46,12 @@ class CreateUsersTable extends Migration
                 ->foreign('price_type_id')
                 ->references('id')
                 ->on("{$this->prefix}price_types")
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+            $table
+                ->foreign('type_id')
+                ->references('id')
+                ->on("{$this->prefix}contragent_types")
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
             $table

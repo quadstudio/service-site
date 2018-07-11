@@ -21,7 +21,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name', 'email', 'password', 'sc', 'web',
         'display', 'price_type_id', 'active',
-        'warehouse_id'
+        'warehouse_id', 'type_id'
     ];
 
     /**
@@ -86,13 +86,13 @@ class User extends Authenticatable
     }
 
     /**
-     * Сервисный центр
+     * Организационно-правовая форма
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function service()
+    public function type()
     {
-        return $this->belongsTo(Service::class);
+        return $this->belongsTo(ContragentType::class);
     }
 
     /**
