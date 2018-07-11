@@ -143,7 +143,7 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
      * @var array
      */
     protected $routes = [
-        'web.stub' => FILE_APPEND
+        'web.stub' => 0 //FILE_APPEND
     ];
 
     public function getAsset()
