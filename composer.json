@@ -31,7 +31,7 @@
                 "QuadStudio\\Service\\Site\\SiteServiceProvider"
             ],
             "aliases": {
-                "Core": "QuadStudio\\Service\\Site\\Facades\\Site"
+                "Site": "QuadStudio\\Service\\Site\\Facades\\Site"
             }
         }
     },
