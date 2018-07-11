@@ -1,0 +1,11 @@
+<?php
+
+namespace {{namespace}}Http\Controllers;
+
+use QuadStudio\Service\Site\Traits\Controllers\ActControllerTrait;
+use {{namespace}}Http\Controllers\Controller;
+
+class ActController extends Controller
+{
+    use ActControllerTrait;
+}

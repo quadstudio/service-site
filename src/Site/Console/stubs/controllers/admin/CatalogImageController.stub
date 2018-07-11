@@ -1,0 +1,11 @@
+<?php
+
+namespace {{namespace}}Http\Controllers\Admin;
+
+use QuadStudio\Service\Site\Traits\Controllers\Admin\CatalogImageControllerTrait;
+use {{namespace}}Http\Controllers\Controller;
+
+class CatalogImageController extends Controller
+{
+    use CatalogImageControllerTrait;
+}

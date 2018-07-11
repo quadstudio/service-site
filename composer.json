@@ -1,0 +1,41 @@
+{
+    "name": "quadstudio/service-site",
+    "description": "Service Site template for Laravel 5",
+    "keywords": ["laravel", "service", "site"],
+    "homepage": "https://github.com/quadstudio/service-site",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexander Shuleyko",
+            "email": "salex009@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "QuadStudio\\Service\\Site\\": "src/Site/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=7.1.3",
+        "laravel/framework": "5.6.x",
+        "php-http/guzzle6-adapter" : "^1.1",
+        "php-http/message" : "^1.6",
+        "geocoder-php/yandex-provider" : "^4.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "QuadStudio\\Service\\Site\\SiteServiceProvider"
+            ],
+            "aliases": {
+                "Core": "QuadStudio\\Service\\Site\\Facades\\Site"
+            }
+        }
+    },
+    "config": {
+        "optimize-autoloader": true
+    }
+}

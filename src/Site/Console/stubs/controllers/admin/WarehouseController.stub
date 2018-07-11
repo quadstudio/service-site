@@ -1,0 +1,11 @@
+<?php
+
+namespace {{namespace}}Http\Controllers\Admin;
+
+use QuadStudio\Service\Site\Traits\Controllers\Admin\WarehouseControllerTrait;
+use {{namespace}}Http\Controllers\Controller;
+
+class WarehouseController extends Controller
+{
+    use WarehouseControllerTrait;
+}

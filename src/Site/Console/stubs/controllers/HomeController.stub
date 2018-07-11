@@ -1,0 +1,10 @@
+<?php
+
+namespace {{namespace}}Http\Controllers;
+
+use QuadStudio\Service\Site\Traits\Controllers\HomeControllerTrait;
+
+class HomeController extends Controller
+{
+    use HomeControllerTrait;
+}

@@ -1,0 +1,17 @@
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="confirmLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="confirmMessage"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('repair::messages.cancel')</button>
+                <button type="button" class="btn btn-danger btn-ok">@lang('repair::messages.delete')</button>
+            </div>
+        </div>
+    </div>
+</div>

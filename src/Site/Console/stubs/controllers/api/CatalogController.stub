@@ -1,0 +1,11 @@
+<?php
+
+namespace {{namespace}}Http\Controllers\Api;
+
+use QuadStudio\Service\Site\Traits\Controllers\Api\CatalogControllerTrait;
+use {{namespace}}Http\Controllers\Controller;
+
+class CatalogController extends Controller
+{
+    use CatalogControllerTrait;
+}

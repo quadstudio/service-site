@@ -1,0 +1,11 @@
+<?php
+
+namespace {{namespace}}Http\Controllers\Api;
+
+use QuadStudio\Service\Site\Traits\Controllers\Api\RepairControllerTrait;
+use {{namespace}}Http\Controllers\Controller;
+
+class RepairController extends Controller
+{
+    use RepairControllerTrait;
+}

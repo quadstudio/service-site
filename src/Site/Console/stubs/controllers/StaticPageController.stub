@@ -1,0 +1,10 @@
+<?php
+
+namespace {{namespace}}Http\Controllers;
+
+use QuadStudio\Service\Site\Traits\Controllers\StaticPageControllerTrait;
+
+class StaticPageController extends Controller
+{
+    use StaticPageControllerTrait;
+}

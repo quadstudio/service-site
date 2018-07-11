@@ -1,0 +1,11 @@
+<?php
+
+namespace {{namespace}}Http\Controllers\Api;
+
+use QuadStudio\Service\Site\Traits\Controllers\Api\FileControllerTrait;
+use {{namespace}}Http\Controllers\Controller;
+
+class FileController extends Controller
+{
+    use FileControllerTrait;
+}
