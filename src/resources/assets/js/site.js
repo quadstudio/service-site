@@ -2,7 +2,109 @@
 
     "use strict";
 
+    let repairCreateFormFormExists = document.getElementById("repair-create-form");
+    if (repairCreateFormFormExists !== null) {
+        let button = $('#serial-check-button '),
+            allow_parts = $('#allow_parts'),
+            serial = $('#serial_id'),
+            parts_search = $('#parts_search'),
+            serial_success = $('#serial-success'),
+            serial_error = $('#serial-error'),
+            parts = $('#parts'),
+            value;
+
+        serial.on('keyup change', function () {
+            value = $(this).val();
+            if (value.length >= 5) {
+                button.prop("disabled", false);
+
+            } else {
+                button.prop("disabled", true);
+                $('fieldset').prop("disabled", true);
+            }
+        });
+        let success_serial_fill = function (index, value) {
+            $('.serial-' + index).html(value);
+            $('.serial-' + index + '-value').val(value);
+        };
+        button.on('click', function () {
+            axios
+                .get("/api/serials/" + value)
+                .then((response) => {
+                    $.each(response.data.data, function (index, data) {
+                        $.each(response.data.data, function (index, data) {
+                            success_serial_fill(index, data)
+                        });
+                    });
+                    serial_success.show();
+                    serial_error.hide();
+                    button.prop("disabled", false);
+                    $('fieldset').prop("disabled", false);
+                    serial.addClass('is-valid').removeClass('is-invalid');
+                })
+                .catch((error) => {
+
+                    $.each({
+                        product:'',
+                        sku:'',
+                        model:'',
+                        catalog:'',
+                        cost_work:'',
+                        cost_road:'',
+                        currency:'',
+                    }, function (index, data) {
+                        success_serial_fill(index, data);
+                    });
+                    serial_success.hide();
+                    serial_error.show();
+                    serial.addClass('is-invalid').removeClass('is-valid');
+                    $('fieldset').prop("disabled", true);
+                });
+        });
+
+        allow_parts.change(function () {
+            //let serial_valid = serial.hasClass('is-valid');
+            //let allow_parts_checked = allow_parts.is(':checked');
+            parts_search.prop('disabled', !allow_parts.is(':checked')); //!serial_valid ||
+        });
+
+        parts_search.select2({
+            theme: "bootstrap4",
+            ajax: {
+                url: '/api/parts',
+                dataType: 'json',
+                delay: 200,
+                data: function (params) {
+                    return {
+                        'filter[search_part]': params.term,
+                        'filter[search_serial]': serial.val(),
+                    };
+                },
+                processResults: function (data, params) {
+                    return {
+                        results: data.data,
+                    };
+                }
+            },
+            minimumInputLength: 1,
+            templateResult: function (product) {
+                //return product.name;
+                //if(product.enabled) return product.name;
+                let markup = product.name + ' (' + product.sku + ')';
+                //let markup = "<img src="+repo.photo+"></img> &nbsp; "+ repo.name;
+                return markup;
+            },
+            templateSelection: function (product) {
+                return product.name;
+            },
+            escapeMarkup: function (markup) {
+                return markup;
+            }
+        });
+
+    }
     let registerFormExists = document.getElementById("register-form");
+
     if (registerFormExists !== null) {
         $('.country-select ').on('change', function () {
             let country = $(this),

@@ -4,6 +4,9 @@
 @import '~bootstrap/scss/bootstrap';
 // Font-Awesome
 @import '~font-awesome/scss/font-awesome';
+// Select2
+@import '~select2/src/scss/core';
+@import '~select2-bootstrap4-theme/src/select2-bootstrap4';
 
 body {
   font-size: 1rem;
