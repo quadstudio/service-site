@@ -20,16 +20,15 @@
                         <form id="register-form" method="POST" action="{{ route('register') }}">
                             @csrf
 
-
-
                             <div class="row">
                                 <div class="col-md-8">
-                                    <div class="form-row ">
+                                    <div class="form-row required">
                                         <div class="col mb-3">
                                             <label class="control-label" for="name">@lang('site::user.name')</label>
                                             <input type="text"
                                                    name="name"
                                                    id="name"
+                                                   required
                                                    class="form-control form-control-lg
                                             {{ $errors->has('name')
                                             ? ' is-invalid'
@@ -46,7 +45,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="form-row ">
+                                    <div class="form-row required">
                                         <div class="col mb-3">
                                             <label class="control-label"
                                                    for="type_id">@lang('site::user.type_id')</label>
@@ -55,7 +54,7 @@
                                                     <input class="form-check-input
                                                     {{$errors->has('type_id') ? ' is-invalid' : ''}}"
                                                            type="radio"
-
+                                                           required
                                                            name="type_id"
                                                            @if(old('type_id') == $type->id) checked @endif
                                                            id="type_id_{{ $type->id }}"
@@ -82,13 +81,14 @@
 
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="form-row ">
+                                    <div class="form-row required">
                                         <div class="col mb-3">
                                             <input type="hidden" name="contact[type_id]" value="1">
                                             <label class="control-label"
                                                    for="contact_name">@lang('site::contact.name')</label>
                                             <input type="text" name="contact[name]" id="contact_name"
                                                    class="form-control
+                                                   required
                                                    {{$errors->has('contact.name')
                                                    ? ' is-invalid'
                                                    : (old('contact.name') ? ' is-valid' : '')}}"
@@ -120,13 +120,13 @@
 
                             <div class="row">
                                 <div class="col-md-3">
-                                    <div class="form-row ">
+                                    <div class="form-row required">
                                         <div class="col mb-3">
 
                                             <label class="control-label"
                                                    for="phone_contact_country_id">@lang('site::phone.country_id')</label>
                                             <select class="form-control{{  $errors->has('phone.contact.country_id') ? ' is-invalid' : '' }}"
-
+                                                    required
                                                     name="phone[contact][country_id]"
                                                     id="phone_contact_country_id">
                                                 <option value="">@lang('site::messages.select_from_list')</option>
@@ -146,7 +146,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="form-row ">
+                                    <div class="form-row required">
                                         <div class="col">
                                             <label class="control-label"
                                                    for="phone_contact_number">@lang('site::phone.number')</label>
@@ -154,7 +154,7 @@
                                                    name="phone[contact][number]"
                                                    id="phone_contact_number"
                                                    title="@lang('site::phone.placeholder.number')"
-
+                                                   required
                                                    pattern="^\d{10}$"
                                                    maxlength="10"
                                                    class="form-control{{ $errors->has('phone.contact.number') ? ' is-invalid' : '' }}"
@@ -197,13 +197,14 @@
                                     <h4 class="mt-4">@lang('site::register.header.sc')</h4>
                                     <h4 class="mb-2 text-success small">@lang('site::register.help.sc')</h4>
 
-                                    <div class="form-row ">
+                                    <div class="form-row required">
                                         <div class="col mb-3">
                                             <label class="control-label"
                                                    for="sc">@lang('site::user.sc')</label>
                                             <input type="text"
                                                    name="sc"
                                                    id="sc"
+                                                   required
                                                    class="form-control{{ $errors->has('sc') ? ' is-invalid' : '' }}"
                                                    placeholder="@lang('site::user.placeholder.sc')"
                                                    value="{{ old('sc') }}">
@@ -236,14 +237,14 @@
                                     {{-- ТЕЛЕФОН АСЦ --}}
 
                                     <h4 class="mb-2 mt-2">@lang('site::register.sc_phone')</h4>
-                                    <div class="form-row ">
+                                    <div class="form-row required">
                                         <div class="col mb-3">
 
                                             <label class="control-label"
                                                    for="phone_user_country_id">@lang('site::phone.country_id')</label>
                                             <select class="form-control{{  $errors->has('phone.user.country_id') ? ' is-invalid' : '' }}"
                                                     name="phone[user][country_id]"
-
+                                                    required
                                                     id="phone_user_country_id">
                                                 <option value="">@lang('site::messages.select_from_list')</option>
                                                 @foreach($countries as $country)
@@ -262,12 +263,12 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <div class="form-row ">
+                                            <div class="form-row required">
                                                 <div class="col">
                                                     <label class="control-label"
                                                            for="phone_user_number">@lang('site::phone.number')</label>
                                                     <input type="tel"
-
+                                                           required
                                                            name="phone[user][number]"
                                                            id="phone_user_number"
                                                            title="@lang('site::phone.placeholder.number')"
@@ -313,13 +314,14 @@
 
                                     <h4 class="mb-2 mt-4">@lang('site::register.sc_address')</h4>
 
-                                    <div class="form-row ">
+                                    <div class="form-row required">
                                         <div class="col mb-3">
                                             <input type="hidden" name="address[user][type_id]" value="2">
                                             <label class="control-label"
                                                    for="address_user_country_id">@lang('site::address.country_id')</label>
                                             <select class="country-select form-control{{  $errors->has('address.user.country_id') ? ' is-invalid' : '' }}"
                                                     name="address[user][country_id]"
+                                                    required
                                                     data-regions="#address_user_region_id"
                                                     data-empty="@lang('site::messages.select_from_list')"
                                                     id="address_user_country_id">
@@ -337,13 +339,14 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="form-row ">
+                                    <div class="form-row required">
                                         <div class="col mb-3">
 
                                             <label class="control-label"
                                                    for="address_user_region_id">@lang('site::address.region_id')</label>
                                             <select class="form-control{{  $errors->has('address.user.region_id') ? ' is-invalid' : '' }}"
                                                     name="address[user][region_id]"
+                                                    required
                                                     id="address_user_region_id">
                                                 <option value="">@lang('site::address.help.select_country')</option>
                                                 @foreach($address_user_regions as $region)
@@ -361,14 +364,14 @@
                                     </div>
 
 
-                                    <div class="form-row ">
+                                    <div class="form-row required">
                                         <div class="col mb-3">
                                             <label class="control-label"
                                                    for="address_user_locality">@lang('site::address.locality')</label>
                                             <input type="text"
                                                    name="address[user][locality]"
                                                    id="address_user_locality"
-
+                                                   required
                                                    class="form-control{{ $errors->has('address.user.locality') ? ' is-invalid' : '' }}"
                                                    placeholder="@lang('site::address.placeholder.locality')"
                                                    value="{{ old('address.user.locality') }}">
@@ -394,13 +397,13 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <div class="form-row ">
+                                            <div class="form-row required">
                                                 <div class="col mb-3">
                                                     <label class="control-label"
                                                            for="address_user_building">@lang('site::address.building')</label>
                                                     <input type="text"
                                                            name="address[user][building]"
-
+                                                           required
                                                            id="address_user_building"
                                                            class="form-control{{ $errors->has('address.user.building') ? ' is-invalid' : '' }}"
                                                            placeholder="@lang('site::address.placeholder.building')"
@@ -438,11 +441,12 @@
 
                             <h4 class=" mt-3" id="sc_info">@lang('site::contragent.header.contragent')</h4>
 
-                            <div class="form-row ">
+                            <div class="form-row required">
                                 <div class="col mb-3">
                                     <label class="control-label"
                                            for="contragent_name">@lang('site::contragent.name')</label>
                                     <input type="text"
+                                           required
                                            name="contragent[name]"
                                            id="contragent_name"
                                            class="form-control{{ $errors->has('contragent.name') ? ' is-invalid' : '' }}"
@@ -458,7 +462,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="form-row ">
+                                    <div class="form-row required">
                                         <div class="col mb-3">
                                             <label class="control-label"
                                                    for="contragent_type_id">@lang('site::contragent.type_id')</label>
@@ -467,7 +471,7 @@
                                                     <input class="form-check-input
                                                     {{$errors->has('contragent.type_id') ? ' is-invalid' : ''}}"
                                                            type="radio"
-
+                                                           required
                                                            name="contragent[type_id]"
                                                            @if(old('contragent.type_id') == $type->id) checked @endif
                                                            id="contragent_type_id_{{ $type->id }}"
@@ -487,7 +491,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="form-row ">
+                                    <div class="form-row required">
                                         <div class="col mb-3">
                                             <label class="control-label"
                                                    for="contragent_nds">@lang('site::contragent.nds')</label>
@@ -497,7 +501,7 @@
                                                     {{$errors->has('contragent.nds') ? ' is-invalid' : ''}}"
                                                        type="radio"
                                                        name="contragent[nds]"
-
+                                                       required
                                                        @if(old('contragent.nds') == 1) checked @endif
                                                        id="contragent_nds_1"
                                                        value="1">
@@ -530,7 +534,7 @@
                                 <div class="col-md-6">
                                     <h4 class="mb-4 mt-2" id="company_info">@lang('site::contragent.header.legal')</h4>
 
-                                    <div class="form-row ">
+                                    <div class="form-row required">
                                         <div class="col mb-3">
                                             <label class="control-label"
                                                    for="contragent_inn">@lang('site::contragent.inn')</label>
@@ -538,7 +542,7 @@
                                                    name="contragent[inn]"
                                                    id="contragent_inn"
                                                    maxlength="12"
-
+                                                   required
                                                    pattern="\d{10}|\d{12}"
                                                    class="form-control{{ $errors->has('contragent.inn') ? ' is-invalid' : '' }}"
                                                    placeholder="@lang('site::contragent.placeholder.inn')"
@@ -549,7 +553,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-row ">
+                                    <div class="form-row required">
                                         <div class="col mb-3">
                                             <label class="control-label"
                                                    for="contragent_ogrn">@lang('site::contragent.ogrn')</label>
@@ -557,7 +561,7 @@
                                                    name="contragent[ogrn]"
                                                    id="contragent_ogrn"
                                                    maxlength="15"
-
+                                                   required
                                                    pattern="\d{13}|\d{15}"
                                                    class="form-control{{ $errors->has('contragent.ogrn') ? ' is-invalid' : '' }}"
                                                    placeholder="@lang('site::contragent.placeholder.ogrn')"
@@ -568,7 +572,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-row ">
+                                    <div class="form-row required">
                                         <div class="col mb-3">
                                             <label class="control-label"
                                                    for="contragent_okpo">@lang('site::contragent.okpo')</label>
@@ -576,7 +580,7 @@
                                                    name="contragent[okpo]"
                                                    id="contragent_okpo"
                                                    maxlength="10"
-
+                                                   required
                                                    pattern="\d{8}|\d{10}"
                                                    class="form-control{{ $errors->has('contragent.okpo') ? ' is-invalid' : '' }}"
                                                    placeholder="@lang('site::contragent.placeholder.okpo')"
@@ -608,13 +612,13 @@
                                     <h4 class="mb-4 mt-2"
                                         id="company_info">@lang('site::contragent.header.payment')</h4>
 
-                                    <div class="form-row ">
+                                    <div class="form-row required">
                                         <div class="col mb-3">
                                             <label class="control-label"
                                                    for="contragent_rs">@lang('site::contragent.rs')</label>
                                             <input type="number"
                                                    name="contragent[rs]"
-
+                                                   required
                                                    id="contragent_rs" maxlength="20"
                                                    pattern="\d{20}"
                                                    class="form-control{{ $errors->has('contragent.rs') ? ' is-invalid' : '' }}"
@@ -627,14 +631,14 @@
                                     </div>
 
 
-                                    <div class="form-row ">
+                                    <div class="form-row required">
                                         <div class="col mb-3">
                                             <label class="control-label"
                                                    for="contragent_bik">@lang('site::contragent.bik')</label>
                                             <input type="number"
                                                    name="contragent[bik]"
                                                    id="contragent_bik"
-
+                                                   required
                                                    maxlength="11" pattern="\d{9}|\d{11}"
                                                    class="form-control{{ $errors->has('contragent.bik') ? ' is-invalid' : '' }}"
                                                    placeholder="@lang('site::contragent.placeholder.bik')"
@@ -645,14 +649,14 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-row ">
+                                    <div class="form-row required">
                                         <div class="col mb-3">
                                             <label class="control-label"
                                                    for="contragent_bank">@lang('site::contragent.bank')</label>
                                             <input type="text"
                                                    name="contragent[bank]"
                                                    id="contragent_bank"
-
+                                                   required
                                                    maxlength="255"
                                                    class="form-control{{ $errors->has('contragent.bank') ? ' is-invalid' : '' }}"
                                                    placeholder="@lang('site::contragent.placeholder.bank')"
@@ -692,7 +696,7 @@
 
                                     <h4 class="mb-2 mt-4">@lang('site::address.header.legal')</h4>
 
-                                    <div class="form-row ">
+                                    <div class="form-row required">
                                         <div class="col mb-3">
                                             <input type="hidden"
                                                    name="address[legal][type_id]"
@@ -703,6 +707,7 @@
                                             {{$errors->has('address.legal.country_id') ? ' is-invalid' : ''}}"
                                                     data-regions="#address_legal_region_id"
                                                     data-empty="@lang('site::messages.select_from_list')"
+                                                    required
                                                     name="address[legal][country_id]"
                                                     id="address_legal_country_id">
                                                 <option value="">@lang('site::messages.select_from_list')</option>
@@ -718,14 +723,14 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="form-row ">
+                                    <div class="form-row required">
                                         <div class="col mb-3">
 
                                             <label class="control-label"
                                                    for="address_legal_region_id">@lang('site::address.region_id')</label>
                                             <select class="form-control{{  $errors->has('address.legal.region_id') ? ' is-invalid' : '' }}"
                                                     name="address[legal][region_id]"
-
+                                                    required
                                                     id="address_legal_region_id">
                                                 <option value="">@lang('site::address.help.select_country')</option>
                                                 @foreach($address_legal_regions as $region)
@@ -741,14 +746,14 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="form-row ">
+                                    <div class="form-row required">
                                         <div class="col mb-3">
                                             <label class="control-label"
                                                    for="address_legal_locality">@lang('site::address.locality')</label>
                                             <input type="text"
                                                    name="address[legal][locality]"
                                                    id="address_legal_locality"
-
+                                                   required
                                                    class="form-control{{ $errors->has('address.legal.locality') ? ' is-invalid' : '' }}"
                                                    placeholder="@lang('site::address.placeholder.locality')"
                                                    value="{{ old('address.legal.locality') }}">
@@ -772,7 +777,7 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="row ">
+                                    <div class="row required">
                                         <div class="col-md-6">
                                             <div class="form-row ">
                                                 <div class="col mb-3">
@@ -781,7 +786,7 @@
                                                     <input type="text"
                                                            name="address[legal][building]"
                                                            id="address_legal_building"
-
+                                                           required
                                                            class="form-control{{ $errors->has('address.legal.building') ? ' is-invalid' : '' }}"
                                                            placeholder="@lang('site::address.placeholder.building')"
                                                            value="{{ old('address.legal.building') }}">
@@ -817,7 +822,7 @@
 
                                     <h4 class="mb-2 mt-4">@lang('site::address.header.postal')</h4>
 
-                                    <div class="form-row">
+                                    <div class="form-row required">
                                         <div class="col mb-3">
                                             <input type="hidden"
                                                    name="address[postal][type_id]"
@@ -826,6 +831,7 @@
                                                    for="address_postal_country_id">@lang('site::address.country_id')</label>
                                             <select class="country-select form-control{{  $errors->has('address.postal.country_id') ? ' is-invalid' : '' }}"
                                                     name="address[postal][country_id]"
+                                                    required
                                                     data-regions="#address_postal_region_id"
                                                     data-empty="@lang('site::messages.select_from_list')"
                                                     id="address_postal_country_id">
@@ -842,13 +848,14 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="form-row">
-                                        <div class="col mb-3">
+                                    <div class="form-row required">
+                                        <div class="col mb-3 required">
 
                                             <label class="control-label"
                                                    for="address_postal_region_id">@lang('site::address.region_id')</label>
                                             <select class="form-control{{  $errors->has('address.postal.region_id') ? ' is-invalid' : '' }}"
                                                     name="address[postal][region_id]"
+                                                    required
                                                     id="address_postal_region_id">
                                                 <option value="">@lang('site::address.help.select_country')</option>
                                                 @foreach($address_postal_regions as $region)
@@ -864,14 +871,14 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="form-row ">
+                                    <div class="form-row required">
                                         <div class="col mb-3">
                                             <label class="control-label"
                                                    for="address_postal_locality">@lang('site::address.locality')</label>
                                             <input type="text"
                                                    name="address[postal][locality]"
                                                    id="address_postal_locality"
-
+                                                   required
                                                    class="form-control{{ $errors->has('address.postal.locality') ? ' is-invalid' : '' }}"
                                                    placeholder="@lang('site::address.placeholder.locality')"
                                                    value="{{ old('address.postal.locality') }}">
@@ -897,12 +904,13 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <div class="form-row ">
+                                            <div class="form-row required">
                                                 <div class="col mb-3">
                                                     <label class="control-label"
                                                            for="address_postal_building">@lang('site::address.building')</label>
                                                     <input type="text"
                                                            name="address[postal][building]"
+                                                           required
                                                            id="address_postal_building"
                                                            class="form-control{{ $errors->has('address.postal.building') ? ' is-invalid' : '' }}"
                                                            placeholder="@lang('site::address.placeholder.building')"
@@ -939,12 +947,13 @@
 
                             <h4 class="mb-4 mt-2" id="company_info">@lang('site::user.header.user')</h4>
 
-                            <div class="form-row ">
+                            <div class="form-row required">
                                 <div class="col mb-3">
                                     <label class="control-label" for="email">@lang('site::user.email')</label>
                                     <input type="email"
                                            name="email"
                                            id="email"
+                                           required
                                            class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}"
                                            placeholder="@lang('site::user.placeholder.email')"
                                            value="{{ old('email') }}">
@@ -956,12 +965,13 @@
                                     </small>
                                 </div>
                             </div>
-                            <div class="form-row ">
+                            <div class="form-row required">
                                 <div class="col mb-3">
                                     <label class="control-label"
                                            for="password">@lang('site::user.password')</label>
                                     <input type="password"
                                            name="password"
+                                           required
                                            id="password"
                                            minlength="6"
                                            maxlength="20"
@@ -975,12 +985,13 @@
                                 </div>
                             </div>
 
-                            <div class="form-row ">
+                            <div class="form-row required">
                                 <div class="col mb-3">
                                     <label class="control-label"
                                            for="password-confirmation">@lang('site::user.password_confirmation')</label>
                                     <input id="password-confirmation"
                                            type="password"
+                                           required
                                            class="form-control"
                                            placeholder="@lang('site::user.placeholder.password_confirmation')"
                                            name="password_confirmation">

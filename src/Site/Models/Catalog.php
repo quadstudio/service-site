@@ -4,7 +4,6 @@ namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use QuadStudio\Service\Site\Models\Product;
 
 class Catalog extends Model
 {
@@ -58,9 +57,34 @@ class Catalog extends Model
         return $this->_images();
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function _images()
     {
         return $this->hasMany(CatalogImage::class);
+    }
+
+    public function equipments()
+    {
+        if (config('site::cache.use', true) === true) {
+            $key = $this->primaryKey;
+            $cacheKey = 'equipment_catalog_equipments_' . $this->{$key};
+
+            return cache()->remember($cacheKey, config('site::cache.ttl'), function () {
+                return $this->_equipments();
+            });
+        }
+
+        return $this->_equipments();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function _equipments()
+    {
+        return $this->hasMany(Equipment::class);
     }
 
     /**
@@ -107,6 +131,7 @@ class Catalog extends Model
                 return $this->_parentTree($this, $tree);
             });
         }
+
         return $this->_parentTree($this, $tree);
     }
 
@@ -122,6 +147,7 @@ class Catalog extends Model
         if (!is_null($catalog->catalog)) {
             $this->_parentTree($catalog->catalog, $tree);
         }
+
         return $tree;
     }
 

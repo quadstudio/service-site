@@ -16,7 +16,7 @@ class ValidSerial implements Rule
      */
     public function passes($attribute, $value)
     {
-        return Serial::where('serial', $value)->count() == 1;
+        return !is_null(Serial::find($value));
     }
 
     /**
@@ -26,6 +26,6 @@ class ValidSerial implements Rule
      */
     public function message()
     {
-        return trans('repair::repair.validation.serial');
+        return trans('site::repair.error.serial_find');
     }
 }

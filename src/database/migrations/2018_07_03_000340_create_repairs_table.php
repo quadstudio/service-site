@@ -25,7 +25,7 @@ class CreateRepairsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('status_id')->default(1);
             $table->unsignedInteger('user_id');
-            $table->string('serial', 32);
+            $table->string('serial_id', 20);
             $table->string('number', 10);
             $table->decimal('cost_work')->default(0.00);
             $table->decimal('cost_road')->default(0.00);
@@ -53,7 +53,12 @@ class CreateRepairsTable extends Migration
             $table->string('phone_secondary', 10);
             $table->string('address');
             $table->timestamps();
-
+            $table
+                ->foreign('serial_id')
+                ->references('id')
+                ->on("{$this->prefix}serials")
+                ->onUpdate('restrict')
+                ->onDelete('restrict');
             $table
                 ->foreign('status_id')
                 ->references('id')

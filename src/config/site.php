@@ -13,6 +13,10 @@ return [
     'routes'   => [
         'rbac',
     ],
+    'cache' => [
+        'use' => false,
+        'ttl' => 60 * 60 * 24
+    ],
     'per_page' => [
         'repair'       => 2,
         'trade'        => 10,
@@ -53,6 +57,17 @@ return [
         ],
 
     ],
+
+    'round' => false,
+
+    'round_up' => false,
+
+    'decimals' => 0,
+
+    'decimalPoint' => '.',
+
+    'thousandSeparator' => ' ',
+
     /*
     |--------------------------------------------------------------------------
     | Код основной валюта

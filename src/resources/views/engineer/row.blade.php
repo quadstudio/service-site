@@ -9,19 +9,19 @@
     <td class="d-none d-sm-table-cell">{{ $item->country->phone }}{{ $item->phone }}</td>
     <td class="d-none d-md-table-cell">{{ $item->address }}</td>
     <td class="text-right">
-        <a class="btn btn-link" data-toggle="tooltip" data-placement="top" title="@lang('repair::messages.edit')"
+        <a class="btn btn-link" data-toggle="tooltip" data-placement="top" title="@lang('site::messages.edit')"
            href="{{ route('engineers.edit', $item) }}">
             <i class="fa fa-pencil" aria-hidden="true"></i>
         </a>
         @if($item->canDelete())
             <a class="btn btn-link text-danger btn-row-delete"
                data-form="#engineer-delete-form-{{$item->id}}"
-               data-btn-delete="@lang('repair::messages.delete')"
-               data-btn-cancel="@lang('repair::messages.cancel')"
-               data-label="@lang('repair::messages.delete_confirm')"
-               data-message="@lang('repair::messages.delete_sure') {{ $item->name }}?"
+               data-btn-delete="@lang('site::messages.delete')"
+               data-btn-cancel="@lang('site::messages.cancel')"
+               data-label="@lang('site::messages.delete_confirm')"
+               data-message="@lang('site::messages.delete_sure') {{ $item->name }}?"
                data-toggle="modal" data-target="#form-modal"
-               href="javascript:void(0);" title="@lang('repair::messages.delete')"><i class="fa fa-close"></i>
+               href="javascript:void(0);" title="@lang('site::messages.delete')"><i class="fa fa-close"></i>
             </a>
             <form id="engineer-delete-form-{{$item->id}}"
                   action="{{route('engineers.destroy', $item)}}"

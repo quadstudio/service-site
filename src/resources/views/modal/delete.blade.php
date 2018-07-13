@@ -9,8 +9,8 @@
             </div>
             <div class="modal-body" id="confirmMessage"></div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('repair::messages.cancel')</button>
-                <button type="button" class="btn btn-danger btn-ok">@lang('repair::messages.delete')</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('site::messages.cancel')</button>
+                <button type="button" class="btn btn-danger btn-ok">@lang('site::messages.delete')</button>
             </div>
         </div>
     </div>

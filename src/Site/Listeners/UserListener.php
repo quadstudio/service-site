@@ -27,7 +27,7 @@ class UserListener
     {
         Schedule::create([
             'action_id' => 1,
-            'url' => route('api.users.show', $event->user)
+            'url' => preg_split("/:\/\//", route('api.users.show', $event->user))[1]
         ]);
     }
 

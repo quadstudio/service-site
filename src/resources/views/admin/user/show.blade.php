@@ -116,12 +116,51 @@
             </div>
             <div class="tab-pane container fade p-0" id="contragents-tab">
                 <div class="card border-top-0">
-                    <div class="card-body"></div>
+                    <div class="card-body">
+                        <table class="table m-0">
+                            <thead>
+                            <tr>
+                                <th scope="col">@lang('site::contragent.name')</th>
+                                <th scope="col">@lang('site::contragent.type_id')</th>
+                                <th scope="col">@lang('site::contragent.inn')</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($user->contragents as $contragent)
+                                <tr>
+                                    <td><a href="{{route('admin.contragents.show', $contragent)}}">{{ $contragent->name }}</a></td>
+                                    <td>{{ $contragent->type->name }}</td>
+                                    <td>{{ $contragent->inn }}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+
+                    </div>
                 </div>
             </div>
             <div class="tab-pane container fade p-0" id="contacts-tab">
                 <div class="card border-top-0">
-                    <div class="card-body"></div>
+                    <div class="card-body">
+                        <table class="table m-0">
+                            <thead>
+                            <tr>
+                                <th scope="col">@lang('site::contact.name')</th>
+                                <th scope="col">@lang('site::contact.type_id')</th>
+                                <th scope="col">@lang('site::contact.position')</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($user->contacts as $contact)
+                                <tr>
+                                    <td>{{ $contact->name }}</td>{{--<a href="{{route('admin.contacts.show', $contact)}}">--}}
+                                    <td>{{ $contact->type->name }}</td>
+                                    <td>{{ $contact->position }}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

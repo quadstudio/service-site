@@ -1,69 +1,49 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container-fluid">
+    <div class="container">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('index') }}">@lang('repair::messages.index')</a>
+                <a href="{{ route('index') }}">@lang('site::messages.index')</a>
             </li>
-            <li class="breadcrumb-item active">@lang('repair::trade.trades')</li>
+            <li class="breadcrumb-item active">@lang('site::trade.trades')</li>
         </ol>
-        <h1 class="header-title m-t-0 m-b-20"><i
-                    class="fa fa-@lang('repair::trade.icon')"></i> @lang('repair::trade.trades')</h1>
-        <hr/>
+        <h1 class="header-title mb-4"><i
+                    class="fa fa-@lang('site::trade.icon')"></i> @lang('site::trade.trades')</h1>
 
-        @include('alert')
+        @alert()@endalert
 
         <div class="row">
-            <div class="col-12 mb-2">
+            <div class="col mb-2">
                 <nav class="nav nav-pills flex-column flex-sm-row">
-                    <a class="flex-sm-fill text-sm-center nav-link btn-success" href="{{ route('trades.create') }}"
+                    <a class="flex-sm text-sm-center nav-link btn-success" href="{{ route('trades.create') }}"
                        role="button">
                         <i class="fa fa-plus"></i>
-                        <span>@lang('repair::messages.add')</span>
+                        <span>@lang('site::messages.add')</span>
                     </a>
-                    <a class="flex-sm-fill text-sm-center nav-link"
-                       href="{{ route('engineers.index') }}">@lang('repair::engineer.engineers')</a>
-                    <a class="flex-sm-fill text-sm-center nav-link"
-                       href="{{ route('launches.index') }}">@lang('repair::launch.launches')</a>
-                    <a class="flex-sm-fill text-sm-center nav-link"
-                       href="{{ route('costs.index') }}">@lang('repair::cost.costs')</a>
-
                 </nav>
-
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-sm-12">
+        <div class="card mb-4">
+            <div class="card-body">
                 {{$items->render()}}
-            </div>
-        </div>
-
-        @include('repo::filter')
-
-        <div class="row">
-            <div class="col-12">
+                @filter(['repository' => $repository])@endfilter
                 <table class="table table-hover table-sm">
                     <thead>
                     <tr>
                         <th scope="col"></th>
-                        <th scope="col">@lang('repair::trade.name')</th>
-                        <th scope="col" class="d-none d-sm-table-cell">@lang('repair::trade.country_id')</th>
-                        <th scope="col" class="d-none d-sm-table-cell">@lang('repair::trade.phone')</th>
-                        <th scope="col" class="d-none d-md-table-cell">@lang('repair::trade.address')</th>
+                        <th scope="col">@lang('site::trade.name')</th>
+                        <th scope="col" class="d-none d-sm-table-cell">@lang('site::trade.country_id')</th>
+                        <th scope="col" class="d-none d-sm-table-cell">@lang('site::trade.phone')</th>
+                        <th scope="col" class="d-none d-md-table-cell">@lang('site::trade.address')</th>
                         <th scope="col"></th>
                     </tr>
                     </thead>
                     <tbody>
-                    @each('repair::trade.row', $items, 'item')
+                    @each('site::trade.row', $items, 'item')
                     </tbody>
                 </table>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-12">
                 {{$items->render()}}
             </div>
         </div>

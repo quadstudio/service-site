@@ -84,7 +84,7 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
         'TradeController.stub'               => 'TradeController',
         'FileController.stub'                => 'FileController',
         'OrderController.stub'               => 'OrderController',
-        'ProductController.stub'             => 'ProductController',
+        'ProductController.stub'             => 'PartController',
         'ActController.stub'                 => 'ActController',
         'CostController.stub'                => 'CostController',
         'DatasheetController.stub'           => 'DatasheetController',
@@ -96,6 +96,8 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
         'api/CountryController.stub'         => 'Api/CountryController',
         'api/RegionController.stub'          => 'Api/RegionController',
         'api/UserController.stub'            => 'Api/UserController',
+        'api/SerialController.stub'          => 'Api/SerialController',
+        'api/ProductController.stub'         => 'Api/ProductController',
         //
         'admin/WarehouseController.stub'     => 'Admin/WarehouseController',
         'admin/OrganizationController.stub'  => 'Admin/OrganizationController',

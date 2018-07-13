@@ -10,7 +10,7 @@ class UserSearchFilter extends SearchFilter
 
     use BootstrapInput;
 
-    protected $render = true;
+    protected $render = false;
     protected $search = 'search_user';
 
     public function label()

@@ -21,9 +21,11 @@ class UserResource extends JsonResource
             'id'     => $this->id,
             'guid' => $this->guid,
             'name' => $this->name,
+            'type' => $this->type->name,
             'email' => $this->email,
+            'address' => new AddressResource($this->address()),
             'contragents' => ContragentResource::collection($this->whenLoaded('contragents')),
-            'addresses' => AddressResource::collection($this->whenLoaded('addresses')),
+            //'addresses' => AddressResource::collection($this->whenLoaded('addresses')),
             'contacts' => ContactResource::collection($this->whenLoaded('contacts')),
             //'files' => ContragentResource::collection($this->files),
         ];

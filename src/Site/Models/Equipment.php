@@ -12,7 +12,7 @@ class Equipment extends Model
     protected $table;
 
     protected $fillable = [
-        'name',
+        'name', 'description'
     ];
 
     /**
@@ -21,7 +21,27 @@ class Equipment extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = env('DB_PREFIX', ''). 'equipments';
+        $this->table = env('DB_PREFIX', '') . 'equipments';
+    }
+
+    /**
+     * Каталог
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function catalog()
+    {
+        return $this->belongsTo(Catalog::class);
+    }
+
+    /**
+     * Валюта расценок
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class);
     }
 
 }

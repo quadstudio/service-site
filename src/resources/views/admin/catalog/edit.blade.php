@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container-fluid" id="catalog-edit" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+    <div class="container" id="catalog-edit" xmlns:v-bind="http://www.w3.org/1999/xhtml">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ route('index') }}">@lang('equipment::messages.index')</a>
@@ -19,7 +19,7 @@
         <h1 class="header-title m-t-0 m-b-20">@lang('equipment::messages.edit') {{ $catalog->name }}</h1>
         <hr/>
 
-        @include('alert')
+        @alert()@endalert
         <div class="row justify-content-center mb-5">
             <div class="col">
 

@@ -11,6 +11,8 @@ class Serial extends Model
      */
     protected $table;
 
+    public $incrementing = false;
+
     /**
      * @param array $attributes
      */
@@ -18,6 +20,16 @@ class Serial extends Model
     {
         parent::__construct($attributes);
         $this->table = env('DB_PREFIX', ''). 'serials';
+    }
+
+    /**
+     * Тип файла
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
     }
 
 }

@@ -25,6 +25,7 @@ class CreateEquipmentsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('description')->nullable(true);
+            $table->boolean('enabled')->default(1);
             $table->unsignedInteger('catalog_id');
             $table->timestamps();
 

@@ -1,7 +1,7 @@
 @extends('center::layouts.page')
 
 @section('content')
-    <div class="container-fluid">
+    <div class="container">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ route('index') }}">@lang('shop::messages.index')</a>

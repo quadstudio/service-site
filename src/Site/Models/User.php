@@ -76,6 +76,14 @@ class User extends Authenticatable
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function address()
+    {
+        return $this->addresses()->where('type_id', 2)->first();
+    }
+
+    /**
      * Адреса
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
@@ -93,6 +101,16 @@ class User extends Authenticatable
     public function type()
     {
         return $this->belongsTo(ContragentType::class);
+    }
+
+    /**
+     * Валюта расчетов
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class);
     }
 
     /**
@@ -123,6 +141,56 @@ class User extends Authenticatable
     public function contragents()
     {
         return $this->hasMany(Contragent::class);
+    }
+
+    /**
+     * Инженеры
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function engineers()
+    {
+        return $this->hasMany(Engineer::class);
+    }
+
+    /**
+     * Торговые организации
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function trades()
+    {
+        return $this->hasMany(Trade::class);
+    }
+
+    /**
+     * Ввод в эксплаатацию
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function launches()
+    {
+        return $this->hasMany(Launch::class);
+    }
+
+    /**
+     * Отчеты по ремонту
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function repairs()
+    {
+        return $this->hasMany(Repair::class);
+    }
+
+    /**
+     * Файлы
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function files()
+    {
+        return $this->hasMany(File::class);
     }
 
     /**

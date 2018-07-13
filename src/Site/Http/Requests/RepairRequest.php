@@ -47,13 +47,26 @@ class RepairRequest extends FormRequest
                     'country_id'      => 'required|exists:' . $prefix . 'countries,id',
                     'address'         => 'required|string|max:255',
                     'phone_primary'   => 'required|numeric|digits:10',
-                    'phone_secondary' => 'required|numeric|digits:10',
-                    'trade_id'        => 'required|exists:' . env('DB_PREFIX', '') . 'trades,id',
+                    //'phone_secondary' => 'required|numeric|digits:10',
+                    'trade_id'     => [
+                        'required',
+                        'exists:' . $prefix . 'trades,id',
+                        Rule::exists($prefix . 'trades', 'id')->where(function ($query) use ($prefix) {
+                            $query->where($prefix . 'trades.user_id', $this->user()->id);
+                        }),
+                    ],
                     'date_trade'      => 'required|date_format:"Y-m-d"',
-                    'launch_id'       => 'required|exists:' . env('DB_PREFIX', '') . 'launches,id',
+                    'launch_id'     => [
+                        'required',
+                        'exists:' . $prefix . 'launches,id',
+                        Rule::exists($prefix . 'launches', 'id')->where(function ($query) use ($prefix) {
+                            $query->where($prefix . 'launches.user_id', $this->user()->id);
+                        }),
+                    ],
                     'date_launch'     => 'required|date_format:"Y-m-d"',
                     'engineer_id'     => [
                         'required',
+                        'exists:' . $prefix . 'engineers,id',
                         Rule::exists($prefix . 'engineers', 'id')->where(function ($query) use ($prefix) {
                             $query->where($prefix . 'engineers.user_id', $this->user()->id);
                         }),
@@ -63,8 +76,8 @@ class RepairRequest extends FormRequest
                     'diagnostics'     => 'required|string',
                     'works'           => 'required|string',
                     'date_repair'     => 'required|date_format:"Y-m-d"',
-                    'file.1'          => 'required|array',
-                    'file.2'          => 'required|array',
+                    //'file.1'          => 'required|array',
+                    //'file.2'          => 'required|array',
 
                 ];
             }

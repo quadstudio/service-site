@@ -26,7 +26,22 @@ class CreateCostsTable extends Migration
             $table->decimal('cost_work');
             $table->decimal('cost_road');
             $table->unsignedInteger('currency_id');
+            $table->unsignedInteger('equipment_id');
             $table->timestamps();
+
+            $table
+                ->foreign('currency_id')
+                ->references('id')
+                ->on("{$this->prefix}currencies")
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+
+            $table
+                ->foreign('equipment_id')
+                ->references('id')
+                ->on("{$this->prefix}equipments")
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
         });
     }
 

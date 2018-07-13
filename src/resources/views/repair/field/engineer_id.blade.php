@@ -1,18 +1,18 @@
 <div class="form-group" id="form-group-engineer_id">
-    <label for="engineer_id">@lang('repair::repair.engineer_id')</label>
+    <label for="engineer_id">@lang('site::repair.engineer_id')</label>
     <select data-form-action="{{ route('engineers.create') }}"
-            data-btn-ok="@lang('repair::messages.save')"
-            data-btn-cancel="@lang('repair::messages.cancel')"
-            data-label="@lang('repair::messages.add') @lang('repair::engineer.engineer')"
+            data-btn-ok="@lang('site::messages.save')"
+            data-btn-cancel="@lang('site::messages.cancel')"
+            data-label="@lang('site::messages.add') @lang('site::engineer.engineer')"
             class="dynamic-modal-form form-control{{  $errors->has('name') ? ' is-invalid' : '' }}"
             name="engineer_id" id="engineer_id">
-        <option value="">@lang('repair::repair.default.engineer_id')</option>
+        <option value="">@lang('site::repair.default.engineer_id')</option>
         @foreach($engineers as $engineer)
             <option @if(old('engineer_id') == $engineer->id) selected @endif
             value="{{ $engineer->id }}">{{ $engineer->name }}</option>
         @endforeach
-        <option disabled value="">@lang('repair::repair.help.engineer_id')</option>
-        <option value="load">✚ @lang('repair::messages.add')</option>
+        <option disabled value="">@lang('site::repair.help.engineer_id')</option>
+        <option value="load">✚ @lang('site::messages.add')</option>
     </select>
     @if(session('success'))
         <div class="alert alert-success alert-dismissible mt-1">

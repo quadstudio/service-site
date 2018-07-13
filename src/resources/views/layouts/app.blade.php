@@ -141,8 +141,26 @@
                                 <i class="fa fa-unlock-alt"></i> @lang('rbac::permission.permissions')
                             </a>
                             @elseadmin()
+
                             <a class="dropdown-item" href="{{ route('home') }}">
                                 <i class="fa fa-desktop"></i> @lang('site::messages.home')
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{{ route('repairs.index') }}"><i
+                                        class="fa fa-@lang('site::repair.icon')"></i> @lang('site::repair.repairs')</a>
+                            <a class="dropdown-item" href="{{ route('acts.index') }}"><i
+                                        class="fa fa-@lang('site::act.icon')"></i> @lang('site::act.acts')</a>
+                            <a class="dropdown-item" href="{{ route('orders.index') }}"><i
+                                        class="fa fa-@lang('site::order.icon')"></i> @lang('site::order.orders')</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{{ route('engineers.index') }}">
+                                <i class="fa fa-@lang('site::engineer.icon')"></i> @lang('site::engineer.engineers')
+                            </a>
+                            <a class="dropdown-item" href="{{ route('launches.index') }}">
+                                <i class="fa fa-@lang('site::launch.icon')"></i> @lang('site::launch.launches')
+                            </a>
+                            <a class="dropdown-item" href="{{ route('trades.index') }}">
+                                <i class="fa fa-@lang('site::trade.icon')"></i> @lang('site::trade.trades')
                             </a>
                             @endadmin()
                             <div class="dropdown-divider"></div>
@@ -161,7 +179,6 @@
                         <a href="{{route('login')}}" class="nav-link">
                             <i class="fa fa-fw fa-sign-in"></i> Войти | Регистрация</a>
                     </li>
-
                     @endguest
                 </ul>
             </div>

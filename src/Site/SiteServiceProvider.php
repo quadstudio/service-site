@@ -5,19 +5,26 @@ namespace QuadStudio\Service\Site;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use QuadStudio\Service\Site\Listeners\UserListener;
 use QuadStudio\Service\Site\Middleware\Admin;
-use QuadStudio\Service\Site\Models\Contragent;
-use QuadStudio\Service\Site\Models\Equipment;
-use QuadStudio\Service\Site\Models\Product;
-use QuadStudio\Service\Site\Models\User;
 
 class SiteServiceProvider extends ServiceProvider
 {
 
     protected $middleware = [
         'admin' => Admin::class,
+    ];
+
+    protected $policies = [
+        Models\Trade::class        => Policies\TradePolicy::class,
+        Models\Launch::class       => Policies\LaunchPolicy::class,
+        Models\Engineer::class     => Policies\EngineerPolicy::class,
+        Models\Repair::class       => Policies\RepairPolicy::class,
+        Models\File::class         => Policies\FilePolicy::class,
+        Models\Catalog::class      => Policies\CatalogPolicy::class,
+        Models\CatalogImage::class => Policies\CatalogImagePolicy::class,
     ];
 
     /**
@@ -29,6 +36,14 @@ class SiteServiceProvider extends ServiceProvider
             return new Site($app);
         });
         $this->app->alias('site', Site::class);
+
+        $this->app->bind('currency', function ($app) {
+            return new Models\Currency($app);
+        });
+        $this->app->bind(Contracts\Exchange::class, function () {
+
+            return new Exchanges\Cbr();
+        });
 
         $this->loadConfig()->loadMigrations();
         $this->registerMiddleware();
@@ -103,6 +118,7 @@ class SiteServiceProvider extends ServiceProvider
         $this->loadViews();
         $this->extendBlade();
         $this->registerEvents();
+        $this->registerPolicies();
 
     }
 
@@ -172,10 +188,10 @@ class SiteServiceProvider extends ServiceProvider
     private function loadMorphMap()
     {
         Relation::morphMap([
-            'users'       => User::class,
-            'contragents' => Contragent::class,
-            'equipments'  => Equipment::class,
-            'products'    => Product::class,
+            'users'       => Models\User::class,
+            'contragents' => Models\Contragent::class,
+            'equipments'  => Models\Equipment::class,
+            'products'    => Models\Product::class,
         ]);
 
         return $this;
@@ -222,6 +238,18 @@ class SiteServiceProvider extends ServiceProvider
     private function registerEvents()
     {
         Event::subscribe(new UserListener());
+    }
+
+    /**
+     * Register the application's policies.
+     *
+     * @return void
+     */
+    public function registerPolicies()
+    {
+        foreach ($this->policies as $key => $value) {
+            Gate::policy($key, $value);
+        }
     }
 
 

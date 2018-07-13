@@ -22,6 +22,23 @@ class Site
     }
 
     /**
+     * @param Models\Currency $cost_currency
+     * @param Models\Currency $user_currency
+     * @return float
+     */
+    public static function currencyRates(Models\Currency $cost_currency, Models\Currency $user_currency)
+    {
+        if ($cost_currency->getKey() == $user_currency->getKey()) {
+            return 1;
+        }
+        if ($user_currency->getAttribute('rates') == 1) {
+            return $cost_currency->getAttribute('rates');
+        } else {
+            return $user_currency->getAttribute('rates');
+        }
+    }
+
+    /**
      * Service Routes
      */
     public function routes()
@@ -53,6 +70,15 @@ class Site
                     $router->group(['middleware' => ['auth']],
                         function () use ($router) {
                             $router->get('/home', 'HomeController@index')->name('home');
+                            $router->resource('/acts', 'ActController')->middleware('permission:acts');
+                            $router->resource('/orders', 'OrderController')->only(['index', 'show'])->middleware('permission:orders');
+                            $router->resource('/repairs', 'RepairController')->middleware('permission:repairs');
+                            $router->resource('/engineers', 'EngineerController')->middleware('permission:engineers');
+                            $router->resource('/trades', 'TradeController')->middleware('permission:trades');
+                            $router->resource('/files', 'FileController')->only(['index', 'store', 'show', 'destroy'])->middleware('permission:files');
+                            $router->resource('/launches', 'LaunchController')->middleware('permission:launches');
+                            $router->resource('/costs', 'CostController')->middleware('permission:costs');
+                            $router->resource('/contragents', 'ContragentController')->middleware('permission:contragents');
                         });
 
                     $router
@@ -71,8 +97,9 @@ class Site
                                 $router->name('admin')->resource('/repairs', 'RepairController');
                                 $router->name('admin')->resource('/serials', 'SerialController');
                                 $router->name('admin')->resource('/catalogs', 'CatalogController');
+                                $router->name('admin')->get('/catalogs/create/{catalog?}', 'CatalogController@create')->name('.catalogs.create.parent');
                                 $router->name('admin')->resource('/equipments', 'EquipmentController');
-                                $router->name('admin')->resource('/products', 'ProductController');
+                                $router->name('admin')->resource('/products', 'PartController');
                                 $router->name('admin')->resource('/product-types', 'ProductTypeController');
                                 $router->name('admin')->resource('/prices', 'PriceController');
                                 $router->name('admin')->resource('/price-types', 'PriceTypeController');
@@ -99,6 +126,9 @@ class Site
             function () use ($router) {
                 $router->name('api')->get('/countries', 'CountryController@index')->name('.countries.index');
                 $router->name('api')->resource('/users', 'UserController');
+                $router->name('api')->resource('/serials', 'SerialController');
+                $router->name('api')->resource('/parts', 'PartController');
+                $router->name('api')->resource('/files', 'FileController')->only(['index', 'store', 'show', 'destroy'])->middleware('permission:files');
                 $router->name('api')->resource('/contragents', 'ContragentController');
                 $router->name('api')->get('/regions/{country}', 'RegionController@index')->name('.regions.index');
 
@@ -119,14 +149,20 @@ class Site
         }
     }
 
-    /**
-     * Получить текущего аутентифицированного пользователя
-     *
-     * @return \Illuminate\Foundation\Auth\User|null
-     */
-    public function user()
+    public function cost($price)
     {
-        return $this->app->auth->user();
+
+        $price = $price * $this->app->auth->user()->currency->rates;
+
+        if (($round = config('site.round', false)) !== false) {
+            $price = round($price, $round);
+        }
+
+        if (($round_up = config('site.round_up', false)) !== false) {
+            $price = ceil($price / (int)$round_up) * (int)$round_up;
+        }
+
+        return (float)$price;
     }
 
     /**
@@ -141,6 +177,16 @@ class Site
         }
 
         return false;
+    }
+
+    /**
+     * Получить текущего аутентифицированного пользователя
+     *
+     * @return \Illuminate\Foundation\Auth\User|null
+     */
+    public function user()
+    {
+        return $this->app->auth->user();
     }
 
 }

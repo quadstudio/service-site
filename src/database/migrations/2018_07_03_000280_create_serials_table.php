@@ -22,15 +22,13 @@ class CreateSerialsTable extends Migration
     public function up()
     {
         Schema::create("{$this->prefix}serials", function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('product_id', 11);
-            $table->string('serial', 20)->unique(true);
+            $table->string('id', 20)->primary(true);
+            $table->unsignedInteger('equipment_id');
             $table->timestamps();
-
             $table
-                ->foreign('product_id')
+                ->foreign('equipment_id')
                 ->references('id')
-                ->on("{$this->prefix}products")
+                ->on("{$this->prefix}equipments")
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
         });

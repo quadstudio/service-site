@@ -6,27 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class EngineerRequest extends FormRequest
 {
-    /**
-     * @var string
-     */
-    protected $table;
-
-    /**
-     * PermissionRequest constructor.
-     * @param array $query
-     * @param array $request
-     * @param array $attributes
-     * @param array $cookies
-     * @param array $files
-     * @param array $server
-     * @param null $content
-     */
-    public function __construct(array $query = array(), array $request = array(), array $attributes = array(), array $cookies = array(), array $files = array(), array $server = array(), $content = null)
-    {
-        parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
-
-        $this->table = env("DB_PREFIX", "") . 'engineers';
-    }
 
     /**
      * Determine if the user is authorized to make this request.
@@ -45,6 +24,7 @@ class EngineerRequest extends FormRequest
      */
     public function rules()
     {
+        $prefix = env('DB_PREFIX', '');
         switch ($this->method()) {
             case 'GET':
             case 'DELETE': {
@@ -53,7 +33,7 @@ class EngineerRequest extends FormRequest
             case 'POST': {
                 return [
                     'name'       => 'required|string|max:255',
-                    'country_id' => 'required',
+                    'country_id' => 'required|exists:' . $prefix . 'countries,id',
                     'phone'      => 'required|numeric|digits:10',
                     'address'    => 'required|string|max:255',
                 ];
@@ -61,7 +41,7 @@ class EngineerRequest extends FormRequest
             case 'PUT':
             case 'PATCH': {
                 return [
-                    'country_id' => 'required',
+                    'country_id' => 'required|exists:' . $prefix . 'countries,id',
                     'phone'      => 'required|numeric|digits:10',
                 ];
             }

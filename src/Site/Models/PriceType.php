@@ -23,5 +23,15 @@ class PriceType extends Model
         $this->table = env('DB_PREFIX', '') . 'price_types';
     }
 
+    /**
+     * Валюта цены
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class);
+    }
+
 
 }

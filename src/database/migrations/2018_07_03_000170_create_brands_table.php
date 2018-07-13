@@ -24,9 +24,9 @@ class CreateBrandsTable extends Migration
         Schema::create("{$this->prefix}brands", function (Blueprint $table) {
             $table->string('id', 36)->primary();
             $table->string('name', 191)->unique();
-            $table->string('logo');
-            $table->string('enabled');
-            $table->unsignedInteger('country_id');
+            $table->string('logo')->nullable(true);
+            $table->boolean('enabled')->default(1);
+            $table->unsignedInteger('country_id')->nullable(true);
             $table->text('description')->nullable();
             $table->timestamps();
 

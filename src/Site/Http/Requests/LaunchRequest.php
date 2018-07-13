@@ -24,6 +24,8 @@ class LaunchRequest extends FormRequest
      */
     public function rules()
     {
+        $prefix = env('DB_PREFIX', '');
+
         switch ($this->method()) {
             case 'GET':
             case 'DELETE': {
@@ -32,7 +34,7 @@ class LaunchRequest extends FormRequest
             case 'POST': {
                 return [
                     'name'            => 'required|string|max:255',
-                    'country_id'      => 'required',
+                    'country_id'      => 'required|exists:' . $prefix . 'countries,id',
                     'phone'           => 'required|numeric|digits:10',
                     'address'         => 'required|string|max:255',
                     'document_name'   => 'required|string|max:255',
@@ -44,7 +46,7 @@ class LaunchRequest extends FormRequest
             case 'PUT':
             case 'PATCH': {
                 return [
-                    'country_id' => 'required',
+                    'country_id' => 'required|exists:' . $prefix . 'countries,id',
                     'phone'      => 'required|numeric|digits:10',
                 ];
             }

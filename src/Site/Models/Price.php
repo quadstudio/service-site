@@ -3,7 +3,6 @@
 namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use QuadStudio\Currency\Models\Currency;
 
 class Price extends Model
 {
