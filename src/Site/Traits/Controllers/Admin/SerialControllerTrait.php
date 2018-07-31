@@ -29,7 +29,7 @@ trait SerialControllerTrait
     {
 
         $this->serials->trackFilter();
-        return view('site::serial.index', [
+        return view('site::admin.serial.index', [
             'repository' => $this->serials,
             'items'      => $this->serials->paginate(config('site.per_page.serial', 10), [env('DB_PREFIX', '').'serials.*'])
         ]);
@@ -37,6 +37,6 @@ trait SerialControllerTrait
 
     public function show(Serial $serial)
     {
-        return view('site::serial.show', ['serial' => $serial]);
+        return view('site::admin.serial.show', ['serial' => $serial]);
     }
 }

@@ -3,18 +3,18 @@
 namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Product extends Model
 {
 
+    public $incrementing = false;
     /**
      * @var string
      */
     protected $table;
     protected $prefix;
     private $_price;
-
-    public $incrementing = false;
 
     /**
      * @param array $attributes
@@ -37,6 +37,29 @@ class Product extends Model
     }
 
     /**
+     * Производитель
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
+    public function name()
+    {
+        $name = [
+            $this->name,
+            $this->brand->name
+        ];
+        if (mb_strlen($this->sku, 'UTF-8') > 0) {
+            $name[] = "({$this->sku})";
+        }
+
+        return implode(' ', $name);
+    }
+
+    /**
      * Модель
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -55,6 +78,32 @@ class Product extends Model
 //        $price = $this->prices()->where('type_id', '=', $type_id)->first();
 //        return is_null($price) ? new Price() : $price;
 //    }
+    /**
+     * Документация
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function datasheets()
+    {
+        return $this->belongsToMany(
+            Datasheet::class,
+            env('DB_PREFIX', '') . 'datasheet_product',
+            'product_id',
+            'datasheet_id'
+        );
+    }
+
+    public function price()
+    {
+        $type_id = Auth::guest() ? config('site.defaults.guest.price_type_id') : Auth::user()->price_type_id;
+        $table = (new Price())->getTable();
+
+        return $this
+            ->prices()
+            ->where($table . '.type_id', '=', $type_id)
+            ->where($table . '.price', '<>', 0.00)
+            ->firstOrNew([]);
+    }
 
     /**
      * Цены
@@ -67,6 +116,41 @@ class Product extends Model
     }
 
     /**
+     * @return Model
+     */
+    public function image()
+    {
+        return $this->images()->firstOrNew([]);
+    }
+
+    /**
+     * Изображения
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\morphMany
+     */
+    public function images()
+    {
+        if (config('site::cache.use', true) === true) {
+            $key = $this->primaryKey;
+            $cacheKey = 'product_images_' . $this->{$key};
+
+            return cache()->remember($cacheKey, config('site::cache.ttl'), function () {
+                return $this->_images();
+            });
+        }
+
+        return $this->_images();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\morphMany
+     */
+    public function _images()
+    {
+        return $this->morphMany(Image::class, 'imageable');
+    }
+
+    /**
      * Серийные номера
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -74,6 +158,35 @@ class Product extends Model
     public function serials()
     {
         return $this->hasMany(Serial::class);
+    }
+
+    /**
+     * Прямые аналоги
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
+     */
+    public function analogs()
+    {
+        return $this->belongsToMany(
+            Product::class,
+            $this->prefix . 'analogs',
+            'product_id',
+            'analog_id');
+    }
+
+    /**
+     * Обратные аналоги
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
+     */
+    public function back_analogs()
+    {
+
+        return $this->belongsToMany(
+            Product::class,
+            $this->prefix . 'analogs',
+            'analog_id',
+            'product_id');
     }
 
     /**
@@ -102,6 +215,21 @@ class Product extends Model
             $this->prefix . 'relations',
             'relation_id',
             'product_id');
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public function relation_equipments()
+    {
+        $equipments = collect([]);
+        foreach ($this->back_relations as $relation) {
+            if (!is_null($relation->equipment_id)) {
+                $equipments->put($relation->equipment_id, $relation->equipment);
+            }
+        }
+
+        return $equipments;
     }
 
 

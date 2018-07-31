@@ -2,6 +2,7 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers;
 
+use QuadStudio\Service\Site\Facades\Cart;
 use QuadStudio\Service\Site\Filters\BelongsUserFilter;
 use QuadStudio\Service\Site\Filters\OrderDateFilter;
 use QuadStudio\Service\Site\Http\Requests\Order As Request;
@@ -36,7 +37,7 @@ trait OrderControllerTrait
         $this->orders->trackFilter();
         $this->orders->pushFilter(new BelongsUserFilter);
         $this->orders->pushFilter(new OrderDateFilter);
-        return view('order.index', [
+        return view('site::order.index', [
             'items' => $this->orders->paginate(config('site.per_page.order', 8)),
             'repository' => $this->orders,
         ]);
@@ -51,9 +52,11 @@ trait OrderControllerTrait
      */
     public function store(Request $request)
     {
-        $order = $this->orders->create($request->except('_token'));
+        $request->user()->orders()->save($order = $this->orders->create($request->except(['_token'])));
+        $order->items()->createMany(Cart::toArray());
+        Cart::clear();
+        return redirect()->route('orders.show', $order)->with('success', trans('site::order.created'));
 
-        return redirect()->route('orders.show', $order)->with('message', trans('shop::messages.order.success', ['order' => $order->id]));
     }
 
     /**
@@ -65,7 +68,7 @@ trait OrderControllerTrait
     public function show(Order $order)
     {
         $this->authorize('view', $order);
-        return view('order.show', ['order' => $order]);
+        return view('site::order.show', ['order' => $order]);
     }
 
 }

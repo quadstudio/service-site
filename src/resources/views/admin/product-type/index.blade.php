@@ -8,7 +8,7 @@
             </li>
             <li class="breadcrumb-item active">@lang('site::product_type.index')</li>
         </ol>
-        <h1 class="header-title m-t-0 m-b-20">@lang('site::product_type.index')</h1>
+        <h1 class="header-titlemb-4">@lang('site::product_type.index')</h1>
         <hr/>
 
 

@@ -32,6 +32,7 @@ class CreateOrderItemsTable extends Migration
             $table->string('sku')->nullable();
             $table->decimal('weight', 8, 3)->nullable();
             $table->boolean('availability')->nullable();
+            $table->boolean('service')->default(0);
             $table->string('brand_id', 36)->nullable(true);
             $table->string('unit', 10)->nullable();
             $table->timestamps();

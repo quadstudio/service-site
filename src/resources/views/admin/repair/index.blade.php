@@ -11,7 +11,7 @@
             </li>
             <li class="breadcrumb-item active">@lang('site::repair.repairs')</li>
         </ol>
-        <h1 class="header-title m-t-0 m-b-20"><i class="fa fa-@lang('site::repair.icon')"></i> @lang('site::repair.repairs')</h1>
+        <h1 class="header-titlemb-4"><i class="fa fa-@lang('site::repair.icon')"></i> @lang('site::repair.repairs')</h1>
         <hr/>
 
         @alert()@endalert()
@@ -41,7 +41,7 @@
                     <thead>
                     <tr>
                         <th scope="col">@lang('site::repair.number')</th>
-                        <th scope="col" class="d-none d-sm-table-cell">@lang('site::repair.client')</th>
+                        <th scope="col" class="d-none d-sm-table-cell">@lang('site::repair.id')</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -49,7 +49,7 @@
                         {{--<td>@{{ repair.number }}</td>--}}
                         {{--<td>@{{ repair.client }}</td>--}}
                     {{--</tr>--}}
-                    @each('site::repair.row', $items, 'item')
+                    @each('site::admin.repair.index.row', $items, 'repair')
                     </tbody>
                 </table>
             </div>

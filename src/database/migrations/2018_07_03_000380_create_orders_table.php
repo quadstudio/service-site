@@ -23,18 +23,18 @@ class CreateOrdersTable extends Migration
     {
         Schema::create("{$this->prefix}orders", function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('user_id')->nullable(true);
             $table->unsignedInteger('status_id');
-            $table->text('comment');
+            $table->text('comment')->nullable(true);
             $table->timestamps();
 
 
             $table
                 ->foreign('user_id')
                 ->references('id')
-                ->on(config('shop.users', 'users'))
+                ->on("{$this->prefix}users")
                 ->onUpdate('cascade')
-                ->onDelete('cascade');
+                ->onDelete('set null');
             $table
                 ->foreign('status_id')
                 ->references('id')

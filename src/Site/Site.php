@@ -2,6 +2,9 @@
 
 namespace QuadStudio\Service\Site;
 
+use Illuminate\Support\Facades\Auth;
+use QuadStudio\Service\Site\Models\Currency;
+
 class Site
 {
 
@@ -39,6 +42,13 @@ class Site
     }
 
     /**
+     * @return Currency
+     */
+    public function currency(){
+        return Auth::guest() ? Currency::find(config('site.defaults.currency')) : Auth::user()->currency;
+    }
+
+    /**
      * Service Routes
      */
     public function routes()
@@ -49,13 +59,16 @@ class Site
                 function () use ($router) {
                     $router->get('/', 'IndexController@index')->name('index');
                     $router->get('/services', 'ServiceController@index')->name('services');
-                    $router->get('/products', 'ProductController@index')->name('products');
-                    $router->get('/catalogs', 'CatalogController@index')->name('catalogs');
+                    $router->resource('/products', 'ProductController')->only(['index', 'show']);
+                    $router->resource('/catalogs', 'CatalogController')->only(['index', 'show']);
+                    $router->resource('/equipments', 'EquipmentController')->only(['index', 'show']);
                     $router->get('/datasheets', 'DatasheetController@index')->name('datasheets');
+
+                    // Static pages
                     $router->get('/abouts', 'StaticPageController@about')->name('abouts');
                     $router->get('/contacts', 'StaticPageController@contacts')->name('contacts');
 
-                    $router->get('/currency/refresh/{id?}', function ($id = null, \QuadStudio\Service\Site\Contracts\Exchange $exchange) {
+                    $router->get('/currencies/refresh/{id?}', function ($id = null, \QuadStudio\Service\Site\Contracts\Exchange $exchange) {
                         foreach (config('site.update', []) as $update_id) {
                             if (is_null($id) || $id == $update_id) {
                                 $currency = \QuadStudio\Service\Site\Models\Currency::find($update_id);
@@ -65,13 +78,13 @@ class Site
                             }
 
                         }
-                    });
+                    })->name('currencies.refresh');
 
                     $router->group(['middleware' => ['auth']],
                         function () use ($router) {
                             $router->get('/home', 'HomeController@index')->name('home');
                             $router->resource('/acts', 'ActController')->middleware('permission:acts');
-                            $router->resource('/orders', 'OrderController')->only(['index', 'show'])->middleware('permission:orders');
+                            $router->resource('/orders', 'OrderController')->only(['index', 'show', 'store'])->middleware('permission:orders');
                             $router->resource('/repairs', 'RepairController')->middleware('permission:repairs');
                             $router->resource('/engineers', 'EngineerController')->middleware('permission:engineers');
                             $router->resource('/trades', 'TradeController')->middleware('permission:trades');
@@ -79,6 +92,13 @@ class Site
                             $router->resource('/launches', 'LaunchController')->middleware('permission:launches');
                             $router->resource('/costs', 'CostController')->middleware('permission:costs');
                             $router->resource('/contragents', 'ContragentController')->middleware('permission:contragents');
+                            // Cart
+                            $router->get('/cart', 'CartController@index')->name('cart');
+                            $router->post('/cart/add', 'CartController@add')->name('buy');
+                            $router->delete('/cart/remove', 'CartController@remove')->name('removeCartItem');
+                            $router->put('/cart/update', 'CartController@update')->name('updateCart');
+                            $router->get('/cart/clear', 'CartController@clear')->name('clearCart');
+
                         });
 
                     $router
@@ -97,21 +117,24 @@ class Site
                                 $router->name('admin')->resource('/repairs', 'RepairController');
                                 $router->name('admin')->resource('/serials', 'SerialController');
                                 $router->name('admin')->resource('/catalogs', 'CatalogController');
+                                $router->name('admin')->get('/tree', 'CatalogController@tree')->name('.catalogs.tree');
                                 $router->name('admin')->get('/catalogs/create/{catalog?}', 'CatalogController@create')->name('.catalogs.create.parent');
                                 $router->name('admin')->resource('/equipments', 'EquipmentController');
-                                $router->name('admin')->resource('/products', 'PartController');
+                                $router->name('admin')->get('/equipments/create/{catalog?}', 'EquipmentController@create')->name('.equipments.create.parent');
+                                $router->name('admin')->resource('/images', 'ImageController');
+                                $router->name('admin')->resource('/products', 'ProductController');
                                 $router->name('admin')->resource('/product-types', 'ProductTypeController');
                                 $router->name('admin')->resource('/prices', 'PriceController');
                                 $router->name('admin')->resource('/price-types', 'PriceTypeController');
                                 $router->name('admin')->resource('/engineers', 'EngineerController');
-                                $router->name('admin')->resource('/trades', 'TradeController@index');
-                                $router->name('admin')->resource('/launches', 'LaunchController@index');
+                                $router->name('admin')->resource('/trades', 'TradeController');
+                                $router->name('admin')->resource('/launches', 'LaunchController');
                                 $router->name('admin')->resource('/currencies', 'CurrencyController');
                                 $router->name('admin')->resource('/banks', 'BankController');
                                 $router->name('admin')->resource('/warehouses', 'WarehouseController');
                                 $router->name('admin')->resource('/datasheets', 'DatasheetController');
                                 $router->name('admin')->resource('/contragents', 'ContragentController');
-                                $router->name('admin')->resource('/organizations', 'OrganizationController@index');
+                                $router->name('admin')->resource('/organizations', 'OrganizationController');
 
                             });
                 });
@@ -152,7 +175,7 @@ class Site
     public function cost($price)
     {
 
-        $price = $price * $this->app->auth->user()->currency->rates;
+        $price = $price * $this->user()->currency->rates;
 
         if (($round = config('site.round', false)) !== false) {
             $price = round($price, $round);

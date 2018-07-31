@@ -29,7 +29,7 @@ trait BankControllerTrait
     {
 
         $this->banks->trackFilter();
-        return view('site::bank.index', [
+        return view('site::admin.bank.index', [
             'repository' => $this->banks,
             'items'      => $this->banks->paginate(config('site.per_page.bank', 10), [env('DB_PREFIX', '').'banks.*'])
         ]);
@@ -37,6 +37,6 @@ trait BankControllerTrait
 
     public function show(Bank $bank)
     {
-        return view('site::bank.show', ['bank' => $bank]);
+        return view('site::admin.bank.show', ['bank' => $bank]);
     }
 }

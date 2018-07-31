@@ -40,7 +40,7 @@ trait TradeControllerTrait
     {
 
         $this->trades->trackFilter();
-
+        $this->trades->applyFilter(new BelongsUserFilter());
         return view('site::trade.index', [
             'repository' => $this->trades,
             'items'      => $this->trades->paginate(config('site.per_page.trade', 10), [env('DB_PREFIX', '') . 'trades.*'])

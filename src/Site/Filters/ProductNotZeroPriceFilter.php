@@ -13,7 +13,7 @@ class ProductNotZeroPriceFilter extends Filter
     function apply($builder, RepositoryInterface $repository)
     {
         $builder = $builder->whereHas('prices', function ($query) {
-            $type_id = Auth::guest() ? config('shop.default_price_type') :  Auth::user()->profile->price_type_id;
+            $type_id = Auth::guest() ? config('site.defaults.guest.price_type_id') :  Auth::user()->price_type_id;
             $table = (new Price())->getTable();
             $query->where($table.'.type_id', '=', $type_id)->where($table.'.price', '<>', 0.00);
         });

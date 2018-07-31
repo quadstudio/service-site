@@ -13,7 +13,7 @@
         </ol>
         <div class="row">
             <div class="col-sm-12">
-                <h4 class="header-title m-t-0 m-b-20">Order № {{ $order->id }}</h4>
+                <h4 class="header-title mb-4">Order № {{ $order->id }}</h4>
 
             </div>
         </div>

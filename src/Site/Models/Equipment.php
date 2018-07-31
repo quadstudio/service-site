@@ -12,7 +12,8 @@ class Equipment extends Model
     protected $table;
 
     protected $fillable = [
-        'name', 'description'
+        'name', 'description', 'enabled', 'catalog_id',
+        'cost_work', 'cost_road', 'currency_id'
     ];
 
     /**
@@ -22,6 +23,14 @@ class Equipment extends Model
     {
         parent::__construct($attributes);
         $this->table = env('DB_PREFIX', '') . 'equipments';
+    }
+
+    public function detachImages(){
+        foreach ($this->images as $image){
+            $image->imageable_id = null;
+            $image->imageable_type = null;
+            $image->save();
+        }
     }
 
     /**
@@ -42,6 +51,63 @@ class Equipment extends Model
     public function currency()
     {
         return $this->belongsTo(Currency::class);
+    }
+
+    /**
+     * Изображения
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\morphMany
+     */
+    public function images()
+    {
+        if (config('site::cache.use', true) === true) {
+            $key = $this->primaryKey;
+            $cacheKey = 'equipment_images_' . $this->{$key};
+
+            return cache()->remember($cacheKey, config('site::cache.ttl'), function () {
+                return $this->_images();
+            });
+        }
+
+        return $this->_images();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\morphMany
+     */
+    public function _images()
+    {
+        return $this->morphMany(Image::class, 'imageable');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function products()
+    {
+        if (config('site::cache.use', true) === true) {
+            $key = $this->primaryKey;
+            $cacheKey = 'equipment_products_' . $this->{$key};
+
+            return cache()->remember($cacheKey, config('site::cache.ttl'), function () {
+                return $this->_products();
+            });
+        }
+
+        return $this->_products();
+
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    private function _products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    public function canDelete(){
+        return $this->products->isEmpty();
     }
 
 }

@@ -5,6 +5,7 @@ namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class File extends Model
 {
@@ -24,26 +25,9 @@ class File extends Model
         self::creating(function($model){
             $model->user_id = Auth::user()->getAuthIdentifier();
         });
-
-//        self::created(function($model){
-//            // ... code here
-//        });
-//
-//        self::updating(function($model){
-//            // ... code here
-//        });
-//
-//        self::updated(function($model){
-//            // ... code here
-//        });
-//
-//        self::deleting(function($model){
-//            // ... code here
-//        });
-
-//        self::deleted(function($model){
-//            // ... code here
-//        });
+        self::deleting(function ($file) {
+            Storage::disk($file->storage)->delete($file->path);
+        });
     }
 
 
@@ -56,6 +40,8 @@ class File extends Model
         $this->table = env('DB_PREFIX', ''). 'files';
     }
 
+
+
     /**
      * Тип файла
      *
@@ -67,15 +53,12 @@ class File extends Model
     }
 
     /**
-     * Отчет по ремонту
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * Get all of the owning contactable models.
      */
-    public function repair()
+    public function fileable()
     {
-        return $this->belongsTo(Repair::class);
+        return $this->morphTo();
     }
-
     /**
      * Пользователь
      *
@@ -84,6 +67,10 @@ class File extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function canDelete(){
+        return true;
     }
 
 }

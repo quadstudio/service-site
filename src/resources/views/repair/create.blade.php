@@ -26,7 +26,7 @@
                     <div class="form-row">
                         <div class="col mb-3">
 
-                            <div class="input-group input-group-lg">
+                            <div class="input-group">
 
                                 <input type="text" name="serial_id" id="serial_id"
                                        class="form-control{{ $errors->has('serial_id') ? ' is-invalid' : '' }}"
@@ -35,13 +35,12 @@
                                        value="{{ old('serial_id') }}" required
                                        aria-label="Large" aria-describedby="inputGroup-sizing-sm">
                                 <div class="input-group-append">
-                                    <button class="btn btn-primary" disabled="disabled" id="serial-check-button"
-                                            type="button"><i
-                                                class="fa fa-check-circle"></i> @lang('site::messages.check')</button>
+                                    <button class="btn btn-primary" disabled="disabled" id="serial-check-button" type="button">
+                                        <i class="fa fa-check-circle"></i> @lang('site::messages.check')
+                                    </button>
                                 </div>
                                 <span class="invalid-feedback">{{ $errors->first('serial_id') }}</span>
-                                <span class="invalid-feedback"><i
-                                            class="fa fa-close"></i> {{ trans('site::repair.error.serial_id') }}</span>
+                                <span class="invalid-feedback"><i class="fa fa-close"></i> {{ trans('site::repair.error.serial_id') }}</span>
                             </div>
                             <div id="serial-success" class="alert alert-success mt-3" role="alert" style="display: none;">
                                 <h4 class="alert-heading"><i class="fa fa-check"></i> Серийный номер проверен!</h4>
@@ -90,8 +89,7 @@
                                 <hr />
                                 <p class="mb-0">Если вы уверены, что серийный номер правильный - обратитесь к менеджеру</p>
                             </div>
-                            <small id="serialHelp"
-                                   class="d-block form-text text-muted">@lang('site::repair.help.serial_id')</small>
+                            <small id="serialHelp" class="d-block form-text text-muted">@lang('site::repair.help.serial_id')</small>
                         </div>
                     </div>
 

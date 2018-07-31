@@ -30,7 +30,7 @@ trait ProductControllerTrait
 
         $this->repository->trackFilter();
 
-        return view('admin.product.index', [
+        return view('site::admin.product.index', [
             'repository' => $this->repository,
             'items'      => $this->repository->paginate(config('site.per_page.product', 8))
         ]);
@@ -44,7 +44,7 @@ trait ProductControllerTrait
      */
     public function show(Product $product)
     {
-        return view('admin.product.show', ['product' => $product]);
+        return view('site::admin.product.show', ['product' => $product]);
     }
 
 }

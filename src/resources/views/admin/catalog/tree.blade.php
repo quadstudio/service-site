@@ -11,7 +11,7 @@
             </li>
             <li class="breadcrumb-item active">@lang('site::catalog.catalogs')</li>
         </ol>
-        <h1 class="header-title m-t-0 m-b-20"><i
+        <h1 class="header-titlemb-4"><i
                     class="fa fa-@lang('site::catalog.icon')"></i> @lang('site::catalog.catalogs')</h1>
         <hr/>
 

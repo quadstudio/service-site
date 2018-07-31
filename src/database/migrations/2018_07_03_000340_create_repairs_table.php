@@ -24,7 +24,7 @@ class CreateRepairsTable extends Migration
         Schema::create("{$this->prefix}repairs", function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('status_id')->default(1);
-            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('user_id')->nullable(true);
             $table->string('serial_id', 20);
             $table->string('number', 10);
             $table->decimal('cost_work')->default(0.00);

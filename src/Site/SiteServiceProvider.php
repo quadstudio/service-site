@@ -7,8 +7,10 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use QuadStudio\Service\Site\Http\ViewComposers\CurrentRouteViewComposer;
 use QuadStudio\Service\Site\Listeners\UserListener;
 use QuadStudio\Service\Site\Middleware\Admin;
+use QuadStudio\Service\Site\Support\Cart;
 
 class SiteServiceProvider extends ServiceProvider
 {
@@ -18,13 +20,15 @@ class SiteServiceProvider extends ServiceProvider
     ];
 
     protected $policies = [
-        Models\Trade::class        => Policies\TradePolicy::class,
-        Models\Launch::class       => Policies\LaunchPolicy::class,
-        Models\Engineer::class     => Policies\EngineerPolicy::class,
-        Models\Repair::class       => Policies\RepairPolicy::class,
-        Models\File::class         => Policies\FilePolicy::class,
-        Models\Catalog::class      => Policies\CatalogPolicy::class,
-        Models\CatalogImage::class => Policies\CatalogImagePolicy::class,
+        Models\Trade::class     => Policies\TradePolicy::class,
+        Models\Launch::class    => Policies\LaunchPolicy::class,
+        Models\Engineer::class  => Policies\EngineerPolicy::class,
+        Models\Repair::class    => Policies\RepairPolicy::class,
+        Models\File::class      => Policies\FilePolicy::class,
+        Models\Catalog::class   => Policies\CatalogPolicy::class,
+        Models\Equipment::class => Policies\EquipmentPolicy::class,
+        Models\Image::class     => Policies\ImagePolicy::class,
+        Models\Order::class     => Policies\OrderPolicy::class,
     ];
 
     /**
@@ -40,6 +44,11 @@ class SiteServiceProvider extends ServiceProvider
         $this->app->bind('currency', function ($app) {
             return new Models\Currency($app);
         });
+
+        $this->app->bind('cart', function ($app) {
+            return new Cart($app, $app->make('session'));
+        });
+
         $this->app->bind(Contracts\Exchange::class, function () {
 
             return new Exchanges\Cbr();
@@ -74,6 +83,10 @@ class SiteServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(
             $this->packagePath('config/site.php'), 'site'
+        );
+
+        $this->mergeConfigFrom(
+            $this->packagePath('config/cart.php'), 'cart'
         );
 
         return $this;
@@ -147,6 +160,10 @@ class SiteServiceProvider extends ServiceProvider
             $this->packagePath('config/site.php') => config_path('site.php'),
         ], 'config');
 
+        $this->publishes([
+            $this->packagePath('config/cart.php') => config_path('cart.php'),
+        ], 'config');
+
         return $this;
     }
 
@@ -192,6 +209,8 @@ class SiteServiceProvider extends ServiceProvider
             'contragents' => Models\Contragent::class,
             'equipments'  => Models\Equipment::class,
             'products'    => Models\Product::class,
+            'catalogs'    => Models\Catalog::class,
+            'repairs'     => Models\Repair::class,
         ]);
 
         return $this;
@@ -204,6 +223,8 @@ class SiteServiceProvider extends ServiceProvider
      */
     private function loadViews()
     {
+        view()->composer("*", CurrentRouteViewComposer::class);
+
         $viewsPath = $this->packagePath('resources/views/');
 
         $this->loadViewsFrom($viewsPath, 'site');

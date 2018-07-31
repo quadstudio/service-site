@@ -14,6 +14,6 @@
             </li>
             <li class="breadcrumb-item active">{{ $service->name }}</li>
         </ol>
-        <h1 class="header-title m-t-0 m-b-20"><i class="fa fa-@lang('site::service.icon')"></i> {{ $service->name }}</h1>
+        <h1 class="header-titlemb-4"><i class="fa fa-@lang('site::service.icon')"></i> {{ $service->name }}</h1>
     </div>
 @endsection

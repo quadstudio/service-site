@@ -1,14 +1,14 @@
-@extends('center::layouts.page')
+@extends('layouts.app')
 
 @section('content')
     <div class="container">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('index') }}">@lang('shop::messages.index')</a>
+                <a href="{{ route('index') }}">@lang('site::messages.index')</a>
             </li>
-            <li class="breadcrumb-item active">@lang('shop::order.orders')</li>
+            <li class="breadcrumb-item active">@lang('site::order.orders')</li>
         </ol>
-        <h1 class="header-title m-t-0 m-b-20"><i class="fa fa-shopping-cart"></i> @lang('shop::order.orders')</h1>
+        <h1 class="header-title mb-4"><i class="fa fa-shopping-cart"></i> @lang('site::order.orders')</h1>
         <hr/>
         <div class="row">
             <div class="col-sm-12">
@@ -17,7 +17,7 @@
         </div>
         @include('repo::filter')
         <div class="row">
-            @each('shop::order.item', $items, 'item')
+            @each('site::order.item', $items, 'item')
         </div>
         <div class="row">
             <div class="col-sm-12">

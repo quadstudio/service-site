@@ -11,7 +11,7 @@
             </li>
             <li class="breadcrumb-item active">@lang('site::user.users')</li>
         </ol>
-        <h1 class="header-title m-t-0 m-b-20"><i class="fa fa-@lang('site::user.icon')"></i> @lang('site::user.users')
+        <h1 class="header-titlemb-4"><i class="fa fa-@lang('site::user.icon')"></i> @lang('site::user.users')
         </h1>
 
         @alert()@endalert

@@ -14,186 +14,96 @@
           content="width=device-width, shrink-to-fit=no, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link rel="shortcut icon" href="{{asset('favicon.ico')}}">
+    {{--<link rel="shortcut icon" href="{{asset('favicon.ico')}}">--}}
+    {{--<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600|Roboto:300,400&amp;subset=cyrillic"--}}
+          {{--rel="stylesheet">--}}
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <link rel="apple-touch-icon" sizes="57x57" href="{{asset('/favicon/apple-icon-57x57.png')}}">
+    <link rel="apple-touch-icon" sizes="60x60" href="{{asset('/favicon/apple-icon-60x60.png')}}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{{asset('/favicon/apple-icon-72x72')}}">
+    <link rel="apple-touch-icon" sizes="76x76" href="{{asset('/favicon/apple-icon-76x76.png')}}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{{asset('/favicon/apple-icon-114x114.png')}}">
+    <link rel="apple-touch-icon" sizes="120x120" href="{{asset('/favicon/apple-icon-120x120.png')}}">
+    <link rel="apple-touch-icon" sizes="144x144" href="{{asset('/favicon/apple-icon-144x144.png')}}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{{asset('/favicon/apple-icon-152x152.png')}}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{asset('/favicon/apple-icon-180x180.png')}}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{asset('/favicon/android-icon-192x192.png')}}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{asset('/favicon/favicon-32x32.png')}}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{asset('/favicon/favicon-96x96.png')}}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('/favicon/favicon-16x16.png')}}">
+    <link rel="manifest" href="{{asset('favicon/manifest.json')}}">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
     <script src="{{ asset('js/app.js') }}" defer></script>
 </head>
-<body id="page-top">
-@section('navbar')
-    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
+<body id="page-top" class="{{ $current_body_class }}">
+@section('navbar') @include('site::menu.'.$current_menu) @show
+<div class="main-container">
+    @yield('header')
+    @yield('content')
+</div>
+@section('footer')
+    <footer class="bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="/"> {{ env('APP_NAME') }}</a>
-            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
-                    data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('products') }}">@lang('site::product.products')</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('catalogs') }}">@lang('site::catalog.catalogs')</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('datasheets') }}">@lang('site::datasheet.datasheets')</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('services') }}">@lang('site::service.services')</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('contacts') }}">@lang('site::messages.abouts')</a>
-                    </li>
-                    @auth
-                    @admin()
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown"
-                           href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                            <span class="ml-1">Справочники <i class="mdi mdi-chevron-down"></i> </span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
-                            <a class="dropdown-item" href="{{ route('admin.currencies.index') }}">
-                                <i class="fa fa-@lang('site::currency.icon')"></i> @lang('site::currency.currencies')
-                            </a>
-                            <a class="dropdown-item" href="{{ route('admin.warehouses.index') }}">
-                                <i class="fa fa-@lang('site::warehouse.icon')"></i> @lang('site::warehouse.warehouses')
-                            </a>
-                            <a class="dropdown-item" href="{{ route('admin.organizations.index') }}">
-                                <i class="fa fa-@lang('site::organization.icon')"></i> @lang('site::organization.organizations')
-                            </a>
-                            <a class="dropdown-item" href="{{ route('admin.banks.index') }}">
-                                <i class="fa fa-@lang('site::bank.icon')"></i> @lang('site::bank.banks')
-                            </a>
-
-                            <div class="dropdown-divider"></div>
-
-                            <a class="dropdown-item" href="{{ route('admin.catalogs.index') }}">
-                                <i class="fa fa-@lang('site::catalog.icon')"></i> @lang('site::catalog.catalogs')
-                            </a>
-                            <a class="dropdown-item" href="{{ route('admin.equipments.index') }}">
-                                <i class="fa fa-@lang('site::equipment.icon')"></i> @lang('site::equipment.equipments')
-                            </a>
-                            <a class="dropdown-item" href="{{ route('admin.products.index') }}">
-                                <i class="fa fa-@lang('site::product.icon')"></i> @lang('site::product.products')
-                            </a>
-
-                            <div class="dropdown-divider"></div>
-
-                            <a class="dropdown-item" href="{{ route('admin.engineers.index') }}">
-                                <i class="fa fa-@lang('site::engineer.icon')"></i> @lang('site::engineer.engineers')
-                            </a>
-                            <a class="dropdown-item" href="{{ route('admin.launches.index') }}">
-                                <i class="fa fa-@lang('site::launch.icon')"></i> @lang('site::launch.launches')
-                            </a>
-                            <a class="dropdown-item" href="{{ route('admin.trades.index') }}">
-                                <i class="fa fa-@lang('site::trade.icon')"></i> @lang('site::trade.trades')
-                            </a>
-                            <a class="dropdown-item" href="{{ route('admin.serials.index') }}">
-                                <i class="fa fa-@lang('site::serial.icon')"></i> @lang('site::serial.serials')
-                            </a>
-
-                            <div class="dropdown-divider"></div>
-
-                            <a class="dropdown-item" href="#">
-                                @lang('site::price_type.price_types')
-                            </a>
-                            <a class="dropdown-item" href="#">
-                                @lang('site::product_type.product_types')
-                            </a>
+            <div class="row">
+                <div class="col-lg-3 d-none d-lg-block">
+                    <img alt="Logo" class="logo" src="{{asset('images/logo_bianco.svg')}}"
+                         style="max-width:70%; margin-left:-30px; margin-top:-20px;">
+                    <div>
+                        Ферроли ООО<br>
+                        РБ, г.Минск<br>
+                        ул. Ленина, д.5<br>
+                        Тел: +375-000-000-0000<br>
+                        Факс: +375-000-000-0000<br>
+                        Email: info@ferroli.ru<br>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <div class="widget">
+                        <p class="title">Услуги для вас</p>
+                        <hr>
+                        <ul class="recent-post">
+                            <li><b class="title">Консультации продажи</b></li>
+                            <li></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <div class="widget">
+                        <p class="title">&nbsp;</p>
+                        <hr>
+                        <ul class="recent-post">
+                            <li><b class="title">Консультации сервис</b></li>
+                            <li></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <div class="widget">
+                        <p class="title">Сертификаты</p>
+                        <hr>
+                        <div>
+                            <img src="{{asset('images/certificazioni.png')}}" style="margin-right:22px;"/>
+                            <img src="{{asset('images/tuv.png')}}" style="margin-right:22px;"/>
+                            <img src="{{asset('images/eac.png')}}"/>
                         </div>
-                    </li>
-                    @endadmin()
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown"
-                           href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                            <span class="ml-1">{{ str_limit(Auth::user()->name, 25) }} <i class="mdi mdi-chevron-down"></i> </span>
-                        </a>
-
-                        <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
-                            @admin()
-                            <a class="dropdown-item" href="{{ route('admin') }}">
-                                <i class="fa fa-sliders"></i> @lang('site::messages.admin')
-                            </a>
-
-                            <div class="dropdown-divider"></div>
-
-                            <a class="dropdown-item" href="{{ route('admin.users.index') }}">
-                                <i class="fa fa-@lang('site::user.icon')"></i> @lang('site::user.users')
-                            </a>
-                            <a class="dropdown-item" href="{{ route('admin.contragents.index') }}">
-                                <i class="fa fa-@lang('site::contragent.icon')"></i> @lang('site::contragent.contragents')
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{{ route('admin.repairs.index') }}"><i
-                                        class="fa fa-@lang('site::repair.icon')"></i> @lang('site::repair.repairs')</a>
-                            <a class="dropdown-item" href="{{ route('admin.acts.index') }}"><i
-                                        class="fa fa-@lang('site::act.icon')"></i> @lang('site::act.acts')</a>
-                            <a class="dropdown-item" href="{{ route('admin.orders.index') }}"><i
-                                        class="fa fa-@lang('site::order.icon')"></i> @lang('site::order.orders')</a>
-
-                            <div class="dropdown-divider"></div>
-
-                            <a class="dropdown-item" href="{{ route('admin.roles.index') }}">
-                                <i class="fa fa-graduation-cap"></i> @lang('rbac::role.roles')
-                            </a>
-                            <a class="dropdown-item" href="{{ route('admin.permissions.index') }}">
-                                <i class="fa fa-unlock-alt"></i> @lang('rbac::permission.permissions')
-                            </a>
-                            @elseadmin()
-
-                            <a class="dropdown-item" href="{{ route('home') }}">
-                                <i class="fa fa-desktop"></i> @lang('site::messages.home')
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{{ route('repairs.index') }}"><i
-                                        class="fa fa-@lang('site::repair.icon')"></i> @lang('site::repair.repairs')</a>
-                            <a class="dropdown-item" href="{{ route('acts.index') }}"><i
-                                        class="fa fa-@lang('site::act.icon')"></i> @lang('site::act.acts')</a>
-                            <a class="dropdown-item" href="{{ route('orders.index') }}"><i
-                                        class="fa fa-@lang('site::order.icon')"></i> @lang('site::order.orders')</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{{ route('engineers.index') }}">
-                                <i class="fa fa-@lang('site::engineer.icon')"></i> @lang('site::engineer.engineers')
-                            </a>
-                            <a class="dropdown-item" href="{{ route('launches.index') }}">
-                                <i class="fa fa-@lang('site::launch.icon')"></i> @lang('site::launch.launches')
-                            </a>
-                            <a class="dropdown-item" href="{{ route('trades.index') }}">
-                                <i class="fa fa-@lang('site::trade.icon')"></i> @lang('site::trade.trades')
-                            </a>
-                            @endadmin()
-                            <div class="dropdown-divider"></div>
-                            <a href="javascript:void(0);" class="dropdown-item notify-item"
-                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                <i class="fa fa-sign-out"></i> <span>{{ __('site::user.sign_out') }}</span>
-                            </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                {{ csrf_field() }}
-                            </form>
-                        </div>
-                    </li>
-                    @endauth
-                    @guest
-                    <li class="nav-item">
-                        <a href="{{route('login')}}" class="nav-link">
-                            <i class="fa fa-fw fa-sign-in"></i> Войти | Регистрация</a>
-                    </li>
-                    @endguest
-                </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <span class="sub">© Copyright {{ env('APP_NAME') }} {{ date('Y') }}</span>
+                </div>
             </div>
         </div>
-    </nav>
-@show
-@yield('header')
-@yield('content')
-@section('footer')
-    <footer class="py-5 bg-dark">
-        <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy; {{ env('APP_NAME') }} {{ date('Y') }}</p>
-        </div>
+        <a class="btn btn-sm fade-half back-to-top inner-link" href="#page-top">Вверх</a>
     </footer>
 @show
+
+@stack('scripts')
+
 @include('site::modal.form')
 </body>
 </html>

@@ -17,7 +17,7 @@
             </li>
             <li class="breadcrumb-item active">@lang('site::messages.edit')</li>
         </ol>
-        <h1 class="header-title m-t-0 m-b-20">@lang('site::messages.edit') {{ $user->name }}</h1>
+        <h1 class="header-title mb-3">@lang('site::messages.edit') {{ $user->name }}</h1>
 
         @alert()@endalert()
 

@@ -34,6 +34,7 @@
                     <tr>
                         <th scope="col">@lang('site::equipment.name')</th>
                         <th scope="col">@lang('site::equipment.catalog_id')</th>
+                        <th scope="col">@lang('site::image.images')</th>
                         <th scope="col" class="text-center">ID</th>
                     </tr>
                     </thead>

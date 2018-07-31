@@ -3,6 +3,7 @@
 namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use QuadStudio\Service\Site\Facades\Site;
 
 class Price extends Model
 {
@@ -41,15 +42,33 @@ class Price extends Model
         return $this->belongsTo(PriceType::class);
     }
 
-    public function price(){
+    public function format()
+    {
+        $result = [];
+        if (Site::currency()->symbol_left != '') {
+            $result[] = Site::currency()->symbol_left;
+        }
+        $result[] = number_format($this->price(), config('site.decimals', 0), config('site.decimalPoint', '.'), config('site.thousandSeparator', ' '));
+        if (Site::currency()->symbol_right != '') {
+            $result[] = Site::currency()->symbol_right;
+        }
 
-        $price = $this->getAttribute('price') * $this->currency['rates'];
+        return implode(' ', $result);
+    }
 
-        if (($round = config('shop.round', false)) !== false) {
+    public function price()
+    {
+
+        $price = $this->getAttribute('price') * Site::currencyRates(
+                $this->currency,
+                Site::currency()
+            );
+
+        if (($round = config('site.round', false)) !== false) {
             $price = round($price, $round);
         }
 
-        if (($round_up = config('shop.round_up', false)) !== false) {
+        if (($round_up = config('site.round_up', false)) !== false) {
             $price = ceil($price / (int)$round_up) * (int)$round_up;
         }
 

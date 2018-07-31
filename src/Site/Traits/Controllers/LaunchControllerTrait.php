@@ -41,7 +41,7 @@ trait LaunchControllerTrait
     {
 
         $this->launches->trackFilter();
-
+        $this->launches->applyFilter(new BelongsUserFilter());
         return view('site::launch.index', [
             'repository' => $this->launches,
             'items'      => $this->launches->paginate(config('site.per_page.launch', 10), [env('DB_PREFIX', '') . 'launches.*'])

@@ -2,20 +2,20 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers;
 
-use QuadStudio\Service\Site\Models\Repair;
+use QuadStudio\Service\Site\Filters\BelongsUserFilter;
+use QuadStudio\Service\Site\Filters\ByNameSortFilter;
+use QuadStudio\Service\Site\Filters\CountryEnabledFilter;
+use QuadStudio\Service\Site\Filters\CountrySortFilter;
+use QuadStudio\Service\Site\Http\Requests\RepairRequest;
 use QuadStudio\Service\Site\Models\File;
+use QuadStudio\Service\Site\Models\Repair;
 use QuadStudio\Service\Site\Repositories\CountryRepository;
-use QuadStudio\Service\Site\Repositories\RepairRepository;
 use QuadStudio\Service\Site\Repositories\EngineerRepository;
 use QuadStudio\Service\Site\Repositories\FileRepository;
 use QuadStudio\Service\Site\Repositories\FileTypeRepository;
 use QuadStudio\Service\Site\Repositories\LaunchRepository;
+use QuadStudio\Service\Site\Repositories\RepairRepository;
 use QuadStudio\Service\Site\Repositories\TradeRepository;
-use QuadStudio\Service\Site\Filters\CountryEnabledFilter;
-use QuadStudio\Service\Site\Filters\CountrySortFilter;
-use QuadStudio\Service\Site\Filters\BelongsUserFilter;
-use QuadStudio\Service\Site\Filters\ByNameSortFilter;
-use QuadStudio\Service\Site\Http\Requests\RepairRequest;
 
 trait RepairControllerTrait
 {
@@ -87,7 +87,7 @@ trait RepairControllerTrait
     {
         //return view('site::repair.index');
         $this->repairs->trackFilter();
-
+        $this->repairs->applyFilter(new BelongsUserFilter());
         return view('site::repair.index', [
             'repository' => $this->repairs,
             'items'      => $this->repairs->paginate(config('site.per_page.repair', 10), [env('DB_PREFIX', '') . 'repairs.*'])
@@ -103,7 +103,7 @@ trait RepairControllerTrait
      */
     public function show(Repair $repair)
     {
-        return view('site::repairs.show', ['repair' => $repair]);
+        return view('site::repair.show', ['repair' => $repair]);
     }
 
     /**
@@ -133,7 +133,17 @@ trait RepairControllerTrait
             ->applyFilter(new CountrySortFilter())
             ->all();
         $types = $this->types->all();
+        $files = $this->getFiles($request);
 
+        return view('site::repair.create', compact('engineers', 'trades', 'launches', 'countries', 'types', 'files'));
+    }
+
+    /**
+     * @param RepairRequest $request
+     * @return \Illuminate\Support\Collection
+     */
+    private function getFiles(RepairRequest $request)
+    {
         $files = collect([]);
         $old = $request->old('file');
         if (!is_null($old) && is_array($old)) {
@@ -144,7 +154,7 @@ trait RepairControllerTrait
             }
         }
 
-        return view('site::repair.create', compact('engineers', 'trades', 'launches', 'countries', 'types', 'files'));
+        return $files;
     }
 
     /**
@@ -159,17 +169,31 @@ trait RepairControllerTrait
         $this->authorize('create', Repair::class);
 
 
-        $repair = $this->repairs->create($request->except(['_token', '_method', '_create', 'file', 'parts']));
-        if($request->filled('file.*')){
-            foreach ($request->input('file.*') as $file_id) {
-                $this->files->update(['repair_id' => $repair->id], $file_id);
-            }
-        }
+        $request->user()->repairs()->save($repair = $this->repairs->create($request->except(['_token', '_method', '_create', 'file', 'parts'])));
 
+        $this->setFiles($request, $repair);
         $parts = collect($request->input('parts'))->values()->toArray();
         $repair->parts()->createMany($parts);
         $route = $request->input('_create') == 1 ? 'repairs.create' : 'repairs.index';
 
         return redirect()->route($route)->with('success', trans('site::repair.created'));
+    }
+
+    /**
+     * @param RepairRequest $request
+     * @param Repair $repair
+     */
+    private function setFiles(RepairRequest $request, Repair $repair)
+    {
+        $repair->detachFiles();
+
+        if ($request->filled('file')) {
+            foreach ($request->input('file') as $type_id => $values) {
+                foreach ($values as $file_id) {
+                    $repair->files()->save(File::find($file_id));
+                }
+            }
+        }
+        //$this->files->deleteLostFiles();
     }
 }

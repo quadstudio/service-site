@@ -29,14 +29,14 @@ trait WarehouseControllerTrait
     {
 
         $this->warehouses->trackFilter();
-        return view('site::warehouse.index', [
+        return view('site::admin.warehouse.index', [
             'repository' => $this->warehouses,
-            'items'      => $this->warehouses->paginate(config('site.per_page.warehouse', 10), [env('DB_PREFIX', '').'warehouses.*'])
+            'warehouses'      => $this->warehouses->paginate(config('site.per_page.warehouse', 10), [env('DB_PREFIX', '').'warehouses.*'])
         ]);
     }
 
     public function show(Warehouse $warehouse)
     {
-        return view('site::warehouse.show', ['warehouse' => $warehouse]);
+        return view('site::admin.warehouse.show', ['warehouse' => $warehouse]);
     }
 }

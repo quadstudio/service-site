@@ -3,7 +3,6 @@
 namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use QuadStudio\Currency\Models\Currency;
 
 class OrderItem extends Model
 {
@@ -13,7 +12,11 @@ class OrderItem extends Model
      */
     protected $table;
 
-    protected $fillable = ['product_id', 'name', 'quantity', 'price','currency_id', 'sku', 'manufacturer', 'unit', 'weight', 'image', 'url', 'is_service', 'availability', 'properties'];
+    protected $fillable = [
+        'product_id', 'name', 'quantity', 'price',
+        'currency_id', 'sku', 'weight', 'brand_id', 'unit',
+        'type_id', 'service', 'availability'
+    ];
 
     /**
      * @param array $attributes

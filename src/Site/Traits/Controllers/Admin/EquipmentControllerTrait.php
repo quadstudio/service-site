@@ -2,45 +2,48 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 
-use QuadStudio\Service\Site\Http\Requests\CatalogRequest;
-use QuadStudio\Service\Site\Models\Catalog;
-use QuadStudio\Service\Site\Models\CatalogImage;
-use QuadStudio\Service\Site\Models\Equipment;
-use QuadStudio\Service\Site\Repositories\CatalogImageRepository;
-use QuadStudio\Service\Site\Repositories\CatalogRepository;
-use QuadStudio\Service\Site\Repositories\EquipmentRepository;
+use QuadStudio\Service\Site\Http\Requests\EquipmentRequest;
+use QuadStudio\Service\Site\Models;
+use QuadStudio\Service\Site\Repositories;
 
 trait EquipmentControllerTrait
 {
     /**
-     * @var EquipmentRepository
+     * @var Repositories\EquipmentRepository
      */
     protected $equipments;
     /**
-     * @var CatalogRepository
+     * @var Repositories\CatalogRepository
      */
     private $catalogs;
     /**
-     * @var CatalogImageRepository
+     * @var Repositories\ImageRepository
      */
     private $images;
+    /**
+     * @var Repositories\CurrencyRepository
+     */
+    private $currencies;
 
     /**
      * Create a new controller instance.
      *
-     * @param EquipmentRepository $equipments
-     * @param CatalogRepository $catalogs
-     * @param CatalogImageRepository $images
+     * @param Repositories\EquipmentRepository $equipments
+     * @param Repositories\CatalogRepository $catalogs
+     * @param Repositories\ImageRepository $images
+     * @param Repositories\CurrencyRepository $currencies
      */
     public function __construct(
-        EquipmentRepository $equipments,
-        CatalogRepository $catalogs,
-        CatalogImageRepository $images
+        Repositories\EquipmentRepository $equipments,
+        Repositories\CatalogRepository $catalogs,
+        Repositories\ImageRepository $images,
+        Repositories\CurrencyRepository $currencies
     )
     {
         $this->equipments = $equipments;
         $this->catalogs = $catalogs;
         $this->images = $images;
+        $this->currencies = $currencies;
     }
 
     /**
@@ -60,84 +63,134 @@ trait EquipmentControllerTrait
         ]);
     }
 
-    public function show(Equipment $equipment)
+    public function show(Models\Equipment $equipment)
     {
-        return view('site::equipment.show', ['equipment' => $equipment]);
+
+        return view('site::admin.equipment.show', ['equipment' => $equipment]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @param CatalogRequest $request
-     * @param Catalog|null $catalog
+     * @param EquipmentRequest $request
+     * @param Models\Catalog|null $catalog
      * @return \Illuminate\Http\Response
      */
-    public function create(CatalogRequest $request, Catalog $catalog = null)
+    public function create(EquipmentRequest $request, Models\Catalog $catalog = null)
     {
-        $this->authorize('create', Catalog::class);
+
+        $this->authorize('create', Models\Catalog::class);
         $images = $this->getImages($request);
-        $catalog_id = !is_null($catalog) ? $catalog->id : null;
+        $currencies = $this->currencies->all();
+        $parent_catalog_id = !is_null($catalog) ? $catalog->id : null;
         $tree = $this->catalogs->tree();
 
-        return view('admin.catalog.create', compact('images', 'catalog_id', 'tree'));
+        return view('site::admin.equipment.create', compact('images', 'currencies', 'parent_catalog_id', 'tree'));
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  CatalogRequest $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(CatalogRequest $request)
-    {
-        $this->authorize('create', Catalog::class);
-        //dd($request->all());
-        $catalog = $this->catalogs->create(array_merge(
-            $request->except(['_token', '_method', '_create', 'image']),
-            ['enabled' => $request->filled('enabled') ? 1 : 0],
-            ['model' => $request->filled('model') ? 1 : 0]
-        ));
-        $this->setImages($request, $catalog);
-        if ($request->input('_create') == 1) {
-            if ($request->filled('catalog_id')) {
-                $redirect = redirect()->route('admin.catalogs.create.parent', Catalog::find($request->input('catalog_id')))->with('success', trans('equipment::catalog.created'));
-            } else {
-                $redirect = redirect()->route('admin.catalogs.create')->with('success', trans('equipment::catalog.created'));
-            }
-        } else {
-            $redirect = redirect()->route('admin.catalogs.show', $catalog)->with('success', trans('equipment::catalog.created'));
-        }
-
-        return $redirect;
-    }
-
-    private function setImages(CatalogRequest $request, Catalog $catalog)
-    {
-
-        //$catalog->images->update(['catalog_id' => null]);
-        if ($request->filled('image')) {
-            foreach ($request->input('image') as $image_id) {
-                $this->images->update(['catalog_id' => $catalog->id], $image_id);
-            }
-        }
-
-        $this->images->deleteLostImages();
-    }
-
-    /**
-     * @param CatalogRequest $request
+     * @param EquipmentRequest $request
      * @return \Illuminate\Support\Collection
      */
-    private function getImages(CatalogRequest $request)
+    private function getImages(EquipmentRequest $request)
     {
         $images = collect([]);
         $old = $request->old('image');
         if (!is_null($old) && is_array($old)) {
             foreach ($old as $image_id) {
-                $images->push(CatalogImage::findOrFail($image_id));
+                $images->push(Image::findOrFail($image_id));
             }
         }
 
         return $images;
     }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  EquipmentRequest $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(EquipmentRequest $request)
+    {
+        $this->authorize('create', Models\Equipment::class);
+        //dd($request->all());
+        $equipment = $this->equipments->create(array_merge(
+            $request->except(['_token', '_method', '_create', 'image']),
+            ['enabled' => $request->filled('enabled') ? 1 : 0]
+        ));
+        $this->setImages($request, $equipment);
+        if ($request->input('_create') == 1) {
+            if ($request->filled('catalog_id')) {
+                $redirect = redirect()->route('admin.equipments.create.parent', Models\Catalog::find($request->input('catalog_id')))->with('success', trans('equipment::catalog.created'));
+            } else {
+                $redirect = redirect()->route('admin.equipments.create')->with('success', trans('equipment::catalog.created'));
+            }
+        } else {
+            $redirect = redirect()->route('admin.equipments.show', $equipment)->with('success', trans('equipment::catalog.created'));
+        }
+
+        return $redirect;
+    }
+
+    /**
+     * @param EquipmentRequest $request
+     * @param Models\Equipment $equipment
+     */
+    private function setImages(EquipmentRequest $request, Models\Equipment $equipment)
+    {
+        $equipment->detachImages();
+
+        if ($request->filled('image')) {
+            foreach ($request->input('image') as $image_id) {
+                $equipment->images()->save(Models\Image::find($image_id));
+            }
+
+        }
+        $this->images->deleteLostImages();
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param EquipmentRequest $request
+     * @param  Models\Equipment $equipment
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(EquipmentRequest $request, Models\Equipment $equipment)
+    {
+        $this->authorize('update', $equipment);
+        $images = $this->getImages($request);
+        $images = $images->merge($equipment->images);
+
+        $currencies = $this->currencies->all();
+        $tree = $this->catalogs->tree();
+        return view('site::admin.equipment.edit', compact('images', 'currencies', 'tree','equipment'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  EquipmentRequest $request
+     * @param  Models\Equipment $equipment
+     * @return \Illuminate\Http\Response
+     */
+    public function update(EquipmentRequest $request, Models\Equipment $equipment)
+    {
+        $this->authorize('update', $equipment);
+        $this->equipments->update(array_merge(
+            $request->except(['_token', '_method', '_stay', 'image']),
+            ['enabled' => $request->filled('enabled') ? 1 : 0]
+        ), $equipment->id);
+        $this->setImages($request, $equipment);
+        if ($request->input('_stay') == 1) {
+            $redirect = redirect()->route('admin.equipments.edit', $equipment)->with('success', trans('site::catalog.updated'));
+        } else {
+            $redirect = redirect()->route('admin.equipments.show', $equipment)->with('success', trans('site::catalog.updated'));
+        }
+
+        return $redirect;
+    }
+
+
 }

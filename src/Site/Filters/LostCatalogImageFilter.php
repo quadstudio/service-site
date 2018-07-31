@@ -10,7 +10,7 @@ class LostCatalogImageFilter extends Filter
 
     function apply($builder, RepositoryInterface $repository)
     {
-        $builder = $builder->whereNull(env('DB_PREFIX', '').'catalog_images.catalog_id');
+        $builder = $builder->whereNull(env('DB_PREFIX', '').'images.imageable_id');
         return $builder;
     }
 }

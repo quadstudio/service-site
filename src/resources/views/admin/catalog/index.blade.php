@@ -11,7 +11,7 @@
             </li>
             <li class="breadcrumb-item active">@lang('site::catalog.catalogs')</li>
         </ol>
-        <h1 class="header-title m-t-0 m-b-20"><i class="fa fa-@lang('site::catalog.icon')"></i> @lang('site::catalog.catalogs')</h1>
+        <h1 class="header-titlemb-4"><i class="fa fa-@lang('site::catalog.icon')"></i> @lang('site::catalog.catalogs')</h1>
         <hr/>
 
         @alert()@endalert
@@ -46,7 +46,6 @@
                         <th class="text-center" scope="col"></th>
                         <th scope="col">@lang('site::catalog.name')</th>
                         <th scope="col" class="d-none d-sm-table-cell">@lang('site::catalog.catalog_id')</th>
-                        <th scope="col" class="d-none d-sm-table-cell">@lang('site::catalog_image.images')</th>
                         <th scope="col">#</th>
                     </tr>
                     </thead>

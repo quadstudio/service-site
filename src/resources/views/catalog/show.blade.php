@@ -1,18 +1,17 @@
 @extends('layouts.app')
-
+@section('header')
+    @include('site::header.front',[
+        'h1' => $catalog->name_plural,
+        'breadcrumbs' => [
+            ['url' => route('index'), 'name' => __('site::messages.index')],
+            ['url' => route('catalogs.index'), 'name' => __('site::catalog.catalogs')],
+            ['name' => $catalog->name_plural]
+        ]
+    ])
+@endsection
 @section('content')
     <div class="container">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="{{ route('index') }}">@lang('site::messages.index')</a>
-            </li>
-            <li class="breadcrumb-item active">@lang('site::messages.equipment')</li>
-        </ol>
-        <div class="row">
-            <div class="col-sm-12">
-                
-
-            </div>
-        </div>
+        @include('site::catalog.show.children', ['catalog' => $catalog])
+        {{--<h3>Котел напольный газовый энергозависимый со встроенным бойлером</h3>--}}
     </div>
 @endsection

@@ -18,7 +18,8 @@ class FilePolicy
      */
     public function view(User $user, File $file)
     {
-        return $user->id == $file->user_id;
+        return true;
+        //return is_null($file->user_id) || $user->id == $file->user_id;
     }
 
     /**

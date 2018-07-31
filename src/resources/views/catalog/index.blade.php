@@ -1,13 +1,30 @@
 @extends('layouts.app')
-
+@section('header')
+    @include('site::header.front',[
+        'h1' => __('site::catalog.catalogs'),
+        'breadcrumbs' => [
+            ['url' => route('index'), 'name' => __('site::messages.index')],
+            ['name' => __('site::catalog.catalogs')]
+        ]
+    ])
+@endsection
 @section('content')
     <div class="container">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="{{ route('index') }}">@lang('site::messages.index')</a>
-            </li>
-            <li class="breadcrumb-item active">@lang('site::catalog.catalogs')</li>
-        </ol>
-        <h1 class="header-title m-t-0 m-b-20"><i class="fa fa-@lang('site::catalog.icon')"></i> @lang('site::catalog.catalogs')</h1>
+        <div class="row">
+            @foreach($catalogs as $catalog)
+            <div class="col-lg-4 col-sm-6 portfolio-item">
+                <div class="card h-100">
+                    <a href="{{route('catalogs.show', $catalog)}}"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                    <div class="card-body">
+                        <h4 class="card-title">
+                            <a href="{{route('catalogs.show', $catalog)}}">{{$catalog->name_plural}}</a>
+                        </h4>
+                        <p class="card-text">{{$catalog->description}}</p>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+
+        </div>
     </div>
 @endsection

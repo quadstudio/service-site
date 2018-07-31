@@ -2,6 +2,7 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers;
 
+use QuadStudio\Service\Site\Filters\DatasheetActiveFilter;
 use QuadStudio\Service\Site\Repositories\DatasheetRepository;
 use QuadStudio\Service\Site\Models\Datasheet;
 
@@ -28,12 +29,12 @@ trait DatasheetControllerTrait
     public function index()
     {
 
-        return view('site::datasheet.index');
-//        $this->datasheets->trackFilter();
-//        return view('site::datasheet.index', [
-//            'repository' => $this->datasheets,
-//            'items'      => $this->datasheets->paginate(config('site.per_page.datasheet', 10), [env('DB_PREFIX', '').'datasheets.*'])
-//        ]);
+        $this->datasheets->trackFilter();
+        $this->datasheets->applyFilter(new DatasheetActiveFilter());
+        return view('site::datasheet.index', [
+            'repository' => $this->datasheets,
+            'datasheets'      => $this->datasheets->paginate(config('site.per_page.datasheet', 10), [env('DB_PREFIX', '').'datasheets.*'])
+        ]);
     }
 
     public function show(Datasheet $datasheet)

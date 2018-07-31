@@ -35,7 +35,7 @@ class RepairRequest extends FormRequest
             case 'POST': {
                 return [
 
-                    'serial'          => [
+                    'serial_id'          => [
                         'required',
                         'string',
                         new ValidSerial()

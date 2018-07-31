@@ -36,43 +36,31 @@ class Repair extends Model
         $this->table = env('DB_PREFIX', '') . 'repairs';
     }
 
-    public static function boot()
-    {
-        parent::boot();
-
-        self::creating(function ($model) {
-            $model->user_id = Auth::user()->getAuthIdentifier();
-        });
-
-//        self::created(function($model){
-//            // ... code here
-//        });
+//    public static function boot()
+//    {
+//        parent::boot();
 //
-//        self::updating(function($model){
-//            // ... code here
+//        self::creating(function ($model) {
+//            $model->user_id = Auth::user()->getAuthIdentifier();
 //        });
-//
-//        self::updated(function($model){
-//            // ... code here
-//        });
-//
-//        self::deleting(function($model){
-//            // ... code here
-//        });
-
-//        self::deleted(function($model){
-//            // ... code here
-//        });
-    }
+//    }
 
     /**
      * Файлы
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\morphMany
      */
     public function files()
     {
-        return $this->hasMany(File::class);
+        return $this->morphMany(File::class, 'fileable');
+    }
+
+    public function detachFiles(){
+        foreach ($this->files as $file){
+            $file->fileable_id = null;
+            $file->fileable_type = null;
+            $file->save();
+        }
     }
 
     public function created_at()

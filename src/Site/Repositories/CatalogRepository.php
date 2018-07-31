@@ -3,7 +3,6 @@
 namespace QuadStudio\Service\Site\Repositories;
 
 use QuadStudio\Repo\Eloquent\Repository;
-use QuadStudio\Service\Site\Filters\CatalogModelFilter;
 use QuadStudio\Service\Site\Filters\CatalogSearchFilter;
 use QuadStudio\Service\Site\Models\Catalog;
 
@@ -27,32 +26,6 @@ class CatalogRepository extends Repository
         return [
             CatalogSearchFilter::class
         ];
-    }
-
-    /**
-     * @return array|mixed
-     */
-    public function models()
-    {
-        if (config('site::cache.use', true) === true) {
-            $cacheKey = 'equipment_catalog_models';
-            return cache()->remember($cacheKey, config('site::cache.ttl'), function () {
-                return $this->_models();
-            });
-        }
-
-        return $this->_models();
-
-    }
-
-    /**
-     * @return array
-     */
-    private function _models()
-    {
-        $this->trackFilter();
-        $this->applyFilter(new CatalogModelFilter());
-        return $this->orderBy(['sort_order' => 'ASC', 'name' => 'ASC'])->all();
     }
 
     /**
@@ -84,10 +57,10 @@ class CatalogRepository extends Repository
             $ref = &$refs[$r['id']];
             $ref = $r;
             $ref['can'] = [
-                'addProduct' => $row->canAddProduct(),
+                //'addProduct' => $row->canAddProduct(),
                 'addCatalog' => $row->canAddCatalog()
             ];
-            $ref['products'] = $row->products->toArray();
+            $ref['equipments'] = $row->equipments->toArray();
 
             if (is_null($r['catalog_id'])) {
                 $list[$r['id']] = &$ref;

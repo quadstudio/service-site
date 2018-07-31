@@ -84,9 +84,9 @@ class User extends FormRequest
     public function messages()
     {
         return [
-            'inn.regex'  => trans('service::messages.inn_ph'),
-            'ogrn.regex' => trans('service::messages.ogrn_ph'),
-            'okpo.regex' => trans('service::messages.okpo_ph'),
+            'inn.regex'  => trans('service::messages.placeholder.inn'),
+            'ogrn.regex' => trans('service::messages.placeholder.ogrn'),
+            'okpo.regex' => trans('service::messages.placeholder.okpo'),
         ];
     }
 

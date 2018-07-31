@@ -46,14 +46,14 @@ trait RegisterControllerTrait
     {
         $countries = Country::enabled()->orderBy('sort_order')->get();
         $address_user_regions = $address_legal_regions = $address_postal_regions = collect([]);
-        if(old('address.user.country_id', false)){
-            $address_user_regions = Region::where('country_id',old('address.user.country_id') )->orderBy('name')->get();
+        if (old('address.user.country_id', false)) {
+            $address_user_regions = Region::where('country_id', old('address.user.country_id'))->orderBy('name')->get();
         }
-        if(old('address.legal.country_id', false)){
-            $address_legal_regions = Region::where('country_id',old('address.legal.country_id') )->orderBy('name')->get();
+        if (old('address.legal.country_id', false)) {
+            $address_legal_regions = Region::where('country_id', old('address.legal.country_id'))->orderBy('name')->get();
         }
-        if(old('address.postal.country_id', false)){
-            $address_postal_regions = Region::where('country_id',old('address.postal.country_id') )->orderBy('name')->get();
+        if (old('address.postal.country_id', false)) {
+            $address_postal_regions = Region::where('country_id', old('address.postal.country_id'))->orderBy('name')->get();
         }
 
         $types = ContragentType::all();
@@ -97,11 +97,15 @@ trait RegisterControllerTrait
     protected function createUser(array $data)
     {
         return User::create([
-            'name'     => $data['name'],
-            'email'    => $data['email'],
-            'sc'       => $data['sc'],
-            'web'      => $data['web'],
-            'password' => Hash::make($data['password']),
+            'name'          => $data['name'],
+            'email'         => $data['email'],
+            'sc'            => $data['sc'],
+            'web'           => $data['web'],
+            'type_id'       => $data['type_id'],
+            'currency_id'   => config('site.defaults.user.currency_id'),
+            'price_type_id' => config('site.defaults.user.price_type_id'),
+            'warehouse_id'  => config('site.defaults.user.warehouse_id'),
+            'password'      => Hash::make($data['password']),
         ]);
     }
 

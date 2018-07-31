@@ -2,9 +2,8 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers;
 
-use QuadStudio\Service\Site\Filters\ProductHasImageFilter;
-use QuadStudio\Service\Site\Filters\ProductHasPriceFilter;
-use QuadStudio\Service\Site\Filters\ProductNotZeroPriceFilter;
+use QuadStudio\Service\Site\Filters\ProductCanBuyFilter;
+use QuadStudio\Service\Site\Models\Product;
 use QuadStudio\Service\Site\Repositories\ProductRepository;
 
 trait ProductControllerTrait
@@ -31,17 +30,8 @@ trait ProductControllerTrait
     {
 
         $this->products->trackFilter();
-        if(config('shop.hide_zero_price', true) === true){
-            $this->products->pushFilter(new ProductNotZeroPriceFilter());
-        } elseif(config('shop.hide_without_price', true) === true){
-            $this->products->pushFilter(new ProductHasPriceFilter());
-        }
-
-        if(config('shop.hide_no_image', true) === true){
-            $this->products->pushFilter(new ProductHasImageFilter());
-        }
-
-        return view('product.index', [
+        $this->products->applyFilter(new ProductCanBuyFilter());
+        return view('site::product.index', [
             'repository' => $this->products,
             'items' => $this->products->paginate(config('shop.per_page.product', 8))
         ]);
@@ -50,11 +40,12 @@ trait ProductControllerTrait
     /**
      * Show the product page
      *
+     * @param Product $product
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Product $product)
     {
-        return view('product.show');
+        return view('site::product.show', compact('product'));
     }
 
 }

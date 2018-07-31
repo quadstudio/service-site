@@ -45,13 +45,13 @@
                 .catch((error) => {
 
                     $.each({
-                        product:'',
-                        sku:'',
-                        model:'',
-                        catalog:'',
-                        cost_work:'',
-                        cost_road:'',
-                        currency:'',
+                        product: '',
+                        sku: '',
+                        model: '',
+                        catalog: '',
+                        cost_work: '',
+                        cost_road: '',
+                        currency: '',
                     }, function (index, data) {
                         success_serial_fill(index, data);
                     });
@@ -104,7 +104,6 @@
 
     }
     let registerFormExists = document.getElementById("register-form");
-
     if (registerFormExists !== null) {
         $('.country-select ').on('change', function () {
             let country = $(this),
@@ -136,6 +135,9 @@
         btnOk = _modal.find('.btn-ok'),
         btnDelete = _modal.find('.btn-delete'),
         form;
+
+    let addToCartModal = $('#confirm-add-to-cart');
+    addToCartModal.appendTo("body");
 
     let manageButtonData = function (element) {
         let label = element.data('label'),
@@ -188,7 +190,7 @@
                 });
             }
         })
-        .on('click', '.repair-file-upload', function () {
+        .on('click', '.repair-file-upload', function (e) {
             let
                 form = $(this).parents('form'),
                 list = form.next(),
@@ -198,6 +200,70 @@
                 action = form.attr('action');
             fd.append('path', path);
             fd.append('type_id', type_id);
+            axios
+                .post(action, fd, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
+                .then((response) => {
+                    form.find('.form-group').removeClass('is-invalid');
+                    list.append(response.data.file);
+                })
+                .catch((error) => {
+                    form.find('.form-group').addClass('is-invalid');
+                    $.each(error.response.data.errors.path, function (name, error) {
+                        form.find('.invalid-feedback').html(error);
+                    });
+                    console.log();
+                });
+
+            // $.ajaxSetup({
+            //     headers: {
+            //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            //     }
+            // });
+            // $.ajax({
+            //     url: action,
+            //     type: 'POST',
+            //     data: fd,
+            //     dataType: 'json',
+            //     contentType: false,
+            //     processData: false,
+            //     success: function (response) {
+            //         console.log('ddd');
+            //         list.append(response.file);
+            //     },
+            //     error: function (xhr, status, error) {
+            //         // console.log(xhr, status, error);
+            //         // form.find('.form-group').addClass('is-invalid');
+            //         // form.find('.invalid-feedback').html('is-invalid');
+            //
+            //         //var err = eval("(" + xhr.responseText + ")");
+            //         //alert(err.Message);
+            //     }
+            // });
+            e.preventDefault();
+        })
+        .on('click', '.btn-delete', function (e) {
+            if ($(form) !== undefined) {
+                submitForm($(form), function () {
+                    $(_modal).modal('hide');
+                });
+                //form.submit();
+            }
+        })
+        .on('click', '.image-upload', function () {
+
+            let
+                form = $(this).parents('form'),
+                list = form.next(),
+                fd = new FormData(),
+                path = form.find('[name="path"]')[0].files[0],
+                storage = form.find('[name="storage"]')[0].value,
+                action = form.attr('action');
+            fd.append('path', path);
+            fd.append('storage', storage);
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -211,18 +277,118 @@
                 contentType: false,
                 processData: false,
                 success: function (response) {
-                    list.append(response.file);
+                    list.append(response.image);
                 },
             });
         })
-        .on('click', '.btn-delete', function (e) {
-            if ($(form) !== undefined) {
-                submitForm($(form), function () {
-                    $(_modal).modal('hide');
-                });
-                //form.submit();
+        .on('keypress', ".cart-item input[type='number']", function (e) {
+
+            if (e.which === 13) {
+                let _this = this,
+                    form = $(_this).parent('form'),
+                    number = form.find('input[type="number"]'),
+                    quantity = parseInt(number.val());
+                if (quantity < 1) {
+                    quantity = 1;
+                } else if (quantity > parseInt(number.attr('max'))) {
+                    quantity = parseInt(number.attr('max'));
+                }
+                number.val(quantity);
+                submitForm(form);
+                e.preventDefault();
             }
+        })
+        .on('click', ".cart-item .qty-btn", function (e) {
+            e.preventDefault();
+            let _this = this,
+                form = $(_this).parent('form'),
+                number = form.find('input[type="number"]'),
+                quantity = parseInt(number.val())
+            ;
+            if ($(_this).hasClass('btn-minus')) {
+                if (quantity > 1) {
+                    quantity--;
+                }
+            }
+            if ($(_this).hasClass('btn-plus')) {
+                if (quantity < parseInt(number.attr('max'))) {
+                    quantity++;
+
+                }
+            }
+
+            number.val(quantity);
+
+            submitForm(form);
+        })
+        .on('click', ".add-to-cart", function (e) {
+            e.preventDefault();
+            let _this = this, form = $(_this).parent('form');
+            submitForm(form, function () {
+                addToCartModal.modal('show');
+            });
+        })
+        .on('click', '.light-box-prev', function () {
+            plusSlides(-1)
+        })
+        .on('click', '.light-box-next', function () {
+            plusSlides(1)
+        })
+        .on('click', '.light-box-close', function () {
+            closeModal($(this).data('id'))
+        })
+        .on('click', '.demo', function () {
+            currentSlide($(this).data('id'), $(this).data('number'))
+        })
+        .on('click', '.hover-shadow', function () {
+            openModal($(this).data('id'));
+            currentSlide($(this).data('id'), $(this).data('number'))
         });
+
+    // Open the Modal
+    function openModal(id) {
+        $('.light-box-' + id).show();
+    }
+
+    // Close the Modal
+    function closeModal(id) {
+        $('.light-box-' + id).hide();
+    }
+
+    let slideIndex = 1;
+    //showSlides(slideIndex);
+
+    // Next/previous controls
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+
+    // Thumbnail image controls
+    function currentSlide(id, n) {
+        showSlides(id, slideIndex = n);
+    }
+
+    function showSlides(id, n) {
+        let i;
+        let slides = $('.mySlides-' + id);
+        let dots = $('.light-box-' + id + ' .demo');
+        let captionText = $('.light-box-' + id + ' .light-box-caption');
+        if (n > slides.length) {
+            slideIndex = 1
+        }
+        if (n < 1) {
+            slideIndex = slides.length
+        }
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex - 1].style.display = "block";
+        dots[slideIndex - 1].className += " active";
+        captionText.innerHTML = dots[slideIndex - 1].alt;
+    }
 
     $('[data-toggle="popover"]').popover();
 
@@ -277,7 +443,6 @@
                 } else {
                     if ("remove" in data) {
                         $.each(data.remove, function (index, identifier) {
-                            //console.log(identifier);
                             $(identifier).remove();
                         });
                     }

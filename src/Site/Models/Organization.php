@@ -10,6 +10,8 @@ class Organization extends Model
      * @var string
      */
     protected $table;
+    
+    public  $incrementing = false;
 
     /**
      * @param array $attributes

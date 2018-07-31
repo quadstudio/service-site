@@ -24,24 +24,19 @@ class CreateFilesTable extends Migration
         Schema::create("{$this->prefix}files", function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
-            $table->unsignedInteger('repair_id')->nullable(true);
             $table->unsignedInteger('type_id');
             $table->string('name');
             $table->string('path');
             $table->unsignedInteger('size');
             $table->string('mime');
+            $table->unsignedInteger('fileable_id')->nullable(true);
+            $table->string('fileable_type')->nullable(true);
             $table->timestamps();
 
             $table
                 ->foreign('user_id')
                 ->references('id')
                 ->on("{$this->prefix}users")
-                ->onUpdate('cascade')
-                ->onDelete('restrict');
-            $table
-                ->foreign('repair_id')
-                ->references('id')
-                ->on("{$this->prefix}repairs")
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
             $table

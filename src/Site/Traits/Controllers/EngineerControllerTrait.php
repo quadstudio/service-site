@@ -2,13 +2,14 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers;
 
+use Auth;
 use Illuminate\Support\Facades\Session;
-use QuadStudio\Service\Site\Filters\CountryEnabledFilter;
-use QuadStudio\Service\Site\Repositories\CountryRepository;
 use QuadStudio\Service\Site\Filters\BelongsUserFilter;
 use QuadStudio\Service\Site\Filters\ByNameSortFilter;
+use QuadStudio\Service\Site\Filters\CountryEnabledFilter;
 use QuadStudio\Service\Site\Http\Requests\EngineerRequest;
 use QuadStudio\Service\Site\Models\Engineer;
+use QuadStudio\Service\Site\Repositories\CountryRepository;
 use QuadStudio\Service\Site\Repositories\EngineerRepository;
 
 trait EngineerControllerTrait
@@ -25,7 +26,9 @@ trait EngineerControllerTrait
      */
     public function __construct(EngineerRepository $engineers, CountryRepository $countries)
     {
+
         $this->engineers = $engineers;
+
         $this->countries = $countries;
         $this->countries->trackFilter();
         $this->countries->applyFilter(new CountryEnabledFilter());
@@ -38,9 +41,8 @@ trait EngineerControllerTrait
      */
     public function index()
     {
-
+        $this->engineers->applyFilter(new BelongsUserFilter());
         $this->engineers->trackFilter();
-
         return view('site::engineer.index', [
             'repository' => $this->engineers,
             'items'      => $this->engineers->paginate(config('site.per_page.engineer', 10), [env('DB_PREFIX', '') . 'engineers.*'])

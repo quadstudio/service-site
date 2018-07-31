@@ -29,14 +29,14 @@ trait OrganizationControllerTrait
     {
 
         $this->organizations->trackFilter();
-        return view('site::organization.index', [
+        return view('site::admin.organization.index', [
             'repository' => $this->organizations,
-            'items'      => $this->organizations->paginate(config('site.per_page.organization', 10), [env('DB_PREFIX', '').'organizations.*'])
+            'organizations'      => $this->organizations->paginate(config('site.per_page.organization', 10), [env('DB_PREFIX', '').'organizations.*'])
         ]);
     }
 
     public function show(Organization $organization)
     {
-        return view('site::organization.show', ['organization' => $organization]);
+        return view('site::admin.organization.show', ['organization' => $organization]);
     }
 }

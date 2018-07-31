@@ -49,6 +49,7 @@ trait RepairControllerTrait
      */
     public function show(Repair $repair)
     {
-        return view('site::admin.repair.show', ['repair' => $repair]);
+        dd($repair);
+        //return view('site::admin.repair.show', ['repair' => $repair]);
     }
 }

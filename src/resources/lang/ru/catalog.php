@@ -19,7 +19,6 @@ return [
     'image'       => 'Изображение',
     'description' => 'Описание',
     'enabled'     => 'Статус',
-    'model'       => 'Модель',
     'sort_order'  => 'Порядок сортировки',
     'placeholder' => [
         'search'      => 'Найти элемент каталога',

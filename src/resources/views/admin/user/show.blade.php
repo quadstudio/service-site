@@ -14,7 +14,7 @@
             </li>
             <li class="breadcrumb-item active">{{ $user->name }}</li>
         </ol>
-        <h1 class="header-title m-t-0 m-b-20"><i class="fa fa-@lang('site::user.icon')"></i> {{ $user->name }}</h1>
+        <h1 class="header-titlemb-4"><i class="fa fa-@lang('site::user.icon')"></i> {{ $user->name }}</h1>
         @alert()@endalert()
         <div class="row">
             <div class="col mt-2">

@@ -5,8 +5,8 @@ return [
     'icon'                => 'shopping-cart',
     //
     'name'                => 'Наименование',
-    'quantity'            => 'Количество',
-    'sku'                 => 'Код',
+    'quantity'            => 'Остаток на складе',
+    'sku'                 => 'Код товара',
     'brand_id'            => 'Бренд',
     'type_id'             => 'Тип товара',
     'weight'              => 'Вес',
@@ -21,7 +21,7 @@ return [
     'in_stock_defaults'   => '- Все товары - ',
     'yes'                 => 'Да',
     'no'                  => 'Нет',
-    'in_stock'            => 'В наличии ✓',
-    'not_available'       => 'Нет в наличии ✕',
+    'in_stock'            => 'В наличии',
+    'not_available'       => 'Нет в наличии',
     'contact_the_manager' => 'Обратитесь к менеджеру'
 ];

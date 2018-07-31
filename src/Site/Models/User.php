@@ -20,8 +20,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name', 'email', 'password', 'sc', 'web',
-        'display', 'price_type_id', 'active',
-        'warehouse_id', 'type_id'
+        'display', 'type_id', 'active',
+        'warehouse_id', 'price_type_id', 'currency_id',
     ];
 
     /**
@@ -144,6 +144,17 @@ class User extends Authenticatable
     }
 
     /**
+     * Заказы
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+
+    /**
      * Инженеры
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -164,7 +175,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Ввод в эксплаатацию
+     * Ввод в эксплуатацию
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
