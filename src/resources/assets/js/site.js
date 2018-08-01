@@ -1,9 +1,67 @@
 (function ($) {
 
     "use strict";
+    let servicesRegionList = document.getElementById("services-region-list");
+    if (servicesRegionList !== null) {
 
-    let repairCreateFormFormExists = document.getElementById("repair-create-form");
-    if (repairCreateFormFormExists !== null) {
+        let myMap;
+        let objectManager;
+
+        ymaps.ready(function() {
+            myMap = new ymaps.Map('service-map', {
+                center: [55.76, 37.64],
+                zoom: 10,
+                controls: ['zoomControl', 'typeSelector', 'fullscreenControl']
+            }, {
+                searchControlProvider: 'yandex#search'
+            });
+
+            objectManager = new ymaps.ObjectManager({
+                clusterize: false,
+                gridSize: 64,
+                clusterIconLayout: "default#pieChart"
+            });
+            myMap.geoObjects.add(objectManager);
+
+        });
+
+        let renderServiceList = function (data) {
+            if (data.features !== undefined) {
+                let containerService = document.getElementById("container-service");
+
+                containerService.innerHTML = null;
+                for (let key in data.features) {
+                    containerService.innerHTML += data.features[key].properties.balloonContentBody;
+                }
+            }
+        };
+
+        $('.services-region-select').on('click', function (e) {
+            let _this = $(this),
+                region = _this.data('region'),
+                action = _this.parent().data('action');
+            _this.parent().children().removeClass('active');
+            _this.addClass('active');
+            axios
+                .get(action + '/' + region)
+                .then((response) => {
+                    myMap.geoObjects.remove(objectManager);
+                    objectManager.removeAll();
+                    objectManager.add(response.data.data);
+                    myMap.geoObjects.add(objectManager);
+                    myMap.container.fitToViewport();
+                    myMap.setBounds(myMap.geoObjects.getBounds(), {checkZoomRange: true});
+                    renderServiceList(response.data.data);
+                })
+                .catch((error) => {
+
+                });
+            e.preventDefault();
+        });
+
+    }
+    let repairCreateFormExists = document.getElementById("repair-create-form");
+    if (repairCreateFormExists !== null) {
         let button = $('#serial-check-button '),
             allow_parts = $('#allow_parts'),
             serial = $('#serial_id'),

@@ -69,7 +69,8 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
         'api/RegionController.stub'          => 'Api/RegionController',
         'api/UserController.stub'            => 'Api/UserController',
         'api/SerialController.stub'          => 'Api/SerialController',
-        'api/ProductController.stub'         => 'Api/ProductController',
+        'api/ServiceController.stub'         => 'Api/ServiceController',
+        //'api/ProductController.stub'         => 'Api/ProductController',
         //
         'admin/WarehouseController.stub'     => 'Admin/WarehouseController',
         'admin/OrganizationController.stub'  => 'Admin/OrganizationController',

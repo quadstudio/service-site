@@ -46,11 +46,11 @@ class Address extends Model
             $result[] = $address->building;
             $name = implode(', ', $result);
             $result = $geocoder->geocodeQuery(\Geocoder\Query\GeocodeQuery::create($name));
-            if(!$result->isEmpty()){
+            if (!$result->isEmpty()) {
                 $geocode = $result->first();
                 $address->geo = implode(',', $geocode->getCoordinates()->toArray());
                 $formatter = new \Geocoder\Formatter\StringFormatter();
-                $address->name = preg_replace(['/\s,/', '/\s+/'], ' ',$formatter->format($geocode, '%A1, %A2, %A3, %L, %D %S, %n'));
+                $address->name = preg_replace(['/\s,/', '/\s+/'], ' ', $formatter->format($geocode, '%A1, %A2, %A3, %L, %D %S, %n'));
             }
         });
     }
@@ -82,6 +82,17 @@ class Address extends Model
     {
         return $this->morphTo();
     }
+
+    /**
+     * Пользователи
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function users()
+    {
+        return $this->hasMany(User::class, 'id','addressable_id')->where('addressable_type', 'users');
+    }
+
 
     /**
      * Регион

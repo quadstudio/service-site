@@ -27,9 +27,10 @@ class PartSearchFilter extends SearchFilter
                             }
                         });
                     }
-                } else{
-                    $builder->whereRaw("false");
                 }
+//                else{
+//                    $builder->whereRaw("false");
+//                }
             }
         }
 

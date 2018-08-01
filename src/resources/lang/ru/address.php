@@ -1,5 +1,8 @@
 <?php
 return [
+    'address'     => 'Адрес',
+    'addresses'   => 'Адреса',
+    //
     'country_id'  => 'Страна',
     'region_id'   => 'Регион',
     'locality'    => 'Населенный пункт',

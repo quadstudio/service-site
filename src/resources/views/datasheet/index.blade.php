@@ -17,9 +17,9 @@
                 <table class="table table-hover table-sm">
                     <thead>
                     <tr>
-                        <th>@lang('site::datasheet.type_id')</th>
-                        <th>@lang('site::equipment.equipments')</th>
-                        <th></th>
+                        <th scope="col">@lang('site::datasheet.type_id')</th>
+                        {{--<th scope="col">@lang('site::equipment.equipments')</th>--}}
+                        <th scope="col"></th>
                     </tr>
                     </thead>
                     <tbody>

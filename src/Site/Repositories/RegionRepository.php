@@ -4,6 +4,7 @@ namespace QuadStudio\Service\Site\Repositories;
 
 
 use QuadStudio\Repo\Eloquent\Repository;
+use QuadStudio\Service\Site\Filters\Region\SortFilter;
 use QuadStudio\Service\Site\Models\Region;
 
 class RegionRepository extends Repository
@@ -23,6 +24,8 @@ class RegionRepository extends Repository
      */
     public function track():array
     {
-        return [];
+        return [
+            SortFilter::class
+        ];
     }
 }

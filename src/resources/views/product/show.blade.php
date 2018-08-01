@@ -100,20 +100,7 @@
                             @if(Auth::user()->hasPermission('buy'))
                                 <dt class="col-sm-4"></dt>
                                 <dd class="col-sm-8">
-                                    @include('cart::add', [
-                                        'product_id' => $product->id,
-                                        'name' => $product->name,
-                                        'price'=> $product->price()->price(),
-                                        'currency_id'=> Site::currency()->id,
-                                        'image' => $product->image()->src(),
-                                        'brand_id' => $product->brand_id,
-                                        'weight' => $product->weight,
-                                        'unit' => $product->unit,
-                                        'sku' => $product->sku,
-                                        'url' => route('products.show', $product),
-                                        'availability' => $product->quantity > 0,
-                                        'quantity' => 1
-                                    ])
+                                    @include('site::cart.add', $product->toCart())
                                 </dd>
                             @endif
                             @endauth

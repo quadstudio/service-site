@@ -4,6 +4,7 @@ namespace QuadStudio\Service\Site\Traits\Controllers;
 
 use QuadStudio\Service\Site\Filters\ProductCanBuyFilter;
 use QuadStudio\Service\Site\Models\Product;
+use QuadStudio\Service\Site\Models\ProductType;
 use QuadStudio\Service\Site\Repositories\ProductRepository;
 
 trait ProductControllerTrait
@@ -28,9 +29,10 @@ trait ProductControllerTrait
      */
     public function index()
     {
-
         $this->products->trackFilter();
         $this->products->applyFilter(new ProductCanBuyFilter());
+//        dump($this->products->toSql());
+//        dump($this->products->getBindings());
         return view('site::product.index', [
             'repository' => $this->products,
             'items' => $this->products->paginate(config('shop.per_page.product', 8))

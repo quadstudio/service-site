@@ -65,8 +65,8 @@ class Site
                     $router->get('/datasheets', 'DatasheetController@index')->name('datasheets');
 
                     // Static pages
-                    $router->get('/abouts', 'StaticPageController@about')->name('abouts');
                     $router->get('/contacts', 'StaticPageController@contacts')->name('contacts');
+                    $router->post('/contacts', 'StaticPageController@message')->name('message');
 
                     $router->get('/currencies/refresh/{id?}', function ($id = null, \QuadStudio\Service\Site\Contracts\Exchange $exchange) {
                         foreach (config('site.update', []) as $update_id) {
@@ -148,6 +148,7 @@ class Site
         ],
             function () use ($router) {
                 $router->name('api')->get('/countries', 'CountryController@index')->name('.countries.index');
+                $router->name('api')->get('/services/{region?}', 'ServiceController@index')->name('.services.index');
                 $router->name('api')->resource('/users', 'UserController');
                 $router->name('api')->resource('/serials', 'SerialController');
                 $router->name('api')->resource('/parts', 'PartController');

@@ -35,19 +35,22 @@
                                        value="{{ old('serial_id') }}" required
                                        aria-label="Large" aria-describedby="inputGroup-sizing-sm">
                                 <div class="input-group-append">
-                                    <button class="btn btn-primary" disabled="disabled" id="serial-check-button" type="button">
+                                    <button class="btn btn-primary" disabled="disabled" id="serial-check-button"
+                                            type="button">
                                         <i class="fa fa-check-circle"></i> @lang('site::messages.check')
                                     </button>
                                 </div>
                                 <span class="invalid-feedback">{{ $errors->first('serial_id') }}</span>
-                                <span class="invalid-feedback"><i class="fa fa-close"></i> {{ trans('site::repair.error.serial_id') }}</span>
+                                <span class="invalid-feedback"><i
+                                            class="fa fa-close"></i> {{ trans('site::repair.error.serial_id') }}</span>
                             </div>
-                            <div id="serial-success" class="alert alert-success mt-3" role="alert" style="display: none;">
+                            <div id="serial-success" class="alert alert-success mt-3" role="alert"
+                                 style="display: none;">
                                 <h4 class="alert-heading"><i class="fa fa-check"></i> Серийный номер проверен!</h4>
                                 <table class="table table-sm">
                                     <tbody>
                                     <tr>
-                                        <td class="text-right"><b>@lang('site::serial.serial_id')</b></td>
+                                        <td class="text-right"><b>@lang('site::serial.serial')</b></td>
                                         <td class="serial-serial"></td>
                                     </tr>
                                     <tr>
@@ -86,10 +89,12 @@
                             <div id="serial-error" class="alert alert-danger mt-3" role="alert" style="display: none;">
                                 <h4 class="alert-heading"><i class="fa fa-close"></i> Серийный номер не найден!</h4>
                                 <p class="mb-0">Проверьте правильность серийного номера</p>
-                                <hr />
-                                <p class="mb-0">Если вы уверены, что серийный номер правильный - обратитесь к менеджеру</p>
+                                <hr/>
+                                <p class="mb-0">Если вы уверены, что серийный номер правильный - обратитесь к
+                                    менеджеру</p>
                             </div>
-                            <small id="serialHelp" class="d-block form-text text-muted">@lang('site::repair.help.serial_id')</small>
+                            <small id="serialHelp"
+                                   class="d-block form-text text-muted">@lang('site::repair.help.serial_id')</small>
                         </div>
                     </div>
 
@@ -292,7 +297,8 @@
                                                    id="allow_work">
                                             <input type="hidden" name="cost_work" class="serial-cost_work" value="">
                                             <label class="custom-control-label"
-                                                   for="allow_work">@lang('site::repair.allow_work') (<span class="serial-cost_work">0</span>)</label>
+                                                   for="allow_work">@lang('site::repair.allow_work') (<span
+                                                        class="serial-cost_work">0</span>)</label>
                                         </div>
 
                                     </div>
@@ -307,9 +313,11 @@
                                                    class="custom-control-input"
                                                    value="1"
                                                    id="allow_road">
-                                            <input type="hidden" name="cost_work" class="serial-cost_road-value" value="">
+                                            <input type="hidden" name="cost_work" class="serial-cost_road-value"
+                                                   value="">
                                             <label class="custom-control-label"
-                                                   for="allow_road">@lang('site::repair.allow_road') (<span class="serial-cost_work">0</span>)</label>
+                                                   for="allow_road">@lang('site::repair.allow_road') (<span
+                                                        class="serial-cost_work">0</span>)</label>
                                         </div>
 
                                     </div>
@@ -413,30 +421,32 @@
                         <div class="card-body">
                             <h5 class="card-title">@lang('site::file.files')</h5>
                             @foreach($types as $type)
+                                @if(in_array($type->id, [1,2,3]))
 
-                                <form method="POST" enctype="multipart/form-data" action="{{route('files.store')}}">
-                                    @csrf
-                                    <div class="form-group required form-control{{ $errors->has('file.'.$type->id) ? ' is-invalid' : '' }}">
-                                        <label class="control-label d-block" for="type_id">{{$type->name}}</label>
-                                        <input type="hidden" name="type_id" value="{{$type->id}}"/>
-                                        <input type="file" name="path"/>
-                                        <button class="btn btn-primary repair-file-upload"><i
-                                                    class="fa fa-download"></i> @lang('site::messages.load')</button>
-                                        <small id="fileHelp-{{$type->id}}"
-                                               class="form-text text-muted">{{$type->comment}}</small>
-                                        <span class="invalid-feedback">{{ $errors->first('file.'.$type->id) }}</span>
-                                    </div>
-                                </form>
-                                <ul class="list-group" class="file-list">
-                                    @if( !$files->isEmpty())
-                                        @foreach($files as $file)
-                                            @if($file->type_id == $type->id)
-                                                @include('site::repair.field.file')
-                                            @endif
-                                        @endforeach
-                                    @endif
-                                </ul>
-
+                                    <form method="POST" enctype="multipart/form-data" action="{{route('files.store')}}">
+                                        @csrf
+                                        <div class="form-group @if(in_array($type->id, [1,2])) required @endif form-control{{ $errors->has('file.'.$type->id) ? ' is-invalid' : '' }}">
+                                            <label class="control-label d-block" for="type_id">{{$type->name}}</label>
+                                            <input type="hidden" name="type_id" value="{{$type->id}}"/>
+                                            <input type="file" name="path"/>
+                                            <button class="btn btn-primary repair-file-upload"><i
+                                                        class="fa fa-download"></i> @lang('site::messages.load')
+                                            </button>
+                                            <small id="fileHelp-{{$type->id}}"
+                                                   class="form-text text-muted">{{$type->comment}}</small>
+                                            <span class="invalid-feedback">{{ $errors->first('file.'.$type->id) }}</span>
+                                        </div>
+                                    </form>
+                                    <ul class="list-group" class="file-list">
+                                        @if( !$files->isEmpty())
+                                            @foreach($files as $file)
+                                                @if($file->type_id == $type->id)
+                                                    @include('site::repair.field.file')
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    </ul>
+                                @endif
                             @endforeach
                         </div>
                     </div>

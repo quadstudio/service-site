@@ -2,22 +2,29 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers;
 
-use QuadStudio\Service\Site\Repositories\ServiceRepository;
+use QuadStudio\Service\Site\Filters\Region\OnlyEnabledAscFilter;
+use QuadStudio\Service\Site\Filters\Region\SelectFilter;
+use QuadStudio\Service\Site\Models\Region;
 use QuadStudio\Service\Site\Models\Service;
+use QuadStudio\Service\Site\Repositories\RegionRepository;
+use QuadStudio\Service\Site\Repositories\ServiceRepository;
 
 trait ServiceControllerTrait
 {
 
     protected $services;
+    protected $regions;
 
     /**
      * Create a new controller instance.
      *
      * @param ServiceRepository $services
+     * @param RegionRepository $regions
      */
-    public function __construct(ServiceRepository $services)
+    public function __construct(ServiceRepository $services, RegionRepository $regions)
     {
         $this->services = $services;
+        $this->regions = $regions;
     }
 
     /**
@@ -28,12 +35,15 @@ trait ServiceControllerTrait
     public function index()
     {
 
-        return view('site::service.index');
-//        $this->services->trackFilter();
-//        return view('site::service.index', [
-//            'repository' => $this->services,
-//            'items'      => $this->services->paginate(config('site.per_page.service', 10), [env('DB_PREFIX', '').'services.*'])
-//        ]);
+        //return view('site::service.index');
+        $this->regions->trackFilter();
+        $this->regions->applyFilter(new SelectFilter());
+        $this->regions->applyFilter(new OnlyEnabledAscFilter());
+
+        return view('site::service.index', [
+            //'repository' => $this->services,
+            'regions' => $this->regions->all([env('DB_PREFIX', '') . 'regions.*'])
+        ]);
     }
 
     public function show(Service $service)

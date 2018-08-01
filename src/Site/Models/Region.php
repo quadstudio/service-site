@@ -7,20 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 class Region extends Model
 {
     /**
-     * @var string
-     */
-    protected $table;
-
-    /**
      * @var bool
      */
     public $timestamps = false;
-
     /**
      * @var bool
      */
     public $incrementing = false;
-
+    /**
+     * @var string
+     */
+    protected $table;
 
     /**
      * @param array $attributes
@@ -30,5 +27,16 @@ class Region extends Model
         parent::__construct($attributes);
         $this->table = env('DB_PREFIX', '') . 'regions';
     }
+
+    /**
+     * Адреса
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function addresses()
+    {
+        return $this->hasMany(Address::class, 'region_id');
+    }
+
 
 }

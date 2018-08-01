@@ -2,7 +2,7 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers;
 
-use QuadStudio\Service\Site\Filters\DatasheetActiveFilter;
+use QuadStudio\Service\Site\Filters\ActiveFilter;
 use QuadStudio\Service\Site\Repositories\DatasheetRepository;
 use QuadStudio\Service\Site\Models\Datasheet;
 
@@ -30,7 +30,7 @@ trait DatasheetControllerTrait
     {
 
         $this->datasheets->trackFilter();
-        $this->datasheets->applyFilter(new DatasheetActiveFilter());
+        $this->datasheets->applyFilter(new ActiveFilter());
         return view('site::datasheet.index', [
             'repository' => $this->datasheets,
             'datasheets'      => $this->datasheets->paginate(config('site.per_page.datasheet', 10), [env('DB_PREFIX', '').'datasheets.*'])

@@ -3,6 +3,8 @@
 namespace QuadStudio\Service\Site\Repositories;
 
 use QuadStudio\Repo\Eloquent\Repository;
+use QuadStudio\Service\Site\Filters\Datasheet\SearchFilter;
+use QuadStudio\Service\Site\Filters\Datasheet\TypeFilter;
 use QuadStudio\Service\Site\Models\Datasheet;
 
 class DatasheetRepository extends Repository
@@ -23,7 +25,8 @@ class DatasheetRepository extends Repository
     public function track(): array
     {
         return [
-
+            SearchFilter::class,
+            TypeFilter::class,
         ];
     }
 }

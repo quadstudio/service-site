@@ -18,7 +18,7 @@
             </div>
         </div>
         <div class="row">
-            @each('site::product.grid', $items, 'item', 'site::product.empty')
+            @each('site::product.grid', $items, 'product', 'site::product.empty')
         </div>
         <div class="row">
             <div class="col-sm-12">

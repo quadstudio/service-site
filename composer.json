@@ -1,11 +1,11 @@
 {
     "name": "quadstudio/service-site",
     "description": "Service Site template for Laravel 5",
-    "keywords": ["laravel", "service", "site"],
+    "keywords": ["laravel", "ferroli", "service"],
     "homepage": "https://github.com/quadstudio/service-site",
     "type": "library",
     "license": "MIT",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "authors": [
         {
             "name": "Alexander Shuleyko",
@@ -32,7 +32,8 @@
                 "QuadStudio\\Service\\Site\\SiteServiceProvider"
             ],
             "aliases": {
-                "Site": "QuadStudio\\Service\\Site\\Facades\\Site"
+                "Site": "QuadStudio\\Service\\Site\\Facades\\Site",
+                "Cart": "QuadStudio\\Service\\Site\\Facades\\Cart"
             }
         }
     },

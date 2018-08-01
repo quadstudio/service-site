@@ -2,17 +2,17 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">@lang('cart::messages.delete_form_title')</h5>
+                <h5 class="modal-title" id="exampleModalLabel">@lang('site::cart.delete_form_title')</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                @lang('cart::messages.delete_form_content')
+                @lang('site::cart.delete_form_content')
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('cart::messages.delete_form_cancel')</button>
-                <button type="button" class="btn btn-primary btn-ok">@lang('cart::messages.delete_form_ok')</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('site::cart.delete_form_cancel')</button>
+                <button type="button" class="btn btn-primary btn-ok">@lang('site::cart.delete_form_ok')</button>
             </div>
         </div>
     </div>

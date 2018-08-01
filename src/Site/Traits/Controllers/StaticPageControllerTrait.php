@@ -24,4 +24,8 @@ trait StaticPageControllerTrait
         return view('site::static.contacts');
     }
 
+    public function message(){
+        return redirect()->route('contacts')->with('success', trans('Сообщение отправлено'));
+    }
+
 }

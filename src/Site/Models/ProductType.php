@@ -21,5 +21,15 @@ class ProductType extends Model
         $this->table = env('DB_PREFIX', '') . 'product_types';
     }
 
+    /**
+     * Товары
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'type_id');
+    }
+
 
 }

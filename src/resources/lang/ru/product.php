@@ -1,6 +1,6 @@
 <?php
 return [
-    'products'            => 'Каталог запчастей',
+    'products'            => 'Запчасти',
     'product'             => 'Запчасть',
     'icon'                => 'shopping-cart',
     //
@@ -19,6 +19,7 @@ return [
     'search_placeholder'  => 'Поиск запчастей...',
     'sort'                => 'Сортировка',
     'in_stock_defaults'   => '- Все товары - ',
+    'type_defaults'       => '- Выбрать - ',
     'yes'                 => 'Да',
     'no'                  => 'Нет',
     'in_stock'            => 'В наличии',

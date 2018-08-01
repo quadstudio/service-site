@@ -76,11 +76,19 @@ class User extends Authenticatable
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return Address
      */
     public function address()
     {
         return $this->addresses()->where('type_id', 2)->first();
+    }
+
+    public function sc_phones(){
+        $phones = collect([]);
+        foreach ($this->contacts()->where('type_id', 2)->get() as $contact){
+            $phones = $phones->merge($contact->phones);
+        }
+        return $phones;
     }
 
     /**

@@ -12,6 +12,5 @@
 @section('content')
     <div class="container">
         @include('site::catalog.show.children', ['catalog' => $catalog])
-        {{--<h3>Котел напольный газовый энергозависимый со встроенным бойлером</h3>--}}
     </div>
 @endsection

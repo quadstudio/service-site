@@ -56,6 +56,7 @@
 
     <section>
         <div class="container">
+            @alert()@endalert
             <div class="row">
                 <div class="col-sm-6 col-lg-5 mb-5">
                     <p>Для быстрой, экспертной помощи и консультаций по всем нашим отопительным приборам, запасным частям, технической поддержке и обучению есть специальная команда, ожидающая вашего звонка. Вот номера телефонов и адреса электронной почты, которые вам нужны:</p>
@@ -67,18 +68,19 @@
                 </div>
                 <div class="d-none d-lg-block col-lg-2"></div>
                 <div class="col-sm-6 col-lg-5">
-                    <form action="" method="POST" autocomplete="off">
+                    <form action="{{route('message')}}" method="POST" autocomplete="off">
+                        @csrf
                         <div class="control-group form-group {{ $errors->has('name') ? 'has-error' : '' }}">
-                            <input name="name" type="text" placeholder="ИМЯ" class="{{ $errors->has('name') ? 'is-invalid' : '' }}">
+                            <input name="name" type="text" placeholder="ИМЯ" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}">
                         </div>
                         <div class="control-group form-group {{ $errors->has('email') ? 'has-error' : '' }}">
-                            <input name="email" type="text" placeholder="EMAIL" class="{{ $errors->has('email') ? 'is-invalid' : '' }}">
+                            <input name="email" type="text" placeholder="EMAIL" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}">
                         </div>
                         <div class="control-group form-group {{ $errors->has('message') ? 'has-error' : '' }}">
-                            <textarea name="message" placeholder="СООБЩЕНИЕ" rows="4" class="{{ $errors->has('message') ? 'is-invalid' : '' }}"></textarea>
+                            <textarea name="message" placeholder="СООБЩЕНИЕ" rows="4" class="form-control {{ $errors->has('message') ? 'is-invalid' : '' }}"></textarea>
                         </div>
                         <div class="control-group form-group">
-                            <button type="submit">ОТПРАВИТЬ</button>
+                            <button type="submit" class="btn btn-ferroli">ОТПРАВИТЬ</button>
                         </div>
                         <div class="form-error" style="display: none;">Возникла ошибка</div>
                         <div class="form-success" style="display: none;">Сообщение отправлено</div>

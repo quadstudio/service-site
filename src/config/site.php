@@ -1,6 +1,7 @@
 <?php
 return [
-    'seeders'      => [
+
+    'seeders' => [
         'countries',
         'regions',
         'contragent_types',
@@ -10,6 +11,7 @@ return [
         'currencies',
         'users',
     ],
+
     'front_routes' => [
         'index',
         'login',
@@ -28,12 +30,14 @@ return [
         'rbac',
         'cart'
     ],
-    'cache'        => [
+
+    'cache' => [
         'use' => false,
         'ttl' => 60 * 60 * 24
     ],
-    'per_page'     => [
-        'repair'       => 2,
+
+    'per_page' => [
+        'repair'       => 10,
         'trade'        => 10,
         'launch'       => 10,
         'engineer'     => 10,
@@ -44,15 +48,19 @@ return [
         'product'      => 20,
         'product_type' => 20,
     ],
-    'run'          => [
+
+    'run'       => [
         ['site:resource', []],
         ['rbac:resource', []],
         ['migrate', []],
         ['db:seed', ['--class' => 'SiteSeeder']],
         ['db:seed', ['--class' => 'RbacSeeder']],
     ],
-    'geocode'      => true,
-    'images'       => [
+    'delimiter' => ':',
+
+    'geocode' => true,
+
+    'images' => [
         'mime' => 'jpg,jpeg,png',
         'size' => [
             'image'  => [
@@ -66,12 +74,14 @@ return [
         ],
 
     ],
-    'files'        => [
+
+    'files' => [
         'mime' => 'jpg,jpeg,png,pdf',
         'size' => 8092,
         'path' => date('Ym'),
     ],
-    'defaults'     => [
+
+    'defaults' => [
         'currency' => 643,
         'image'    => 'http://placehold.it/500x500',
         'guest'    => [
@@ -109,6 +119,8 @@ return [
     |
     */
     'main'              => 643,
+
+    'country'              => 643,
 
     /*
     |--------------------------------------------------------------------------

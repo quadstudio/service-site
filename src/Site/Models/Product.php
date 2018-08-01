@@ -4,6 +4,7 @@ namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use QuadStudio\Service\Site\Facades\Site;
 
 class Product extends Model
 {
@@ -67,6 +68,24 @@ class Product extends Model
     public function equipment()
     {
         return $this->belongsTo(Equipment::class);
+    }
+
+    public function toCart(){
+        return [
+            'product_id' => $this->id,
+            'name' => $this->name,
+            'price'=> $this->price()->price(),
+            'currency_id'=> Site::currency()->id,
+            'image' => $this->image()->src(),
+            'brand_id' => $this->brand_id,
+            'brand' => $this->brand->name,
+            'weight' => $this->weight,
+            'unit' => $this->unit,
+            'sku' => $this->sku,
+            'url' => route('products.show', $this),
+            'availability' => $this->quantity > 0,
+            'quantity' => 1
+        ];
     }
 
     /**
@@ -222,8 +241,9 @@ class Product extends Model
      */
     public function relation_equipments()
     {
+
         $equipments = collect([]);
-        foreach ($this->back_relations as $relation) {
+        foreach ($this->back_relations()->where('enabled', 1)->get() as $relation) {
             if (!is_null($relation->equipment_id)) {
                 $equipments->put($relation->equipment_id, $relation->equipment);
             }
