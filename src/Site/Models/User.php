@@ -83,6 +83,14 @@ class User extends Authenticatable
         return $this->addresses()->where('type_id', 2)->first();
     }
 
+    /**
+     * @return Contact
+     */
+    public function sc()
+    {
+        return $this->contacts()->where('type_id', 2)->first();
+    }
+
     public function sc_phones(){
         $phones = collect([]);
         foreach ($this->contacts()->where('type_id', 2)->get() as $contact){

@@ -7,15 +7,13 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use QuadStudio\Service\Site\Models\File;
-use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
+use QuadStudio\Service\Site\Models\File;
 
 class ProcessFile implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-    protected $file;
 
     /**
      * The number of times the job may be attempted.
@@ -23,10 +21,11 @@ class ProcessFile implements ShouldQueue
      * @var int
      */
     public $tries = 3;
+    protected $file;
 
     /**
      * Create a new job instance.
-     *
+     * @param File $file
      */
     public function __construct(File $file)
     {
@@ -40,10 +39,16 @@ class ProcessFile implements ShouldQueue
      */
     public function handle()
     {
-        Image::make(Storage::disk('files')->getAdapter()->getPathPrefix() . $this->file->path)
-            ->resize(config('site.files.image.width', 1024), null, function ($constraint) {
-                $constraint->aspectRatio();
-            })
-            ->save();
+
+        try {
+            Image::make(Storage::disk($this->file->storage)->getAdapter()->getPathPrefix() . $this->file->path)
+                ->resize(config('site.files.image.width', 1024), null, function ($constraint) {
+                    $constraint->aspectRatio();
+                })
+                ->save();
+        } catch (\Exception $e) {
+
+        }
+
     }
 }

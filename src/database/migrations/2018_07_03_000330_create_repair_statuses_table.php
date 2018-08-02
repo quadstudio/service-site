@@ -24,6 +24,8 @@ class CreateRepairStatusesTable extends Migration
         Schema::create("{$this->prefix}repair_statuses", function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->string('color');
+            $table->string('icon');
             $table->smallInteger('sort_order')->default(0);
         });
     }

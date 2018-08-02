@@ -55,17 +55,63 @@ class Repair extends Model
         return $this->morphMany(File::class, 'fileable');
     }
 
-    public function detachFiles(){
-        foreach ($this->files as $file){
+    public function detachFiles()
+    {
+        foreach ($this->files as $file) {
             $file->fileable_id = null;
             $file->fileable_type = null;
             $file->save();
         }
     }
 
-    public function created_at()
+    public function created_at($time = false)
     {
-        return !is_null($this->created_at) ? Carbon::instance($this->created_at)->format('d.m.Y H:i') : '';
+        return !is_null($this->created_at) ? Carbon::instance($this->created_at)->format('d.m.Y' . ($time === true ? ' H:i' : '')) : '';
+    }
+
+    public function date_launch()
+    {
+        return !is_null($this->date_launch) ? Carbon::instance(\DateTime::createFromFormat('Y-m-d', $this->date_launch))->format('d.m.Y') : '';
+    }
+
+    public function date_trade()
+    {
+        return !is_null($this->date_trade) ? Carbon::instance(\DateTime::createFromFormat('Y-m-d', $this->date_trade))->format('d.m.Y') : '';
+    }
+
+    public function date_call()
+    {
+        return !is_null($this->date_call) ? Carbon::instance(\DateTime::createFromFormat('Y-m-d', $this->date_call))->format('d.m.Y') : '';
+    }
+
+    public function date_repair()
+    {
+        return !is_null($this->date_repair) ? Carbon::instance(\DateTime::createFromFormat('Y-m-d', $this->date_repair))->format('d.m.Y') : '';
+    }
+
+    public function cost_total()
+    {
+        return $this->cost_work() + $this->cost_road() + $this->cost_parts();
+    }
+
+    /**
+     * Стоимость работ
+     *
+     * @return float
+     */
+    public function cost_work()
+    {
+        switch ($this->getAttribute('status_id')) {
+            case 5:
+            case 6:
+                $result = $this->getAttribute('cost_work');
+                break;
+            default:
+                $result = $this->serial->product->equipment->cost_work * Site::currencyRates($this->serial->product->equipment->currency, $this->user->currency);
+                break;
+        }
+
+        return $result;
     }
 
     /**
@@ -90,46 +136,13 @@ class Repair extends Model
     }
 
     /**
-     * Стоимость работ
-     *
-     * @return float
-     */
-    public function cost_work()
-    {
-        switch ($this->getAttribute('status_id')) {
-            case 5:
-            case 6:
-                $result = $this->getAttribute('cost_work');
-                break;
-            default:
-                $result = $this->serial->product->equipment->cost_work * Site::currencyRates($this->serial->product->equipment->currency, $this->user->currency);
-                break;
-        }
-
-        return $result;
-    }
-
-    /**
      * Стоимлсть запчастей
      *
      * @return float
      */
     public function cost_parts()
     {
-
-        switch ($this->getAttribute('status_id')) {
-            case 5:
-            case 6:
-                $result = $this->parts->sum('cost');
-                break;
-            default:
-                $result = $this->parts->sum(function ($part) {
-                        return $part->product->prices()->where('type_id', $this->user->price_type_id)->sum('price');
-                    }) * Site::currencyRates($this->user->price_type->currency, $this->user->currency);
-                break;
-        }
-
-        return $result;
+        return $this->parts->sum('total');
     }
 
 
@@ -154,6 +167,16 @@ class Repair extends Model
     }
 
     /**
+     * Страна
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
+
+    /**
      * Пользователь
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -162,6 +185,37 @@ class Repair extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Торговая организация
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function trade()
+    {
+        return $this->belongsTo(Trade::class);
+    }
+
+    /**
+     * Сервисный инженер
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function engineer()
+    {
+        return $this->belongsTo(Engineer::class);
+    }
+
+    /**
+     * Ввод в эксплуатацию
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function launch()
+    {
+        return $this->belongsTo(Launch::class);
+    }
+
 
     /**
      * Серийный номер

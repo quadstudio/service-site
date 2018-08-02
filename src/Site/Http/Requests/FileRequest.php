@@ -45,6 +45,7 @@ class FileRequest extends FormRequest
     {
         return [
             'path.mimes'  => trans('site::file.error.path'),
+            'path.max'  => trans('site::file.error.max'),
         ];
     }
 

@@ -98,7 +98,7 @@
                         </div>
                     </div>
 
-                    <fieldset>
+                    <fieldset disabled>
                         <div class="card mt-2 mb-2">
                             <div class="card-body">
                                 <h5 class="card-title">@lang('site::repair.header.repair')</h5>
@@ -148,12 +148,12 @@
                             </div>
                         </div>
 
-
+                        {{-- КЛИЕНТ --}}
                         <div class="card mt-2 mb-2">
                             <div class="card-body">
                                 <h5 class="card-title">@lang('site::repair.header.client')</h5>
                                 <div class="form-group mt-2 required">
-                                    <label for="client">@lang('site::repair.client')</label>
+                                    <label class="control-label" for="client">@lang('site::repair.client')</label>
                                     <input type="text" id="client" name="client"
                                            class="form-control{{ $errors->has('client') ? ' is-invalid' : '' }}"
                                            value="{{ old('client') }}" required
@@ -211,6 +211,9 @@
                                 </div>
                             </div>
                         </div>
+
+                        {{-- ОРГАНИЗАЦИИ --}}
+
                         <div class="card mt-2 mb-2">
                             <div class="card-body">
                                 <h5 class="card-title">@lang('site::repair.header.org')</h5>
@@ -237,6 +240,9 @@
                                 </div>
                             </div>
                         </div>
+
+                        {{-- ВЫЕЗД НА ОБСЛУЖИВАНИЕ --}}
+
                         <div class="card mt-2 mb-2">
                             <div class="card-body">
                                 <h5 class="card-title">@lang('site::repair.header.call')</h5>
@@ -416,7 +422,7 @@
                         </div>
                     </fieldset>
                 </form>
-                <fieldset>
+                <fieldset disabled>
                     <div class="card mt-2 mb-2">
                         <div class="card-body">
                             <h5 class="card-title">@lang('site::file.files')</h5>
@@ -428,14 +434,15 @@
                                         <div class="form-group @if(in_array($type->id, [1,2])) required @endif form-control{{ $errors->has('file.'.$type->id) ? ' is-invalid' : '' }}">
                                             <label class="control-label d-block" for="type_id">{{$type->name}}</label>
                                             <input type="hidden" name="type_id" value="{{$type->id}}"/>
+                                            <input type="hidden" name="storage" value="repairs"/>
                                             <input type="file" name="path"/>
-                                            <button class="btn btn-primary repair-file-upload"><i
+                                            <button class="btn btn-ferroli repair-file-upload"><i
                                                         class="fa fa-download"></i> @lang('site::messages.load')
                                             </button>
                                             <small id="fileHelp-{{$type->id}}"
                                                    class="form-text text-muted">{{$type->comment}}</small>
-                                            <span class="invalid-feedback">{{ $errors->first('file.'.$type->id) }}</span>
                                         </div>
+                                        <span class="invalid-feedback">{{ $errors->first('file.'.$type->id) }}</span>
                                     </form>
                                     <ul class="list-group" class="file-list">
                                         @if( !$files->isEmpty())
@@ -454,12 +461,12 @@
                 <div class="form-row">
                     <div class="col text-right">
                         <button name="_create" form="repair-create-form" value="1" type="submit"
-                                class="btn btn-primary mb-1">
+                                class="btn btn-ferroli mb-1">
                             <i class="fa fa-check"></i>
                             <span>@lang('site::messages.save_add')</span>
                         </button>
                         <button name="_create" form="repair-create-form" value="0" type="submit"
-                                class="btn btn-primary mb-1">
+                                class="btn btn-ferroli mb-1">
                             <i class="fa fa-check"></i>
                             <span>@lang('site::messages.save')</span>
                         </button>

@@ -5,7 +5,7 @@ return [
     //
     'icon'       => 'shopping-cart',
     //
-    'id'         => '№ заказа',
+    'id'         => '№',
     'status_id'  => 'Статус',
     'comment'    => 'Комментарий',
     'created_at' => 'Дата',

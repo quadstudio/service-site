@@ -1,5 +1,5 @@
-<div class="form-group" id="form-group-trade_id">
-    <label for="trade_id">@lang('site::repair.trade_id')</label>
+<div class="form-group required" id="form-group-trade_id">
+    <label class="control-label" for="trade_id">@lang('site::repair.trade_id')</label>
     <select data-form-action="{{ route('trades.create') }}"
             data-btn-ok="@lang('site::messages.save')"
             data-btn-cancel="@lang('site::messages.cancel')"

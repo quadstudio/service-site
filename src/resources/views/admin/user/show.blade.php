@@ -26,6 +26,10 @@
                     <i class="fa fa-reply"></i>
                     <span>@lang('site::messages.back')</span>
                 </a>
+                <a href="{{ route('admin.users.orders', $user) }}" class="btn btn-secondary">
+                    <i class="fa fa-@lang('site::order.icon')"></i>
+                    <span>@lang('site::order.orders')</span>
+                </a>
                 @if($user->can_export())
                     <a href="{{ route('admin.users.export', $user) }}" class="btn btn-success">
                         <i class="fa fa-send"></i>
@@ -39,10 +43,16 @@
                 <a class="nav-link active" data-toggle="tab" href="#home"><i class="fa fa-home"></i></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#contragents-tab">@lang('site::contragent.contragents') <span class="badge badge-primary">{{$user->contragents()->count()}}</span></a>
+                <a class="nav-link" data-toggle="tab" href="#orders-tab">@lang('site::order.orders') <span
+                            class="badge badge-primary">{{$user->orders()->count()}}</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#contacts-tab">@lang('site::contact.contacts') <span class="badge badge-primary">{{$user->contacts()->count()}}</span></a>
+                <a class="nav-link" data-toggle="tab" href="#contragents-tab">@lang('site::contragent.contragents')
+                    <span class="badge badge-primary">{{$user->contragents()->count()}}</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#contacts-tab">@lang('site::contact.contacts') <span
+                            class="badge badge-primary">{{$user->contacts()->count()}}</span></a>
             </li>
         </ul>
 
@@ -60,10 +70,6 @@
                             <tr>
                                 <td>@lang('site::user.type_id')</td>
                                 <td>{{ $user->type->name }}</td>
-                            </tr>
-                            <tr>
-                                <td>@lang('site::user.sc')</td>
-                                <td>{{ $user->sc }}</td>
                             </tr>
                             <tr>
                                 <td>@lang('site::user.email')</td>
@@ -114,6 +120,13 @@
                     </div>
                 </div>
             </div>
+            <div class="tab-pane container fade p-0" id="orders-tab">
+                <div class="card border-top-0">
+                    <div class="card-body">
+
+                    </div>
+                </div>
+            </div>
             <div class="tab-pane container fade p-0" id="contragents-tab">
                 <div class="card border-top-0">
                     <div class="card-body">
@@ -128,7 +141,9 @@
                             <tbody>
                             @foreach($user->contragents as $contragent)
                                 <tr>
-                                    <td><a href="{{route('admin.contragents.show', $contragent)}}">{{ $contragent->name }}</a></td>
+                                    <td>
+                                        <a href="{{route('admin.contragents.show', $contragent)}}">{{ $contragent->name }}</a>
+                                    </td>
                                     <td>{{ $contragent->type->name }}</td>
                                     <td>{{ $contragent->inn }}</td>
                                 </tr>
@@ -147,7 +162,9 @@
                             <tr>
                                 <th scope="col">@lang('site::contact.name')</th>
                                 <th scope="col">@lang('site::contact.type_id')</th>
+                                <th scope="col">@lang('site::phone.phones')</th>
                                 <th scope="col">@lang('site::contact.position')</th>
+                                <th scope="col">@lang('site::contact.web')</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -155,7 +172,15 @@
                                 <tr>
                                     <td>{{ $contact->name }}</td>{{--<a href="{{route('admin.contacts.show', $contact)}}">--}}
                                     <td>{{ $contact->type->name }}</td>
+                                    <td>
+                                        <ul>
+                                            @foreach($contact->phones as $phone)
+                                                <li>{{$phone->country->phone}}{{$phone->number}}</li>
+                                            @endforeach
+                                        </ul>
+                                    </td>
                                     <td>{{ $contact->position }}</td>
+                                    <td>{{ $contact->web }}</td>
                                 </tr>
                             @endforeach
                             </tbody>

@@ -45,9 +45,9 @@ trait RegisterControllerTrait
     public function showRegistrationForm()
     {
         $countries = Country::enabled()->orderBy('sort_order')->get();
-        $address_user_regions = $address_legal_regions = $address_postal_regions = collect([]);
-        if (old('address.user.country_id', false)) {
-            $address_user_regions = Region::where('country_id', old('address.user.country_id'))->orderBy('name')->get();
+        $address_sc_regions = $address_legal_regions = $address_postal_regions = collect([]);
+        if (old('address.sc.country_id', false)) {
+            $address_sc_regions = Region::where('country_id', old('address.sc.country_id'))->orderBy('name')->get();
         }
         if (old('address.legal.country_id', false)) {
             $address_legal_regions = Region::where('country_id', old('address.legal.country_id'))->orderBy('name')->get();
@@ -58,7 +58,7 @@ trait RegisterControllerTrait
 
         $types = ContragentType::all();
 
-        return view('site::auth.register', compact('countries', 'types', 'address_user_regions', 'address_legal_regions', 'address_postal_regions'));
+        return view('site::auth.register', compact('countries', 'types', 'address_sc_regions', 'address_legal_regions', 'address_postal_regions'));
     }
 
     /**
@@ -74,7 +74,10 @@ trait RegisterControllerTrait
         /** @var $contact Contact */
         $user->contacts()->save($contact = Contact::create($request->input('contact')));
         $contact->phones()->save(Phone::create($request->input('phone.contact')));
-        $user->addresses()->save(Address::create($request->input('address.user')));
+        /** @var $sc Contact */
+        $user->contacts()->save($sc = Contact::create($request->input('sc')));
+        $sc->phones()->save(Phone::create($request->input('phone.sc')));
+        $user->addresses()->save(Address::create($request->input('address.sc')));
         /** @var $contragent Contragent */
         $user->contragents()->save($contragent = Contragent::create($request->input('contragent')));
         $contragent->addresses()->saveMany([
@@ -99,8 +102,8 @@ trait RegisterControllerTrait
         return User::create([
             'name'          => $data['name'],
             'email'         => $data['email'],
-            'sc'            => $data['sc'],
-            'web'           => $data['web'],
+//            'sc'            => $data['sc'],
+//            'web'           => $data['web'],
             'type_id'       => $data['type_id'],
             'currency_id'   => config('site.defaults.user.currency_id'),
             'price_type_id' => config('site.defaults.user.price_type_id'),

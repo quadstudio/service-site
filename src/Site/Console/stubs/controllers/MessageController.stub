@@ -1,0 +1,11 @@
+<?php
+
+namespace {{namespace}}Http\Controllers;
+
+use QuadStudio\Service\Site\Traits\Controllers\MessageControllerTrait;
+use {{namespace}}Http\Controllers\Controller;
+
+class MessageController extends Controller
+{
+    use MessageControllerTrait;
+}

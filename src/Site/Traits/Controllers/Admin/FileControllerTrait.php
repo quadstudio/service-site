@@ -55,8 +55,9 @@ trait FileControllerTrait
         $this->authorize('create', File::class);
         $f = $request->file('path');
         $file = new File(array_merge($request->only(['type_id']), [
-            'path' => Storage::disk('files')->putFile(config('site.files.path'), new \Illuminate\Http\File($f->getPathName())),
+            'path' => Storage::disk($request->input('storage'))->putFile(config('site.files.path'), new \Illuminate\Http\File($f->getPathName())),
             'mime' => $f->getMimeType(),
+            'storage' => $request->input('storage'),
             'size' => $f->getSize(),
             'name' => $f->getClientOriginalName(),
         ]));
@@ -72,6 +73,6 @@ trait FileControllerTrait
     {
         $this->authorize('view', $file);
 
-        return Storage::disk('files')->download($file->path);
+        return Storage::disk($file->storage)->download($file->path);
     }
 }

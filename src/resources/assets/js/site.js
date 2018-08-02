@@ -255,9 +255,11 @@
                 fd = new FormData(),
                 path = form.find('[name="path"]')[0].files[0],
                 type_id = form.find('[name="type_id"]').val(),
+                storage = form.find('[name="storage"]').val(),
                 action = form.attr('action');
             fd.append('path', path);
             fd.append('type_id', type_id);
+            fd.append('storage', storage);
             axios
                 .post(action, fd, {
                     headers: {

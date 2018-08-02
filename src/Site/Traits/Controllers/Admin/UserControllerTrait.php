@@ -4,9 +4,12 @@ namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 
 use QuadStudio\Rbac\Repositories\RoleRepository;
 use QuadStudio\Service\Site\Events\UserExport;
+use QuadStudio\Service\Site\Filters\Order\UserFilter;
+use QuadStudio\Service\Site\Filters\OrderDateFilter;
 use QuadStudio\Service\Site\Filters\UserIsServiceFilter;
 use QuadStudio\Service\Site\Http\Requests\Admin\UserRequest;
 use QuadStudio\Service\Site\Models\User;
+use QuadStudio\Service\Site\Repositories\OrderRepository;
 use QuadStudio\Service\Site\Repositories\PriceTypeRepository;
 use QuadStudio\Service\Site\Repositories\UserRepository;
 use QuadStudio\Service\Site\Repositories\WarehouseRepository;
@@ -16,6 +19,7 @@ trait UserControllerTrait
     protected $users;
     protected $types;
     protected $roles;
+    protected $orders;
     protected $warehouses;
 
     /**
@@ -25,18 +29,21 @@ trait UserControllerTrait
      * @param PriceTypeRepository $types
      * @param RoleRepository $roles
      * @param WarehouseRepository $warehouses
+     * @param OrderRepository $orders
      */
     public function __construct(
         UserRepository $users,
         PriceTypeRepository $types,
         RoleRepository $roles,
-        WarehouseRepository $warehouses
+        WarehouseRepository $warehouses,
+        OrderRepository $orders
     )
     {
         $this->users = $users;
         $this->types = $types;
         $this->roles = $roles;
         $this->warehouses = $warehouses;
+        $this->orders = $orders;
     }
 
     /**
@@ -48,6 +55,7 @@ trait UserControllerTrait
     {
         $this->users->trackFilter();
         $this->users->applyFilter(new UserIsServiceFilter);
+
         return view('site::admin.user.index', [
             'repository' => $this->users,
             'users'      => $this->users->paginate(config('site.per_page.user', 10), [env('DB_PREFIX', '') . 'users.*'])
@@ -76,20 +84,40 @@ trait UserControllerTrait
         $types = $this->types->all();
         $roles = $this->roles->all();
         $warehouses = $this->warehouses->all();
+
         return view('site::admin.user.edit', compact('user', 'types', 'roles', 'warehouses'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  User $user
+     * @return \Illuminate\Http\Response
+     */
+    public function orders(User $user)
+    {
+        $this->orders->trackFilter();
+        $this->orders->applyFilter(new UserFilter());
+        return view('site::admin.user.order', [
+            'user' => $user,
+            'repository' => $this->orders,
+            'orders'     => $this->orders->paginate(config('site.per_page.order', 10), [env('DB_PREFIX', '') . 'orders.*'])
+        ]);
     }
 
     /**
      * @param User $user
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function export(User $user){
-        if($user->can_export()){
+    public function export(User $user)
+    {
+        if ($user->can_export()) {
             event(new UserExport($user));
             $redirect = redirect()->route('admin.users.show', $user)->with('success', trans('site::user.success.export'));
-        } else{
+        } else {
             $redirect = redirect()->route('admin.users.show', $user)->with('error', trans('site::user.error.export'));
         }
+
         return $redirect;
     }
 

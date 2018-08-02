@@ -8,9 +8,9 @@
                 <ol class="breadcrumb">
                     @foreach ($breadcrumbs as $breadcrumb)
                         @if (!empty($breadcrumb['url']))
-                            <li><a href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['name'] }}</a></li>
+                            <li><a href="{{ $breadcrumb['url'] }}">{!! $breadcrumb['name'] !!}</a></li>
                         @else
-                            <li class="active">{{ $breadcrumb['name'] }}</li>
+                            <li class="active">{!! $breadcrumb['name'] !!}</li>
                         @endif
                     @endforeach
                 </ol>

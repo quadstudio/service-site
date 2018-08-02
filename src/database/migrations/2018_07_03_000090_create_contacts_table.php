@@ -26,6 +26,7 @@ class CreateContactsTable extends Migration
             $table->unsignedInteger('user_id')->nullable(true);
             $table->unsignedInteger('type_id');
             $table->string('name');
+            $table->string('web')->nullable(true);
             $table->string('position')->nullable(true);
             $table->timestamps();
             $table

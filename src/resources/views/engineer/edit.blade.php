@@ -34,7 +34,7 @@
                             <input type="text" name="name" id="name" disabled
                                    class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}"
                                    placeholder="@lang('site::engineer.placeholder.name')"
-                                   value="{{ old('name') }}">
+                                   value="{{ old('name', $engineer->name) }}">
                             @if ($errors->has('name'))
                                 <span class="invalid-feedback">
                                     <strong>{{ $errors->first('name') }}</strong>

@@ -42,13 +42,6 @@ class Site
     }
 
     /**
-     * @return Currency
-     */
-    public function currency(){
-        return Auth::guest() ? Currency::find(config('site.defaults.currency')) : Auth::user()->currency;
-    }
-
-    /**
      * Service Routes
      */
     public function routes()
@@ -111,7 +104,8 @@ class Site
                                 $router->name('admin')->get('/', 'IndexController@index');
                                 $router->name('admin')->resource('/acts', 'ActController');
                                 $router->name('admin')->resource('/users', 'UserController');
-                                $router->name('admin')->get('/users/export/{user?}', 'UserController@export')->name('.users.export');
+                                $router->name('admin')->get('/users/{user}/orders', 'UserController@orders')->name('.users.orders');
+                                $router->name('admin')->get('/users/{user}/export', 'UserController@export')->name('.users.export');
                                 $router->name('admin')->resource('/banks', 'BankController');
                                 $router->name('admin')->resource('/orders', 'OrderController')->only(['index', 'show']);
                                 $router->name('admin')->resource('/repairs', 'RepairController');
@@ -173,10 +167,45 @@ class Site
         }
     }
 
-    public function cost($price)
+    /**
+     * Отформатировать цену
+     *
+     * @param $price
+     * @param Currency|null $currency
+     * @return string
+     */
+    public function format($price, Currency $currency = null)
     {
+        $result = [];
 
-        $price = $price * $this->user()->currency->rates;
+        $currency = is_null($currency) ? $this->currency() : $currency;
+
+        if ($currency->symbol_left != '') {
+            $result[] = $currency->symbol_left;
+        }
+
+        $result[] = number_format($this->cost($price, $currency), config('site.decimals', 0), config('site.decimalPoint', '.'), config('site.thousandSeparator', ' '));
+
+        if ($currency->symbol_right != '') {
+            $result[] = $currency->symbol_right;
+        }
+
+        return implode(' ', $result);
+    }
+
+    /**
+     * @return Currency
+     */
+    public function currency()
+    {
+        return Auth::guest() ? Currency::find(config('site.defaults.currency')) : Auth::user()->currency;
+    }
+
+    public function cost($price, Currency $currency = null)
+    {
+        $currency = is_null($currency) ? $this->currency() : $currency;
+
+        $price = $price * $currency->rates;
 
         if (($round = config('site.round', false)) !== false) {
             $price = round($price, $round);

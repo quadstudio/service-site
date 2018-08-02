@@ -28,6 +28,11 @@ class Order extends Model
         $this->table = env('DB_PREFIX', '') . 'orders';
     }
 
+    public function created_at($time = false)
+    {
+        return !is_null($this->created_at) ? Carbon::instance($this->created_at)->format('d.m.Y' . ($time === true ? ' H:i' : '')) : '';
+    }
+
     /**
      * @return mixed
      */

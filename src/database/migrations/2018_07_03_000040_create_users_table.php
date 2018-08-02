@@ -30,8 +30,6 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->boolean('active')->default(true);
             $table->boolean('admin')->default(false);
-            $table->string('sc')->nullable(true);
-            $table->string('web')->nullable(true);
             $table->boolean('display')->default(false);
             $table->string('guid', 36)->nullable(true)->unique(true);
             $table->string('price_type_id', 36)->nullable(true);

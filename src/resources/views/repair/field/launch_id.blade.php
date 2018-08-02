@@ -1,5 +1,5 @@
-<div class="form-group" id="form-group-launch_id">
-    <label for="launch_id">@lang('site::repair.launch_id')</label>
+<div class="form-group required" id="form-group-launch_id">
+    <label class="control-label" for="launch_id">@lang('site::repair.launch_id')</label>
     <select data-form-action="{{ route('launches.create') }}"
             data-btn-ok="@lang('site::messages.save')"
             data-btn-cancel="@lang('site::messages.cancel')"

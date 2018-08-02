@@ -50,7 +50,7 @@
 
 
                     <div class="media-body p-md-5 px-4 pt-5 pb-4">
-                        <h1>{{$product->name()}}</h1>
+                        <h1>{!! $product->name()!!}</h1>
 
                         <div class="mb-4">
                             <div class="ui-stars text-big">

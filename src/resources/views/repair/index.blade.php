@@ -27,24 +27,7 @@
             <div class="card-body">
                 {{$items->render()}}
                 @filter(['repository' => $repository])@endfilter
-                <table class="table table-hover table-sm">
-                    <thead>
-                    <tr>
-                        <th rowspan="2" scope="col">@lang('site::repair.created_at')</th>
-                        <th rowspan="2" scope="col">@lang('site::repair.number')</th>
-                        <th class="text-center" colspan="3">Оплата, {{ Auth::user()->currency->symbol_right }}</th>
-                        <th class="text-center" rowspan="2" scope="col">@lang('site::repair.status_id')</th>
-                    </tr>
-                    <tr>
-                        <th class="text-right">@lang('site::repair.help.cost_work')</th>
-                        <th class="text-right">@lang('site::repair.help.cost_road')</th>
-                        <th class="text-right">@lang('site::repair.help.cost_parts')</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @each('site::repair.index.row', $items, 'repair')
-                    </tbody>
-                </table>
+                @each('site::repair.index.row', $items, 'repair')
                 {{$items->render()}}
             </div>
         </div>

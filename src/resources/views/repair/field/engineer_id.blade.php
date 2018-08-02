@@ -1,5 +1,5 @@
-<div class="form-group" id="form-group-engineer_id">
-    <label for="engineer_id">@lang('site::repair.engineer_id')</label>
+<div class="form-group required" id="form-group-engineer_id">
+    <label class="control-label" for="engineer_id">@lang('site::repair.engineer_id')</label>
     <select data-form-action="{{ route('engineers.create') }}"
             data-btn-ok="@lang('site::messages.save')"
             data-btn-cancel="@lang('site::messages.cancel')"

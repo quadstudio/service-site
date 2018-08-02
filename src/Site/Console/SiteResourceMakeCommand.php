@@ -61,6 +61,7 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
         'CatalogController.stub'             => 'CatalogController',
         'EquipmentController.stub'           => 'EquipmentController',
         'CartController.stub'                => 'CartController',
+        'MessageController.stub'             => 'MessageController',
         //
         'api/FileController.stub'            => 'Api/FileController',
         'api/RepairController.stub'          => 'Api/RepairController',

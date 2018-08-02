@@ -1,5 +1,5 @@
 <tr>
-    <td class="text-center" style="width:40px;">
+    <td class="text-left" style="width:40px;">
         @if($user->isOnline())
             <i data-toggle="tooltip" data-placement="top" title="@lang('site::user.is_online')"
                class="fa fa-circle text-success"></i>
@@ -17,7 +17,7 @@
                 @if(!$user->active)
             </del>
         @endif
-        ({{ $user->sc }})
+        <p class="text-secondary">{{ $user->sc()->name }}</p>
         <small class="d-block text-muted">
             <b>@lang('site::user.created_at'):</b>
             {{ $user->created_at() }}

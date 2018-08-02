@@ -6,6 +6,9 @@
             <li class="breadcrumb-item">
                 <a href="{{ route('index') }}">@lang('site::messages.index')</a>
             </li>
+            <li class="breadcrumb-item">
+                <a href="{{ route('home') }}">@lang('site::messages.home')</a>
+            </li>
             <li class="breadcrumb-item active">@lang('site::engineer.engineers')</li>
         </ol>
         <h1 class="header-title mb-4"><i class="fa fa-@lang('site::engineer.icon')"></i> @lang('site::engineer.engineers')</h1>

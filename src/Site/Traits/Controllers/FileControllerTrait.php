@@ -52,17 +52,19 @@ trait FileControllerTrait
      */
     public function store(FileRequest $request)
     {
+
         $this->authorize('create', File::class);
         $f = $request->file('path');
         $file = new File(array_merge($request->only(['type_id']), [
-            'path' => Storage::disk('files')->putFile(config('site.files.path'), new \Illuminate\Http\File($f->getPathName())),
+            'path' => Storage::disk($request->input('storage'))->putFile(config('site.files.path'), new \Illuminate\Http\File($f->getPathName())),
             'mime' => $f->getMimeType(),
             'storage' => $request->input('storage'),
             'size' => $f->getSize(),
             'name' => $f->getClientOriginalName(),
         ]));
+
         $file->save();
-        ProcessFile::dispatch($file)->onQueue('images');
+        //ProcessFile::dispatch($file)->onQueue('images');
 
         return response()->json([
             'file' => view('site::file.file')->with('file', $file)->render(),

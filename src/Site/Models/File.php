@@ -15,7 +15,7 @@ class File extends Model
     protected $table;
 
     protected $fillable = [
-        'name', 'path', 'type_id', 'size', 'mime',
+        'name', 'path', 'type_id', 'size', 'mime', 'storage'
     ];
 
     public static function boot()

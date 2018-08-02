@@ -211,6 +211,7 @@ class SiteServiceProvider extends ServiceProvider
             'products'    => Models\Product::class,
             'catalogs'    => Models\Catalog::class,
             'repairs'     => Models\Repair::class,
+            'orders'      => Models\Order::class,
         ]);
 
         return $this;

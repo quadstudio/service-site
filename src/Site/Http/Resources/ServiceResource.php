@@ -30,11 +30,11 @@ class ServiceResource extends JsonResource
             ],
             'properties' => [
                 'balloonContentBody' => view('site::service.balloon', [
-                    'sc'      => $this->sc,
-                    'web'     => $this->web,
+                    'sc'      => $this->sc(),
+                    //'web'     => $this->web,
                     'email'   => $this->email,
                     'address' => $this->address(),
-                    'phones'  => $this->sc_phones()
+                    //'phones'  => $this->sc_phones()
                 ])->render(),
                 'balloonMaxWidth'    => 700
             ],
