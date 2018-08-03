@@ -108,6 +108,7 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
         'sass/app.scss',
         'js/bootstrap.js',
         'js/app.js',
+        'js/site.js',
     ];
 
     protected $views = [

@@ -135,8 +135,8 @@
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{ route('repairs.index') }}"><i
                                         class="fa fa-@lang('site::repair.icon')"></i> @lang('site::repair.repairs')</a>
-                            {{--<a class="dropdown-item" href="{{ route('acts.index') }}"><i--}}
-                                        {{--class="fa fa-@lang('site::act.icon')"></i> @lang('site::act.acts')</a>--}}
+                            <a class="dropdown-item" href="{{ route('messages.index') }}"><i
+                                        class="fa fa-@lang('site::message.icon')"></i> @lang('site::message.messages')</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{ route('engineers.index') }}">
                                 <i class="fa fa-@lang('site::engineer.icon')"></i> @lang('site::engineer.engineers')
