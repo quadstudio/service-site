@@ -52,7 +52,7 @@ class EngineerPolicy
      */
     public function delete(User $user, Engineer $engineer)
     {
-        return $user->id == $engineer->user_id && $engineer->canDelete();
+        return ($user->id == $engineer->user_id) && $engineer->canDelete();
     }
 
 

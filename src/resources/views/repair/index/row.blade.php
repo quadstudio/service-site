@@ -1,39 +1,55 @@
-<div class="repair-list-row row border-bottom no-gutters">
-    <div class="col-md-4 col-xl-2 p-2 pr-md-0">
+<div class="items-col col-12">
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="item-content">
+                <div class="item-content-about">
+                    <h5 class="item-content-name mb-1">
+                        <a href="{{ route('repairs.show', $repair) }}" class="text-dark">{{$repair->number}}</a>
+                    </h5>
+                    <div class="repair-list-row row no-gutters">
+                        <div class="col-md-4 col-xl-2 p-2 pr-md-0">
+                            <div class="px-1" style="color: {{$repair->status->color}};">
+                                <i class="fa fa-{{$repair->status->icon}} mr-1"></i>
+                                <span class="small">{{$repair->status->name}}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-xl-2 py-md-2 px-2 pb-2">
+                            <div class="small"><b class="text-muted">@lang('site::repair.created_at')
+                                    :</b>&nbsp;{{$repair->created_at()}}</div>
+                            <div class="small"><b class="text-muted">@lang('site::repair.date_repair')
+                                    :</b>&nbsp;{{$repair->date_repair()}}</div>
+                        </div>
+                        <div class="col-md-4 col-xl-2 py-md-2 px-2 pb-2">
+                            <div class="small"><b class="text-muted">
+                                    @lang('site::serial.product_id'):</b>&nbsp;{{$repair->serial->product->name}}
+                            </div>
+                            <div class="small"><b class="text-muted">
+                                    @lang('site::repair.serial_id'):</b>&nbsp;{{$repair->serial_id}}
+                            </div>
+                        </div>
+                        <div class="col-md-8 col-xl-5 py-md-2 px-2 pb-2">
+                            <div class="small"><b class="text-muted">@lang('site::repair.client'):</b>&nbsp;{{$repair->client}}</div>
+                            <div class="small"><b class="text-muted">@lang('site::repair.address'):</b>&nbsp;{{$repair->address}}</div>
+                        </div>
 
-        <a href="{{route('repairs.show', $repair)}}">{{$repair->number}}</a>
-        <div class="px-1" style="color: {{$repair->status->color}};">
-            <i class="fa fa-{{$repair->status->icon}} mr-1"></i>
-            <span class="small">{{$repair->status->name}}</span>
+                        <div class="d-flex col-md-4 col-xl-1 flex-md-column flex-wrap justify-content-md-center align-items-start px-2 px-md-0 pt-md-2 pb-2">
+                            <div class="small mr-2 mr-sm-0"><b
+                                        class="text-muted">@lang('site::repair.help.cost_work')</b>&nbsp;{{$repair->cost_work()}}
+                                &nbsp;{{ Auth::user()->currency->symbol_right }}</div>
+                            <div class="small mr-2 mr-sm-0"><b
+                                        class="text-muted">@lang('site::repair.help.cost_road')</b>&nbsp;{{$repair->cost_road()}}
+                                &nbsp;{{ Auth::user()->currency->symbol_right }}</div>
+                            <div class="small"><b
+                                        class="text-muted">@lang('site::repair.help.cost_parts')</b>&nbsp;{{Site::format($repair->cost_parts())}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="col-md-4 col-xl-2 py-md-2 px-2 pb-2">
-        <div class="small"><b class="text-muted">@lang('site::repair.created_at')
-                :</b>&nbsp;{{$repair->created_at()}}</div>
-        <div class="small"><b class="text-muted">@lang('site::repair.date_repair')
-                :</b>&nbsp;{{$repair->date_repair()}}</div>
-    </div>
-    <div class="col-md-4 col-xl-2 py-md-2 px-2 pb-2">
-        <div class="small"><b class="text-muted">
-                @lang('site::serial.product_id'):</b>&nbsp;{{$repair->serial->product->name}}
-        </div>
-        <div class="small"><b class="text-muted">
-                @lang('site::repair.serial_id'):</b>&nbsp;{{$repair->serial_id}}
-        </div>
-    </div>
-    <div class="col-md-8 col-xl-5 py-md-2 px-2 pb-2">
-        <div class="small"><b class="text-muted">@lang('site::repair.client'):</b>&nbsp;{{$repair->client}}</div>
-        <div class="small"><b class="text-muted">@lang('site::repair.address'):</b>&nbsp;{{$repair->address}}</div>
-    </div>
-
-    <div class="d-flex col-md-4 col-xl-1 flex-md-column flex-wrap justify-content-md-center align-items-start px-2 px-md-0 pt-md-2 pb-2">
-        <div class="small mr-2 mr-sm-0"><b class="text-muted">@lang('site::repair.help.cost_work')</b>&nbsp;{{$repair->cost_work()}}
-            &nbsp;{{ Auth::user()->currency->symbol_right }}</div>
-        <div class="small mr-2 mr-sm-0"><b class="text-muted">@lang('site::repair.help.cost_road')</b>&nbsp;{{$repair->cost_road()}}
-            &nbsp;{{ Auth::user()->currency->symbol_right }}</div>
-        <div class="small"><b class="text-muted">@lang('site::repair.help.cost_parts')</b>&nbsp;{{Site::format($repair->cost_parts())}}</div>
     </div>
 </div>
+
 {{--<table class="table table-hover table-sm">--}}
 {{--<thead>--}}
 {{--<tr>--}}

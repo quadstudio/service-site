@@ -2,7 +2,7 @@
 return [
     'contact'     => 'контакт',
     'contacts'    => 'Контакты',
-    'icon'        => '',
+    'icon'        => 'address-card-o',
     //
     'type_id'     => 'Тип контакта',
     'name'        => 'Как обращаться?',

@@ -7,6 +7,7 @@ use QuadStudio\Service\Site\Filters\ByNameSortFilter;
 use QuadStudio\Service\Site\Filters\CountryEnabledFilter;
 use QuadStudio\Service\Site\Filters\CountrySortFilter;
 use QuadStudio\Service\Site\Filters\Repair\SortFilter;
+use QuadStudio\Service\Site\Filters\Repair\StatusFilter;
 use QuadStudio\Service\Site\Http\Requests\RepairRequest;
 use QuadStudio\Service\Site\Models\File;
 use QuadStudio\Service\Site\Models\Repair;
@@ -86,13 +87,14 @@ trait RepairControllerTrait
      */
     public function index()
     {
-        //return view('site::repair.index');
+
         $this->repairs->trackFilter();
         $this->repairs->applyFilter(new BelongsUserFilter());
         $this->repairs->applyFilter(new SortFilter());
+
         return view('site::repair.index', [
             'repository' => $this->repairs,
-            'items'      => $this->repairs->paginate(config('site.per_page.repair', 10), [env('DB_PREFIX', '') . 'repairs.*'])
+            'repairs'    => $this->repairs->paginate(config('site.per_page.repair', 10), [env('DB_PREFIX', '') . 'repairs.*'])
         ]);
     }
 

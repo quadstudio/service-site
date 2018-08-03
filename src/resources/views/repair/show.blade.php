@@ -12,17 +12,17 @@
             <li class="breadcrumb-item active">{{ $repair->number }}</li>
         </ol>
         <h1 class="header-title mb-4">{{ $repair->number }} </h1>
+        <div class=" border p-3 mb-4">
+            <a href="{{ route('messages.index') }}" class="d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-ferroli">
+                <i class="fa fa-@lang('site::message.icon')"></i>
+                <span>@lang('site::message.messages')</span>
+            </a>
+            <a href="{{ route('repairs.index') }}" class="d-block d-sm-inline btn btn-secondary">
+                <i class="fa fa-reply"></i>
+                <span>@lang('site::messages.back')</span>
+            </a>
 
-        <div class="row">
-            <div class="col mb-2">
-                <a href="{{ route('repairs.index') }}" class="btn btn-secondary">
-                    <i class="fa fa-reply"></i>
-                    <span>@lang('site::messages.back')</span>
-                </a>
-            </div>
         </div>
-
-
         <div class="card mb-2">
             <div class="card-body">
                 <h5 class="card-title">@lang('site::repair.header.repair')</h5>

@@ -24,7 +24,7 @@
                     <a class="nav-link" href="{{ route('services') }}">@lang('site::service.services')</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('contacts') }}">@lang('site::messages.contacts')</a>
+                    <a class="nav-link" href="{{ route('feedback') }}">@lang('site::messages.feedback')</a>
                 </li>
                 @auth
                 @admin()
@@ -108,8 +108,8 @@
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ route('admin.repairs.index') }}"><i
                                     class="fa fa-@lang('site::repair.icon')"></i> @lang('site::repair.repairs')</a>
-                        <a class="dropdown-item" href="{{ route('admin.acts.index') }}"><i
-                                    class="fa fa-@lang('site::act.icon')"></i> @lang('site::act.acts')</a>
+                        {{--<a class="dropdown-item" href="{{ route('admin.acts.index') }}"><i--}}
+                                    {{--class="fa fa-@lang('site::act.icon')"></i> @lang('site::act.acts')</a>--}}
                         <a class="dropdown-item" href="{{ route('admin.orders.index') }}"><i
                                     class="fa fa-@lang('site::order.icon')"></i> @lang('site::order.orders')</a>
 
@@ -135,8 +135,8 @@
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{ route('repairs.index') }}"><i
                                         class="fa fa-@lang('site::repair.icon')"></i> @lang('site::repair.repairs')</a>
-                            <a class="dropdown-item" href="{{ route('acts.index') }}"><i
-                                        class="fa fa-@lang('site::act.icon')"></i> @lang('site::act.acts')</a>
+                            {{--<a class="dropdown-item" href="{{ route('acts.index') }}"><i--}}
+                                        {{--class="fa fa-@lang('site::act.icon')"></i> @lang('site::act.acts')</a>--}}
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{ route('engineers.index') }}">
                                 <i class="fa fa-@lang('site::engineer.icon')"></i> @lang('site::engineer.engineers')
@@ -146,6 +146,16 @@
                             </a>
                             <a class="dropdown-item" href="{{ route('trades.index') }}">
                                 <i class="fa fa-@lang('site::trade.icon')"></i> @lang('site::trade.trades')
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{{ route('contragents.index') }}">
+                                <i class="fa fa-@lang('site::contragent.icon')"></i> @lang('site::contragent.contragents')
+                            </a>
+                            <a class="dropdown-item" href="{{ route('contacts.index') }}">
+                                <i class="fa fa-@lang('site::contact.icon')"></i> @lang('site::contact.contacts')
+                            </a>
+                            <a class="dropdown-item" href="{{ route('addresses.index') }}">
+                                <i class="fa fa-@lang('site::address.icon')"></i> @lang('site::address.addresses')
                             </a>
                         @endif
                         @endadmin()

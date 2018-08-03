@@ -61,4 +61,14 @@ class Contragent extends Model
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Организация
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class);
+    }
+
 }

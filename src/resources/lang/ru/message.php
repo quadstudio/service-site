@@ -1,6 +1,6 @@
 <?php
 return [
-    'message'  => 'Сообщение',
+    'message'  => 'сообщение',
     'messages' => 'Сообщения',
     'icon' => 'comment',
 ];

@@ -44,7 +44,7 @@
                             <a class="nav-link" href="{{ route('services') }}">@lang('site::service.services')</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('contacts') }}">@lang('site::messages.contacts')</a>
+                            <a class="nav-link" href="{{ route('feedback') }}">@lang('site::messages.feedback')</a>
                         </li>
                     </ul>
                 </div>
@@ -71,7 +71,7 @@
                 <li><a href="{{ route('catalogs.index') }}" class="menuprinc">@lang('site::catalog.catalogs')</a></li>
                 <li><a href="{{ route('datasheets') }}" class="menuprinc">@lang('site::datasheet.datasheets')</a></li>
                 <li><a href="{{ route('services') }}">@lang('site::service.services')</a></li>
-                <li><a href="{{ route('contacts') }}">@lang('site::messages.contacts')</a></li>
+                <li><a href="{{ route('feedback') }}">@lang('site::messages.feedback')</a></li>
             </ul>
         </div>
 

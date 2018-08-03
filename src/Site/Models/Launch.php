@@ -2,6 +2,7 @@
 
 namespace QuadStudio\Service\Site\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Launch extends Model
@@ -47,6 +48,11 @@ class Launch extends Model
     public function repairs()
     {
         return $this->hasMany(Repair::class);
+    }
+
+    public function document_date()
+    {
+        return !is_null($this->document_date) ? Carbon::instance(\DateTime::createFromFormat('Y-m-d', $this->document_date))->format('d.m.Y') : '';
     }
 
     /**

@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 use QuadStudio\Online\OnlineChecker;
 use QuadStudio\Rbac\Traits\Models\RbacUserTrait;
 
@@ -20,7 +21,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name', 'email', 'password', 'sc', 'web',
-        'display', 'type_id', 'active',
+        'display', 'type_id', 'active', 'image_id',
         'warehouse_id', 'price_type_id', 'currency_id',
     ];
 
@@ -49,6 +50,28 @@ class User extends Authenticatable
 //        });
     }
 
+    /**
+     * @return string
+     */
+    public function getLogoAttribute()
+    {
+        if (is_null($this->image_id)) {
+            return Storage::disk('logo')->url('default.png');
+        }
+
+        return Storage::disk($this->image->storage)->url($this->image->path);
+    }
+
+    /**
+     * Логотип
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function image()
+    {
+        return $this->belongsTo(Image::class);
+    }
+
     public function can_export()
     {
         return is_null($this->guid);
@@ -65,14 +88,21 @@ class User extends Authenticatable
         return !is_null($this->logged_at) ? Carbon::instance(\DateTime::createFromFormat('Y-m-d H:i:s', $this->logged_at))->format('d.m.Y H:i') : '';
     }
 
-    /**
-     * Контакты
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\hasMany
-     */
-    public function contacts()
+    public function addresses_count()
     {
-        return $this->hasMany(Contact::class);
+        return $this->addresses()->count() + Address::where(function ($query) {
+                $query->whereAddressableType('contragents')->whereIn('addressable_id', $this->contragents->pluck('id'));
+            })->count();
+    }
+
+    /**
+     * Адреса
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function addresses()
+    {
+        return $this->morphMany(Address::class, 'addressable');
     }
 
     /**
@@ -91,22 +121,24 @@ class User extends Authenticatable
         return $this->contacts()->where('type_id', 2)->first();
     }
 
-    public function sc_phones(){
-        $phones = collect([]);
-        foreach ($this->contacts()->where('type_id', 2)->get() as $contact){
-            $phones = $phones->merge($contact->phones);
-        }
-        return $phones;
+    /**
+     * Контакты
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class);
     }
 
-    /**
-     * Адреса
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function addresses()
+    public function sc_phones()
     {
-        return $this->morphMany(Address::class, 'addressable');
+        $phones = collect([]);
+        foreach ($this->contacts()->where('type_id', 2)->get() as $contact) {
+            $phones = $phones->merge($contact->phones);
+        }
+
+        return $phones;
     }
 
     /**
@@ -219,6 +251,27 @@ class User extends Authenticatable
     {
         return $this->hasMany(File::class);
     }
+
+    /**
+     * Отправленные сообщения
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function outbox()
+    {
+        return $this->hasMany(Message::class);
+    }
+
+    /**
+     * Полученные сообщения
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function inbox()
+    {
+        return $this->hasMany(Message::class, 'receiver_id');
+    }
+
 
     /**
      * Check user online status

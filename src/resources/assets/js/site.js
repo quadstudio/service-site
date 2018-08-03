@@ -313,6 +313,34 @@
                 //form.submit();
             }
         })
+        .on('change', '#change-user-logo', function () {
+
+            let
+                form = $(this).parents('form'),
+                logo = $('#user-logo'),
+                fd = new FormData(),
+                path = form.find('[name="path"]')[0].files[0],
+                storage = form.find('[name="storage"]')[0].value,
+                action = form.attr('action');
+            fd.append('path', path);
+            fd.append('storage', storage);
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: action,
+                type: 'POST',
+                data: fd,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    logo.attr('src', response.src);
+                },
+            });
+        })
         .on('click', '.image-upload', function () {
 
             let

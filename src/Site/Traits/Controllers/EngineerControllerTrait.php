@@ -43,9 +43,10 @@ trait EngineerControllerTrait
     {
         $this->engineers->applyFilter(new BelongsUserFilter());
         $this->engineers->trackFilter();
+
         return view('site::engineer.index', [
             'repository' => $this->engineers,
-            'items'      => $this->engineers->paginate(config('site.per_page.engineer', 10), [env('DB_PREFIX', '') . 'engineers.*'])
+            'engineers'  => $this->engineers->paginate(config('site.per_page.engineer', 10), [env('DB_PREFIX', '') . 'engineers.*'])
         ]);
     }
 

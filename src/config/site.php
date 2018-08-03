@@ -16,7 +16,7 @@ return [
         'index',
         'login',
         'register',
-        'contacts',
+        'feedback',
         'services',
         'datasheets',
         'catalogs.index',
@@ -45,8 +45,8 @@ return [
         'serial'       => 10,
         'period'       => 10,
         'order'        => 10,
-        'product'      => 20,
-        'product_type' => 20,
+        'product'      => 12,
+        'product_type' => 10,
     ],
 
     'run'       => [
@@ -70,6 +70,21 @@ return [
             'canvas' => [
                 'width'  => 500,
                 'height' => 500
+            ],
+        ],
+
+    ],
+
+    'logo' => [
+        'mime' => 'jpg,jpeg',
+        'size' => [
+            'image'  => [
+                'width'  => 200,
+                'height' => 200
+            ],
+            'canvas' => [
+                'width'  => 200,
+                'height' => 200
             ],
         ],
 

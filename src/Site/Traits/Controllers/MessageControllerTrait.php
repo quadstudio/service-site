@@ -29,9 +29,10 @@ trait MessageControllerTrait
     {
 
         $this->messages->trackFilter();
+
         return view('site::message.index', [
             'repository' => $this->messages,
-            'items'      => $this->messages->paginate(config('site.per_page.message', 10), [env('DB_PREFIX', '').'messages.*'])
+            'messages'      => $this->messages->paginate(config('site.per_page.message', 10), [env('DB_PREFIX', '').'messages.*'])
         ]);
     }
 

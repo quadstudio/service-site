@@ -3,6 +3,7 @@
 namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Message extends Model
 {
@@ -31,6 +32,11 @@ class Message extends Model
     public function messagable()
     {
         return $this->morphTo();
+    }
+
+    public function created_at($time = false)
+    {
+        return !is_null($this->created_at) ? Carbon::instance($this->created_at)->format('d.m.Y' . ($time === true ? ' H:i' : '')) : '';
     }
 
     /**

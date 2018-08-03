@@ -2,6 +2,7 @@
 return [
     'address'     => 'Адрес',
     'addresses'   => 'Адреса',
+    'icon'        => 'map-marker',
     //
     'country_id'  => 'Страна',
     'region_id'   => 'Регион',

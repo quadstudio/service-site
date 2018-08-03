@@ -51,12 +51,12 @@ class Register extends FormRequest
                     'phone.contact.extra'       => 'max:20',
 
                     //
-                    'address.sc.country_id'   => 'required|exists:' . $prefix . 'countries,id',
-                    'address.sc.region_id'    => 'sometimes|exists:' . $prefix . 'regions,id',
-                    'address.sc.locality'     => 'required|string|max:255',
-                    'address.sc.street'       => 'sometimes|max:255',
-                    'address.sc.building'     => 'required|string|max:255',
-                    'address.sc.apartment'    => 'sometimes|max:255',
+                    'address.sc.country_id'     => 'required|exists:' . $prefix . 'countries,id',
+                    'address.sc.region_id'      => 'sometimes|exists:' . $prefix . 'regions,id',
+                    'address.sc.locality'       => 'required|string|max:255',
+                    'address.sc.street'         => 'sometimes|max:255',
+                    'address.sc.building'       => 'required|string|max:255',
+                    'address.sc.apartment'      => 'sometimes|max:255',
                     //
                     'phone.sc.country_id'       => 'required|exists:' . $prefix . 'countries,id',
                     'phone.sc.number'           => 'required|numeric|digits:10',
@@ -135,6 +135,7 @@ class Register extends FormRequest
     {
         return [
             'contragent.inn.regex'       => trans('site::contragent.placeholder.inn'),
+            'contragent.inn.unique'      => trans('site::contragent.error.inn.unique'),
             'contragent.ogrn.regex'      => trans('site::contragent.placeholder.ogrn'),
             'contragent.okpo.regex'      => trans('site::contragent.placeholder.okpo'),
             'contragent.kpp.required_if' => trans('site::contragent.placeholder.kpp'),
@@ -149,9 +150,9 @@ class Register extends FormRequest
     public function attributes()
     {
         return [
-            'name'     => trans('site::user.name'),
-            'email'    => trans('site::user.email'),
-            'password' => trans('site::user.password'),
+            'name'                      => trans('site::user.name'),
+            'email'                     => trans('site::user.email'),
+            'password'                  => trans('site::user.password'),
             'type_id'                   => trans('site::user.type_id'),
             //
             'contact.name'              => trans('site::contact.name'),
@@ -181,12 +182,12 @@ class Register extends FormRequest
             'contragent.bank'           => trans('site::contragent.bank'),
             'contragent.nds'            => trans('site::contragent.nds'),
             //
-            'address.sc.country_id'   => trans('site::address.country_id'),
-            'address.sc.region_id'    => trans('site::address.region_id'),
-            'address.sc.locality'     => trans('site::address.locality'),
-            'address.sc.street'       => trans('site::address.street'),
-            'address.sc.building'     => trans('site::address.building'),
-            'address.sc.apartment'    => trans('site::address.apartment'),
+            'address.sc.country_id'     => trans('site::address.country_id'),
+            'address.sc.region_id'      => trans('site::address.region_id'),
+            'address.sc.locality'       => trans('site::address.locality'),
+            'address.sc.street'         => trans('site::address.street'),
+            'address.sc.building'       => trans('site::address.building'),
+            'address.sc.apartment'      => trans('site::address.apartment'),
             //
             'address.legal.country_id'  => trans('site::address.country_id'),
             'address.legal.region_id'   => trans('site::address.region_id'),

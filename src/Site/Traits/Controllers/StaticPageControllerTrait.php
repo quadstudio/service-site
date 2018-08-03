@@ -19,13 +19,13 @@ trait StaticPageControllerTrait
      *
      * @return \Illuminate\Http\Response
      */
-    public function contacts()
+    public function feedback()
     {
-        return view('site::static.contacts');
+        return view('site::static.feedback');
     }
 
     public function message(){
-        return redirect()->route('contacts')->with('success', trans('Сообщение отправлено'));
+        return redirect()->route('feedback')->with('success', trans('Сообщение отправлено'));
     }
 
 }

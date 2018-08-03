@@ -58,8 +58,8 @@ class Site
                     $router->get('/datasheets', 'DatasheetController@index')->name('datasheets');
 
                     // Static pages
-                    $router->get('/contacts', 'StaticPageController@contacts')->name('contacts');
-                    $router->post('/contacts', 'StaticPageController@message')->name('message');
+                    $router->get('/feedback', 'StaticPageController@feedback')->name('feedback');
+                    $router->post('/feedback', 'StaticPageController@message')->name('message');
 
                     $router->get('/currencies/refresh/{id?}', function ($id = null, \QuadStudio\Service\Site\Contracts\Exchange $exchange) {
                         foreach (config('site.update', []) as $update_id) {
@@ -76,6 +76,7 @@ class Site
                     $router->group(['middleware' => ['auth']],
                         function () use ($router) {
                             $router->get('/home', 'HomeController@index')->name('home');
+                            $router->post('/home/logo', 'HomeController@logo')->name('home.logo');
                             $router->resource('/acts', 'ActController')->middleware('permission:acts');
                             $router->resource('/orders', 'OrderController')->only(['index', 'show', 'store'])->middleware('permission:orders');
                             $router->resource('/repairs', 'RepairController')->middleware('permission:repairs');
@@ -85,6 +86,9 @@ class Site
                             $router->resource('/launches', 'LaunchController')->middleware('permission:launches');
                             $router->resource('/costs', 'CostController')->middleware('permission:costs');
                             $router->resource('/contragents', 'ContragentController')->middleware('permission:contragents');
+                            $router->resource('/contacts', 'ContactController')->middleware('permission:contacts');
+                            $router->resource('/addresses', 'AddressController')->middleware('permission:addresses');
+                            $router->resource('/messages', 'MessageController')->middleware('permission:messages');
                             // Cart
                             $router->get('/cart', 'CartController@index')->name('cart');
                             $router->post('/cart/add', 'CartController@add')->name('buy');
