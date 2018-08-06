@@ -11,7 +11,7 @@
             </li>
             <li class="breadcrumb-item active">@lang('site::order.breadcrumb_show', ['order' => $order->id, 'date' => $order->created_at->format(config('shop.time_format', 'd.m.Y H:i')) ])</li>
         </ol>
-        <h1 class="header-titlemb-4">@lang('site::order.order') № {{ $order->id }}</h1>
+        <h1 class="header-title mb-4">@lang('site::order.order') № {{ $order->id }}</h1>
         <hr/>
         <div class="row">
             <div class="col-12 col-md-4">

@@ -2,36 +2,49 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers\Api;
 
-use QuadStudio\Service\Site\Filters\PartSearchFilter;
-use QuadStudio\Service\Site\Filters\PartSerialSearchFilter;
+use QuadStudio\Service\Site\Filters\SearchFilter;
+use QuadStudio\Service\Site\Filters\SerialSearchFilter;
 use QuadStudio\Service\Site\Http\Resources\PartCollection;
 use QuadStudio\Service\Site\Http\Resources\PartResource;
+use QuadStudio\Service\Site\Repositories\PartRepository;
+use QuadStudio\Service\Site\Models\Part;
 use QuadStudio\Service\Site\Models\Product;
-use QuadStudio\Service\Site\Repositories\ProductRepository;
+
 
 trait PartControllerTrait
 {
-    protected $products;
+    protected $parts;
 
     /**
      * Create a new controller instance.
      *
-     * @param ProductRepository $products
+     * @param PartRepository $products
      */
-    public function __construct(ProductRepository $products)
+    public function __construct(PartRepository $parts)
     {
-        $this->products = $products;
+        $this->parts = $parts;
     }
 
     /**
      * @return PartCollection
      */
-    public function index()
+    public function serial()
     {
-        $this->products->applyFilter(new PartSearchFilter());
-        $this->products->applyFilter(new PartSerialSearchFilter());
+        $this->parts->applyFilter(new SearchFilter());
+        $this->parts->applyFilter(new SerialSearchFilter());
 
-        return new PartCollection($this->products->all());
+        return new PartCollection($this->parts->all());
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param Part $part
+     * @return PartResource
+     */
+    public function show(Part $part)
+    {
+        return new PartResource($part);
     }
 
     /**
@@ -40,8 +53,8 @@ trait PartControllerTrait
      * @param Product $product
      * @return PartResource
      */
-    public function show(Product $product)
+    public function repair(Product $product)
     {
-        return new PartResource($product);
+        return view('site::part.repair.row', compact('product'));
     }
 }

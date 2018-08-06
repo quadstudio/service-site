@@ -1,12 +1,12 @@
 <?php
 
-namespace QuadStudio\Service\Site\Filters;
+namespace QuadStudio\Service\Site\Filters\Product;
 
 use QuadStudio\Repo\Contracts\RepositoryInterface;
 use QuadStudio\Repo\Filters\BootstrapInput;
 use QuadStudio\Repo\Filters\SearchFilter;
 
-class PartSerialSearchFilter extends SearchFilter
+class SerialSearchFilter extends SearchFilter
 {
 
     use BootstrapInput;

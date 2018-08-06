@@ -101,6 +101,9 @@ class Repair extends Model
      */
     public function cost_work()
     {
+        if ($this->allow_work == 0) {
+            return 0;
+        }
         switch ($this->getAttribute('status_id')) {
             case 5:
             case 6:
@@ -121,6 +124,9 @@ class Repair extends Model
      */
     public function cost_road()
     {
+        if ($this->allow_road == 0) {
+            return 0;
+        }
         switch ($this->getAttribute('status_id')) {
             case 5:
             case 6:
@@ -142,6 +148,10 @@ class Repair extends Model
      */
     public function cost_parts()
     {
+        if ($this->allow_parts == 0) {
+            return 0;
+        }
+
         return $this->parts->sum('total');
     }
 

@@ -9,10 +9,10 @@
             <li class="breadcrumb-item">
                 <a href="{{ route('admin') }}">@lang('site::messages.admin')</a>
             </li>
-            <li class="breadcrumb-item active">@lang('site::engineer.engineers')</li>
+            <li class="breadcrumb-item active">@lang('site::trade.trades')</li>
         </ol>
         <h1 class="header-title mb-4"><i
-                    class="fa fa-@lang('site::engineer.icon')"></i> @lang('site::engineer.engineers')</h1>
+                    class="fa fa-@lang('site::trade.icon')"></i> @lang('site::trade.trades')</h1>
 
         @alert()@endalert
         <div class="display-1">В РАЗРАБОТКЕ</div>
@@ -20,7 +20,7 @@
         {{--<div class="row">--}}
             {{--<div class="col mb-2">--}}
                 {{--<nav class="nav nav-pills flex-column flex-sm-row">--}}
-                    {{--<a class="flex-sm text-sm-center nav-link btn-success" href="{{ route('engineers.create') }}"--}}
+                    {{--<a class="flex-sm text-sm-center nav-link btn-success" href="{{ route('trades.create') }}"--}}
                        {{--role="button">--}}
                         {{--<i class="fa fa-plus"></i>--}}
                         {{--<span>@lang('site::messages.add')</span>--}}
@@ -37,15 +37,15 @@
                     {{--<thead>--}}
                     {{--<tr>--}}
                         {{--<th scope="col"></th>--}}
-                        {{--<th scope="col">@lang('site::engineer.name')</th>--}}
-                        {{--<th scope="col" class="d-none d-sm-table-cell">@lang('site::engineer.country_id')</th>--}}
-                        {{--<th scope="col" class="d-none d-sm-table-cell">@lang('site::engineer.phone')</th>--}}
-                        {{--<th scope="col" class="d-none d-md-table-cell">@lang('site::engineer.address')</th>--}}
+                        {{--<th scope="col">@lang('site::trade.name')</th>--}}
+                        {{--<th scope="col" class="d-none d-sm-table-cell">@lang('site::trade.country_id')</th>--}}
+                        {{--<th scope="col" class="d-none d-sm-table-cell">@lang('site::trade.phone')</th>--}}
+                        {{--<th scope="col" class="d-none d-md-table-cell">@lang('site::trade.address')</th>--}}
                         {{--<th scope="col"></th>--}}
                     {{--</tr>--}}
                     {{--</thead>--}}
                     {{--<tbody>--}}
-                    {{--@each('site::engineer.row', $items, 'item')--}}
+                    {{--@each('site::trade.row', $items, 'item')--}}
                     {{--</tbody>--}}
                 {{--</table>--}}
                 {{--{{$items->render()}}--}}

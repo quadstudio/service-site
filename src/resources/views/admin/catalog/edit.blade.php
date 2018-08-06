@@ -16,7 +16,7 @@
             @endforeach
             <li class="breadcrumb-item active">@lang('site::messages.edit')</li>
         </ol>
-        <h1 class="header-titlemb-4">@lang('site::messages.edit') {{ $catalog->name }}</h1>
+        <h1 class="header-title mb-4">@lang('site::messages.edit') {{ $catalog->name }}</h1>
         <hr/>
 
         @alert()@endalert

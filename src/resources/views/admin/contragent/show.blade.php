@@ -14,7 +14,7 @@
             </li>
             <li class="breadcrumb-item active">{{ $contragent->name }}</li>
         </ol>
-        <h1 class="header-titlemb-4"><i
+        <h1 class="header-title mb-4"><i
                     class="fa fa-@lang('site::contragent.icon')"></i> {{ $contragent->name }}</h1>
         <div class="row">
             <div class="col mt-2">

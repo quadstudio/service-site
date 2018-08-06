@@ -9,9 +9,9 @@
             <li class="breadcrumb-item">
                 <a href="{{ route('repairs.index') }}">@lang('site::repair.repairs')</a>
             </li>
-            <li class="breadcrumb-item active">@lang('site::messages.create')</li>
+            <li class="breadcrumb-item active">@lang('site::messages.add')</li>
         </ol>
-        <h1 class="header-title mb-4">@lang('site::messages.create') @lang('site::repair.repair')</h1>
+        <h1 class="header-title mb-4">@lang('site::messages.add') @lang('site::repair.repair')</h1>
 
         @alert()@endalert()
 
@@ -25,6 +25,12 @@
                     @csrf
                     <div class="form-row">
                         <div class="col mb-3">
+                            <div class="alert alert-info mb-2 " role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                @lang('site::repair.help.serial_id')
+                            </div>
 
                             <div class="input-group">
 
@@ -40,7 +46,7 @@
                                         <i class="fa fa-check-circle"></i> @lang('site::messages.check')
                                     </button>
                                 </div>
-                                <span class="invalid-feedback">{{ $errors->first('serial_id') }}</span>
+                                {{--                                <span class="invalid-feedback">{{ $errors->first('serial_id') }}</span>--}}
                                 <span class="invalid-feedback"><i
                                             class="fa fa-close"></i> {{ trans('site::repair.error.serial_id') }}</span>
                             </div>
@@ -77,10 +83,6 @@
                                         <td class="text-right"><b>@lang('site::equipment.cost_road')</b></td>
                                         <td class="serial-cost_road"></td>
                                     </tr>
-                                    <tr>
-                                        <td class="text-right"><b>@lang('site::equipment.currency_id')</b></td>
-                                        <td class="serial-currency"></td>
-                                    </tr>
                                     </tbody>
                                 </table>
                                 <hr>
@@ -93,12 +95,10 @@
                                 <p class="mb-0">Если вы уверены, что серийный номер правильный - обратитесь к
                                     менеджеру</p>
                             </div>
-                            <small id="serialHelp"
-                                   class="d-block form-text text-muted">@lang('site::repair.help.serial_id')</small>
                         </div>
                     </div>
 
-                    <fieldset disabled>
+                    <fieldset @if(!old('serial_id')) style="display: none" @endif>
                         <div class="card mt-2 mb-2">
                             <div class="card-body">
                                 <h5 class="card-title">@lang('site::repair.header.repair')</h5>
@@ -109,7 +109,7 @@
                                            name="number"
                                            class="form-control{{ $errors->has('number') ? ' is-invalid' : '' }}"
                                            value="{{ old('number') }}"
-                                           required
+
                                            placeholder="@lang('site::repair.placeholder.number')">
                                     <span class="invalid-feedback">{{ $errors->first('number') }}</span>
                                 </div>
@@ -212,7 +212,7 @@
                             </div>
                         </div>
 
-                        {{-- ОРГАНИЗАЦИИ --}}
+                        {{--ОРГАНИЗАЦИИ --}}
 
                         <div class="card mt-2 mb-2">
                             <div class="card-body">
@@ -241,7 +241,7 @@
                             </div>
                         </div>
 
-                        {{-- ВЫЕЗД НА ОБСЛУЖИВАНИЕ --}}
+                        {{--ВЫЕЗД НА ОБСЛУЖИВАНИЕ --}}
 
                         <div class="card mt-2 mb-2">
                             <div class="card-body">
@@ -290,139 +290,139 @@
                                            value="{{ old('date_repair') }}" required>
                                     <span class="invalid-feedback">{{ $errors->first('date_repair') }}</span>
                                 </div>
-
-                                <div class="form-row">
-                                    <div class="col mb-3">
-
-                                        <div class="custom-control custom-checkbox">
-                                            <input name="allow_work"
-                                                   type="checkbox"
-                                                   @if(old('allow_work')) checked @endif
-                                                   class="custom-control-input"
-                                                   value="1"
-                                                   id="allow_work">
-                                            <input type="hidden" name="cost_work" class="serial-cost_work" value="">
-                                            <label class="custom-control-label"
-                                                   for="allow_work">@lang('site::repair.allow_work') (<span
-                                                        class="serial-cost_work">0</span>)</label>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="col mb-3">
-
-                                        <div class="custom-control custom-checkbox">
-                                            <input name="allow_road"
-                                                   type="checkbox"
-                                                   @if(old('allow_road')) checked @endif
-                                                   class="custom-control-input"
-                                                   value="1"
-                                                   id="allow_road">
-                                            <input type="hidden" name="cost_work" class="serial-cost_road-value"
-                                                   value="">
-                                            <label class="custom-control-label"
-                                                   for="allow_road">@lang('site::repair.allow_road') (<span
-                                                        class="serial-cost_work">0</span>)</label>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="col mb-3">
-
-                                        <div class="custom-control custom-checkbox">
-                                            <input name="allow_parts"
-                                                   type="checkbox"
-                                                   @if(old('allow_parts')) checked @endif
-                                                   class="custom-control-input"
-                                                   value="1"
-                                                   id="allow_parts">
-                                            <label class="custom-control-label"
-                                                   for="allow_parts">@lang('site::repair.allow_parts')</label>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
+                            </div>
+                        </div>
+                        <div class="card mt-2 mb-2">
+                            <div class="card-body">
+                                <h5 class="card-title">@lang('site::repair.header.payment')</h5>
+                                {{-- РАБОТА --}}
+                                <div class="form-group required">
                                     <label class="control-label"
-                                           for="parts_search">Найти замененную деталь</label>
-                                    <select style="width:100%" class="form-control" id="parts_search" disabled>
-                                        <option value=""></option>
+                                           for="allow_work">@lang('site::repair.allow_work')</label>
+                                    <select class="form-control{{  $errors->has('allow_work') ? ' is-invalid' : '' }}"
+                                            required
+                                            name="allow_work"
+                                            id="allow_work">
+                                        <option value="">@lang('site::messages.select_from_list')</option>
+
+                                        <option @if(old('allow_work') === 0 ) selected @endif
+                                        value="0">@lang('site::messages.no')</option>
+                                        <option @if(old('allow_work') === 1 ) selected @endif
+                                        value="1">@lang('site::messages.yes')</option>
+
                                     </select>
-                                    <small id="partsHelp"
-                                           class="d-block form-text text-success">Введите артикул или наименование
-                                        заменённой детали и выберите её из списка
-                                    </small>
+                                    <span class="invalid-feedback">{{ $errors->first('allow_work') }}</span>
+                                </div>
+                                {{-- ДОРОГА --}}
+                                <div class="form-group required">
+                                    <label class="control-label"
+                                           for="allow_road">@lang('site::repair.allow_road')</label>
+                                    <select class="form-control{{  $errors->has('allow_road') ? ' is-invalid' : '' }}"
+                                            required
+                                            name="allow_road"
+                                            id="allow_road">
+                                        <option value="">@lang('site::messages.select_from_list')</option>
+
+                                        <option @if(old('allow_road') === 0 ) selected @endif
+                                        value="0">@lang('site::messages.no')</option>
+                                        <option @if(old('allow_road') === 1 ) selected @endif
+                                        value="1">@lang('site::messages.yes')</option>
+
+                                    </select>
+                                    <span class="invalid-feedback">{{ $errors->first('allow_road') }}</span>
+                                </div>
+                                {{-- ЗАПЧАСТИ --}}
+                                <div class="form-group required">
+                                    <label class="control-label"
+                                           for="allow_parts">@lang('site::repair.allow_parts')</label>
+                                    <select class="form-control{{  $errors->has('allow_parts') ? ' is-invalid' : '' }}"
+                                            required
+                                            name="allow_parts"
+                                            id="allow_parts">
+                                        <option @if(old('allow_parts') === 0 ) selected @endif
+                                        value="0">@lang('site::messages.no')</option>
+                                        <option @if(!old('allow_parts') || old('allow_parts') === 1 ) selected @endif
+                                        value="1">@lang('site::messages.yes')</option>
+
+                                    </select>
+                                    <span class="invalid-feedback">{{ $errors->first('allow_parts') }}</span>
                                 </div>
 
-                                <div class="form-row">
-                                    <div class="col my-3">
+                                <fieldset id="parts-search-fieldset"
+                                          style="display: @if(old('serial_id') && ( !old('allow_parts') || old('allow_parts') === 1)) block @else none @endif;">
+                                    <div class="form-group">
                                         <label class="control-label"
-                                               for="">Замененные детали</label>
-                                        <table class="table table-sm table-bordered table-hover">
-                                            <thead>
-                                            <tr>
-                                                <th scope="col">@lang('site::product.sku')</th>
-                                                <th scope="col">@lang('site::product.name')</th>
-                                                <th scope="col">@lang('site::product.quantity')</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody id="parts">
-                                            @if(old('parts'))
-                                                @foreach(old('parts') as $part_id => $part)
-                                                    <tr>
-                                                        <td>{{$part['sku']}}</td>
-                                                        <td>{{$part['name']}}</td>
-                                                        <td>
-                                                            <input type="hidden" name="parts[{{$part_id}}][product_id]"
-                                                                   value="{{$part_id}}">
-                                                            <input name="parts[{{$part_id}}][count]"
-                                                                   placeholder="Количество"
-                                                                   class="form-control"
-                                                                   type="number" min="1" max="5" maxlength="1" title=""
-                                                                   value="1">
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            @else
+                                               for="parts_search">Найти замененную деталь</label>
+                                        <select style="width:100%" class="form-control" id="parts_search">
+                                            <option value=""></option>
+                                        </select>
+                                        <span class="invalid-feedback">Такая деталь ужде есть в списке</span>
+                                        <small id="partsHelp"
+                                               class="d-block form-text text-success">Введите артикул или наименование
+                                            заменённой детали и выберите её из списка
+                                        </small>
+
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="col my-3">
+                                            <label class="control-label"
+                                                   for="">@lang('site::part.parts')</label>
+                                            <table class="table table-sm table-bordered table-hover">
+                                                <thead>
                                                 <tr>
-                                                    <td>39819810</td>
-                                                    <td>Теплообменник первичный (основной)</td>
-                                                    <td>
-                                                        <input type="hidden" name="parts[00030493][product_id]"
-                                                               value="00030493">
-                                                        <input name="parts[00030493][count]" placeholder="Количество"
-                                                               class="form-control"
-                                                               type="number" min="1" max="5" maxlength="1" title=""
-                                                               value="1">
+                                                    <th scope="col" class="text-center">@lang('site::product.sku')</th>
+                                                    <th scope="col">@lang('site::part.product_id')</th>
+                                                    <th scope="col" class="text-right">~ @lang('site::part.cost')</th>
+                                                    <th scope="col" class="text-center">@lang('site::part.count')</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="parts">
+
+                                                @foreach($parts as $part)
+                                                    @include('site::part.repair.row', [
+                                                        'product_id' => $part['product_id'],
+                                                        'sku' => $part['sku'],
+                                                        'name' => $part['name'],
+                                                        'cost' => $part['cost'],
+                                                        'format' => $part['format'],
+                                                        'count' => $part['count'],
+                                                    ])
+                                                @endforeach
+
+                                                </tbody>
+                                                <tfoot>
+                                                <tr>
+                                                    <td colspan="2" class="text-right">@lang('site::part.total')</td>
+                                                    <td class="text-right">
+                                                        @if(!$parts->isEmpty())
+                                                            <span id="total-cost">
+                                                        {{Site::format($parts->sum('cost'))}}
+                                                        </span>
+                                                        @else
+                                                            {{Site::currency()->symbol_left}}
+                                                            <span id="total-cost">0</span>
+                                                            {{Site::currency()->symbol_right}}
+                                                        @endif
+                                                    </td>
+                                                    <td class="text-center" id="total-count">
+                                                        @if(!$parts->isEmpty())
+                                                            {{$parts->sum('count')}}
+                                                        @else
+                                                            0
+                                                        @endif
                                                     </td>
                                                 </tr>
-                                            @endif
-
-                                            </tbody>
-                                        </table>
+                                                </tfoot>
+                                            </table>
+                                        </div>
                                     </div>
-                                </div>
-                                {{--<small id="serialHelp"--}}
-                                {{--class="d-block form-text text-muted">@lang('site::repair.help.serial')</small>--}}
-
-                                {{--<div class="form-group">--}}
-                                {{--<label class="control-label"--}}
-                                {{--for="parts">Поиск запчастей</label>--}}
-                                {{--<input class="form-control"--}}
-                                {{--required disabled--}}
-                                {{--data-url="{{route('api.products.index')}}"--}}
-                                {{--placeholder="@lang('site::repair.help.product_select')"--}}
-                                {{--id="parts" />--}}
-                                {{--<span class="invalid-feedback">{{ $errors->first('country_id') }}</span>--}}
-                                {{--</div>--}}
+                                </fieldset>
                             </div>
                         </div>
                     </fieldset>
                 </form>
-                <fieldset disabled>
+                <fieldset @if(!old('serial_id')) style="display: none" @endif>
                     <div class="card mt-2 mb-2">
                         <div class="card-body">
                             <h5 class="card-title">@lang('site::file.files')</h5>
@@ -458,25 +458,26 @@
                         </div>
                     </div>
                 </fieldset>
-                <div class="form-row">
-                    <div class="col text-right">
-                        <button name="_create" form="repair-create-form" value="1" type="submit"
-                                class="btn btn-ferroli mb-1">
-                            <i class="fa fa-check"></i>
-                            <span>@lang('site::messages.save_add')</span>
-                        </button>
-                        <button name="_create" form="repair-create-form" value="0" type="submit"
-                                class="btn btn-ferroli mb-1">
-                            <i class="fa fa-check"></i>
-                            <span>@lang('site::messages.save')</span>
-                        </button>
-                        <a href="{{ route('repairs.index') }}" class="btn btn-secondary mb-1">
-                            <i class="fa fa-close"></i>
-                            <span>@lang('site::messages.cancel')</span>
-                        </a>
+                <fieldset @if(!old('serial_id')) style="display: none" @endif>
+                    <div class="form-row">
+                        <div class="col text-right">
+                            <button name="_create" form="repair-create-form" value="1" type="submit"
+                                    class="btn btn-ferroli mb-1">
+                                <i class="fa fa-check"></i>
+                                <span>@lang('site::messages.save_add')</span>
+                            </button>
+                            <button name="_create" form="repair-create-form" value="0" type="submit"
+                                    class="btn btn-ferroli mb-1">
+                                <i class="fa fa-check"></i>
+                                <span>@lang('site::messages.save')</span>
+                            </button>
+                            <a href="{{ route('repairs.index') }}" class="btn btn-secondary mb-1">
+                                <i class="fa fa-close"></i>
+                                <span>@lang('site::messages.cancel')</span>
+                            </a>
+                        </div>
                     </div>
-
-                </div>
+                </fieldset>
             </div>
         </div>
     </div>

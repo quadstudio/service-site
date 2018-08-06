@@ -41,9 +41,9 @@ trait TradeControllerTrait
 
         $this->trades->trackFilter();
 
-        return view('site::trade.index', [
+        return view('site::admin.trade.index', [
             'repository' => $this->trades,
-            'items'      => $this->trades->paginate(config('site.per_page.trade', 10), [env('DB_PREFIX', '') . 'trades.*'])
+            'trades'      => $this->trades->paginate(config('site.per_page.trade', 10), [env('DB_PREFIX', '') . 'trades.*'])
         ]);
     }
 

@@ -11,7 +11,7 @@
             </li>
             <li class="breadcrumb-item active">@lang('site::serial.serials')</li>
         </ol>
-        <h1 class="header-titlemb-4"><i class="fa fa-@lang('site::serial.icon')"></i> @lang('site::serial.serials')</h1>
-
+        <h1 class="header-title mb-4"><i class="fa fa-@lang('site::serial.icon')"></i> @lang('site::serial.serials')</h1>
+        <div class="display-1">В РАЗРАБОТКЕ</div>
     </div>
 @endsection

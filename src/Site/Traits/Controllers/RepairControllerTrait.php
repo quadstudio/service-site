@@ -7,9 +7,9 @@ use QuadStudio\Service\Site\Filters\ByNameSortFilter;
 use QuadStudio\Service\Site\Filters\CountryEnabledFilter;
 use QuadStudio\Service\Site\Filters\CountrySortFilter;
 use QuadStudio\Service\Site\Filters\Repair\SortFilter;
-use QuadStudio\Service\Site\Filters\Repair\StatusFilter;
 use QuadStudio\Service\Site\Http\Requests\RepairRequest;
 use QuadStudio\Service\Site\Models\File;
+use QuadStudio\Service\Site\Models\Product;
 use QuadStudio\Service\Site\Models\Repair;
 use QuadStudio\Service\Site\Repositories\CountryRepository;
 use QuadStudio\Service\Site\Repositories\EngineerRepository;
@@ -137,9 +137,37 @@ trait RepairControllerTrait
             ->applyFilter(new CountrySortFilter())
             ->all();
         $types = $this->types->all();
+        $parts = $this->getParts($request);
         $files = $this->getFiles($request);
 
-        return view('site::repair.create', compact('engineers', 'trades', 'launches', 'countries', 'types', 'files'));
+        return view('site::repair.create', compact('engineers', 'trades', 'launches', 'countries', 'types', 'files', 'parts'));
+    }
+
+    /**
+     * @param RepairRequest $request
+     * @return \Illuminate\Support\Collection
+     */
+    private function getParts(RepairRequest $request)
+    {
+
+        $parts = collect([]);
+        $old = $request->old('parts');
+        if (!is_null($old) && is_array($old)) {
+
+            foreach ($old as $product_id => $values) {
+                $product = Product::findOrFail($values['product_id']);
+                $parts->put($product->id, collect([
+                    'product_id' => $product->id,
+                    'sku'        => $product->sku,
+                    'cost'       => $product->price()->exists ? $product->price()->price() : '',
+                    'format'       => $product->price()->exists ? $product->price()->format() : '',
+                    'name'       => $product->name,
+                    'count'      => $values['count'],
+                ]));
+            }
+        }
+
+        return $parts;
     }
 
     /**
@@ -171,13 +199,12 @@ trait RepairControllerTrait
     {
 
         $this->authorize('create', Repair::class);
-
-
         $request->user()->repairs()->save($repair = $this->repairs->create($request->except(['_token', '_method', '_create', 'file', 'parts'])));
-
         $this->setFiles($request, $repair);
-        $parts = collect($request->input('parts'))->values()->toArray();
-        $repair->parts()->createMany($parts);
+        if($request->input('allow_parts') == 1){
+            $parts = collect($request->input('parts'))->values()->toArray();
+            $repair->parts()->createMany($parts);
+        }
         $route = $request->input('_create') == 1 ? 'repairs.create' : 'repairs.index';
 
         return redirect()->route($route)->with('success', trans('site::repair.created'));

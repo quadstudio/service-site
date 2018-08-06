@@ -1,6 +1,6 @@
 <?php
 return [
-    'address'     => 'Адрес',
+    'address'     => 'адрес',
     'addresses'   => 'Адреса',
     'icon'        => 'map-marker',
     //

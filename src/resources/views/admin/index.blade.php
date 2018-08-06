@@ -8,7 +8,7 @@
             </li>
             <li class="breadcrumb-item active">@lang('site::messages.admin')</li>
         </ol>
-        <h1 class="header-titlemb-4"><i class="fa fa-dashboard"></i> @lang('site::messages.admin')</h1>
+        <h1 class="header-title mb-4"><i class="fa fa-dashboard"></i> @lang('site::messages.admin')</h1>
         <hr/>
         @alert()@endalert
         <div class="row">

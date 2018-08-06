@@ -11,7 +11,7 @@
         @endif
     </td>
     <td class="text-right">
-        <a href="{{ route('files.show', $datasheet->file) }}" class="btn btn-sm btn-success">
+        <a href="{{ route('files.show', $datasheet->file) }}" class="btn btn-sm btn-ferroli">
             @lang('site::messages.download')
         </a>
     </td>

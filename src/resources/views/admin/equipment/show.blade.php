@@ -16,7 +16,7 @@
             @endforeach
             <li class="breadcrumb-item active">{{ $equipment->name }}</li>
         </ol>
-        <h1 class="header-titlemb-4">{{ $equipment->name }}</h1>
+        <h1 class="header-title mb-4">{{ $equipment->name }}</h1>
         <hr/>
 
         @alert()@endalert

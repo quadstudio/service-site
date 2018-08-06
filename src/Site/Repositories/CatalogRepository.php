@@ -57,7 +57,7 @@ class CatalogRepository extends Repository
             $ref = &$refs[$r['id']];
             $ref = $r;
             $ref['can'] = [
-                //'addProduct' => $row->canAddProduct(),
+                'addEquipment' => $row->canAddEquipment(),
                 'addCatalog' => $row->canAddCatalog()
             ];
             $ref['equipments'] = $row->equipments->toArray();

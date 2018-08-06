@@ -1949,3 +1949,85 @@ a.cart-nav:hover {
 .border-transparent {
   border-color: transparent !important
 }
+
+/** Tree */
+.tree ul {
+  margin-left: 20px;
+  -webkit-padding-start: 20px;
+}
+
+.tree li {
+  list-style-type: none;
+  margin: 10px;
+  position: relative;
+}
+
+.tree li a::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: -10px;
+  border-left: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  border-radius: 0 0 0 0;
+  width: 10px;
+  height: 15px;
+}
+
+.tree li a::after {
+  position: absolute;
+  content: "";
+  top: 8px;
+  left: -10px;
+  border-left: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+  border-radius: 0 0 0 0;
+  width: 10px;
+  height: 100%;
+}
+
+.tree li:last-child::after {
+  display: none;
+}
+
+.tree li:last-child:before {
+  border-radius: 0 0 0 0;
+}
+
+/*.tree li:last-child a:after {*/
+/*border: none;*/
+/*}*/
+
+ul.tree > li:first-child::before {
+  display: none;
+}
+
+ul.tree > li:first-child::after {
+  border-radius: 0 0 0 0;
+}
+
+.tree li a {
+  border: 1px #ccc solid;
+  border-radius: 0;
+  padding: 2px 5px;
+}
+
+.tree li a:hover,
+.tree li a:hover ~ ul li a,
+.tree li a:focus,
+.tree li a:focus ~ ul li a {
+  background: $ferroli-color-light;
+  color: #fff;
+  border: 1px solid $ferroli-color;
+}
+
+.tree li a:hover + ul li::after,
+.tree li a:focus + ul li::after,
+.tree li a:hover + ul li::before,
+.tree li a:focus + ul li::before,
+.tree li a:hover + ul::before,
+.tree li a:focus + ul::before,
+.tree li a:hover + ul ul::before,
+.tree li a:focus + ul ul::before {
+  border-color: #007bff; /*connector color on hover*/
+}

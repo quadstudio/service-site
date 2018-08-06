@@ -7,7 +7,7 @@
         let myMap;
         let objectManager;
 
-        ymaps.ready(function() {
+        ymaps.ready(function () {
             myMap = new ymaps.Map('service-map', {
                 center: [55.76, 37.64],
                 zoom: 10,
@@ -68,9 +68,12 @@
             parts_search = $('#parts_search'),
             serial_success = $('#serial-success'),
             serial_error = $('#serial-error'),
+            parts_search_fieldset = $('#parts-search-fieldset'),
             parts = $('#parts'),
+            //parts_count = $('.parts_count'),
+            //parts_cost = $('.parts_cost'),
+            selected = [],
             value;
-
         serial.on('keyup change', function () {
             value = $(this).val();
             if (value.length >= 5) {
@@ -97,7 +100,8 @@
                     serial_success.show();
                     serial_error.hide();
                     button.prop("disabled", false);
-                    $('fieldset').prop("disabled", false);
+                    parts_search_fieldset.css('display', 'block');
+                    $('fieldset').css("display", 'block');
                     serial.addClass('is-valid').removeClass('is-invalid');
                 })
                 .catch((error) => {
@@ -109,29 +113,37 @@
                         catalog: '',
                         cost_work: '',
                         cost_road: '',
-                        currency: '',
                     }, function (index, data) {
                         success_serial_fill(index, data);
                     });
                     serial_success.hide();
                     serial_error.show();
+                    parts_search_fieldset.css('display', 'none');
                     serial.addClass('is-invalid').removeClass('is-valid');
-                    $('fieldset').prop("disabled", true);
+                    $('fieldset').css('display', 'none');
                 });
         });
 
         allow_parts.change(function () {
-            //let serial_valid = serial.hasClass('is-valid');
-            //let allow_parts_checked = allow_parts.is(':checked');
-            parts_search.prop('disabled', !allow_parts.is(':checked')); //!serial_valid ||
+            if ($(this).find('option:selected').val() === "0") {
+                parts_search.css('display', 'none');
+                parts.html('');
+                $('#total-cost').html(0);
+                $('#total-count').html(0);
+                selected = [];
+            } else {
+                parts_search.css('display', 'block');
+            }
+
         });
+
 
         parts_search.select2({
             theme: "bootstrap4",
             ajax: {
-                url: '/api/parts',
+                url: '/api/products',
                 dataType: 'json',
-                delay: 200,
+                // delay: 200,
                 data: function (params) {
                     return {
                         'filter[search_part]': params.term,
@@ -158,6 +170,84 @@
             escapeMarkup: function (markup) {
                 return markup;
             }
+        });
+
+        let calc_parts = function () {
+            let count = 0, cost = 0;
+            parts.find('tr').each(function (i) {
+                $(this).find('td .parts_cost').val();
+                $(this).find('td .parts_count').val();
+                count += parseInt($(this).find('td .parts_count').val());
+                cost += parseInt($(this).find('td .parts_cost').val()) * $(this).find('td .parts_count').val();
+            });
+            $('#total-count').html(count);
+            $('#total-cost').html(number_format(cost));
+        };
+
+        $(document)
+            .on('keyup mouseup', '.parts_count, .parts_cost', (function () {
+                calc_parts();
+            }));
+
+        let number_format = function (number, decimals, dec_point, thousands_sep) {	// Format a number with grouped thousands
+            //
+            // +   original by: Jonas Raoni Soares Silva (http://www.jsfromhell.com)
+            // +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+            // +	 bugfix by: Michael White (http://crestidg.com)
+
+            let i, j, kw, kd, km;
+
+            // input sanitation & defaults
+            if (isNaN(decimals = Math.abs(decimals))) {
+                decimals = 0;
+            }
+            if (dec_point === undefined) {
+                dec_point = ".";
+            }
+            if (thousands_sep === undefined) {
+                thousands_sep = " ";
+            }
+
+            i = parseInt(number = (+number || 0).toFixed(decimals)) + "";
+
+            if ((j = i.length) > 3) {
+                j = j % 3;
+            } else {
+                j = 0;
+            }
+
+            km = (j ? i.substr(0, j) + thousands_sep : "");
+            kw = i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands_sep);
+            //kd = (decimals ? dec_point + Math.abs(number - i).toFixed(decimals).slice(2) : "");
+            kd = (decimals ? dec_point + Math.abs(number - i).toFixed(decimals).replace(/-/, 0).slice(2) : "");
+
+
+            return km + kw + kd;
+        };
+
+
+        parts_search.on('select2:select', function (e) {
+            let product_id = $(this).find('option:selected').val();
+            if (!selected.includes(product_id)) {
+                parts_search.removeClass('is-invalid');
+                selected.push(product_id);
+                axios
+                    .get("/api/products/" + product_id)
+                    .then((response) => {
+                        parts.append(response.data);
+                        $('[name="parts[' + product_id + '][count]"]').focus();
+                        calc_parts();
+                        parts_search.val(null)
+                    })
+                    .catch((error) => {
+                        this.status = 'Error:' + error;
+                    });
+            } else {
+                parts_search.addClass('is-invalid');
+                //alert('Такая деталь уже есть в списке');
+            }
+
+            //console.log(data.val());
         });
 
     }

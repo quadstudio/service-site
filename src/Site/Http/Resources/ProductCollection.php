@@ -10,10 +10,11 @@ class ProductCollection extends ResourceCollection
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request
-     * @return array
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        //return parent::toArray($request);
+        return ProductResource::collection($this->collection);
     }
 }

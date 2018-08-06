@@ -61,18 +61,6 @@ class Site
                     $router->get('/feedback', 'StaticPageController@feedback')->name('feedback');
                     $router->post('/feedback', 'StaticPageController@message')->name('message');
 
-                    $router->get('/currencies/refresh/{id?}', function ($id = null, \QuadStudio\Service\Site\Contracts\Exchange $exchange) {
-                        foreach (config('site.update', []) as $update_id) {
-                            if (is_null($id) || $id == $update_id) {
-                                $currency = \QuadStudio\Service\Site\Models\Currency::find($update_id);
-
-                                $currency->fill($exchange->get($update_id));
-                                $currency->save();
-                            }
-
-                        }
-                    })->name('currencies.refresh');
-
                     $router->group(['middleware' => ['auth']],
                         function () use ($router) {
                             $router->get('/home', 'HomeController@index')->name('home');
@@ -128,6 +116,7 @@ class Site
                                 $router->name('admin')->resource('/trades', 'TradeController');
                                 $router->name('admin')->resource('/launches', 'LaunchController');
                                 $router->name('admin')->resource('/currencies', 'CurrencyController');
+                                $router->name('admin')->get('/refresh/currencies/', 'CurrencyController@refresh')->name('.currencies.refresh');
                                 $router->name('admin')->resource('/banks', 'BankController');
                                 $router->name('admin')->resource('/warehouses', 'WarehouseController');
                                 $router->name('admin')->resource('/datasheets', 'DatasheetController');
@@ -149,10 +138,14 @@ class Site
                 $router->name('api')->get('/services/{region?}', 'ServiceController@index')->name('.services.index');
                 $router->name('api')->resource('/users', 'UserController');
                 $router->name('api')->resource('/serials', 'SerialController');
-                $router->name('api')->resource('/parts', 'PartController');
                 $router->name('api')->resource('/files', 'FileController')->only(['index', 'store', 'show', 'destroy'])->middleware('permission:files');
                 $router->name('api')->resource('/contragents', 'ContragentController');
                 $router->name('api')->get('/regions/{country}', 'RegionController@index')->name('.regions.index');
+                //
+                $router->name('api')->get('/products', 'ProductController@index');
+                $router->name('api')->get('/products/{product}', 'ProductController@show');
+                //$router->name('api')->get('/parts/{id}', 'PartController@show');
+                //$router->name('api')->get('/parts/{id}/repair', 'PartController@repair');
 
             });
 

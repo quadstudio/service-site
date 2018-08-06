@@ -8,7 +8,7 @@
             </li>
             <li class="breadcrumb-item active">@lang('site::datasheet.datasheets')</li>
         </ol>
-        <h1 class="header-titlemb-4"><i class="fa fa-user"></i> @lang('site::datasheet.datasheets')</h1>
+        <h1 class="header-title mb-4"><i class="fa fa-user"></i> @lang('site::datasheet.datasheets')</h1>
 
 
     </div>

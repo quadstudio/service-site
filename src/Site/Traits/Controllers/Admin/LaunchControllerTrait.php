@@ -3,14 +3,14 @@
 namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 
 use Illuminate\Support\Facades\Session;
-use QuadStudio\Service\Site\Repositories\CountryRepository;
 use QuadStudio\Service\Site\Filters\BelongsUserFilter;
 use QuadStudio\Service\Site\Filters\ByNameSortFilter;
+use QuadStudio\Service\Site\Filters\CountryEnabledFilter;
 use QuadStudio\Service\Site\Http\Requests\LaunchRequest;
 use QuadStudio\Service\Site\Http\Requests\TradeRequest;
 use QuadStudio\Service\Site\Models\Launch;
+use QuadStudio\Service\Site\Repositories\CountryRepository;
 use QuadStudio\Service\Site\Repositories\LaunchRepository;
-use QuadStudio\Service\Site\Filters\CountryEnabledFilter;
 
 trait LaunchControllerTrait
 {
@@ -42,9 +42,9 @@ trait LaunchControllerTrait
 
         $this->launches->trackFilter();
 
-        return view('site::launch.index', [
+        return view('site::admin.launch.index', [
             'repository' => $this->launches,
-            'items'      => $this->launches->paginate(config('site.per_page.launch', 10), [env('DB_PREFIX', '') . 'launches.*'])
+            'launches'   => $this->launches->paginate(config('site.per_page.launch', 10), [env('DB_PREFIX', '') . 'launches.*'])
         ]);
     }
 
@@ -59,6 +59,7 @@ trait LaunchControllerTrait
         $this->authorize('create', Launch::class);
         $countries = $this->countries->all();
         $view = $request->ajax() ? 'site::launch.form' : 'launch.create';
+
         return view($view, ['countries' => $countries]);
     }
 
@@ -79,6 +80,7 @@ trait LaunchControllerTrait
                 ->applyFilter(new ByNameSortFilter())
                 ->all();
             Session::flash('success', trans('site::launch.created'));
+
             return response()->json([
                 'replace' => [
                     '#form-group-launch_id' => view('site::repair.field.launch_id')
@@ -110,7 +112,7 @@ trait LaunchControllerTrait
 
         return view('site::launch.edit', [
             'countries' => $countries,
-            'launch'  => $launch
+            'launch'    => $launch
         ]);
     }
 

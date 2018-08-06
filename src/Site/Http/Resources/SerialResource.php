@@ -3,6 +3,7 @@
 namespace QuadStudio\Service\Site\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use QuadStudio\Service\Site\Facades\Site;
 
 class SerialResource extends JsonResource
 {
@@ -21,9 +22,8 @@ class SerialResource extends JsonResource
             'sku' => $this->product->sku,
             'model' => $this->product->equipment->name,
             'catalog' => $this->product->equipment->catalog->parentTreeName(),
-            'cost_work' => $this->product->equipment->cost_work,
-            'cost_road' => $this->product->equipment->cost_road,
-            'currency' => $this->product->equipment->currency->title,
+            'cost_work' => Site::format($this->product->equipment->cost_work),
+            'cost_road' => Site::format($this->product->equipment->cost_road),
         ];
     }
 }

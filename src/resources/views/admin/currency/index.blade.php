@@ -13,19 +13,17 @@
 
         @alert()@endalert
 
-        <div class="row">
-            <div class="col-12 mb-2">
-                <a class="btn btn-success" href="{{ route('admin.currencies.create') }}"
-                   role="button">
-                    <i class="fa fa-plus"></i>
-                    <span>@lang('site::messages.add')</span>
-                </a>
-                <a class="btn btn-success" href="{{ route('currencies.refresh') }}"
-                   role="button">
-                    <i class="fa fa-refresh"></i>
-                    <span>@lang('site::messages.refresh')</span>
-                </a>
-            </div>
+        <div class="justify-content-start border p-3 mb-4">
+            <a class="disabled btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0" href="{{ route('admin.currencies.create') }}"
+               role="button">
+                <i class="fa fa-plus"></i>
+                <span>@lang('site::messages.add') @lang('site::currency.currency')</span>
+            </a>
+
+            <a href="{{ route('admin.currencies.refresh') }}" class="d-block d-sm-inline btn btn-secondary">
+                <i class="fa fa-refresh"></i>
+                <span>@lang('site::messages.refresh')</span>
+            </a>
         </div>
 
         <div class="card mb-4">

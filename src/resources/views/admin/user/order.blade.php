@@ -17,7 +17,7 @@
             </li>
             <li class="breadcrumb-item active">@lang('site::order.orders')</li>
         </ol>
-        <h1 class="header-titlemb-4"><i
+        <h1 class="header-title mb-4"><i
                     class="fa fa-@lang('site::order.icon')"></i> @lang('site::order.orders') {{$user->name}}</h1>
         @alert()@endalert()
 

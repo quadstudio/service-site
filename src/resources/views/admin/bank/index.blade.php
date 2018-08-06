@@ -11,7 +11,7 @@
             </li>
             <li class="breadcrumb-item active">@lang('site::bank.banks')</li>
         </ol>
-        <h1 class="header-titlemb-4"><i class="fa fa-@lang('site::bank.icon')"></i> @lang('site::bank.banks')</h1>
-
+        <h1 class="header-title mb-4"><i class="fa fa-@lang('site::bank.icon')"></i> @lang('site::bank.banks')</h1>
+        <div class="display-1">В РАЗРАБОТКЕ</div>
     </div>
 @endsection

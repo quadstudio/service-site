@@ -19,11 +19,11 @@
             <a class="disabled btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0" href="{{ route('addresses.create') }}"
                role="button">
                 <i class="fa fa-plus"></i>
-                <span>@lang('site::messages.add')</span>
+                <span>@lang('site::messages.add') @lang('site::address.address')</span>
             </a>
             <a href="{{ route('home') }}" class="d-block d-sm-inline btn btn-secondary">
                 <i class="fa fa-reply"></i>
-                <span>@lang('site::messages.back')</span>
+                <span>@lang('site::messages.back_home')</span>
             </a>
         </div>
 

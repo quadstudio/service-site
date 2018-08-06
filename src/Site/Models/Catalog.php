@@ -105,7 +105,7 @@ class Catalog extends Model
     /**
      * @return bool
      */
-    public function canAddModel()
+    public function canAddEquipment()
     {
 
         return $this->catalogs->isEmpty();

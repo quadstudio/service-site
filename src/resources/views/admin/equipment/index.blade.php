@@ -16,15 +16,15 @@
         </h1>
 
         @alert()@endalert
+        <div class="justify-content-start border p-3 mb-4">
+            <a class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0" href="{{ route('admin.equipments.create') }}"
+               role="button">
+                <i class="fa fa-plus"></i>
+                <span>@lang('site::messages.add') @lang('site::equipment.equipment')</span>
+            </a>
 
-        <div class="row">
-            <div class="col-12 mb-2">
-                <a class="btn btn-success" href="{{ route('admin.equipments.create') }}" role="button">
-                    <i class="fa fa-magic"></i>
-                    <span>@lang('site::messages.create') @lang('site::equipment.equipment')</span>
-                </a>
-            </div>
         </div>
+
         <div class="card mb-4">
             <div class="card-body">
                 {{$equipments->render()}}

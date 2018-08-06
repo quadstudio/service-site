@@ -177,7 +177,7 @@
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::repair.works')</dt>
                     <dd class="col-sm-8">{!! $repair->works !!}</dd>
 
-                    <dt class="col-sm-4">@lang('site::repair.date_repair')</dt>
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::repair.date_repair')</dt>
                     <dd class="col-sm-8">{{ $repair->date_repair() }}</dd>
 
                 </dl>
