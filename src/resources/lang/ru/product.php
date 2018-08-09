@@ -3,6 +3,11 @@ return [
     'products'            => 'Запчасти',
     'product'             => 'Запчасть',
     'icon'                => 'shopping-cart',
+    'card'                => 'Карточка товара',
+    'cards'               => 'Товары',
+    'settings'            => 'Настройки',
+    //
+    'updated'             => 'Настройки товара успешно обновлены',
     //
     'name'                => 'Наименование',
     'quantity'            => 'Остаток на складе',
@@ -15,7 +20,12 @@ return [
     'equipment_id'        => 'Модель',
     'enabled'             => 'Включен',
     'active'              => 'Для продажи',
+    'warranty'            => 'На гарантии',
+    'service'             => 'Услуга',
     //
+    'placeholder' => [
+        'description' => ''
+    ],
     'search_placeholder'  => 'Поиск запчастей...',
     'sort'                => 'Сортировка',
     'in_stock_defaults'   => '- Все товары - ',

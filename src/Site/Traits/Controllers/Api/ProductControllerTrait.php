@@ -33,6 +33,34 @@ trait ProductControllerTrait
     }
 
     /**
+     * @return ProductCollection
+     */
+    public function repair()
+    {
+        $this->products->applyFilter(new SearchFilter());
+        $this->products->applyFilter(new SerialSearchFilter());
+        return new ProductCollection($this->products->all());
+    }
+
+    /**
+     * @return ProductCollection
+     */
+    public function analog()
+    {
+        $this->products->applyFilter(new SearchFilter());
+        return new ProductCollection($this->products->all());
+    }
+
+    /**
+     * @return ProductCollection
+     */
+    public function relation()
+    {
+        $this->products->applyFilter(new SearchFilter());
+        return new ProductCollection($this->products->all());
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param Product $product

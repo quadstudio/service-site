@@ -29,6 +29,7 @@ class SiteServiceProvider extends ServiceProvider
         Models\Equipment::class => Policies\EquipmentPolicy::class,
         Models\Image::class     => Policies\ImagePolicy::class,
         Models\Order::class     => Policies\OrderPolicy::class,
+        Models\Product::class   => Policies\ProductPolicy::class,
     ];
 
     /**

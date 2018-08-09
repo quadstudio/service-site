@@ -109,6 +109,12 @@ class Site
                                 $router->name('admin')->get('/equipments/create/{catalog?}', 'EquipmentController@create')->name('.equipments.create.parent');
                                 $router->name('admin')->resource('/images', 'ImageController');
                                 $router->name('admin')->resource('/products', 'ProductController');
+                                $router->name('admin')->post('/product-images/{product}/store', 'ProductImageController@store')->name('.products.images.store');
+                                $router->name('admin')->put('/product-images/{product}/sort', 'ProductImageController@sort')->name('.products.images.sort');
+                                $router->name('admin')->post('/analogs/store/{product}', 'AnalogController@store')->name('.analogs.store');
+                                $router->name('admin')->delete('/analogs/destroy/{product}/{analog}', 'AnalogController@destroy')->name('.analogs.destroy');
+                                $router->name('admin')->post('/relations/store/{product}', 'RelationController@store')->name('.relations.store');
+                                $router->name('admin')->delete('/relations/destroy/{product}/{relation}', 'RelationController@destroy')->name('.relations.destroy');
                                 $router->name('admin')->resource('/product-types', 'ProductTypeController');
                                 $router->name('admin')->resource('/prices', 'PriceController');
                                 $router->name('admin')->resource('/price-types', 'PriceTypeController');
@@ -142,7 +148,9 @@ class Site
                 $router->name('api')->resource('/contragents', 'ContragentController');
                 $router->name('api')->get('/regions/{country}', 'RegionController@index')->name('.regions.index');
                 //
-                $router->name('api')->get('/products', 'ProductController@index');
+                $router->name('api')->get('/products/repair', 'ProductController@repair');
+                $router->name('api')->get('/products/analog', 'ProductController@analog');
+                $router->name('api')->get('/products/relation', 'ProductController@relation');
                 $router->name('api')->get('/products/{product}', 'ProductController@show');
                 //$router->name('api')->get('/parts/{id}', 'PartController@show');
                 //$router->name('api')->get('/parts/{id}/repair', 'PartController@repair');
@@ -188,6 +196,26 @@ class Site
         }
 
         return implode(' ', $result);
+    }
+
+    /**
+     * Округлить цену
+     *
+     * @param $price
+     * @return float
+     */
+    public function round($price)
+    {
+
+        if (($round = config('site.round', false)) !== false) {
+            $price = round($price, $round);
+        }
+
+        if (($round_up = config('site.round_up', false)) !== false) {
+            $price = ceil($price / (int)$round_up) * (int)$round_up;
+        }
+
+        return $price;
     }
 
     /**

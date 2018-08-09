@@ -6,9 +6,9 @@
         <div class="card-body">
             <div class="row">
                 @if($product->price()->exists)
-                    <div class="col h4">{{ $product->price()->format() }}</div>
+                    <div class="col-8 h4">{{ $product->price()->format() }}</div>
                 @endif
-                <div class="col text-right">
+                <div class="col-4 text-right">
                     @auth
                     @if(Auth::user()->hasPermission('buy'))
                         @include('site::cart.add', $product->toCart())

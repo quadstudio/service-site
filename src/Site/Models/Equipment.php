@@ -72,6 +72,11 @@ class Equipment extends Model
         return $this->_images();
     }
 
+    public function image()
+    {
+        return $this->images()->firstOrNew([]);
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\morphMany
      */

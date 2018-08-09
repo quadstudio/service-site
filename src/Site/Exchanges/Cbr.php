@@ -11,6 +11,13 @@ class Cbr implements Exchange
 
     public function __construct()
     {
+        $context = stream_context_create(
+            array(
+                'http' => array(
+                    'max_redirects' => 101
+                )
+            )
+        );
         $file = simplexml_load_file("http://www.cbr.ru/scripts/XML_daily.asp");
         if ($file === false) {
             // TODO: failed load file from http://cbr.ru

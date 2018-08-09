@@ -99,6 +99,9 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
         'admin/ProductController.stub'       => 'Admin/ProductController',
         'admin/ProductTypeController.stub'   => 'Admin/ProductTypeController',
         'admin/ContactController.stub'       => 'Admin/ContactController',
+        'admin/AnalogController.stub'        => 'Admin/AnalogController',
+        'admin/RelationController.stub'      => 'Admin/RelationController',
+        'admin/ProductImageController.stub'  => 'Admin/ProductImageController',
     ];
 
     /**

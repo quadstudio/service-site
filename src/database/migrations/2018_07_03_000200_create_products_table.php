@@ -33,10 +33,9 @@ class CreateProductsTable extends Migration
             $table->string('brand_id', 36);
             $table->boolean('enabled')->default(0);
             $table->boolean('active')->default(0);
-            $table->boolean('equipment')->default(1);
+            $table->boolean('warranty')->default(0);
             $table->boolean('service')->default(0);
             $table->unsignedInteger('equipment_id')->nullable(true);
-
             $table->timestamps();
 
             $table

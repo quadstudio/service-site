@@ -3,6 +3,7 @@
 namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use QuadStudio\Service\Site\Facades\Site;
 
@@ -15,7 +16,9 @@ class Product extends Model
      */
     protected $table;
     protected $prefix;
-    private $_price;
+    protected $fillable = [
+        'enabled', 'active', 'warranty', 'service'
+    ];
 
     /**
      * @param array $attributes
@@ -51,7 +54,7 @@ class Product extends Model
     {
         $name = [
             $this->name,
-            $this->brand->name
+            //$this->brand->name
         ];
         if (mb_strlen($this->sku, 'UTF-8') > 0) {
             $name[] = "({$this->sku})";
@@ -70,46 +73,23 @@ class Product extends Model
         return $this->belongsTo(Equipment::class);
     }
 
-    public function toCart(){
-        return [
-            'product_id' => $this->id,
-            'name' => $this->name,
-            'price'=> $this->price()->price(),
-            'currency_id'=> Site::currency()->id,
-            'image' => $this->image()->src(),
-            'brand_id' => $this->brand_id,
-            'brand' => $this->brand->name,
-            'weight' => $this->weight,
-            'unit' => $this->unit,
-            'sku' => $this->sku,
-            'url' => route('products.show', $this),
-            'availability' => $this->quantity > 0,
-            'quantity' => 1
-        ];
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany|Price
-     */
-//    public function price()
-//    {
-//        $type_id = Auth::guest() ? config('shop.default_price_type') : Auth::user()->profile->price_type_id;
-//        $price = $this->prices()->where('type_id', '=', $type_id)->first();
-//        return is_null($price) ? new Price() : $price;
-//    }
-    /**
-     * Документация
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function datasheets()
+    public function toCart()
     {
-        return $this->belongsToMany(
-            Datasheet::class,
-            env('DB_PREFIX', '') . 'datasheet_product',
-            'product_id',
-            'datasheet_id'
-        );
+        return [
+            'product_id'   => $this->id,
+            'name'         => $this->name,
+            'price'        => $this->price()->price(),
+            'currency_id'  => Site::currency()->id,
+            'image'        => $this->image()->src(),
+            'brand_id'     => $this->brand_id,
+            'brand'        => $this->brand->name,
+            'weight'       => $this->weight,
+            'unit'         => $this->unit,
+            'sku'          => $this->sku,
+            'url'          => route('products.show', $this),
+            'availability' => $this->quantity > 0,
+            'quantity'     => 1
+        ];
     }
 
     public function price()
@@ -133,6 +113,16 @@ class Product extends Model
     {
         return $this->hasMany(Price::class);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|Price
+     */
+//    public function price()
+//    {
+//        $type_id = Auth::guest() ? config('shop.default_price_type') : Auth::user()->profile->price_type_id;
+//        $price = $this->prices()->where('type_id', '=', $type_id)->first();
+//        return is_null($price) ? new Price() : $price;
+//    }
 
     /**
      * @return Model
@@ -169,6 +159,41 @@ class Product extends Model
         return $this->morphMany(Image::class, 'imageable');
     }
 
+    public function created_at($time = false)
+    {
+        return !is_null($this->created_at) ? Carbon::instance($this->created_at)->format('d.m.Y' . ($time === true ? ' H:i' : '')) : '';
+    }
+
+    public function updated_at($time = false)
+    {
+        return !is_null($this->updated_at) ? Carbon::instance($this->updated_at)->format('d.m.Y' . ($time === true ? ' H:i' : '')) : '';
+    }
+
+    /**
+     * Документация
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function datasheets()
+    {
+        return $this->belongsToMany(
+            Datasheet::class,
+            env('DB_PREFIX', '') . 'datasheet_product',
+            'product_id',
+            'datasheet_id'
+        );
+    }
+
+    /**
+     * Позиции в заказе
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function order_items()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
     /**
      * Серийные номера
      *
@@ -180,7 +205,23 @@ class Product extends Model
     }
 
     /**
-     * Прямые аналоги
+     * Добавить аналог
+     *
+     * @param mixed $analog
+     */
+    public function attachAnalog($analog)
+    {
+        if (is_object($analog)) {
+            $analog = $analog->getKey();
+        }
+        if (is_array($analog)) {
+            $analog = $analog['id'];
+        }
+        $this->analogs()->attach($analog);
+    }
+
+    /**
+     * Аналоги товара
      *
      * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
      */
@@ -194,18 +235,46 @@ class Product extends Model
     }
 
     /**
-     * Обратные аналоги
+     * Удалить аналог
      *
-     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
+     * @param mixed $analog
      */
-    public function back_analogs()
+    public function detachAnalog($analog)
     {
+        if (is_object($analog)) {
+            $analog = $analog->getKey();
+        }
+        if (is_array($analog)) {
+            $analog = $analog['id'];
+        }
+        $this->analogs()->detach($analog);
+    }
 
-        return $this->belongsToMany(
-            Product::class,
-            $this->prefix . 'analogs',
-            'analog_id',
-            'product_id');
+    /**
+     * @param $image_id
+     * @return $this
+     */
+    public function detachImage($image_id)
+    {
+        Image::query()->findOrNew($image_id)->delete();
+
+        return $this;
+    }
+
+    /**
+     * Добавить связь оборудование - запчасть
+     *
+     * @param mixed $relation
+     */
+    public function attachRelation($relation)
+    {
+        if (is_object($relation)) {
+            $relation = $relation->getKey();
+        }
+        if (is_array($relation)) {
+            $relation = $relation['id'];
+        }
+        $this->relations()->attach($relation);
     }
 
     /**
@@ -223,17 +292,38 @@ class Product extends Model
     }
 
     /**
-     * Обрантая связь товаров
+     * Удалить связь оборудование - запчасть
+     *
+     * @param mixed $relation
+     */
+    public function detachRelation($relation)
+    {
+        if (is_object($relation)) {
+            $relation = $relation->getKey();
+        }
+        if (is_array($relation)) {
+            $relation = $relation['id'];
+        }
+        $this->relations()->detach($relation);
+    }
+
+    /**
+     * Товар является аналогом для
      *
      * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
      */
-    public function back_relations()
+    public function back_analogs()
     {
         return $this->belongsToMany(
             Product::class,
-            $this->prefix . 'relations',
-            'relation_id',
+            $this->prefix . 'analogs',
+            'analog_id',
             'product_id');
+    }
+
+    public function hasEquipment()
+    {
+        return !is_null($this->getAttribute('equipment_id'));
     }
 
     /**
@@ -250,6 +340,20 @@ class Product extends Model
         }
 
         return $equipments;
+    }
+
+    /**
+     * Обрантая связь товаров
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
+     */
+    public function back_relations()
+    {
+        return $this->belongsToMany(
+            Product::class,
+            $this->prefix . 'relations',
+            'relation_id',
+            'product_id');
     }
 
 

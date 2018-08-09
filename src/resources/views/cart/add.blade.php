@@ -36,5 +36,5 @@
     @endif
 
     <button type="submit"
-            class="add-to-cart btn btn-ferroli btn-sm">@lang('site::cart.to_cart')</button>
+            class="add-to-cart btn btn-ferroli btn-sm"><i class="fa fa-shopping-cart"></i></button>
 </form>

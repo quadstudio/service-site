@@ -56,7 +56,7 @@
                             <i class="fa fa-@lang('site::equipment.icon')"></i> @lang('site::equipment.equipments')
                         </a>
                         <a class="dropdown-item" href="{{ route('admin.products.index') }}">
-                            <i class="fa fa-@lang('site::product.icon')"></i> @lang('site::product.products')
+                            <i class="fa fa-@lang('site::product.icon')"></i> @lang('site::product.cards')
                         </a>
 
                         <div class="dropdown-divider"></div>

@@ -75,5 +75,4 @@ class Price extends Model
         return $price;
     }
 
-
 }

@@ -91,7 +91,7 @@
                                         <label class="custom-control-label"
                                                for="user_active_1">@lang('site::messages.yes')</label>
                                     </div>
-                                    <div class="custom-control custom-radio  custom-control-inline">
+                                    <div class="custom-control custom-radio custom-control-inline">
                                         <input class="custom-control-input
                                                     {{$errors->has('user.active') ? ' is-invalid' : ''}}"
                                                type="radio"
