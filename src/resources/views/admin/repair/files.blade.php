@@ -1,7 +1,14 @@
 <dl class="row">
     @foreach($types as $type)
         @if(in_array($type->id, [1,2,3]))
-            <dt class="@if($fails->contains('field', 'file_'.$type->id)) bg-danger text-white @endif col-sm-4 text-left text-sm-right">{{$type->name}}</dt>
+            <dt class="col-sm-4 text-left text-sm-right @if($fails->contains('field', 'file_'.$type->id)) bg-danger text-white @endif">
+                <label for="file_{{$type->id}}"
+                       class="pointer control-label">{{$type->name}}</label>
+                <input id="file_{{$type->id}}"
+                       value="file_{{$type->id}}"
+                       @if($fails->contains('field', 'file_'.$type->id)) checked @endif
+                       type="checkbox" name="fail[][field]" class="d-none repair-error-check">
+            </dt>
             <dd class="col-sm-8">
                 <ul class="list-group file-list">
                     @if( !$files->isEmpty())

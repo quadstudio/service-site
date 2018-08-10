@@ -8,10 +8,7 @@
                     </h5>
                     <div class="repair-list-row row no-gutters">
                         <div class="col-md-4 col-xl-2 p-2 pr-md-0">
-                            <div class="px-1" style="color: {{$repair->status->color}};">
-                                <i class="fa fa-{{$repair->status->icon}} mr-1"></i>
-                                <span class="small">{{$repair->status->name}}</span>
-                            </div>
+                            <div class="p-1" style="font-weight:normal;color: {{ $repair->status->color }}"><i class="fa fa-{{ $repair->status->icon }}"></i> {{ $repair->status->name }} @if($repair->fails()->count()) <span class="badge badge-danger text-big">{{$repair->fails()->count()}}</span> @endif</div>
                         </div>
                         <div class="col-md-4 col-xl-2 py-md-2 px-2 pb-2">
                             <div class="small"><b class="text-muted">@lang('site::repair.created_at')

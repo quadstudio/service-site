@@ -80,7 +80,7 @@ trait TradeControllerTrait
             Session::flash('success', trans('site::trade.created'));
             return response()->json([
                 'replace' => [
-                    '#form-group-trade_id' => view('site::repair.field.trade_id')
+                    '#form-group-trade_id' => view('site::repair.create.trade_id')
                         ->with('trades', $trades)->render(),
                 ],
             ]);

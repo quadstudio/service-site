@@ -86,7 +86,7 @@ trait EngineerControllerTrait
 
             return response()->json([
                 'replace' => [
-                    '#form-group-engineer_id' => view('site::repair.field.engineer_id')
+                    '#form-group-engineer_id' => view('site::repair.create.engineer_id')
                         ->with('engineers', $engineers)->render(),
                 ],
             ]);

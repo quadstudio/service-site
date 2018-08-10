@@ -6,6 +6,9 @@
             <li class="breadcrumb-item">
                 <a href="{{ route('index') }}">@lang('site::messages.index')</a>
             </li>
+            <li class="breadcrumb-item">
+                <a href="{{ route('admin') }}">@lang('site::messages.admin')</a>
+            </li>
             <li class="breadcrumb-item active">@lang('site::currency.currencies')</li>
         </ol>
         <h1 class="header-title mb-4"><i
@@ -13,7 +16,7 @@
 
         @alert()@endalert
 
-        <div class="justify-content-start border p-3 mb-4">
+        <div  class="justify-content-start border p-3 mb-4">
             <a class="disabled btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0" href="{{ route('admin.currencies.create') }}"
                role="button">
                 <i class="fa fa-plus"></i>

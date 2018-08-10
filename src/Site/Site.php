@@ -101,6 +101,8 @@ class Site
                                 $router->name('admin')->resource('/banks', 'BankController');
                                 $router->name('admin')->resource('/orders', 'OrderController')->only(['index', 'show']);
                                 $router->name('admin')->resource('/repairs', 'RepairController');
+                                $router->name('admin')->resource('/messages', 'MessageController');
+                                $router->name('admin')->post('/repairs/{repair}/status', 'RepairController@status')->name('.repairs.status');
                                 $router->name('admin')->resource('/serials', 'SerialController');
                                 $router->name('admin')->resource('/catalogs', 'CatalogController');
                                 $router->name('admin')->get('/tree', 'CatalogController@tree')->name('.catalogs.tree');

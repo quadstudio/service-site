@@ -18,7 +18,7 @@
         <div class="row justify-content-center mb-5">
             <div class="col">
 
-                <form id="repair-create-form"
+                <form id="repair-form"
                       method="POST"
                       enctype="multipart/form-data"
                       action="{{ route('repairs.store') }}">
@@ -107,6 +107,7 @@
                                     <input type="text"
                                            id="number"
                                            name="number"
+                                           required
                                            class="form-control{{ $errors->has('number') ? ' is-invalid' : '' }}"
                                            value="{{ old('number') }}"
 
@@ -125,26 +126,29 @@
                                 </div>
                                 <div class="form-group mb-0 required">
                                     <label class="control-label" for="">@lang('site::repair.warranty_period')</label>
+
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" id="warranty_period_12"
+
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" class="custom-control-input" id="warranty_period_12"
                                            @if(old('warranty_period') == 12) checked @endif
                                            name="warranty_period" value="12" required>
-                                    <span class="invalid-feedback">{{ $errors->first('warranty_period') }}</span>
-                                    <label class="form-check-label" for="warranty_period_12">12</label>
+                                    <label class="custom-control-label" for="warranty_period_12">12</label>
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" id="warranty_period_24"
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" class="custom-control-input" id="warranty_period_24"
                                            @if(old('warranty_period') == 24) checked @endif
                                            name="warranty_period" value="24" required>
-                                    <label class="form-check-label" for="warranty_period_24">24</label>
+                                    <label class="custom-control-label" for="warranty_period_24">24</label>
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" id="warranty_period_36"
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" class="custom-control-input" id="warranty_period_36"
                                            @if(old('warranty_period') == 36) checked @endif
                                            name="warranty_period" value="36" required>
-                                    <label class="form-check-label" for="warranty_period_36">36</label>
+                                    <label class="custom-control-label" for="warranty_period_36">36</label>
                                 </div>
+
+
                             </div>
                         </div>
 
@@ -217,7 +221,7 @@
                         <div class="card mt-2 mb-2">
                             <div class="card-body">
                                 <h5 class="card-title">@lang('site::repair.header.org')</h5>
-                                @include('site::repair.field.trade_id')
+                                @include('site::repair.create.trade_id')
                                 <div class="form-group required">
                                     <label class="control-label"
                                            for="date_trade">@lang('site::repair.date_trade')</label>
@@ -228,7 +232,7 @@
                                     <span class="invalid-feedback">{{ $errors->first('date_trade') }}</span>
                                 </div>
 
-                                @include('site::repair.field.launch_id')
+                                @include('site::repair.create.launch_id')
                                 <div class="form-group required">
                                     <label class="control-label"
                                            for="date_launch">@lang('site::repair.date_launch')</label>
@@ -246,7 +250,7 @@
                         <div class="card mt-2 mb-2">
                             <div class="card-body">
                                 <h5 class="card-title">@lang('site::repair.header.call')</h5>
-                                @include('site::repair.field.engineer_id')
+                                @include('site::repair.create.engineer_id')
                                 <div class="form-group required">
                                     <label class="control-label" for="date_call">@lang('site::repair.date_call')</label>
                                     <input type="date" name="date_call" id="date_call"
@@ -349,10 +353,10 @@
                                 </div>
 
                                 <fieldset id="parts-search-fieldset"
-                                          style="display: @if(old('serial_id') && ( !old('allow_parts') || old('allow_parts') === 1)) block @else none @endif;">
+                                          style="display: @if(old('serial_id') && ( !old('allow_parts') || old('allow_parts') == 1)) block @else none @endif;">
                                     <div class="form-group">
                                         <label class="control-label"
-                                               for="parts_search">Найти замененную деталь</label>
+                                               for="parts_search">@lang('site::messages.find') @lang('site::part.part')</label>
                                         <select style="width:100%" class="form-control" id="parts_search">
                                             <option value=""></option>
                                         </select>
@@ -368,53 +372,31 @@
                                         <div class="col my-3">
                                             <label class="control-label"
                                                    for="">@lang('site::part.parts')</label>
-                                            <table class="table table-sm table-bordered table-hover">
-                                                <thead>
-                                                <tr>
-                                                    <th scope="col" class="text-center">@lang('site::product.sku')</th>
-                                                    <th scope="col">@lang('site::part.product_id')</th>
-                                                    <th scope="col" class="text-right">~ @lang('site::part.cost')</th>
-                                                    <th scope="col" class="text-center">@lang('site::part.count')</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody id="parts">
-
+                                            <div class="card-group" id="parts">
                                                 @foreach($parts as $part)
                                                     @include('site::part.repair.row', [
-                                                        'product_id' => $part['product_id'],
-                                                        'sku' => $part['sku'],
-                                                        'name' => $part['name'],
-                                                        'cost' => $part['cost'],
-                                                        'format' => $part['format'],
-                                                        'count' => $part['count'],
-                                                    ])
+                                                            'product_id' => $part['product_id'],
+                                                            'sku' => $part['sku'],
+                                                            'name' => $part['name'],
+                                                            'cost' => $part['cost'],
+                                                            'format' => $part['format'],
+                                                            'count' => $part['count'],
+                                                        ])
                                                 @endforeach
-
-                                                </tbody>
-                                                <tfoot>
-                                                <tr>
-                                                    <td colspan="2" class="text-right">@lang('site::part.total')</td>
-                                                    <td class="text-right">
-                                                        @if(!$parts->isEmpty())
-                                                            <span id="total-cost">
+                                            </div>
+                                            <hr/>
+                                            <div class="text-right text-xlarge">
+                                                @lang('site::part.total'):
+                                                @if(!$parts->isEmpty())
+                                                    <span id="total-cost">
                                                         {{Site::format($parts->sum('cost'))}}
                                                         </span>
-                                                        @else
-                                                            {{Site::currency()->symbol_left}}
-                                                            <span id="total-cost">0</span>
-                                                            {{Site::currency()->symbol_right}}
-                                                        @endif
-                                                    </td>
-                                                    <td class="text-center" id="total-count">
-                                                        @if(!$parts->isEmpty())
-                                                            {{$parts->sum('count')}}
-                                                        @else
-                                                            0
-                                                        @endif
-                                                    </td>
-                                                </tr>
-                                                </tfoot>
-                                            </table>
+                                                @else
+                                                    {{Site::currency()->symbol_left}}
+                                                    <span id="total-cost">0</span>
+                                                    {{Site::currency()->symbol_right}}
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
                                 </fieldset>
@@ -429,10 +411,12 @@
                             @foreach($types as $type)
                                 @if(in_array($type->id, [1,2,3]))
 
-                                    <form method="POST" enctype="multipart/form-data" action="{{route('files.store')}}">
-                                        @csrf
-                                        <div class="form-group @if(in_array($type->id, [1,2])) required @endif form-control{{ $errors->has('file.'.$type->id) ? ' is-invalid' : '' }}">
-                                            <label class="control-label d-block" for="type_id">{{$type->name}}</label>
+
+                                    <div class="form-group @if(in_array($type->id, [1,2])) required @endif form-control{{ $errors->has('file.'.$type->id) ? ' is-invalid' : '' }}">
+                                        <label class="control-label d-block" for="type_id">{{$type->name}}</label>
+                                        <form method="POST" enctype="multipart/form-data"
+                                              action="{{route('files.store')}}">
+                                            @csrf
                                             <input type="hidden" name="type_id" value="{{$type->id}}"/>
                                             <input type="hidden" name="storage" value="repairs"/>
                                             <input type="file" name="path"/>
@@ -441,18 +425,18 @@
                                             </button>
                                             <small id="fileHelp-{{$type->id}}"
                                                    class="form-text text-muted">{{$type->comment}}</small>
-                                        </div>
-                                        <span class="invalid-feedback">{{ $errors->first('file.'.$type->id) }}</span>
-                                    </form>
-                                    <ul class="list-group" class="file-list">
-                                        @if( !$files->isEmpty())
-                                            @foreach($files as $file)
-                                                @if($file->type_id == $type->id)
-                                                    @include('site::repair.field.file')
-                                                @endif
-                                            @endforeach
-                                        @endif
-                                    </ul>
+                                        </form>
+                                        <ul class="list-group" class="file-list">
+                                            @if( !$files->isEmpty())
+                                                @foreach($files as $file)
+                                                    @if($file->type_id == $type->id)
+                                                        @include('site::repair.field.file')
+                                                    @endif
+                                                @endforeach
+                                            @endif
+                                        </ul>
+                                    </div>
+                                    <span class="invalid-feedback">{{ $errors->first('file.'.$type->id) }}</span>
                                 @endif
                             @endforeach
                         </div>
@@ -461,12 +445,12 @@
                 <fieldset @if(!old('serial_id')) style="display: none" @endif>
                     <div class="form-row">
                         <div class="col text-right">
-                            <button name="_create" form="repair-create-form" value="1" type="submit"
+                            <button name="_create" form="repair-form" value="1" type="submit"
                                     class="btn btn-ferroli mb-1">
                                 <i class="fa fa-check"></i>
                                 <span>@lang('site::messages.save_add')</span>
                             </button>
-                            <button name="_create" form="repair-create-form" value="0" type="submit"
+                            <button name="_create" form="repair-form" value="0" type="submit"
                                     class="btn btn-ferroli mb-1">
                                 <i class="fa fa-check"></i>
                                 <span>@lang('site::messages.save')</span>

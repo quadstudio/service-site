@@ -60,8 +60,133 @@
         });
 
     }
-    let repairCreateFormExists = document.getElementById("repair-create-form");
-    if (repairCreateFormExists !== null) {
+
+    let repairAdminEditForm = document.getElementById("repair-admin-edit-form");
+    if (repairAdminEditForm !== null) {
+        $('.repair-error-check').on('click', function(){
+
+            //let name = $(this).val();
+            let dt = $(this).parent();
+            if($(this).is(':checked')){
+                dt.addClass('bg-danger');
+                dt.addClass('text-white');
+            } else{
+                dt.removeClass('bg-danger');
+                dt.removeClass('text-white');
+            }
+        });
+    }
+
+    let sortableImagesList = document.getElementById("images-list");
+    if (sortableImagesList !== null) {
+        Sortable.create(sortableImagesList, {
+            group: 'images',
+            animation: 100,
+            // Changed sorting within list
+            onUpdate: function (/**Event*/evt) {
+                let result = [],
+                    i,
+                    list = evt.item.parentElement,
+                    action = list.getAttribute('data-target'),
+                    elements = list.children;
+                for (i = 0; i < elements.length; i++) {
+                    result.push(elements[i].getAttribute('data-id'));
+                }
+                axios
+                    .put(action, {sort: result})
+                    .then((response) => {
+
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+                console.log(result);
+            },
+
+        });
+    }
+
+    let analogAddForm = document.getElementById("analog-add-form");
+    if (analogAddForm !== null) {
+        let analog_search = $('#analog_search');
+        $('#analog-add-form').find('button').click(function () {
+            submitForm($(this).closest('form'));
+            return false;
+
+        });
+        analog_search.select2({
+            theme: "bootstrap4",
+            ajax: {
+                url: '/api/products/analog',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        'filter[search_part]': params.term,
+                    };
+                },
+                processResults: function (data, params) {
+                    return {
+                        results: data.data,
+                    };
+                }
+            },
+            minimumInputLength: 3,
+            templateResult: function (product) {
+                if (product.loading) return "...";
+                return product.name + ' (' + product.sku + ')';
+            },
+            templateSelection: function (product) {
+                return product.name + ' (' + product.sku + ')';
+            },
+            escapeMarkup: function (markup) {
+                return markup;
+            }, // let our custom formatter work
+        });
+
+
+    }
+    let relationAddForm = document.getElementsByClassName("relation-add-form");
+    if (relationAddForm !== null) {
+        let relation_search = $('.relation_search');
+        $('.relation-add-form').find('button').click(function () {
+            submitForm($(this).closest('form'));
+            return false;
+        });
+        relation_search.select2({
+            theme: "bootstrap4",
+            ajax: {
+                url: '/api/products/relation',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        'filter[search_part]': params.term,
+                    };
+                },
+                processResults: function (data, params) {
+                    return {
+                        results: data.data,
+                    };
+                }
+            },
+            minimumInputLength: 3,
+            templateResult: function (product) {
+                if (product.loading) return "...";
+                return product.name + ' (' + product.sku + ')';
+            },
+            templateSelection: function (product) {
+                return product.name + ' (' + product.sku + ')';
+            },
+            escapeMarkup: function (markup) {
+                return markup;
+            }, // let our custom formatter work
+        });
+
+
+    }
+    let repairFormExists = document.getElementById("repair-form");
+    if (repairFormExists !== null) {
         let button = $('#serial-check-button '),
             allow_parts = $('#allow_parts'),
             serial = $('#serial_id'),
@@ -81,7 +206,6 @@
 
             } else {
                 button.prop("disabled", true);
-                $('fieldset').prop("disabled", true);
             }
         });
         let success_serial_fill = function (index, value) {
@@ -109,6 +233,7 @@
                     $.each({
                         product: '',
                         sku: '',
+                        image: '',
                         model: '',
                         catalog: '',
                         cost_work: '',
@@ -126,13 +251,12 @@
 
         allow_parts.change(function () {
             if ($(this).find('option:selected').val() === "0") {
-                parts_search.css('display', 'none');
+                parts_search_fieldset.css('display', 'none');
                 parts.html('');
                 $('#total-cost').html(0);
-                $('#total-count').html(0);
                 selected = [];
             } else {
-                parts_search.css('display', 'block');
+                parts_search_fieldset.css('display', 'block');
             }
 
         });
@@ -141,7 +265,7 @@
         parts_search.select2({
             theme: "bootstrap4",
             ajax: {
-                url: '/api/products',
+                url: '/api/products/repair',
                 dataType: 'json',
                 // delay: 200,
                 data: function (params) {
@@ -158,10 +282,11 @@
             },
             minimumInputLength: 1,
             templateResult: function (product) {
+                if (product.loading) return "...";
                 //return product.name;
                 //if(product.enabled) return product.name;
-                let markup = product.name + ' (' + product.sku + ')';
-                //let markup = "<img src="+repo.photo+"></img> &nbsp; "+ repo.name;
+                //let markup = product.name + ' (' + product.sku + ')';
+                let markup = "<img style='width:70px;' src="+product.image+" /> &nbsp; "+ product.name + ' (' + product.sku + ')';
                 return markup;
             },
             templateSelection: function (product) {
@@ -174,26 +299,19 @@
 
         let calc_parts = function () {
             let count = 0, cost = 0;
-            parts.find('tr').each(function (i) {
-                $(this).find('td .parts_cost').val();
-                $(this).find('td .parts_count').val();
-                count += parseInt($(this).find('td .parts_count').val());
-                cost += parseInt($(this).find('td .parts_cost').val()) * $(this).find('td .parts_count').val();
+            parts.children().each(function (i) {
+                $(this).find('.parts_cost').val();
+                cost += parseInt($(this).find('.parts_cost').val()) * $(this).find('.parts_count').val();
             });
-            $('#total-count').html(count);
             $('#total-cost').html(number_format(cost));
         };
 
         $(document)
-            .on('keyup mouseup', '.parts_count, .parts_cost', (function () {
+            .on('keyup mouseup', '.parts_count', (function () {
                 calc_parts();
             }));
 
         let number_format = function (number, decimals, dec_point, thousands_sep) {	// Format a number with grouped thousands
-            //
-            // +   original by: Jonas Raoni Soares Silva (http://www.jsfromhell.com)
-            // +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-            // +	 bugfix by: Michael White (http://crestidg.com)
 
             let i, j, kw, kd, km;
 
@@ -317,6 +435,7 @@
         }
     };
 
+
     $('body')
         .on('click', '.btn-row-delete', function (e) {
             manageButtonData($(this));
@@ -367,32 +486,6 @@
                     });
                     console.log();
                 });
-
-            // $.ajaxSetup({
-            //     headers: {
-            //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            //     }
-            // });
-            // $.ajax({
-            //     url: action,
-            //     type: 'POST',
-            //     data: fd,
-            //     dataType: 'json',
-            //     contentType: false,
-            //     processData: false,
-            //     success: function (response) {
-            //         console.log('ddd');
-            //         list.append(response.file);
-            //     },
-            //     error: function (xhr, status, error) {
-            //         // console.log(xhr, status, error);
-            //         // form.find('.form-group').addClass('is-invalid');
-            //         // form.find('.invalid-feedback').html('is-invalid');
-            //
-            //         //var err = eval("(" + xhr.responseText + ")");
-            //         //alert(err.Message);
-            //     }
-            // });
             e.preventDefault();
         })
         .on('click', '.btn-delete', function (e) {
@@ -430,6 +523,35 @@
                     logo.attr('src', response.src);
                 },
             });
+        })
+
+        .on('click', '.image-upload-button', function () {
+            let
+                form = $(this).parents('form'),
+                list = form.data('target'),
+                fd = new FormData(),
+                path = form.find('[name="path"]')[0].files[0],
+                storage = form.find('[name="storage"]')[0].value,
+                action = form.attr('action');
+            fd.append('path', path);
+            fd.append('storage', storage);
+            axios
+                .post(action, fd, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
+                .then((response) => {
+                    parseData(response.data)
+                })
+                .catch((error) => {
+                    // form.find('.form-group').addClass('is-invalid');
+                    // $.each(error.response.data.errors.path, function (name, error) {
+                    //     form.find('.invalid-feedback').html(error);
+                    // });
+                    console.log();
+                });
+            //submitForm($(this).parents('form'));
         })
         .on('click', '.image-upload', function () {
 
@@ -581,15 +703,72 @@
 
     // btnDelete.on('click', function () {
     //     let form = $($(this).data('form'));
-    //     console.log($(this).data('form'));
+    //     //console.log($(this).data('form'));
     //     if (form !== undefined) {
-    //         console.log(form);
+    //         //console.log(form);
     //         submitForm(form, function () {
     //             $(_modal).modal('hide');
     //         });
     //         //form.submit();
     //     }
     // });
+
+    function parseData(data, callback) {
+
+        if ("refresh" in data) {
+            document.location.reload();
+        } else {
+            if ("remove" in data) {
+                $.each(data.remove, function (index, identifier) {
+                    $(identifier).remove();
+                });
+            }
+
+            if ("replace" in data) {
+                $.each(data.replace, function (identifier, view) {
+                    $(identifier).replaceWith(view);
+                });
+            }
+
+            if ("append" in data) {
+                $.each(data.append, function (identifier, view) {
+                    $(identifier).append(view);
+                });
+            }
+
+            if ("prepend" in data) {
+                $.each(data.prepend, function (identifier, view) {
+                    $(identifier).prepend(view);
+                });
+            }
+
+            if ("update" in data) {
+                $.each(data.update, function (identifier, view) {
+                    $(identifier).html(view);
+                });
+            }
+
+            if ("attr" in data) {
+                $.each(data.attr, function (identifier, attributes) {
+                    $.each(attributes, function (attribute, value) {
+                        $(identifier).attr(attribute, value);
+                    });
+                });
+            }
+
+            if ("errors" in data) {
+                $.each(data.errors, function (identifier, error) {
+                    alert(error);
+                });
+            }
+
+            if (callback !== undefined) {
+                callback();
+            }
+
+            $('[data-toggle="popover"]').popover();
+        }
+    }
 
     function submitForm(form, callback) {
         $('[data-toggle="popover"]').popover('hide');
@@ -601,6 +780,7 @@
             dataType: 'json',
             data: form.serializeArray() || [],
             error: function (xhr, status, error) {
+
                 if ("errors" in xhr.responseJSON) {
                     $("#form-content")
                         .find('.form-control')
@@ -614,44 +794,8 @@
                 }
             },
             success: function (data) {
-
-                //$("#form-content").html('').attr('action', '');
-                if ("refresh" in data) {
-                    document.location.reload();
-                } else {
-                    if ("remove" in data) {
-                        $.each(data.remove, function (index, identifier) {
-                            $(identifier).remove();
-                        });
-                    }
-
-                    if ("replace" in data) {
-                        $.each(data.replace, function (identifier, view) {
-                            $(identifier).replaceWith(view);
-                        });
-                    }
-
-                    if ("update" in data) {
-                        $.each(data.update, function (identifier, view) {
-                            $(identifier).html(view);
-                        });
-                    }
-
-                    if ("attr" in data) {
-                        $.each(data.attr, function (identifier, attributes) {
-                            $.each(attributes, function (attribute, value) {
-                                $(identifier).attr(attribute, value);
-                            });
-                        });
-                    }
-
-                    if (callback !== undefined) {
-                        callback();
-                    }
-
-                    $('[data-toggle="popover"]').popover();
-                }
-
+                parseData(data, callback);
+                $('#form-modal').modal('hide')
             }
         });
     }

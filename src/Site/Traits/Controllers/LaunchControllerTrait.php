@@ -81,7 +81,7 @@ trait LaunchControllerTrait
             Session::flash('success', trans('site::launch.created'));
             return response()->json([
                 'replace' => [
-                    '#form-group-launch_id' => view('site::repair.field.launch_id')
+                    '#form-group-launch_id' => view('site::repair.create.launch_id')
                         ->with('launches', $launches)->render(),
                 ],
             ]);

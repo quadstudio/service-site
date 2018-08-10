@@ -24,7 +24,7 @@ class Repair extends Model
         'reason_call', 'diagnostics', 'works',
         'recommends', 'remarks', 'country_id',
         'client', 'phone_primary', 'phone_secondary',
-        'address',
+        'address', 'status_id'
     ];
 
     /**
@@ -63,6 +63,7 @@ class Repair extends Model
             $file->save();
         }
     }
+
 
     public function created_at($time = false)
     {
@@ -165,6 +166,31 @@ class Repair extends Model
     {
         return $this->hasMany(Part::class);
     }
+
+    public function statuses(){
+        return RepairStatus::whereIn('id', config('site.repair_status_transition.' .(Auth::user()->admin == 1 ? 'admin' : 'user').'.'. $this->getAttribute('status_id'), []));
+    }
+
+    /**
+     * Сообщения
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function messages()
+    {
+        return $this->morphMany(Message::class, 'messagable');
+    }
+
+    /**
+     * Ошибки
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function fails()
+    {
+        return $this->hasMany(RepairFail::class);
+    }
+
 
     /**
      * Статус отчета по ремонту

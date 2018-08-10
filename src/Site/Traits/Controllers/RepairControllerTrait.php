@@ -6,7 +6,6 @@ use QuadStudio\Service\Site\Filters\BelongsUserFilter;
 use QuadStudio\Service\Site\Filters\ByNameSortFilter;
 use QuadStudio\Service\Site\Filters\CountryEnabledFilter;
 use QuadStudio\Service\Site\Filters\CountrySortFilter;
-use QuadStudio\Service\Site\Filters\Repair\SortFilter;
 use QuadStudio\Service\Site\Http\Requests\RepairRequest;
 use QuadStudio\Service\Site\Models\File;
 use QuadStudio\Service\Site\Models\Product;
@@ -90,7 +89,6 @@ trait RepairControllerTrait
 
         $this->repairs->trackFilter();
         $this->repairs->applyFilter(new BelongsUserFilter());
-        $this->repairs->applyFilter(new SortFilter());
 
         return view('site::repair.index', [
             'repository' => $this->repairs,
@@ -107,7 +105,12 @@ trait RepairControllerTrait
      */
     public function show(Repair $repair)
     {
-        return view('site::repair.show', ['repair' => $repair]);
+        $statuses = $repair->statuses()->get();
+        $fails = $repair->fails;
+        $types = $this->types->all();
+        $files = $repair->files;
+
+        return view('site::repair.show', compact('repair', 'fails', 'types', 'files', 'statuses'));
     }
 
     /**
@@ -139,15 +142,17 @@ trait RepairControllerTrait
         $types = $this->types->all();
         $parts = $this->getParts($request);
         $files = $this->getFiles($request);
+        $fails = collect([]);
 
-        return view('site::repair.create', compact('engineers', 'trades', 'launches', 'countries', 'types', 'files', 'parts'));
+        return view('site::repair.create', compact('engineers', 'trades', 'launches', 'countries', 'types', 'files', 'parts', 'fails'));
     }
 
     /**
      * @param RepairRequest $request
+     * @param Repair|null $repair
      * @return \Illuminate\Support\Collection
      */
-    private function getParts(RepairRequest $request)
+    private function getParts(RepairRequest $request, Repair $repair = null)
     {
 
         $parts = collect([]);
@@ -159,10 +164,23 @@ trait RepairControllerTrait
                 $parts->put($product->id, collect([
                     'product_id' => $product->id,
                     'sku'        => $product->sku,
+                    'image'      => $product->image()->src(),
                     'cost'       => $product->price()->exists ? $product->price()->price() : '',
-                    'format'       => $product->price()->exists ? $product->price()->format() : '',
+                    'format'     => $product->price()->exists ? $product->price()->format() : '',
                     'name'       => $product->name,
                     'count'      => $values['count'],
+                ]));
+            }
+        } elseif (!is_null($repair)) {
+            foreach ($repair->parts as $part) {
+                $parts->put($part->product_id, collect([
+                    'product_id' => $part->product_id,
+                    'sku'        => $part->product->sku,
+                    'image'      => $part->product->image()->src(),
+                    'cost'       => $part->product->price()->exists ? $part->product->price()->price() : '',
+                    'format'     => $part->product->price()->exists ? $part->product->price()->format() : '',
+                    'name'       => $part->product->name,
+                    'count'      => $part->count,
                 ]));
             }
         }
@@ -172,9 +190,10 @@ trait RepairControllerTrait
 
     /**
      * @param RepairRequest $request
+     * @param Repair|null $repair
      * @return \Illuminate\Support\Collection
      */
-    private function getFiles(RepairRequest $request)
+    private function getFiles(RepairRequest $request, Repair $repair = null)
     {
         $files = collect([]);
         $old = $request->old('file');
@@ -184,30 +203,69 @@ trait RepairControllerTrait
                     $files->push(File::findOrFail($file_id));
                 }
             }
+        } elseif (!is_null($repair)) {
+            $files = $files->merge($repair->files);
         }
 
         return $files;
     }
 
     /**
+     * @param RepairRequest $request
+     * @param Repair $repair
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function edit(RepairRequest $request, Repair $repair)
+    {
+        $engineers = $this->engineers
+            ->applyFilter(new BelongsUserFilter())
+            ->applyFilter(new ByNameSortFilter())
+            ->all();
+        $trades = $this->trades
+            ->applyFilter(new BelongsUserFilter())
+            ->applyFilter(new ByNameSortFilter())
+            ->all();
+        $launches = $this->launches
+            ->applyFilter(new BelongsUserFilter())
+            ->applyFilter(new ByNameSortFilter())
+            ->all();
+        $countries = $this->countries
+            ->applyFilter(new CountryEnabledFilter())
+            ->applyFilter(new CountrySortFilter())
+            ->all();
+        $types = $this->types->all();
+        $parts = $this->getParts($request, $repair);
+        $files = $this->getFiles($request, $repair);
+        $statuses = $repair->statuses()->get();
+
+        $fails = $repair->fails;
+
+        //dd(old('allow_road', $repair->allow_road));
+        return view('site::repair.edit', compact('repair', 'engineers',
+            'trades', 'launches', 'countries', 'statuses',
+            'types', 'files', 'parts', 'fails'));
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  RepairRequest $request
+     * @param Repair $repair
      * @return \Illuminate\Http\Response
      */
-    public function store(RepairRequest $request)
+    public function update(RepairRequest $request, Repair $repair)
     {
-
-        $this->authorize('create', Repair::class);
-        $request->user()->repairs()->save($repair = $this->repairs->create($request->except(['_token', '_method', '_create', 'file', 'parts'])));
+        $repair->update($request->except(['_token', '_method', '_create', 'file', 'parts']));
+        if ($request->filled('message.text')) {
+            $repair->messages()->save($message = $request->user()->outbox()->create($request->input('message')));
+        }
         $this->setFiles($request, $repair);
-        if($request->input('allow_parts') == 1){
+        if ($request->input('allow_parts') == 1 && $request->filled('parts')) {
+            $repair->parts()->delete();
             $parts = collect($request->input('parts'))->values()->toArray();
             $repair->parts()->createMany($parts);
         }
-        $route = $request->input('_create') == 1 ? 'repairs.create' : 'repairs.index';
-
-        return redirect()->route($route)->with('success', trans('site::repair.created'));
+        return redirect()->route('repairs.show', $repair)->with('success', trans('site::repair.updated'));
     }
 
     /**
@@ -226,5 +284,26 @@ trait RepairControllerTrait
             }
         }
         //$this->files->deleteLostFiles();
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  RepairRequest $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(RepairRequest $request)
+    {
+
+        $this->authorize('create', Repair::class);
+        $request->user()->repairs()->save($repair = $this->repairs->create($request->except(['_token', '_method', '_create', 'file', 'parts'])));
+        $this->setFiles($request, $repair);
+        if ($request->input('allow_parts') == 1) {
+            $parts = collect($request->input('parts'))->values()->toArray();
+            $repair->parts()->createMany($parts);
+        }
+        $route = $request->input('_create') == 1 ? 'repairs.create' : 'repairs.index';
+
+        return redirect()->route($route)->with('success', trans('site::repair.created'));
     }
 }

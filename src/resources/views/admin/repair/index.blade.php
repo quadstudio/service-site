@@ -11,55 +11,28 @@
             </li>
             <li class="breadcrumb-item active">@lang('site::repair.repairs')</li>
         </ol>
-        <h1 class="header-title mb-4"><i class="fa fa-@lang('site::repair.icon')"></i> @lang('site::repair.repairs')</h1>
+        <h1 class="header-title mb-4"><i class="fa fa-@lang('site::repair.icon')"></i> @lang('site::repair.repairs')
+        </h1>
         <hr/>
 
         @alert()@endalert()
 
-        {{--<div class="row">--}}
-            {{--<div class="col-12 mb-2">--}}
-                {{--<a class="btn btn-success" href="{{ route('repairs.create') }}" role="button">--}}
-                    {{--<i class="fa fa-magic"></i>--}}
-                    {{--<span>@lang('site::messages.create') @lang('site::repair.repair')</span>--}}
-                {{--</a>--}}
-            {{--</div>--}}
-        {{--</div>--}}
-
-        <div class="row">
-            <div class="col-sm-12">
-                {{--<vue-pagination :pagination="pagination" @paginate="getRepairs()" :offset="2"></vue-pagination>--}}
-                {{$items->render()}}
-            </div>
+        <div class=" border p-3 mb-4">
+            {{--<a class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0" href="{{ route('trades.create') }}"--}}
+            {{--role="button">--}}
+            {{--<i class="fa fa-plus"></i>--}}
+            {{--<span>@lang('site::messages.add') @lang('site::trade.trade')</span>--}}
+            {{--</a>--}}
+            <a href="{{ route('admin') }}" class="d-block d-sm-inline btn btn-secondary">
+                <i class="fa fa-reply"></i>
+                <span>@lang('site::messages.back_admin')</span>
+            </a>
         </div>
-
-        @include('repo::filter')
-
-        <div class="row">
-            <div class="col-12">
-
-                <table class="table table-hover table-sm">
-                    <thead>
-                    <tr>
-                        <th scope="col">@lang('site::repair.number')</th>
-                        <th scope="col" class="d-none d-sm-table-cell">@lang('site::repair.id')</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {{--<tr v-for="repair in repairs">--}}
-                        {{--<td>@{{ repair.number }}</td>--}}
-                        {{--<td>@{{ repair.client }}</td>--}}
-                    {{--</tr>--}}
-                    @each('site::admin.repair.index.row', $items, 'repair')
-                    </tbody>
-                </table>
-            </div>
+        {{$repairs->render()}}
+        @filter(['repository' => $repository])@endfilter
+        <div class="row items-row-view">
+            @each('site::admin.repair.index.row', $repairs, 'repair')
         </div>
-
-        <div class="row">
-            <div class="col-sm-12">
-                {{$items->render()}}
-            </div>
-        </div>
-
+        {{$repairs->render()}}
     </div>
 @endsection

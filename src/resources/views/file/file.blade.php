@@ -21,12 +21,12 @@
         <a href="{{ route('files.show', $file) }}"
            class="">{{$file->name}}</a>
     {{--<img style="width:150px;" class="img-fluid" src="{{ Storage::disk($file->storage)->url($file->path) }}">--}}
-    <input form="repair-create-form" type="hidden" name="file[{{$file->type_id}}][{{$file->id}}]" value="{{$file->id}}">
+    <input form="repair-form" type="hidden" name="file[{{$file->type_id}}][{{$file->id}}]" value="{{$file->id}}">
     {{--<a href="#" onclick="$(this).parent().remove();return false;" title="@lang('site::messages.delete')"--}}
        {{--class="d-inline-block text-danger mr-2"><i class="fa fa-close"></i></a>--}}
     {{--<a href="{{ route('files.show', $file) }}"--}}
        {{--class="">{{$file->name}}</a>--}}
-    {{--<input form="repair-create-form" type="hidden" name="file[{{$file->type_id}}][]" value="{{$file->id}}">--}}
+    {{--<input form="repair-form" type="hidden" name="file[{{$file->type_id}}][]" value="{{$file->id}}">--}}
 </li>
 
 

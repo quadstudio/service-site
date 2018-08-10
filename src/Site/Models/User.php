@@ -259,7 +259,7 @@ class User extends Authenticatable
      */
     public function outbox()
     {
-        return $this->hasMany(Message::class);
+        return $this->hasMany(Message::class, 'user_id');
     }
 
     /**

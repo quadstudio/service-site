@@ -15,6 +15,13 @@
             <li class="breadcrumb-item active">{{ $user->name }}</li>
         </ol>
         <h1 class="header-title mb-4"><i class="fa fa-@lang('site::user.icon')"></i> {{ $user->name }}</h1>
+        <div class=" border p-3 mb-4">
+            <a href="{{ route('admin.users.edit', $user) }}" class="d-block d-sm-inline btn btn-ferroli">
+                <i class="fa fa-pencil"></i>
+                <span>@lang('site::messages.edit') @lang('site::user.user')</span>
+            </a>
+
+        </div>
         <div class="row">
             <div class="col-xl-4">
                 <!-- Side info -->

@@ -71,6 +71,7 @@ trait ProductControllerTrait
         return view('site::part.repair.row', collect([
             'product_id' => $product->id,
             'sku' => $product->sku,
+            'image' => $product->image()->src(),
             'cost' => $product->price()->exists ? $product->price()->price() : '',
             'format' => $product->price()->exists ? $product->price()->format() : '',
             'name' => $product->name,

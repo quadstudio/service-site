@@ -4,6 +4,10 @@ namespace QuadStudio\Service\Site\Repositories;
 
 
 use QuadStudio\Repo\Eloquent\Repository;
+use QuadStudio\Service\Site\Filters\Repair\ClientSearchFilter;
+use QuadStudio\Service\Site\Filters\Repair\PartSearchFilter;
+use QuadStudio\Service\Site\Filters\Repair\SearchFilter;
+use QuadStudio\Service\Site\Filters\Repair\SortFilter;
 use QuadStudio\Service\Site\Filters\Repair\StatusFilter;
 use QuadStudio\Service\Site\Models\Repair;
 
@@ -25,7 +29,11 @@ class RepairRepository extends Repository
     public function track(): array
     {
         return [
-            StatusFilter::class
+            SortFilter::class,
+            StatusFilter::class,
+            SearchFilter::class,
+            ClientSearchFilter::class,
+            PartSearchFilter::class,
         ];
     }
 }

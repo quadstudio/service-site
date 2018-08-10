@@ -86,9 +86,83 @@ class RepairRequest extends FormRequest
             }
             case 'PUT':
             case 'PATCH': {
-                return [
+                $fails = $this->route('repair')->fails;
+                $rules = collect([]);
 
-                ];
+                if ($fails->contains('field', 'number')) {
+                    $rules->put('number', 'required|string|max:10');
+                }
+                if ($fails->contains('field', 'warranty_number')) {
+                    $rules->put('warranty_number', 'required|string|max:10');
+                }
+                if ($fails->contains('field', 'warranty_period')) {
+                    $rules->put('warranty_period', 'required|numeric|digits:2');
+                }
+                if ($fails->contains('field', 'country_id')) {
+                    $rules->put('country_id', 'required|exists:' . $prefix . 'countries,id');
+                }
+                if ($fails->contains('field', 'address')) {
+                    $rules->put('address', 'required|string|max:255');
+                }
+                if ($fails->contains('field', 'phone_primary')) {
+                    $rules->put('phone_primary', 'required|numeric|digits:10');
+                }
+                if ($fails->contains('field', 'trade_id')) {
+                    $rules->put('trade_id', [
+                        'required',
+                        'exists:' . $prefix . 'trades,id',
+                        Rule::exists($prefix . 'trades', 'id')->where(function ($query) use ($prefix) {
+                            $query->where($prefix . 'trades.user_id', $this->user()->id);
+                        }),
+                    ]);
+                }
+                if ($fails->contains('field', 'date_trade')) {
+                    $rules->put('date_trade', 'required|date_format:"Y-m-d"');
+                }
+                if ($fails->contains('field', 'launch_id')) {
+                    $rules->put('launch_id', [
+                        'required',
+                        'exists:' . $prefix . 'launches,id',
+                        Rule::exists($prefix . 'launches', 'id')->where(function ($query) use ($prefix) {
+                            $query->where($prefix . 'launches.user_id', $this->user()->id);
+                        }),
+                    ]);
+                }
+                if ($fails->contains('field', 'date_launch')) {
+                    $rules->put('date_launch', 'required|date_format:"Y-m-d"');
+                }
+                if ($fails->contains('field', 'date_call')) {
+                    $rules->put('date_call', 'required|date_format:"Y-m-d"');
+                }
+                if ($fails->contains('field', 'reason_call')) {
+                    $rules->put('reason_call', 'required|string');
+                }
+                if ($fails->contains('field', 'diagnostics')) {
+                    $rules->put('diagnostics', 'required|string');
+                }
+                if ($fails->contains('field', 'works')) {
+                    $rules->put('works', 'required|string');
+                }
+                if ($fails->contains('field', 'date_repair')) {
+                    $rules->put('date_repair', 'required|date_format:"Y-m-d"');
+                }
+                if ($fails->contains('field', 'allow_work')) {
+                    $rules->put('allow_work', 'required|boolean');
+                }
+                if ($fails->contains('field', 'allow_road')) {
+                    $rules->put('allow_road', 'required|boolean');
+                }
+                if ($fails->contains('field', 'allow_parts')) {
+                    $rules->put('allow_parts', 'required|boolean');
+                }
+                if ($fails->contains('field', 'file_1')) {
+                    $rules->put('file.1', 'required|array');
+                }
+                if ($fails->contains('field', 'file_2')) {
+                    $rules->put('file.2', 'required|array');
+                }
+
+                return $rules->toArray();
             }
             default:
                 return [];

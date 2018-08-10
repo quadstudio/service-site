@@ -108,8 +108,8 @@
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ route('admin.repairs.index') }}"><i
                                     class="fa fa-@lang('site::repair.icon')"></i> @lang('site::repair.repairs')</a>
-                        {{--<a class="dropdown-item" href="{{ route('admin.acts.index') }}"><i--}}
-                                    {{--class="fa fa-@lang('site::act.icon')"></i> @lang('site::act.acts')</a>--}}
+                        <a class="dropdown-item" href="{{ route('admin.messages.index') }}"><i
+                                    class="fa fa-@lang('site::message.icon')"></i> @lang('site::message.messages')</a>
                         <a class="dropdown-item" href="{{ route('admin.orders.index') }}"><i
                                     class="fa fa-@lang('site::order.icon')"></i> @lang('site::order.orders')</a>
 
