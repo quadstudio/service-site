@@ -48,7 +48,8 @@
 
                                 <div class="form-group text-right">
                                     <textarea placeholder="@lang('site::cart.order_comment')" class="form-control"
-                                              name="comment" id="comment" rows="3"></textarea>
+                                              name="message[text]"  rows="3"></textarea>
+                                    <input type="hidden" name="message[receiver_id]" value="{{config('site.receiver_id')}}">
                                     <input type="hidden" name="status_id" value="1">
                                 </div>
                                 @if(config('cart.weight', false) === true)

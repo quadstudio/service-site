@@ -5,9 +5,11 @@ namespace QuadStudio\Service\Site\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use QuadStudio\Service\Site\Contracts\Messagable;
 use QuadStudio\Service\Site\Facades\Site;
 
-class Repair extends Model
+
+class Repair extends Model implements Messagable
 {
     /**
      * @var string
@@ -40,10 +42,57 @@ class Repair extends Model
 //    {
 //        parent::boot();
 //
-//        self::creating(function ($model) {
-//            $model->user_id = Auth::user()->getAuthIdentifier();
+//        self::updated(function (Repair $repair) {
+//
+//
 //        });
 //    }
+
+    public function setStatus($status_id)
+    {
+
+        if ($status_id == 5 && $this->getOriginal('status_id') != 5) {
+
+            $this->parts->each(/**
+             * @param Part $part
+             * @param int $key
+             */
+                function ($part) {
+                    $part->update(['cost' => Site::round($part->cost())]);
+                });
+            $this->update([
+                'status_id' => $status_id,
+                'cost_work' => $this->equipmentCostWork,
+                'cost_road' => $this->equipmentCostRoad,
+
+            ]);
+        } else {
+            $this->update(['status_id' => $status_id]);
+        }
+    }
+
+    /**
+     * Узнать, можно ли сменить статус отчета по ремонту
+     *
+     * @param $status_id
+     * @return bool
+     */
+    public function canSetStatus($status_id)
+    {
+        switch ($status_id) {
+            case 5:
+                return $this->hasEquipment() && $this->parts->every(function ($part, $key) {
+                        return $part->hasPrice();
+                    });
+            default:
+                return true;
+        }
+    }
+
+    public function hasEquipment()
+    {
+        return $this->serial->product->hasEquipment();
+    }
 
     /**
      * Файлы
@@ -63,7 +112,6 @@ class Repair extends Model
             $file->save();
         }
     }
-
 
     public function created_at($time = false)
     {
@@ -102,20 +150,16 @@ class Repair extends Model
      */
     public function cost_work()
     {
-        if ($this->allow_work == 0) {
+        if ($this->allow_work == 0 || !$this->hasEquipment()) {
             return 0;
         }
         switch ($this->getAttribute('status_id')) {
             case 5:
             case 6:
-                $result = $this->getAttribute('cost_work');
-                break;
+                return $this->getAttribute('cost_work');
             default:
-                $result = $this->serial->product->equipment->cost_work * Site::currencyRates($this->serial->product->equipment->currency, $this->user->currency);
-                break;
+                return $this->equipmentCostWork;
         }
-
-        return $result;
     }
 
     /**
@@ -125,21 +169,17 @@ class Repair extends Model
      */
     public function cost_road()
     {
-        if ($this->allow_road == 0) {
+        if ($this->allow_road == 0 || !$this->hasEquipment()) {
             return 0;
         }
         switch ($this->getAttribute('status_id')) {
             case 5:
             case 6:
-                $result = $this->getAttribute('cost_road');
+                return $this->getAttribute('cost_road');
                 break;
             default:
-                $result = $this->serial->product->equipment->cost_road * Site::currencyRates($this->serial->product->equipment->currency, $this->user->currency);
-                break;
+                return $this->equipmentCostRoad;
         }
-        Auth::validate();
-
-        return $result;
     }
 
     /**
@@ -156,6 +196,23 @@ class Repair extends Model
         return $this->parts->sum('total');
     }
 
+    public function getEquipmentCostWorkAttribute()
+    {
+        return $this->serial->product->equipment->cost_work * $this->rates;
+    }
+
+    public function getEquipmentCostRoadAttribute()
+    {
+        return $this->serial->product->equipment->cost_road * $this->rates;
+    }
+
+    /**
+     * @return float
+     */
+    public function getRatesAttribute()
+    {
+        return Site::currencyRates($this->serial->product->equipment->currency, $this->user->currency);
+    }
 
     /**
      * Запчасти
@@ -167,8 +224,9 @@ class Repair extends Model
         return $this->hasMany(Part::class);
     }
 
-    public function statuses(){
-        return RepairStatus::whereIn('id', config('site.repair_status_transition.' .(Auth::user()->admin == 1 ? 'admin' : 'user').'.'. $this->getAttribute('status_id'), []));
+    public function statuses()
+    {
+        return RepairStatus::whereIn('id', config('site.repair_status_transition.' . (Auth::user()->admin == 1 ? 'admin' : 'user') . '.' . $this->getAttribute('status_id'), []));
     }
 
     /**
@@ -274,4 +332,14 @@ class Repair extends Model
 //        return $query->where('enabled', 1);
 //    }
 
+    function name()
+    {
+        return trans('site::repair.repair') . ' ' . $this->getAttribute('number');
+    }
+
+    function route()
+    {
+        //return '';
+        return route((Auth::user()->admin == 1 ? 'admin.' : '') . 'repairs.show', [$this, '#messages-list']);
+    }
 }

@@ -7,7 +7,7 @@
                 <a href="{{ route('index') }}">@lang('site::messages.index')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('home') }}">@lang('site::messages.home')</a>
+                <a href="{{ route('admin') }}">@lang('site::messages.admin')</a>
             </li>
             <li class="breadcrumb-item active">@lang('site::message.messages')</li>
         </ol>
@@ -17,15 +17,15 @@
         @alert()@endalert()
 
         <div class=" border p-3 mb-4">
-            {{--<a class="disabled btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0"--}}
-               {{--href="{{ route('messages.create') }}"--}}
-               {{--role="button">--}}
-                {{--<i class="fa fa-edit"></i>--}}
-                {{--<span>@lang('site::messages.write') @lang('site::message.message')</span>--}}
-            {{--</a>--}}
-            <a href="{{ route('home') }}" class="d-block d-sm-inline btn btn-secondary">
+            <a class="disabled btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0"
+               href="{{ route('messages.create') }}"
+               role="button">
+                <i class="fa fa-edit"></i>
+                <span>@lang('site::messages.write') @lang('site::message.message')</span>
+            </a>
+            <a href="{{ route('admin') }}" class="d-block d-sm-inline btn btn-secondary">
                 <i class="fa fa-reply"></i>
-                <span>@lang('site::messages.back_home')</span>
+                <span>@lang('site::messages.back_admin')</span>
             </a>
         </div>
 
@@ -49,19 +49,28 @@
                                             <div class="text-muted small text-nowrap mt-2">{{ $message->created_at(true) }}</div>
                                         </div>
                                         <div class="flex-shrink-1 bg-lighter rounded py-2 px-3 @if($message->user_id == Auth::user()->id) mr-3 @else ml-3 @endif">
-                                            <div class="mb-2"><b>{{$message->user->name}}</b></div>
+                                            <div class="mb-2">
+                                                <a class="text-dark"
+                                                   href="{{route('admin.users.show', $message->user)}}">
+                                                    <b>{{$message->user->name}}</b>
+                                                </a>
+                                            </div>
                                             <span class="text-big">{!! $message->text !!}</span>
-                                            @if(!is_null($messagable = $message->messagable))
-                                                <hr/>
-                                                <div class="">
-
+                                            <hr/>
+                                            <div class="">
+                                                @if($message->user->admin == 1)
+                                                    <a class="d-block text-muted"
+                                                       href="{{route('admin.users.show', $message->receiver)}}">
+                                                        @lang('site::message.receiver_id'): {{$message->receiver->name}}
+                                                    </a>
+                                                @endif
+                                                @if(!is_null($messagable = $message->messagable))
                                                     <a class="d-block text-muted"
                                                        href="{{$messagable->route()}}">
                                                         @lang('site::message.help.messagable'): {{$messagable->name()}}
                                                     </a>
-
-                                                </div>
-                                            @endif
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
                                 @endforeach

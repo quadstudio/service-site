@@ -40,11 +40,21 @@ class Message extends Model
     }
 
     /**
-     * Клиент
+     * Автор сообщения
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Получатель сообщения
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function receiver()
     {
         return $this->belongsTo(User::class);
     }

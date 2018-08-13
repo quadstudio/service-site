@@ -12,30 +12,20 @@
             <li class="breadcrumb-item active">@lang('site::order.orders')</li>
         </ol>
         <h1 class="header-title mb-4"><i class="fa fa-shopping-cart"></i> @lang('site::order.orders')</h1>
-        <hr/>
+        @alert()@endalert()
+        @filter(['repository' => $repository])@endfilter
+
         <div class="row">
             <div class="col-sm-12">
-                {{$items->render()}}
+                {{$orders->render()}}
             </div>
         </div>
-        @include('repo::filter')
-        <table class="table table-sm">
-            <thead>
-            <tr>
-                <th class="text-center">№</th>
-                <th class="text-center">@lang('site::order.created_at')</th>
-                <th class="d-none d-md-table-cell">@lang('site::order.client')</th>
-                <th class="text-right">@lang('site::order.total_short')</th>
-                <th class="text-center"><span class="d-none d-sm-table-cell">@lang('site::order.status_id')</span></th>
-            </tr>
-            </thead>
-            <tbody>
-            @each('site::admin.order.index.row', $items, 'item')
-            </tbody>
-        </table>
+        <div class="row items-row-view">
+            @each('site::admin.order.index.row', $orders, 'order')
+        </div>
         <div class="row">
             <div class="col-sm-12">
-                {{$items->render()}}
+                {{$orders->render()}}
             </div>
         </div>
     </div>

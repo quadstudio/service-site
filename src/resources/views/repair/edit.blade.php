@@ -85,7 +85,7 @@
                                                name="number"
                                                class="form-control{{ $errors->has('number') ? ' is-invalid' : '' }}"
                                                value="{{ old('number', $repair->number) }}"
-                                                required
+                                               required
                                                placeholder="@lang('site::repair.placeholder.number')">
                                         <span class="invalid-feedback">{{ $errors->first('number') }}</span>
                                     @else
@@ -415,7 +415,7 @@
                                         <div class="text-success text-big">@bool(['bool' => $repair->allow_parts == 1])@endbool</div>
                                     @endif
                                 </div>
-                                @if($fails->contains('field', 'allow_parts'))
+                                @if($fails->contains('field', 'parts'))
                                     <fieldset id="parts-search-fieldset"
                                               style="display: @if(old('allow_parts', $repair->allow_parts) == 1) block @else none @endif;">
                                         <div class="form-group">
@@ -439,6 +439,7 @@
                                                        for="">@lang('site::part.parts')</label>
                                                 <div class="card-group" id="parts">
                                                     @foreach($parts as $part)
+
                                                         @include('site::part.repair.row', [
                                                                 'product_id' => $part['product_id'],
                                                                 'sku' => $part['sku'],
@@ -467,7 +468,38 @@
                                         </div>
                                     </fieldset>
                                 @else
-                                    <div class="display-4">В разработке</div>
+                                    <div class="form-row">
+                                        <div class="col my-3">
+                                            <label class="control-label"
+                                                   for="">@lang('site::part.parts')</label>
+                                            <div class="card-group" id="parts">
+                                                @foreach($parts as $part)
+                                                    @include('site::part.repair.show', [
+                                                            'product_id' => $part['product_id'],
+                                                            'sku' => $part['sku'],
+                                                            'image' => $part['image'],
+                                                            'name' => $part['name'],
+                                                            'cost' => $part['cost'],
+                                                            'format' => $part['format'],
+                                                            'count' => $part['count'],
+                                                        ])
+                                                @endforeach
+                                            </div>
+                                            <hr/>
+                                            <div class="text-right text-xlarge">
+                                                @lang('site::part.total'):
+                                                @if(!$parts->isEmpty())
+                                                    <span id="total-cost">
+                                                        {{Site::format($parts->sum('cost'))}}
+                                                        </span>
+                                                @else
+                                                    {{Site::currency()->symbol_left}}
+                                                    <span id="total-cost">0</span>
+                                                    {{Site::currency()->symbol_right}}
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
                                 @endif
                             </div>
                         </div>
@@ -506,16 +538,16 @@
                                                         @if($file->type_id == $type->id)
                                                             @include('site::repair.field.file')
                                                             {{--<li class="list-group-item">--}}
-                                                                {{--<a href="#"--}}
-                                                                   {{--onclick="$(this).parent().remove();return false;"--}}
-                                                                   {{--title="@lang('site::messages.delete')"--}}
-                                                                   {{--class="d-inline-block text-danger mr-2"><i--}}
-                                                                            {{--class="fa fa-close"></i></a>--}}
-                                                                {{--<a href="{{ route('files.show', $file) }}"--}}
-                                                                   {{--class="">{{$file->name}}</a>--}}
-                                                                {{--<input form="repair-form" type="hidden"--}}
-                                                                       {{--name="file[{{$file->type_id}}][]"--}}
-                                                                       {{--value="{{$file->id}}">--}}
+                                                            {{--<a href="#"--}}
+                                                            {{--onclick="$(this).parent().remove();return false;"--}}
+                                                            {{--title="@lang('site::messages.delete')"--}}
+                                                            {{--class="d-inline-block text-danger mr-2"><i--}}
+                                                            {{--class="fa fa-close"></i></a>--}}
+                                                            {{--<a href="{{ route('files.show', $file) }}"--}}
+                                                            {{--class="">{{$file->name}}</a>--}}
+                                                            {{--<input form="repair-form" type="hidden"--}}
+                                                            {{--name="file[{{$file->type_id}}][]"--}}
+                                                            {{--value="{{$file->id}}">--}}
                                                             {{--</li>--}}
                                                         @endif
                                                     @endforeach

@@ -255,13 +255,16 @@ trait RepairControllerTrait
      */
     public function update(RepairRequest $request, Repair $repair)
     {
+
         $repair->update($request->except(['_token', '_method', '_create', 'file', 'parts']));
         if ($request->filled('message.text')) {
             $repair->messages()->save($message = $request->user()->outbox()->create($request->input('message')));
         }
         $this->setFiles($request, $repair);
-        if ($request->input('allow_parts') == 1 && $request->filled('parts')) {
+
+        if ($repair->getAttribute('allow_parts') == 1 && $request->filled('parts')) {
             $repair->parts()->delete();
+
             $parts = collect($request->input('parts'))->values()->toArray();
             $repair->parts()->createMany($parts);
         }

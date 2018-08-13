@@ -47,6 +47,7 @@ return [
         'order'        => 10,
         'product'      => 12,
         'product_type' => 10,
+        'message'      => 30,
     ],
 
     'run'       => [
@@ -133,6 +134,8 @@ return [
         ],
 
     ],
+
+    'receiver_id' => 1,
 
     'round' => 0,
 

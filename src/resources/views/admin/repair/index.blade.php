@@ -13,7 +13,6 @@
         </ol>
         <h1 class="header-title mb-4"><i class="fa fa-@lang('site::repair.icon')"></i> @lang('site::repair.repairs')
         </h1>
-        <hr/>
 
         @alert()@endalert()
 

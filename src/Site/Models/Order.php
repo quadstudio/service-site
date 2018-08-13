@@ -4,8 +4,10 @@ namespace QuadStudio\Service\Site\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use QuadStudio\Service\Site\Contracts\Messagable;
 
-class Order extends Model
+class Order extends Model implements Messagable
 {
 
     /**
@@ -62,6 +64,16 @@ class Order extends Model
     }
 
     /**
+     * Сообщения
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function messages()
+    {
+        return $this->morphMany(Message::class, 'messagable');
+    }
+
+    /**
      * User
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -81,4 +93,14 @@ class Order extends Model
         return $this->belongsTo(OrderStatus::class);
     }
 
+    function name()
+    {
+        return trans('site::order.order') . ' ' . $this->id();
+    }
+
+    function route()
+    {
+        //return '';
+        return route((Auth::user()->admin == 1 ? 'admin.' : '') . 'orders.show', [$this, '#messages-list']);
+    }
 }

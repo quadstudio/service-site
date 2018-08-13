@@ -37,7 +37,8 @@
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" id="number">
-                                    <label class="custom-control-label" for="number">@lang('site::repair.number')</label>
+                                    <label class="custom-control-label"
+                                           for="number">@lang('site::repair.number')</label>
 
                                 </div>
                             </div>
@@ -46,7 +47,7 @@
                             {{$repair->number}}
                         </div>
                         <div class="col-md-5">
-                            <input type="text"  class="form-control" title="" />
+                            <input type="text" class="form-control" title=""/>
                         </div>
                     </div>
 
@@ -263,7 +264,10 @@
                     @foreach($statuses as $key => $status)
                         <a href="#"
                            style="color:#fff;background-color: {{$status->color}}"
-                           class="btn d-block d-sm-inline-block @if($key != $statuses->count()) mb-1 @endif">
+                           class="btn
+                            @if($key != $statuses->count()) mb-1 @endif
+
+                                   d-block d-sm-inline-block">
                             <i class="fa fa-{{$status->icon}}"></i>
                             <span>{{$status->button}}</span>
                         </a>

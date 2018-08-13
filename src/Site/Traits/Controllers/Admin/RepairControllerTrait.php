@@ -83,7 +83,7 @@ trait RepairControllerTrait
      */
     public function status(Request $request, Repair $repair)
     {
-        $repair->update($request->input('repair'));
+        $repair->setStatus($request->input('repair.status_id'));
         if ($request->filled('message.text')) {
             $repair->messages()->save($message = $request->user()->outbox()->create($request->input('message')));
         }

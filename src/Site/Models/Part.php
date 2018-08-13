@@ -13,7 +13,7 @@ class Part extends Model
     protected $table;
 
     protected $fillable = [
-        'product_id', 'count'
+        'product_id', 'count', 'cost'
     ];
 
     /**
@@ -35,6 +35,11 @@ class Part extends Model
         return $this->belongsTo(Product::class);
     }
 
+    public function fixPrice()
+    {
+
+    }
+
     /**
      * Отчет по ремониу
      *
@@ -45,22 +50,60 @@ class Part extends Model
         return $this->belongsTo(Repair::class);
     }
 
-
+    /**
+     * Стоимость детали ИТОГО
+     *
+     * @return float
+     */
     public function getTotalAttribute()
+    {
+        return $this->cost() * $this->count;
+    }
+
+    /**
+     * Стоимость детали
+     *
+     * @return float
+     */
+    public function cost()
     {
         switch ($this->repair->getAttribute('status_id')) {
             case 5:
             case 6:
-                $result = $this->cost * $this->count;
-                break;
+                return $this->cost;
             default:
-                $result = $this->product->prices()->where('type_id', $this->repair->user->price_type_id)->sum('price')
-                    * $this->count * Site::currencyRates($this->repair->user->price_type->currency, $this->repair->user->currency);
-                break;
+                return $this->price * $this->rates;
         }
-
-        return $result;
     }
 
+    /**
+     * Коэффициент курса валюты
+     *
+     * @return float
+     */
+    public function getRatesAttribute()
+    {
+        return Site::currencyRates($this->repair->user->price_type->currency, $this->repair->user->currency);
+    }
+
+    /**
+     * Цена детали
+     *
+     * @return float
+     */
+    public function getPriceAttribute()
+    {
+        return $this->product->prices()->where('type_id', $this->repair->user->price_type_id)->sum('price');
+    }
+
+    /**
+     * Узнать, имеет ли деталь цену
+     *
+     * @return bool
+     */
+    public function hasPrice()
+    {
+        return (float)$this->price > 0.00;
+    }
 
 }

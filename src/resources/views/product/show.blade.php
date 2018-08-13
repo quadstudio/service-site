@@ -129,11 +129,7 @@
                     <li class="nav-item">
                         <a class="nav-link" id="analog-tab" data-toggle="tab" href="#analog" role="tab"
                            aria-controls="analog" aria-selected="false">Аналоги <span
-                                    class="badge badge-secondary">{{$product->analogs()->where(function ($query) {
-                                    $query->whereHas('product', function ($query) {
-                                            $query->whereEnabled(1);
-                                    });
-                            })->count()}}</span></a>
+                                    class="badge badge-secondary">{{$product->analogs()->whereEnabled(1)->count()}}</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="payment-tab" data-toggle="tab" href="#payment" role="tab"

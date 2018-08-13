@@ -54,7 +54,7 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
         'TradeController.stub'               => 'TradeController',
         'FileController.stub'                => 'FileController',
         'OrderController.stub'               => 'OrderController',
-        'ProductController.stub'             => 'PartController',
+        'ProductController.stub'             => 'ProductController',
         'ActController.stub'                 => 'ActController',
         'CostController.stub'                => 'CostController',
         'DatasheetController.stub'           => 'DatasheetController',
@@ -102,6 +102,7 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
         'admin/AnalogController.stub'        => 'Admin/AnalogController',
         'admin/RelationController.stub'      => 'Admin/RelationController',
         'admin/ProductImageController.stub'  => 'Admin/ProductImageController',
+        'admin/MessageController.stub'       => 'Admin/MessageController',
     ];
 
     /**

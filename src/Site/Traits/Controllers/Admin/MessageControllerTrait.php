@@ -1,8 +1,10 @@
 <?php
 
-namespace QuadStudio\Service\Site\Traits\Controllers;
+namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 
-use QuadStudio\Service\Site\Filters\Message\BelongsScFilter;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use QuadStudio\Service\Site\Filters\Message\ScSearchFilter;
+use QuadStudio\Service\Site\Filters\Message\SortFilter;
 use QuadStudio\Service\Site\Repositories\MessageRepository;
 use QuadStudio\Service\Site\Models\Message;
 
@@ -28,16 +30,18 @@ trait MessageControllerTrait
      */
     public function index()
     {
+
         $this->messages->trackFilter();
-        $this->messages->pushTrackFilter(BelongsScFilter::class);
-        return view('site::message.index', [
+        $this->messages->applyFilter(new SortFilter());
+        $this->messages->pushTrackFilter( ScSearchFilter::class);
+        return view('site::admin.message.index', [
             'repository' => $this->messages,
-            'messages'      => $this->messages->paginate(config('site.per_page.message', 10), [env('DB_PREFIX', '').'messages.*'])
+            'messages'      => $this->messages->paginate(config('site.per_page.message', 30), [env('DB_PREFIX', '').'messages.*'])
         ]);
     }
 
     public function show(Message $message)
     {
-        return view('site::message.show', ['message' => $message]);
+        return view('site::admin.message.show', compact('message'));
     }
 }

@@ -5,6 +5,7 @@ namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 
 
 //use QuadStudio\Service\Shop\Http\Requests\Order As Request;
+use QuadStudio\Service\Site\Filters\Order\ScSearchFilter;
 use QuadStudio\Service\Site\Models\Order;
 use QuadStudio\Service\Site\Repositories\OrderRepository As Repository;
 
@@ -13,17 +14,17 @@ trait OrderControllerTrait
     /**
      * @var Repository
      */
-    protected $repository;
+    protected $orders;
 
     /**
      * Create a new controller instance.
      *
-     * @param Repository $repository
+     * @param Repository $orders
      */
-    public function __construct(Repository $repository)
+    public function __construct(Repository $orders)
     {
         $this->middleware('auth');
-        $this->repository = $repository;
+        $this->orders = $orders;
     }
 
     /**
@@ -33,11 +34,11 @@ trait OrderControllerTrait
      */
     public function index()
     {
-        $this->repository->trackFilter();
-
+        $this->orders->trackFilter();
+        $this->orders->pushTrackFilter(ScSearchFilter::class);
         return view('site::admin.order.index', [
-            'items' => $this->repository->paginate(config('site.per_page.order', 8)),
-            'repository' => $this->repository,
+            'orders' => $this->orders->paginate(config('site.per_page.order', 8)),
+            'repository' => $this->orders,
         ]);
     }
 
@@ -50,7 +51,7 @@ trait OrderControllerTrait
      */
     public function show(Order $order)
     {
-        return view('site::admin.order.show', ['order' => $order]);
+        return view('site::admin.order.show', compact('order'));
     }
 
 }

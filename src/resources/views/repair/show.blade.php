@@ -223,7 +223,7 @@
                                             </div>
                                             <div class="flex-shrink-1 bg-lighter rounded py-2 px-3 @if($message->user_id == Auth::user()->id) mr-3 @else ml-3 @endif">
                                                 <div class="mb-1"><b>{{$message->user->name}}</b></div>
-                                                {!! $message->text !!}
+                                                <span class="text-big">{!! $message->text !!}</span>
                                             </div>
                                         </div>
                                     @endforeach

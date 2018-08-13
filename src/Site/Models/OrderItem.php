@@ -65,5 +65,19 @@ class OrderItem extends Model
         return $this->belongsTo(Currency::class);
     }
 
+    /**
+     * @return string
+     */
+    public function name()
+    {
+        $result = [];
+        $result[] = $this->name;
+        if (mb_strlen($this->sku, "UTF-8") > 0) {
+            $result[] = '(' . $this->sku . ')';
+        }
+
+        return htmlspecialchars_decode(implode(' ', $result));
+    }
+
 
 }

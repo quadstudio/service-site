@@ -92,10 +92,14 @@
                         <dd class="col-sm-8">{{ $repair->serial->product->sku }}</dd>
 
                         <dt class="col-sm-4 text-left text-sm-right">@lang('site::product.equipment_id')</dt>
-                        <dd class="col-sm-8"><a
-                                    href="{{route('admin.equipments.show', $repair->serial->product->equipment)}}">
-                                {{ $repair->serial->product->equipment->catalog->parentTreeName() }} {{ $repair->serial->product->equipment->name }}
-                            </a>
+                        <dd class="col-sm-8">
+                            @if($repair->hasEquipment())
+                                <a href="{{route('admin.equipments.show', $repair->serial->product->equipment)}}">
+                                    {{ $repair->serial->product->equipment->catalog->parentTreeName() }} {{ $repair->serial->product->equipment->name }}
+                                </a>
+                            @else
+                                <span class="text-muted">@lang('site::messages.not_indicated')</span>
+                            @endif
                         </dd>
 
                     </dl>
@@ -402,6 +406,7 @@
                                     @foreach($statuses as $key => $status)
                                         <button
                                                 type="submit"
+                                                @if(!$repair->canSetStatus($status->id)) disabled @endif
                                                 name="repair[status_id]"
                                                 value="{{$status->id}}"
                                                 style="color:#fff;background-color: {{$status->color}}"

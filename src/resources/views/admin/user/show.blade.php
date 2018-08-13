@@ -32,7 +32,7 @@
                                  class="rounded-circle">
                             <div class="media-body pt-2 ml-3">
                                 <h5 class="mb-2">{{ $user->name }}</h5>
-                                <div class="text-muted small">{{ $user->type->name }}</div>
+                                <div class="text-muted small">{{ $user->type ? $user->type->name : '' }}</div>
 
                                 {{--<div class="mt-2">--}}
                                 {{--<a href="javascript:void(0)" class="text-twitter">--}}
