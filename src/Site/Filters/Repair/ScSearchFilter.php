@@ -21,7 +21,7 @@ class ScSearchFilter extends SearchFilter
                 $words = $this->split($this->get($this->search));
                 if (!empty($words)) {
                     foreach ($words as $word) {
-                        $builder->whereHas('user', function ($query) use ($word) {
+                        $builder = $builder->whereHas('user', function ($query) use ($word) {
                             $query->where(function ($query) use ($word) {
                                 foreach ($this->columns() as $column) {
                                     $query->orWhereRaw("LOWER({$column}) LIKE LOWER(?)", ["%{$word}%"]);

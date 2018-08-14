@@ -36,7 +36,7 @@ trait ContragentControllerTrait
         $this->contragents->trackFilter();
         return view('site::admin.contragent.index', [
             'repository' => $this->contragents,
-            'items'      => $this->contragents->paginate(config('site.per_page.contragent', 10), [env('DB_PREFIX', '').'contragents.*'])
+            'contragents'      => $this->contragents->paginate(config('site.per_page.contragent', 10), [env('DB_PREFIX', '').'contragents.*'])
         ]);
     }
 

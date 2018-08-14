@@ -3,6 +3,7 @@
 namespace QuadStudio\Service\Site\Repositories;
 
 use QuadStudio\Repo\Eloquent\Repository;
+use QuadStudio\Service\Site\Filters\Bank\SearchFilter;
 use QuadStudio\Service\Site\Models\Bank;
 
 class BankRepository extends Repository
@@ -23,7 +24,7 @@ class BankRepository extends Repository
     public function track(): array
     {
         return [
-
+            SearchFilter::class
         ];
     }
 }

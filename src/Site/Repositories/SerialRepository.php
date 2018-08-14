@@ -3,6 +3,8 @@
 namespace QuadStudio\Service\Site\Repositories;
 
 use QuadStudio\Repo\Eloquent\Repository;
+use QuadStudio\Service\Site\Filters\Serial\ProductSearchFilter;
+use QuadStudio\Service\Site\Filters\Serial\SearchFilter;
 use QuadStudio\Service\Site\Models\Serial;
 
 class SerialRepository extends Repository
@@ -23,7 +25,8 @@ class SerialRepository extends Repository
     public function track(): array
     {
         return [
-
+            SearchFilter::class,
+            ProductSearchFilter::class
         ];
     }
 }

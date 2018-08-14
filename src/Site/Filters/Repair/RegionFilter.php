@@ -56,7 +56,7 @@ class RegionFilter extends WhereFilter
             $query->whereTypeId(2);
         })
             ->pluck('name', 'id')
-            ->prepend(trans('site::repair.region_defaults'), '')
+            ->prepend(trans('site::address.help.region_defaults'), '')
             ->toArray();
     }
 

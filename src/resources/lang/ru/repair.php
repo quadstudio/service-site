@@ -42,7 +42,6 @@ return [
     'phone_secondary' => 'Телефон (дополнительный)',
     //
     'status_defaults' => '- выбрать -',
-    'region_defaults' => '- выбрать -',
     //
     'placeholder'     => [
         'serial_id'       => 'Серийный номер',
@@ -94,6 +93,7 @@ return [
         'search_client'  => 'Поиск по ФИО клиента, телефону и адресу',
         'search_part'    => 'Поиск по артикулу и наименованию детали',
         'search_sc'      => 'Поиск по наименованию и E-mail СЦ',
+        'last'           => 'Последний отчет',
     ],
     'default'         => [
         'trade_id'    => '- Выбрать -',

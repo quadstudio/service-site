@@ -27,16 +27,15 @@ trait BankControllerTrait
      */
     public function index()
     {
-
         $this->banks->trackFilter();
         return view('site::admin.bank.index', [
             'repository' => $this->banks,
-            'items'      => $this->banks->paginate(config('site.per_page.bank', 10), [env('DB_PREFIX', '').'banks.*'])
+            'banks'      => $this->banks->paginate(config('site.per_page.bank', 10), [env('DB_PREFIX', '').'banks.*'])
         ]);
     }
 
     public function show(Bank $bank)
     {
-        return view('site::admin.bank.show', ['bank' => $bank]);
+        return view('site::admin.bank.show', compact('bank'));
     }
 }

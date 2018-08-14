@@ -77,9 +77,9 @@ class User extends Authenticatable
         return is_null($this->guid);
     }
 
-    public function created_at()
+    public function created_at($time = false)
     {
-        return !is_null($this->created_at) ? Carbon::instance($this->created_at)->format('d.m.Y H:i') : '';
+        return !is_null($this->created_at) ? Carbon::instance($this->created_at)->format('d.m.Y' . ($time === true ? ' H:i' : '')) : '';
     }
 
     public function logged_at()

@@ -58,6 +58,9 @@
                         <a class="dropdown-item" href="{{ route('admin.products.index') }}">
                             <i class="fa fa-@lang('site::product.icon')"></i> @lang('site::product.cards')
                         </a>
+                        <a class="dropdown-item" href="{{ route('admin.serials.index') }}">
+                            <i class="fa fa-@lang('site::serial.icon')"></i> @lang('site::serial.serials')
+                        </a>
 
                         <div class="dropdown-divider"></div>
 
@@ -70,8 +73,8 @@
                         <a class="dropdown-item" href="{{ route('admin.trades.index') }}">
                             <i class="fa fa-@lang('site::trade.icon')"></i> @lang('site::trade.trades')
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.serials.index') }}">
-                            <i class="fa fa-@lang('site::serial.icon')"></i> @lang('site::serial.serials')
+                        <a class="dropdown-item" href="{{ route('admin.contragents.index') }}">
+                            <i class="fa fa-@lang('site::contragent.icon')"></i> @lang('site::contragent.contragents')
                         </a>
 
                         <div class="dropdown-divider"></div>
@@ -102,10 +105,6 @@
                         <a class="dropdown-item" href="{{ route('admin.users.index') }}">
                             <i class="fa fa-@lang('site::user.icon')"></i> @lang('site::user.users')
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.contragents.index') }}">
-                            <i class="fa fa-@lang('site::contragent.icon')"></i> @lang('site::contragent.contragents')
-                        </a>
-                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ route('admin.repairs.index') }}"><i
                                     class="fa fa-@lang('site::repair.icon')"></i> @lang('site::repair.repairs')</a>
                         <a class="dropdown-item" href="{{ route('admin.messages.index') }}"><i

@@ -97,6 +97,10 @@ class Site
                                 $router->name('admin')->resource('/acts', 'ActController');
                                 $router->name('admin')->resource('/users', 'UserController');
                                 $router->name('admin')->get('/users/{user}/orders', 'UserController@orders')->name('.users.orders');
+                                $router->name('admin')->get('/users/{user}/addresses', 'UserController@addresses')->name('.users.addresses');
+                                $router->name('admin')->get('/users/{user}/contragents', 'UserController@contragents')->name('.users.contragents');
+                                $router->name('admin')->get('/users/{user}/contacts', 'UserController@contacts')->name('.users.contacts');
+                                $router->name('admin')->get('/users/{user}/repairs', 'UserController@repairs')->name('.users.repairs');
                                 $router->name('admin')->get('/users/{user}/export', 'UserController@export')->name('.users.export');
                                 $router->name('admin')->resource('/banks', 'BankController');
                                 $router->name('admin')->resource('/orders', 'OrderController')->only(['index', 'show']);
@@ -201,26 +205,6 @@ class Site
     }
 
     /**
-     * Округлить цену
-     *
-     * @param $price
-     * @return float
-     */
-    public function round($price)
-    {
-
-        if (($round = config('site.round', false)) !== false) {
-            $price = round($price, $round);
-        }
-
-        if (($round_up = config('site.round_up', false)) !== false) {
-            $price = ceil($price / (int)$round_up) * (int)$round_up;
-        }
-
-        return $price;
-    }
-
-    /**
      * @return Currency
      */
     public function currency()
@@ -243,6 +227,37 @@ class Site
         }
 
         return (float)$price;
+    }
+
+    /**
+     * Округлить цену
+     *
+     * @param $price
+     * @return float
+     */
+    public function round($price)
+    {
+
+        if (($round = config('site.round', false)) !== false) {
+            $price = round($price, $round);
+        }
+
+        if (($round_up = config('site.round_up', false)) !== false) {
+            $price = ceil($price / (int)$round_up) * (int)$round_up;
+        }
+
+        return $price;
+    }
+
+    function numberof($numberof, $value, $suffix)
+    {
+        // не будем склонять отрицательные числа
+        $numberof = abs($numberof);
+        $keys = array(2, 0, 1, 1, 1, 2);
+        $mod = $numberof % 100;
+        $suffix_key = $mod > 4 && $mod < 20 ? 2 : $keys[min($mod % 10, 5)];
+
+        return $value . $suffix[$suffix_key];
     }
 
     /**

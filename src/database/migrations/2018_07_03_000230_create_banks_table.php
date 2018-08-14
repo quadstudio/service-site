@@ -24,7 +24,7 @@ class CreateBanksTable extends Migration
         Schema::create("{$this->prefix}banks", function (Blueprint $table) {
             $table->string('id', 11)->primary();
             $table->string('ks', 20)->nullable();
-            $table->string('bank');
+            $table->string('name');
             $table->string('city')->nullable();
             $table->string('address')->nullable();
             $table->string('phones')->nullable();

@@ -23,8 +23,8 @@ return [
     'warranty'            => 'На гарантии',
     'service'             => 'Услуга',
     //
-    'placeholder' => [
-        'description' => ''
+    'placeholder'         => [
+        'description' => '',
     ],
     'search_placeholder'  => 'Поиск запчастей...',
     'sort'                => 'Сортировка',

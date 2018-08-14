@@ -1,6 +1,6 @@
 <?php
 
-namespace QuadStudio\Service\Site\Filters\Order;
+namespace QuadStudio\Service\Site\Filters;
 
 use QuadStudio\Repo\Contracts\RepositoryInterface;
 use QuadStudio\Repo\Filter;
