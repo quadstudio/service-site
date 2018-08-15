@@ -60,6 +60,6 @@ return [
     'advantages_3'     => 'Преимущество 3',
     'phone_title'      => '10 цифр номера телефона: 925 1234567',
     //
-    'select_from_list' => '- Выберите из списка -',
+    'select_from_list' => '- Выбрать -',
     'pagination'       => 'Показано с :from по :to из :total :of',
 ];

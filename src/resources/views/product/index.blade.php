@@ -10,21 +10,12 @@
 @endsection
 @section('content')
     <div class="container">
-
-        @include('repo::filter')
-        <div class="row">
-            <div class="col-sm-12">
-                {{$items->render()}}
-            </div>
-        </div>
+        @filter(['repository' => $repository])@endfilter
+        @pagination(['pagination' => $items])@endpagination
+        {{$items->render()}}
         <div class="row">
             @each('site::product.grid', $items, 'product', 'site::product.empty')
         </div>
-        <div class="row">
-            <div class="col-sm-12">
-                {{$items->render()}}
-            </div>
-        </div>
-
+        {{$items->render()}}
     </div>
 @endsection

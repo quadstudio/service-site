@@ -1,8 +1,8 @@
-<div class="bg-light p-3">
+<div class="bg-light p-3 mb-2">
     @lang('site::messages.pagination', [
         'from' => ($pagination->currentpage()-1)*$pagination->perpage()+1,
         'to' => $pagination->currentpage() < $pagination->lastpage() ? $pagination->currentpage()*$pagination->perpage() : $pagination->total(),
         'total' => $pagination->total(),
-        'of' => Site::numberof($pagination->total(), 'запис', array('и', 'ей', 'ей'))
+        'of' => numberof($pagination->total(), 'запис', ['и', 'ей', 'ей'])
         ])
 </div>

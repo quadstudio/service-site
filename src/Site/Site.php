@@ -249,17 +249,6 @@ class Site
         return $price;
     }
 
-    function numberof($numberof, $value, $suffix)
-    {
-        // не будем склонять отрицательные числа
-        $numberof = abs($numberof);
-        $keys = array(2, 0, 1, 1, 1, 2);
-        $mod = $numberof % 100;
-        $suffix_key = $mod > 4 && $mod < 20 ? 2 : $keys[min($mod % 10, 5)];
-
-        return $value . $suffix[$suffix_key];
-    }
-
     /**
      * Проверить, является ли текущий пользователь администратором
      *

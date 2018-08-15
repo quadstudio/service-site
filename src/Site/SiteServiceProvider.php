@@ -243,6 +243,7 @@ class SiteServiceProvider extends ServiceProvider
         if (class_exists('\Blade')) {
             Blade::component('site::components.alert', 'alert');
             Blade::component('site::components.bool', 'bool');
+            Blade::component('site::components.pagination', 'pagination');
 
             Blade::directive('admin', function () {
                 return "<?php if (app('site')->isAdmin()) : ?>";

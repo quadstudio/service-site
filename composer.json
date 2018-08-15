@@ -5,7 +5,7 @@
     "homepage": "https://github.com/quadstudio/service-site",
     "type": "library",
     "license": "MIT",
-    "version": "0.1.12",
+    "version": "0.1.13",
     "authors": [
         {
             "name": "Alexander Shuleyko",
@@ -13,6 +13,9 @@
         }
     ],
     "autoload": {
+        "files": [
+            "src/Site/helpers.php"
+        ],
         "psr-4": {
             "QuadStudio\\Service\\Site\\": "src/Site/"
         }

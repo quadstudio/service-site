@@ -15,16 +15,16 @@
         </h1>
         @alert()@endalert
 
-        <div class=" border p-3 mb-4">
+        <div class=" border p-3 mb-2">
             <a href="{{ route('admin') }}" class="d-block d-sm-inline btn btn-secondary">
                 <i class="fa fa-reply"></i>
                 <span>@lang('site::messages.back_admin')</span>
             </a>
         </div>
 
-        {{$banks->render()}}
-        @include('site::components.pagination', ['pagination' => $banks])
         @filter(['repository' => $repository])@endfilter
+        @pagination(['pagination' => $banks])@endpagination
+        {{$banks->render()}}
         <div class="row items-row-view">
             @each('site::admin.bank.index.row', $banks, 'bank')
         </div>

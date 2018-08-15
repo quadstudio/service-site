@@ -21,10 +21,9 @@
                 <span>@lang('site::messages.back_admin')</span>
             </a>
         </div>
-
-        {{$serials->render()}}
-        @include('site::components.pagination', ['pagination' => $serials])
         @filter(['repository' => $repository])@endfilter
+        @pagination(['pagination' => $serials])@endpagination
+        {{$serials->render()}}
         <div class="row items-row-view">
             @each('site::admin.serial.index.row', $serials, 'serial')
         </div>

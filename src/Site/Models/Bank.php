@@ -20,6 +20,8 @@ class Bank extends Model
      */
     protected $table;
 
+    public $incrementing = false;
+
     /**
      * @param array $attributes
      */
