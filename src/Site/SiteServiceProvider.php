@@ -20,16 +20,19 @@ class SiteServiceProvider extends ServiceProvider
     ];
 
     protected $policies = [
-        Models\Trade::class     => Policies\TradePolicy::class,
-        Models\Launch::class    => Policies\LaunchPolicy::class,
-        Models\Engineer::class  => Policies\EngineerPolicy::class,
-        Models\Repair::class    => Policies\RepairPolicy::class,
-        Models\File::class      => Policies\FilePolicy::class,
-        Models\Catalog::class   => Policies\CatalogPolicy::class,
-        Models\Equipment::class => Policies\EquipmentPolicy::class,
-        Models\Image::class     => Policies\ImagePolicy::class,
-        Models\Order::class     => Policies\OrderPolicy::class,
-        Models\Product::class   => Policies\ProductPolicy::class,
+        Models\Trade::class      => Policies\TradePolicy::class,
+        Models\Launch::class     => Policies\LaunchPolicy::class,
+        Models\Engineer::class   => Policies\EngineerPolicy::class,
+        Models\Repair::class     => Policies\RepairPolicy::class,
+        Models\File::class       => Policies\FilePolicy::class,
+        Models\Catalog::class    => Policies\CatalogPolicy::class,
+        Models\Equipment::class  => Policies\EquipmentPolicy::class,
+        Models\Image::class      => Policies\ImagePolicy::class,
+        Models\Order::class      => Policies\OrderPolicy::class,
+        Models\Product::class    => Policies\ProductPolicy::class,
+        Models\Contact::class    => Policies\ContactPolicy::class,
+        Models\Address::class    => Policies\AddressPolicy::class,
+        Models\Contragent::class => Policies\ContragentPolicy::class,
     ];
 
     /**

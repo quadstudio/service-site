@@ -17,10 +17,6 @@ class Order extends Model implements Messagable
 
     protected $fillable = ['status_id', 'comment'];
 
-    public function id(){
-        return str_pad($this->id, 8, '0', STR_PAD_LEFT);
-    }
-
     /**
      * @param array $attributes
      */
@@ -64,6 +60,16 @@ class Order extends Model implements Messagable
     }
 
     /**
+     * Контрагент
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function contragent()
+    {
+        return $this->belongsTo(Contragent::class);
+    }
+
+    /**
      * Сообщения
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
@@ -96,6 +102,11 @@ class Order extends Model implements Messagable
     function name()
     {
         return trans('site::order.order') . ' ' . $this->id();
+    }
+
+    public function id()
+    {
+        return str_pad($this->id, 8, '0', STR_PAD_LEFT);
     }
 
     function route()

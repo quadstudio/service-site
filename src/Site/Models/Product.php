@@ -17,7 +17,7 @@ class Product extends Model
     protected $table;
     protected $prefix;
     protected $fillable = [
-        'enabled', 'active', 'warranty', 'service'
+        'enabled', 'active', 'warranty', 'service', 'description'
     ];
 
     /**

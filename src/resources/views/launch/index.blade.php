@@ -14,7 +14,7 @@
         <h1 class="header-title mb-4"><i class="fa fa-@lang('site::launch.icon')"></i> @lang('site::launch.launches')</h1>
 
         @alert()@endalert
-        <div class=" border p-3 mb-4">
+        <div class=" border p-3 mb-2">
             <a class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0" href="{{ route('launches.create') }}"
                role="button">
                 <i class="fa fa-plus"></i>
@@ -25,9 +25,12 @@
                 <span>@lang('site::messages.back_home')</span>
             </a>
         </div>
+        @pagination(['pagination' => $launches])@endpagination
+        {{$launches->render()}}
         <div class="row items-row-view">
             @each('site::launch.index.row', $launches, 'launch')
         </div>
+        {{$launches->render()}}
         {{----}}
         {{--<div class="row">--}}
         {{--<div class="col-12 mb-2">--}}

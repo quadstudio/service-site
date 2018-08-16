@@ -901,7 +901,7 @@
                     </div>
 
 
-                    <h4 class="mb-4 mt-2" id="company_info">@lang('site::user.header.user')</h4>
+                    <h4 class="mb-4 mt-2" id="company_info">@lang('site::user.header.info')</h4>
 
                     <div class="form-row required">
                         <div class="col mb-3">

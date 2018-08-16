@@ -15,7 +15,7 @@
                     class="fa fa-@lang('site::trade.icon')"></i> @lang('site::trade.trades')</h1>
 
         @alert()@endalert
-        <div class=" border p-3 mb-4">
+        <div class=" border p-3 mb-2">
             <a class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0" href="{{ route('trades.create') }}"
                role="button">
                 <i class="fa fa-plus"></i>
@@ -26,8 +26,11 @@
                 <span>@lang('site::messages.back_home')</span>
             </a>
         </div>
+        @pagination(['pagination' => $trades])@endpagination
+        {{$trades->render()}}
         <div class="row items-row-view">
             @each('site::trade.index.row', $trades, 'trade')
         </div>
+        {{$trades->render()}}
     </div>
 @endsection

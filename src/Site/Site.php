@@ -156,8 +156,12 @@ class Site
                 //
                 $router->name('api')->get('/products/repair', 'ProductController@repair');
                 $router->name('api')->get('/products/analog', 'ProductController@analog');
-                $router->name('api')->get('/products/relation', 'ProductController@relation');
+                $router->name('api')->get('/products/product', 'ProductController@product');
                 $router->name('api')->get('/products/{product}', 'ProductController@show');
+                //
+                $router->name('api')->get('/boilers', 'BoilerController@index')->name('.boilers.search');
+                $router->name('api')->get('/boilers/{product}', 'BoilerController@show')->name('.boilers.show');
+                //$router->name('api')->resource('/boilers', 'BoilerController')->only(['index', 'show']);
                 //$router->name('api')->get('/parts/{id}', 'PartController@show');
                 //$router->name('api')->get('/parts/{id}/repair', 'PartController@repair');
 

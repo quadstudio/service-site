@@ -16,40 +16,28 @@
 
         @alert()@endalert
 
-        <div class="row">
-            <div class="col mb-2">
-                <a href="{{ route('trades.edit', $trade) }}" class="btn btn-primary">
-                    <i class="fa fa-pencil"></i>
-                    <span>@lang('site::messages.edit')</span>
-                </a>
-                <a href="{{ route('trades.index') }}" class="btn btn-secondary">
-                    <i class="fa fa-reply"></i>
-                    <span>@lang('site::messages.back')</span>
-                </a>
+        <div class=" border p-3 mb-2">
+            <a href="{{ route('trades.edit', $trade) }}" class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0"
+               role="button">
+                <i class="fa fa-pencil"></i>
+                <span>@lang('site::messages.edit') @lang('site::trade.trade')</span>
+            </a>
+            <a href="{{ route('trades.index') }}" class="d-block d-sm-inline btn btn-secondary">
+                <i class="fa fa-reply"></i>
+                <span>@lang('site::messages.back')</span>
+            </a>
+        </div>
+        <div class="card mb-2">
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::trade.name')</dt>
+                    <dd class="col-sm-8">{{ $trade->name }}</dd>
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::trade.country_id')</dt>
+                    <dd class="col-sm-8"><img style="width: 30px;" class="img-fluid border" src="{{ asset($trade->country->flag) }}" alt=""> {{ $trade->country->name }}</dd>
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::trade.phone')</dt>
+                    <dd class="col-sm-8">{{ $trade->country->phone }}{{ $trade->phone }}</dd>
+                </dl>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col">
-
-                <table class="table table-sm table-bordered">
-                    <tbody>
-                    <tr>
-                        <td class="text-right"><b>@lang('site::trade.name')</b></td>
-                        <td>{{ $trade->name }}</td>
-                    </tr>
-                    <tr>
-                        <td class="text-right"><b>@lang('site::trade.country_id')</b></td>
-                        <td><img style="width: 30px;" class="img-fluid border" src="{{ asset($trade->country->flag) }}" alt=""> {{ $trade->country->name }}</td>
-                    </tr>
-                    <tr>
-                        <td class="text-right"><b>@lang('site::trade.phone')</b></td>
-                        <td>{{ $trade->country->phone }}{{ $trade->phone }}</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
     </div>
 @endsection

@@ -12,44 +12,29 @@
             <li class="breadcrumb-item active">{{ $engineer->name }}</li>
         </ol>
         <h1 class="header-title mb-4">{{ $engineer->name }}</h1>
-        <hr/>
-
         @alert()@endalert
-
-        <div class="row">
-            <div class="col mb-2">
-                <a href="{{ route('engineers.edit', $engineer) }}" class="btn btn-primary">
-                    <i class="fa fa-pencil"></i>
-                    <span>@lang('site::messages.edit')</span>
-                </a>
-                <a href="{{ route('engineers.index') }}" class="btn btn-secondary">
-                    <i class="fa fa-reply"></i>
-                    <span>@lang('site::messages.back')</span>
-                </a>
+        <div class=" border p-3 mb-2">
+            <a href="{{ route('engineers.edit', $engineer) }}" class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0"
+               role="button">
+                <i class="fa fa-pencil"></i>
+                <span>@lang('site::messages.edit') @lang('site::engineer.engineer')</span>
+            </a>
+            <a href="{{ route('engineers.index') }}" class="d-block d-sm-inline btn btn-secondary">
+                <i class="fa fa-reply"></i>
+                <span>@lang('site::messages.back')</span>
+            </a>
+        </div>
+        <div class="card mb-2">
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::engineer.name')</dt>
+                    <dd class="col-sm-8">{{ $engineer->name }}</dd>
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::engineer.country_id')</dt>
+                    <dd class="col-sm-8"><img style="width: 30px;" class="img-fluid border" src="{{ asset($engineer->country->flag) }}" alt=""> {{ $engineer->country->name }}</dd>
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::engineer.phone')</dt>
+                    <dd class="col-sm-8">{{ $engineer->country->phone }}{{ $engineer->phone }}</dd>
+                </dl>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col">
-
-                <table class="table table-sm table-bordered">
-                    <tbody>
-                    <tr>
-                        <td class="text-right"><b>@lang('site::engineer.name')</b></td>
-                        <td>{{ $engineer->name }}</td>
-                    </tr>
-                    <tr>
-                        <td class="text-right"><b>@lang('site::engineer.country_id')</b></td>
-                        <td><img style="width: 30px;" class="img-fluid border" src="{{ asset($engineer->country->flag) }}" alt=""> {{ $engineer->country->name }}</td>
-                    </tr>
-                    <tr>
-                        <td class="text-right"><b>@lang('site::engineer.phone')</b></td>
-                        <td>{{ $engineer->country->phone }}{{ $engineer->phone }}</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
     </div>
 @endsection

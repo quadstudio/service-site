@@ -9,9 +9,9 @@
             <li class="breadcrumb-item">
                 <a href="{{ route('repairs.index') }}">@lang('site::repair.repairs')</a>
             </li>
-            <li class="breadcrumb-item active">{{ $repair->number }}</li>
+            <li class="breadcrumb-item active">№ {{ $repair->id }}</li>
         </ol>
-        <h1 class="header-title mb-4">{{ $repair->number }} </h1>
+        <h1 class="header-title mb-4">@lang('site::repair.header.repair') № {{ $repair->id }}</h1>
         @alert()@endalert()
         <div class=" border p-3 mb-4">
             @if($statuses->isNotEmpty())
@@ -45,16 +45,6 @@
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::repair.status_id')</dt>
                     <dd class="col-sm-8" style="color:{{$repair->status->color}}"><i
                                 class="fa fa-{{$repair->status->icon}}"></i> {{ $repair->status->name }}</dd>
-
-                    <dt class="col-sm-4 text-left text-sm-right @if($fails->contains('field', 'number')) bg-danger text-white @endif">@lang('site::repair.number')</dt>
-                    <dd class="col-sm-8">{{ $repair->number }}</dd>
-
-                    <dt class="col-sm-4 text-left text-sm-right @if($fails->contains('field', 'warranty_number')) bg-danger text-white @endif">@lang('site::repair.warranty_number')</dt>
-                    <dd class="col-sm-8">{{ $repair->warranty_number }}</dd>
-
-                    <dt class="col-sm-4 text-left text-sm-right @if($fails->contains('field', 'warranty_period')) bg-danger text-white @endif">@lang('site::repair.warranty_period')</dt>
-                    <dd class="col-sm-8">{{ $repair->warranty_period }}</dd>
-
                 </dl>
 
                 <hr/>
@@ -64,15 +54,15 @@
                     <dd class="col-sm-8">{{ $repair->serial_id }}</dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::serial.product_id')</dt>
-                    <dd class="col-sm-8">{{ $repair->serial->product->name }}</dd>
+                    <dd class="col-sm-8">{{ $repair->product->name }}</dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::product.sku')</dt>
-                    <dd class="col-sm-8">{{ $repair->serial->product->sku }}</dd>
+                    <dd class="col-sm-8">{{ $repair->product->sku }}</dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::product.equipment_id')</dt>
                     <dd class="col-sm-8"><a
-                                href="{{route('equipments.show', $repair->serial->product->equipment)}}">
-                            {{ $repair->serial->product->equipment->catalog->parentTreeName() }} {{ $repair->serial->product->equipment->name }}
+                                href="{{route('equipments.show', $repair->product->equipment)}}">
+                            {{ $repair->product->equipment->catalog->parentTreeName() }} {{ $repair->product->equipment->name }}
                         </a>
                     </dd>
 

@@ -27,7 +27,16 @@ class Contragent extends Model
         $this->table = env('DB_PREFIX', '') . 'contragents';
     }
 
-    public function created_at(){
+    public static function boot()
+    {
+        parent::boot();
+        self::creating(function ($model) {
+            $model->organization_id = config('site.defaults.user.organization_id');
+        });
+    }
+
+    public function created_at()
+    {
         return !is_null($this->created_at) ? Carbon::instance($this->created_at)->format('d.m.Y H:i') : '';
     }
 
@@ -49,6 +58,16 @@ class Contragent extends Model
     public function addresses()
     {
         return $this->morphMany(Address::class, 'addressable');
+    }
+
+    /**
+     * Заказы
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 
     /**

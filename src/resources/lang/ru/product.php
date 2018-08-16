@@ -34,5 +34,8 @@ return [
     'no'                  => 'Нет',
     'in_stock'            => 'В наличии',
     'not_available'       => 'Нет в наличии',
-    'contact_the_manager' => 'Обратитесь к менеджеру'
+    'contact_the_manager' => 'Обратитесь к менеджеру',
+    'header'              => [
+        'boiler' => 'Оборудование'
+    ]
 ];

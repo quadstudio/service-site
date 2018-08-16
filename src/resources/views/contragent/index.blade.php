@@ -15,8 +15,9 @@
                     class="fa fa-@lang('site::contragent.icon')"></i> @lang('site::contragent.contragents')</h1>
 
         @alert()@endalert
-        <div class="justify-content-start border p-3 mb-4">
-            <a class="disabled btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0" href="{{ route('contragents.create') }}"
+        <div class="justify-content-start border p-3 mb-2">
+            <a class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0"
+               href="{{ route('contragents.create') }}"
                role="button">
                 <i class="fa fa-plus"></i>
                 <span>@lang('site::messages.add') @lang('site::contragent.contragent')</span>
@@ -26,10 +27,11 @@
                 <span>@lang('site::messages.back_home')</span>
             </a>
         </div>
-
+        @pagination(['pagination' => $contragents])@endpagination
+        {{$contragents->render()}}
         <div class="row items-row-view">
             @each('site::contragent.index.row', $contragents, 'contragent')
         </div>
-
+        {{$contragents->render()}}
     </div>
 @endsection

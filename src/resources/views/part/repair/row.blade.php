@@ -1,5 +1,4 @@
-<div class="card col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
-    <img class="card-img-top" src="{{$image}}" alt="Card image">
+<div class="card col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 alert alert-dismissible p-0">
     <div class="card-body text-left">
         <h4 class="card-title">{{$name}}</h4>
         <dl class="row">
@@ -20,5 +19,9 @@
                        value="{{$cost}}">
             </dd>
         </dl>
+
     </div>
+    <button type="button" class="close part-delete" data-id="{{$product_id}}" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
 </div>

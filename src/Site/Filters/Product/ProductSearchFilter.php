@@ -6,13 +6,13 @@ use QuadStudio\Repo\Contracts\RepositoryInterface;
 use QuadStudio\Repo\Filters\BootstrapInput;
 use QuadStudio\Repo\Filters\SearchFilter;
 
-class SerialSearchFilter extends SearchFilter
+class ProductSearchFilter extends SearchFilter
 {
 
     use BootstrapInput;
 
     protected $render = true;
-    protected $search = 'search_serial';
+    protected $search = 'search_product';
 
     function apply($builder, RepositoryInterface $repository)
     {
@@ -20,14 +20,10 @@ class SerialSearchFilter extends SearchFilter
             if (!empty($this->columns())) {
                 $words = $this->split($this->get($this->search));
                 if (!empty($words)) {
-                    foreach ($words as $serial) {
-                        $builder = $builder->whereHas('back_relations', function ($query) use ($serial) {
-                            $query->where(function ($query) use ($serial) {
-                                $query->whereHas('serials', function ($query) use ($serial) {
-                                    foreach ($this->columns() as $column) {
-                                        $query->whereRaw("LOWER({$column}) = LOWER(?)", [$serial]);
-                                    }
-                                });
+                    foreach ($words as $product_id) {
+                        $builder = $builder->whereHas('back_relations', function ($query) use ($product_id) {
+                            $query->where(function ($query) use ($product_id) {
+                                $query->whereId($product_id);
                             });
                         });
                     }
@@ -35,6 +31,8 @@ class SerialSearchFilter extends SearchFilter
                     $builder->whereRaw("false");
                 }
             }
+        } else{
+            $builder->whereRaw("false");
         }
 
         return $builder;

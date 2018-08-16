@@ -3,14 +3,14 @@
 namespace QuadStudio\Service\Site\Traits\Controllers;
 
 use Illuminate\Support\Facades\Session;
-use QuadStudio\Service\Site\Repositories\CountryRepository;
 use QuadStudio\Service\Site\Filters\BelongsUserFilter;
 use QuadStudio\Service\Site\Filters\ByNameSortFilter;
+use QuadStudio\Service\Site\Filters\CountryEnabledFilter;
 use QuadStudio\Service\Site\Http\Requests\LaunchRequest;
 use QuadStudio\Service\Site\Http\Requests\TradeRequest;
 use QuadStudio\Service\Site\Models\Launch;
+use QuadStudio\Service\Site\Repositories\CountryRepository;
 use QuadStudio\Service\Site\Repositories\LaunchRepository;
-use QuadStudio\Service\Site\Filters\CountryEnabledFilter;
 
 trait LaunchControllerTrait
 {
@@ -39,12 +39,13 @@ trait LaunchControllerTrait
      */
     public function index()
     {
-
+        $this->authorize('index', Launch::class);
         $this->launches->trackFilter();
         $this->launches->applyFilter(new BelongsUserFilter());
+
         return view('site::launch.index', [
             'repository' => $this->launches,
-            'launches'      => $this->launches->paginate(config('site.per_page.launch', 10), [env('DB_PREFIX', '') . 'launches.*'])
+            'launches'   => $this->launches->paginate(config('site.per_page.launch', 10), [env('DB_PREFIX', '') . 'launches.*'])
         ]);
     }
 
@@ -59,6 +60,7 @@ trait LaunchControllerTrait
         $this->authorize('create', Launch::class);
         $countries = $this->countries->all();
         $view = $request->ajax() ? 'site::launch.form' : 'site::launch.create';
+
         return view($view, ['countries' => $countries]);
     }
 
@@ -79,6 +81,7 @@ trait LaunchControllerTrait
                 ->applyFilter(new ByNameSortFilter())
                 ->all();
             Session::flash('success', trans('site::launch.created'));
+
             return response()->json([
                 'replace' => [
                     '#form-group-launch_id' => view('site::repair.create.launch_id')
@@ -110,7 +113,7 @@ trait LaunchControllerTrait
 
         return view('site::launch.edit', [
             'countries' => $countries,
-            'launch'  => $launch
+            'launch'    => $launch
         ]);
     }
 
@@ -125,7 +128,14 @@ trait LaunchControllerTrait
     {
         $this->authorize('update', $launch);
 
-        $this->launches->update($request->only(['country_id', 'phone']), $launch->id);
+        $this->launches->update($request->only([
+            'country_id',
+            'phone',
+            'document_name',
+            'document_number',
+            'document_date',
+            'document_who'
+        ]), $launch->id);
 
         if ($request->input('_stay') == 1) {
             $redirect = redirect()->route('launches.edit', $launch)->with('success', trans('site::launch.updated'));

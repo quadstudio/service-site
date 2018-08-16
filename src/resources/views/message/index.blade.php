@@ -30,8 +30,8 @@
         </div>
 
         @filter(['repository' => $repository])@endfilter
-
-        <div class="card mt-5 mb-4">
+        @pagination(['pagination' => $messages])@endpagination
+        <div class="card mt-1 mb-4">
             <div class="card-body flex-grow-1 position-relative overflow-hidden">
                 {{$messages->render()}}
                 <div class="row no-gutters h-100">

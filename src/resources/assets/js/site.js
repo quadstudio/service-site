@@ -63,14 +63,14 @@
 
     let repairAdminEditForm = document.getElementById("repair-admin-edit-form");
     if (repairAdminEditForm !== null) {
-        $('.repair-error-check').on('click', function(){
+        $('.repair-error-check').on('click', function () {
 
             //let name = $(this).val();
             let dt = $(this).parent();
-            if($(this).is(':checked')){
+            if ($(this).is(':checked')) {
                 dt.addClass('bg-danger');
                 dt.addClass('text-white');
-            } else{
+            } else {
                 dt.removeClass('bg-danger');
                 dt.removeClass('text-white');
             }
@@ -187,76 +187,42 @@
     }
     let repairFormExists = document.getElementById("repair-form");
     if (repairFormExists !== null) {
-        let button = $('#serial-check-button '),
-            allow_parts = $('#allow_parts'),
-            serial = $('#serial_id'),
+        let allow_parts = $('#allow_parts'),
+            allow_work = $('#allow_work'),
+            allow_road = $('#allow_road'),
+            part_delete = $('.part-delete'),
+            boiler_search = $('#product_id'),
             parts_search = $('#parts_search'),
             serial_success = $('#serial-success'),
             serial_error = $('#serial-error'),
-            parts_search_fieldset = $('#parts-search-fieldset'),
+            //parts_search_fieldset = $('#parts-search-fieldset'),
             parts = $('#parts'),
             //parts_count = $('.parts_count'),
             //parts_cost = $('.parts_cost'),
             selected = [],
             value;
-        serial.on('keyup change', function () {
-            value = $(this).val();
-            if (value.length >= 5) {
-                button.prop("disabled", false);
-
-            } else {
-                button.prop("disabled", true);
-            }
-        });
+        // serial.on('keyup change', function () {
+        //     value = $(this).val();
+        //     if (value.length >= 5) {
+        //         button.prop("disabled", false);
+        //
+        //     } else {
+        //         button.prop("disabled", true);
+        //     }
+        // });
         let success_serial_fill = function (index, value) {
             $('.serial-' + index).html(value);
             $('.serial-' + index + '-value').val(value);
         };
-        button.on('click', function () {
-            axios
-                .get("/api/serials/" + value)
-                .then((response) => {
-                    $.each(response.data.data, function (index, data) {
-                        $.each(response.data.data, function (index, data) {
-                            success_serial_fill(index, data)
-                        });
-                    });
-                    serial_success.show();
-                    serial_error.hide();
-                    button.prop("disabled", false);
-                    parts_search_fieldset.css('display', 'block');
-                    $('fieldset').css("display", 'block');
-                    serial.addClass('is-valid').removeClass('is-invalid');
-                })
-                .catch((error) => {
-
-                    $.each({
-                        product: '',
-                        sku: '',
-                        image: '',
-                        model: '',
-                        catalog: '',
-                        cost_work: '',
-                        cost_road: '',
-                    }, function (index, data) {
-                        success_serial_fill(index, data);
-                    });
-                    serial_success.hide();
-                    serial_error.show();
-                    parts_search_fieldset.css('display', 'none');
-                    serial.addClass('is-invalid').removeClass('is-valid');
-                    $('fieldset').css('display', 'none');
-                });
-        });
 
         allow_parts.change(function () {
             if ($(this).find('option:selected').val() === "0") {
-                parts_search_fieldset.css('display', 'none');
+                //parts_search_fieldset.css('display', 'none');
                 parts.html('');
                 $('#total-cost').html(0);
                 selected = [];
             } else {
-                parts_search_fieldset.css('display', 'block');
+                //parts_search_fieldset.css('display', 'block');
             }
 
         });
@@ -271,7 +237,7 @@
                 data: function (params) {
                     return {
                         'filter[search_part]': params.term,
-                        'filter[search_serial]': serial.val(),
+                        'filter[search_product]': boiler_search.val(),
                     };
                 },
                 processResults: function (data, params) {
@@ -280,13 +246,13 @@
                     };
                 }
             },
-            minimumInputLength: 1,
+            minimumInputLength: 3,
             templateResult: function (product) {
                 if (product.loading) return "...";
                 //return product.name;
                 //if(product.enabled) return product.name;
                 //let markup = product.name + ' (' + product.sku + ')';
-                let markup = "<img style='width:70px;' src="+product.image+" /> &nbsp; "+ product.name + ' (' + product.sku + ')';
+                let markup = "<img style='width:70px;' src=" + product.image + " /> &nbsp; " + product.name + ' (' + product.sku + ')';
                 return markup;
             },
             templateSelection: function (product) {
@@ -297,16 +263,110 @@
             }
         });
 
+        parts_search.on('select2:select', function (e) {
+            let product_id = $(this).find('option:selected').val();
+            if (!selected.includes(product_id)) {
+                parts_search.removeClass('is-invalid');
+                selected.push(product_id);
+                axios
+                    .get("/api/products/" + product_id)
+                    .then((response) => {
+                        parts.append(response.data);
+                        $('[name="parts[' + product_id + '][count]"]').focus();
+                        calc_parts();
+                        parts_search.val(null)
+                    })
+                    .catch((error) => {
+                        this.status = 'Error:' + error;
+                    });
+            } else {
+                parts_search.addClass('is-invalid');
+                //alert('Такая деталь уже есть в списке');
+            }
+
+            //console.log(data.val());
+        });
+
+        boiler_search.select2({
+            theme: "bootstrap4",
+            ajax: {
+                url: '/api/boilers',
+                dataType: 'json',
+                // delay: 200,
+                data: function (params) {
+                    return {
+                        'filter[search_boiler]': params.term,
+                    };
+                },
+                processResults: function (data, params) {
+                    return {
+                        results: data.data,
+                    };
+                }
+            },
+            minimumInputLength: 3,
+            templateResult: function (boiler) {
+                if (boiler.loading) return "...";
+                //return product.name;
+                //if(product.enabled) return product.name;
+                let markup = boiler.type + ' ' + boiler.name + ' (' + boiler.sku + ')';
+                //let markup = "<img style='width:70px;' src="+product.image+" /> &nbsp; "+ product.name + ' (' + product.sku + ')';
+                return markup;
+            },
+            templateSelection: function (boiler) {
+                return boiler.name;
+            },
+            escapeMarkup: function (markup) {
+                return markup;
+            }
+        });
+
+        boiler_search.on('select2:select', function (e) {
+            let boiler_id = $(this).find('option:selected').val();
+            axios
+                .get("/api/boilers/" + boiler_id)
+                .then((response) => {
+                    $('[name="cost_work"]').val(response.data.data.equipment.cost_work);
+                    $('[name="cost_road"]').val(response.data.data.equipment.cost_road);
+                    calc_parts();
+                })
+                .catch((error) => {
+                    this.status = 'Error:' + error;
+                });
+            //console.log(data.val());
+        });
+
+        allow_work.on('change', function () {
+            calc_parts();
+        });
+        allow_road.on('change', function () {
+            calc_parts();
+        });
+
+
         let calc_parts = function () {
             let count = 0, cost = 0;
             parts.children().each(function (i) {
                 $(this).find('.parts_cost').val();
-                cost += parseInt($(this).find('.parts_cost').val()) * $(this).find('.parts_count').val();
+                cost += (parseInt($(this).find('.parts_cost').val()) * $(this).find('.parts_count').val());
             });
+            if (allow_work.find('option:selected').val() === '1') {
+                cost += parseInt($('[name="cost_work"]').val())
+            }
+            if (allow_road.find('option:selected').val() === '1') {
+                cost += parseInt($('[name="cost_road"]').val())
+            }
             $('#total-cost').html(number_format(cost));
         };
 
         $(document)
+            .on('click', '.part-delete', (function () {
+                let index = selected.indexOf($(this).data('id'));
+                if (index > -1) {
+                    selected.splice(index, 1);
+                }
+                calc_parts();
+            }))
             .on('keyup mouseup', '.parts_count', (function () {
                 calc_parts();
             }));
@@ -344,33 +404,10 @@
         };
 
 
-        parts_search.on('select2:select', function (e) {
-            let product_id = $(this).find('option:selected').val();
-            if (!selected.includes(product_id)) {
-                parts_search.removeClass('is-invalid');
-                selected.push(product_id);
-                axios
-                    .get("/api/products/" + product_id)
-                    .then((response) => {
-                        parts.append(response.data);
-                        $('[name="parts[' + product_id + '][count]"]').focus();
-                        calc_parts();
-                        parts_search.val(null)
-                    })
-                    .catch((error) => {
-                        this.status = 'Error:' + error;
-                    });
-            } else {
-                parts_search.addClass('is-invalid');
-                //alert('Такая деталь уже есть в списке');
-            }
-
-            //console.log(data.val());
-        });
-
     }
     let registerFormExists = document.getElementById("register-form");
-    if (registerFormExists !== null) {
+    let contragentFormExists = document.getElementById("contragent-form");
+    if (registerFormExists !== null || contragentFormExists !== null) {
         $('.country-select ').on('change', function () {
             let country = $(this),
                 country_id = country.find('option:selected').val(),
@@ -437,7 +474,7 @@
 
 
     $('body')
-        .on('click', '.btn-row-delete', function (e) {
+        .on('click', '.btn-row-delete:not(:disabled)', function (e) {
             manageButtonData($(this));
         })
         .on('change', '.dynamic-modal-form', function (e) {

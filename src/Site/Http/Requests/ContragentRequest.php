@@ -27,19 +27,18 @@ class ContragentRequest extends FormRequest
         $prefix = env('DB_PREFIX', '');
         switch ($this->method()) {
             case 'GET':
-            case 'DELETE':
-            case 'POST': {
+            case 'DELETE': {
                 return [];
             }
-            case 'PUT':
-            case 'PATCH': {
+            case 'POST': {
                 return [
+                    //
                     'contragent.type_id'        => 'required|exists:' . $prefix . 'contragent_types,id',
                     'contragent.name'           => 'required|string|max:255',
                     'contragent.inn'            => array(
-                        'unique:' . env('DB_PREFIX', '') . 'contragents,inn,' . $this->route()->parameter('contragent')->id,
                         'required',
                         'numeric',
+                        'unique:' . $prefix . 'contragents,inn',
                         'regex:/\d{10}|\d{12}/'
                     ),
                     'contragent.ogrn'           => array(
@@ -53,10 +52,16 @@ class ContragentRequest extends FormRequest
                         'regex:/\d{8}|\d{10}/'
                     ),
                     'contragent.kpp'            => array(
+                        'sometimes',
                         'required_if:contragent.type_id,1',
-                        'regex:/^(([0-9]){9})?$/'
+                        function ($attribute, $value, $fail) {
+                            if ($this->input('contragent.type_id') == 1 && strlen($value) != 9) {
+                                return $fail(trans('site::contragent.kpp') . ': ' . trans('site::contragent.placeholder.kpp'));
+                            }
+                        }
+                        //'regex:/^([0-9]{9})?$/'
                     ),
-                    'contragent.ks'             => 'sometimes|digits:20',
+//                    'contragent.ks'             => 'sometimes|digits:20',
                     'contragent.rs'             => 'required|numeric|digits:20',
                     'contragent.bik'            => array(
                         'required',
@@ -64,6 +69,56 @@ class ContragentRequest extends FormRequest
                     ),
                     'contragent.bank'           => 'required|string|max:255',
                     'contragent.nds'            => 'required|boolean',
+                    //
+                    'address.legal.country_id'  => 'required|exists:' . $prefix . 'countries,id',
+                    'address.legal.region_id'   => 'sometimes|exists:' . $prefix . 'regions,id',
+                    'address.legal.locality'    => 'required|string|max:255',
+                    'address.legal.street'      => 'sometimes|max:255',
+                    'address.legal.building'    => 'required|string|max:255',
+                    'address.legal.apartment'   => 'sometimes|max:255',
+                    //
+                    'address.postal.country_id' => 'required|exists:' . $prefix . 'countries,id',
+                    'address.postal.region_id'  => 'sometimes|exists:' . $prefix . 'regions,id',
+                    'address.postal.locality'   => 'required|string|max:255',
+                    'address.postal.street'     => 'sometimes|max:255',
+                    'address.postal.building'   => 'required|string|max:255',
+                    'address.postal.apartment'  => 'sometimes|max:255',
+                ];
+            }
+            case 'PUT':
+            case 'PATCH': {
+
+                return [
+                    'contragent.type_id' => 'required|exists:' . $prefix . 'contragent_types,id',
+                    'contragent.name'    => 'required|string|max:255',
+                    'contragent.inn'     => array(
+                        'unique:' . env('DB_PREFIX', '') . 'contragents,inn,' . $this->route()->parameter('contragent')->id,
+                        'required',
+                        'numeric',
+                        'regex:/\d{10}|\d{12}/'
+                    ),
+                    'contragent.ogrn'    => array(
+                        'required',
+                        'numeric',
+                        'regex:/\d{13}|\d{15}/'
+                    ),
+                    'contragent.okpo'    => array(
+                        'required',
+                        'numeric',
+                        'regex:/\d{8}|\d{10}/'
+                    ),
+                    'contragent.kpp'     => array(
+                        'required_if:contragent.type_id,1',
+                        'regex:/^(([0-9]){9})?$/'
+                    ),
+                    'contragent.ks'      => 'sometimes|digits:20',
+                    'contragent.rs'      => 'required|numeric|digits:20',
+                    'contragent.bik'     => array(
+                        'required',
+                        'regex:/\d{9}|\d{11}/'
+                    ),
+                    'contragent.bank'    => 'required|string|max:255',
+                    'contragent.nds'     => 'required|boolean',
                 ];
             }
             default:
@@ -94,17 +149,17 @@ class ContragentRequest extends FormRequest
     public function attributes()
     {
         return [
-            'contragent.type_id'        => trans('site::contragent.type_id'),
-            'contragent.name'           => trans('site::contragent.name'),
-            'contragent.inn'            => trans('site::contragent.inn'),
-            'contragent.ogrn'           => trans('site::contragent.ogrn'),
-            'contragent.okpo'           => trans('site::contragent.okpo'),
-            'contragent.kpp'            => trans('site::contragent.kpp'),
-            'contragent.rs'             => trans('site::contragent.rs'),
-            'contragent.ks'             => trans('site::contragent.ks'),
-            'contragent.bik'            => trans('site::contragent.bik'),
-            'contragent.bank'           => trans('site::contragent.bank'),
-            'contragent.nds'            => trans('site::contragent.nds'),
+            'contragent.type_id' => trans('site::contragent.type_id'),
+            'contragent.name'    => trans('site::contragent.name'),
+            'contragent.inn'     => trans('site::contragent.inn'),
+            'contragent.ogrn'    => trans('site::contragent.ogrn'),
+            'contragent.okpo'    => trans('site::contragent.okpo'),
+            'contragent.kpp'     => trans('site::contragent.kpp'),
+            'contragent.rs'      => trans('site::contragent.rs'),
+            'contragent.ks'      => trans('site::contragent.ks'),
+            'contragent.bik'     => trans('site::contragent.bik'),
+            'contragent.bank'    => trans('site::contragent.bank'),
+            'contragent.nds'     => trans('site::contragent.nds'),
         ];
     }
 }

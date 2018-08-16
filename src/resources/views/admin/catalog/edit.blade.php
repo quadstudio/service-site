@@ -20,8 +20,8 @@
         <hr/>
 
         @alert()@endalert
-        <div class="row justify-content-center mb-5">
-            <div class="col">
+        <div class="card mt-2 mb-2">
+            <div class="card-body">
 
                 <form id="form-content" method="POST" action="{{ route('admin.catalogs.update', $catalog) }}">
                     @csrf
@@ -52,6 +52,16 @@
                                    placeholder="@lang('site::catalog.placeholder.name')"
                                    value="{{ old('name', $catalog->name) }}">
                             <span class="invalid-feedback">{{ $errors->first('name') }}</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col mb-3">
+                            <label for="name_plural">@lang('site::catalog.name_plural')</label>
+                            <input type="text" name="name_plural" id="name_plural" required
+                                   class="form-control{{ $errors->has('name_plural') ? ' is-invalid' : '' }}"
+                                   placeholder="@lang('site::catalog.placeholder.name_plural')"
+                                   value="{{ old('name_plural', $catalog->name_plural) }}">
+                            <span class="invalid-feedback">{{ $errors->first('name_plural') }}</span>
                         </div>
                     </div>
                     <div class="form-row">

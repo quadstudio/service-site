@@ -18,10 +18,10 @@
 
         @alert()@endalert
 
-        <div class="card mb-4">
+        <div class="card mt-2 mb-2">
             <div class="card-body">
 
-                <form method="POST" action="{{ route('launches.update', $launch) }}">
+                <form id="launch-edit-form" method="POST" action="{{ route('launches.update', $launch) }}">
 
                     @csrf
 
@@ -95,24 +95,59 @@
                     </div>
 
                     <div class="form-row">
-                        <div class="col text-right">
-                            <button name="_stay" value="1" type="submit" class="btn btn-primary">
-                                <i class="fa fa-check"></i>
-                                <span>@lang('site::messages.save_stay')</span>
-                            </button>
-                            <button name="_stay" value="0" type="submit" class="btn btn-primary">
-                                <i class="fa fa-check"></i>
-                                <span>@lang('site::messages.save')</span>
-                            </button>
-                            <a href="{{ route('launches.index') }}" class="btn btn-secondary">
-                                <i class="fa fa-close"></i>
-                                <span>@lang('site::messages.cancel')</span>
-                            </a>
+                        <div class="col mb-3">
+                            <label for="document_name">@lang('site::launch.document_name')</label>
+                            <input type="text" name="document_name" id="document_name"
+                                   class="form-control{{ $errors->has('document_name') ? ' is-invalid' : '' }}"
+                                   placeholder="@lang('site::launch.placeholder.document_name')"
+                                   value="{{ old('document_name', $launch->document_name) }}" required>
+                            <span class="invalid-feedback">{{ $errors->first('document_name') }}</span>
                         </div>
-
+                    </div>
+                    <div class="form-row">
+                        <div class="col mb-3">
+                            <label for="document_number">@lang('site::launch.document_number')</label>
+                            <input type="text" name="document_number" id="document_number"
+                                   class="form-control{{ $errors->has('document_number') ? ' is-invalid' : '' }}"
+                                   placeholder="@lang('site::launch.placeholder.document_number')"
+                                   value="{{ old('document_number', $launch->document_number) }}" required>
+                            <span class="invalid-feedback">{{ $errors->first('document_number') }}</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col mb-3">
+                            <label for="document_who">@lang('site::launch.document_who')</label>
+                            <input type="text" name="document_who" id="document_who"
+                                   class="form-control{{ $errors->has('document_who') ? ' is-invalid' : '' }}"
+                                   placeholder="@lang('site::launch.placeholder.document_who')"
+                                   value="{{ old('document_who', $launch->document_who) }}" required>
+                            <span class="invalid-feedback">{{ $errors->first('document_who') }}</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col mb-3">
+                            <label for="document_date">@lang('site::launch.document_date')</label>
+                            <input type="date" name="document_date" id="document_date"
+                                   class="form-control{{ $errors->has('document_date') ? ' is-invalid' : '' }}"
+                                   placeholder="@lang('site::launch.placeholder.document_date')"
+                                   value="{{ old('document_date', $launch->document_date) }}" required>
+                            <span class="invalid-feedback">{{ $errors->first('document_date') }}</span>
+                        </div>
                     </div>
                 </form>
             </div>
+        </div>
+        <div class=" border p-3 mb-2">
+
+            <button form="launch-edit-form" name="_stay" value="0" type="submit"
+                    class="btn btn-ferroli  mr-0 mr-sm-1 mb-1 mb-sm-0 d-block d-sm-inline">
+                <i class="fa fa-check"></i>
+                <span>@lang('site::messages.save')</span>
+            </button>
+            <a href="{{ route('launches.show', $launch) }}" class="d-block d-sm-inline btn btn-secondary">
+                <i class="fa fa-close"></i>
+                <span>@lang('site::messages.cancel')</span>
+            </a>
         </div>
     </div>
 @endsection

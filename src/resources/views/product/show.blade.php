@@ -38,12 +38,12 @@
                             <a class="carousel-control-prev" href="#carouselEquipmentIndicators" role="button"
                                data-slide="prev">
                                 <span class="carousel-control-prev-icon dark" aria-hidden="true"></span>
-                                <span class="sr-only">Previous</span>
+                                <span class="sr-only">@lang('site::messages.prev')</span>
                             </a>
                             <a class="carousel-control-next" href="#carouselEquipmentIndicators" role="button"
                                data-slide="next">
                                 <span class="carousel-control-next-icon dark" aria-hidden="true"></span>
-                                <span class="sr-only">Next</span>
+                                <span class="sr-only">@lang('site::messages.next')</span>
                             </a>
                         @endif
                     </div>
@@ -52,27 +52,27 @@
                     <div class="media-body p-md-5 px-4 pt-5 pb-4">
                         <h1>{!! $product->name()!!}</h1>
 
-                        <div class="mb-4">
-                            <div class="ui-stars text-big">
-                                <div class="d-inline-block">
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="d-inline-block">
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="d-inline-block">
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="d-inline-block">
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="d-inline-block filled">
-                                    <i class="fa fa-star-half-full"></i>
-                                </div>
-                            </div>
+                        {{--<div class="mb-4">--}}
+                            {{--<div class="ui-stars text-big">--}}
+                                {{--<div class="d-inline-block">--}}
+                                    {{--<i class="fa fa-star"></i>--}}
+                                {{--</div>--}}
+                                {{--<div class="d-inline-block">--}}
+                                    {{--<i class="fa fa-star"></i>--}}
+                                {{--</div>--}}
+                                {{--<div class="d-inline-block">--}}
+                                    {{--<i class="fa fa-star"></i>--}}
+                                {{--</div>--}}
+                                {{--<div class="d-inline-block">--}}
+                                    {{--<i class="fa fa-star"></i>--}}
+                                {{--</div>--}}
+                                {{--<div class="d-inline-block filled">--}}
+                                    {{--<i class="fa fa-star-half-full"></i>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
 
-                            <a href="javascript:void(0)" class="text-muted small">23 отзыва</a>
-                        </div>
+                            {{--<a href="javascript:void(0)" class="text-muted small">23 отзыва</a>--}}
+                        {{--</div>--}}
                         <dl class="row">
                             <dt class="col-sm-4">@lang('site::product.sku')</dt>
                             <dd class="col-sm-8">{{$product->sku}}</dd>

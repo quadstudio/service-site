@@ -10,11 +10,11 @@
                 <a href="{{ route('repairs.index') }}">@lang('site::repair.repairs')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('repairs.show', $repair) }}">{{$repair->number}}</a>
+                <a href="{{ route('repairs.show', $repair) }}">№ {{$repair->id}}</a>
             </li>
             <li class="breadcrumb-item active">@lang('site::messages.edit')</li>
         </ol>
-        <h1 class="header-title mb-4">@lang('site::messages.edit') @lang('site::repair.repair')</h1>
+        <h1 class="header-title mb-4">@lang('site::messages.edit') @lang('site::repair.repair') № {{$repair->id}}</h1>
 
         @alert()@endalert()
 
@@ -49,19 +49,19 @@
                                     <label class="control-label"
                                            for="number">@lang('site::product.equipment_id')</label>
                                     <div class="text-big">
-                                        <a href="{{route('equipments.show', $repair->serial->product->equipment)}}">
-                                            {{$repair->serial->product->equipment->catalog->parentTreeName()}}
-                                            {{$repair->serial->product->equipment->name}}
+                                        <a href="{{route('equipments.show', $repair->product->equipment)}}">
+                                            {{$repair->product->equipment->catalog->parentTreeName()}}
+                                            {{$repair->product->equipment->name}}
                                         </a>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label" for="number">@lang('site::serial.product_id')</label>
-                                    <div class="text-big">{{$repair->serial->product->name}}</div>
+                                    <div class="text-big">{{$repair->product->name}}</div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label" for="number">@lang('site::product.sku')</label>
-                                    <div class="text-big">{{$repair->serial->product->sku}}</div>
+                                    <div class="text-big">{{$repair->product->sku}}</div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label" for="number">@lang('site::equipment.cost_work')</label>
@@ -73,72 +73,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card mt-2 mb-2">
-                            <div class="card-body">
-                                <h5 class="card-title">@lang('site::repair.header.repair')</h5>
-                                <div class="form-group required">
-                                    <label class="control-label" for="number">@lang('site::repair.number')</label>
-                                    @if($fails->contains('field', 'number'))
-                                        <span class="bg-danger text-white d-block d-sm-inline-block py-1 px-3 mb-1 mb-sm-0 mb-1 mb-sm-0">@lang('site::messages.with_error')</span>
-                                        <input type="text"
-                                               id="number"
-                                               name="number"
-                                               class="form-control{{ $errors->has('number') ? ' is-invalid' : '' }}"
-                                               value="{{ old('number', $repair->number) }}"
-                                               required
-                                               placeholder="@lang('site::repair.placeholder.number')">
-                                        <span class="invalid-feedback">{{ $errors->first('number') }}</span>
-                                    @else
-                                        <div class="text-success text-big">{{$repair->number}}</div>
-                                    @endif
-
-                                </div>
-                                <div class="form-group required">
-                                    <label class="control-label"
-                                           for="warranty_number">@lang('site::repair.warranty_number')</label>
-                                    @if($fails->contains('field', 'warranty_number'))
-                                        <span class="bg-danger text-white d-block d-sm-inline-block py-1 px-3 mb-1 mb-sm-0">@lang('site::messages.with_error')</span>
-                                        <input type="text" id="warranty_number" name="warranty_number"
-                                               class="form-control{{ $errors->has('warranty_number') ? ' is-invalid' : '' }}"
-                                               value="{{ old('warranty_number', $repair->warranty_number) }}"
-                                               required
-                                               placeholder="@lang('site::repair.placeholder.warranty_number')">
-                                        <span class="invalid-feedback">{{ $errors->first('warranty_number') }}</span>
-                                    @else
-                                        <div class="text-success text-big">{{$repair->warranty_number}}</div>
-                                    @endif
-                                </div>
-                                <div class="form-group mb-0 required">
-                                    <label class="control-label" for="">@lang('site::repair.warranty_period')</label>
-                                </div>
-                                @if($fails->contains('field', 'warranty_period'))
-                                    <span class="bg-danger text-white d-block d-sm-inline-block py-1 px-3 mb-1 mb-sm-0">@lang('site::messages.with_error')</span>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" id="warranty_period_12"
-                                               @if(old('warranty_period') == 12) checked @endif
-                                               name="warranty_period" value="12" required>
-                                        <span class="invalid-feedback">{{ $errors->first('warranty_period') }}</span>
-                                        <label class="form-check-label" for="warranty_period_12">12</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" id="warranty_period_24"
-                                               @if(old('warranty_period') == 24) checked @endif
-                                               name="warranty_period" value="24" required>
-                                        <label class="form-check-label" for="warranty_period_24">24</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" id="warranty_period_36"
-                                               @if(old('warranty_period') == 36) checked @endif
-                                               name="warranty_period" value="36" required>
-                                        <label class="form-check-label" for="warranty_period_36">36</label>
-                                    </div>
-                                @else
-                                    <div class="text-success text-big">{{$repair->warranty_period}}</div>
-                                @endif
-
-                            </div>
-                        </div>
-
                         {{-- КЛИЕНТ --}}
                         <div class="card mt-2 mb-2">
                             <div class="card-body">
@@ -443,7 +377,6 @@
                                                         @include('site::part.repair.row', [
                                                                 'product_id' => $part['product_id'],
                                                                 'sku' => $part['sku'],
-                                                                'image' => $part['image'],
                                                                 'name' => $part['name'],
                                                                 'cost' => $part['cost'],
                                                                 'format' => $part['format'],
@@ -510,7 +443,7 @@
                         <div class="card-body">
                             <h5 class="card-title">@lang('site::file.files')</h5>
                             @foreach($types as $type)
-                                @if(in_array($type->id, [1,2,3]))
+                                @if(in_array($type->id, [1,2]))
                                     @if($fails->contains('field', 'file_'.$type->id))
 
                                         <div class="form-group @if(in_array($type->id, [1,2])) required @endif form-control{{ $errors->has('file.'.$type->id) ? ' is-invalid' : '' }}">
@@ -556,7 +489,7 @@
                                         </div>
                                         <span class="invalid-feedback">{{ $errors->first('file.'.$type->id) }}</span>
                                     @else
-                                        <div class="form-group @if(in_array($type->id, [1,2])) required @endif form-control">
+                                        <div class="form-group required form-control">
                                             <label class="control-label d-block"
                                                    for="type_id">{{$type->name}}</label>
                                             <ul class="list-group file-list">

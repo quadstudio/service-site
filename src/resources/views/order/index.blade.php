@@ -14,19 +14,11 @@
         <h1 class="header-title mb-4"><i class="fa fa-shopping-cart"></i> @lang('site::order.orders')</h1>
         @alert()@endalert()
         @filter(['repository' => $repository])@endfilter
-
-        <div class="row">
-            <div class="col-sm-12">
-                {{$orders->render()}}
-            </div>
-        </div>
+        @pagination(['pagination' => $orders])@endpagination
+        {{$orders->render()}}
         <div class="row items-row-view">
             @each('site::order.index.row', $orders, 'order')
         </div>
-        <div class="row">
-            <div class="col-sm-12">
-                {{$orders->render()}}
-            </div>
-        </div>
+        {{$orders->render()}}
     </div>
 @endsection

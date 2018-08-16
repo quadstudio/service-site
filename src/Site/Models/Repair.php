@@ -17,7 +17,7 @@ class Repair extends Model implements Messagable
     protected $table;
 
     protected $fillable = [
-        'serial_id', 'number', 'warranty_number', 'warranty_period',
+        'serial_id', 'product_id',
         'cost_work', 'cost_road',
         'allow_work', 'allow_road', 'allow_parts',
         'date_launch', 'date_trade', 'date_call',
@@ -91,7 +91,7 @@ class Repair extends Model implements Messagable
 
     public function hasEquipment()
     {
-        return $this->serial->product->hasEquipment();
+        return $this->product->hasEquipment();
     }
 
     /**
@@ -198,12 +198,12 @@ class Repair extends Model implements Messagable
 
     public function getEquipmentCostWorkAttribute()
     {
-        return $this->serial->product->equipment->cost_work * $this->rates;
+        return $this->product->equipment->cost_work * $this->rates;
     }
 
     public function getEquipmentCostRoadAttribute()
     {
-        return $this->serial->product->equipment->cost_road * $this->rates;
+        return $this->product->equipment->cost_road * $this->rates;
     }
 
     /**
@@ -211,7 +211,7 @@ class Repair extends Model implements Messagable
      */
     public function getRatesAttribute()
     {
-        return Site::currencyRates($this->serial->product->equipment->currency, $this->user->currency);
+        return Site::currencyRates($this->product->equipment->currency, $this->user->currency);
     }
 
     /**
@@ -310,27 +310,15 @@ class Repair extends Model implements Messagable
         return $this->belongsTo(Launch::class);
     }
 
-
     /**
-     * Серийный номер
+     * Оборудование
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function serial()
+    public function product()
     {
-        return $this->belongsTo(Serial::class);
+        return $this->belongsTo(Product::class);
     }
-
-//    /**
-//     * Scope a query to only enabled countries.
-//     *
-//     * @param \Illuminate\Database\Eloquent\Builder $query
-//     * @return \Illuminate\Database\Eloquent\Builder
-//     */
-//    public function scopeEnabled($query)
-//    {
-//        return $query->where('enabled', 1);
-//    }
 
     function name()
     {

@@ -4,11 +4,11 @@
             <div class="item-content">
                 <div class="item-content-about">
                     <h5 class="item-content-name mb-1">
-                        <a href="{{ route('repairs.show', $repair) }}" class="text-dark">{{$repair->number}}</a>
+                        <a href="{{ route('repairs.show', $repair) }}" class="text-dark">№ {{$repair->id}}</a>
                     </h5>
                     <div class="repair-list-row row no-gutters">
                         <div class="col-md-4 col-xl-2 p-2 pr-md-0">
-                            <div class="p-1" style="font-weight:normal;color: {{ $repair->status->color }}"><i class="fa fa-{{ $repair->status->icon }}"></i> {{ $repair->status->name }} @if($repair->fails()->count()) <span class="badge badge-danger text-big">{{$repair->fails()->count()}}</span> @endif</div>
+                            <div class="p-1 text-big" style="font-weight:normal;color: {{ $repair->status->color }}"><i class="fa fa-{{ $repair->status->icon }}"></i> {{ $repair->status->name }} @if($repair->fails()->count()) <span class="badge badge-danger text-big">{{$repair->fails()->count()}}</span> @endif</div>
                         </div>
                         <div class="col-md-4 col-xl-2 py-md-2 px-2 pb-2">
                             <div class="small"><b class="text-muted">@lang('site::repair.created_at')
@@ -18,7 +18,7 @@
                         </div>
                         <div class="col-md-4 col-xl-2 py-md-2 px-2 pb-2">
                             <div class="small"><b class="text-muted">
-                                    @lang('site::serial.product_id'):</b>&nbsp;{{$repair->serial->product->name}}
+                                    @lang('site::serial.product_id'):</b>&nbsp;{{$repair->product->name}}
                             </div>
                             <div class="small"><b class="text-muted">
                                     @lang('site::repair.serial_id'):</b>&nbsp;{{$repair->serial_id}}

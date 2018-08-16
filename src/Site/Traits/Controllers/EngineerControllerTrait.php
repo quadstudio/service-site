@@ -41,6 +41,7 @@ trait EngineerControllerTrait
      */
     public function index()
     {
+        $this->authorize('index', Engineer::class);
         $this->engineers->applyFilter(new BelongsUserFilter());
         $this->engineers->trackFilter();
 

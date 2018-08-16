@@ -15,14 +15,12 @@
             <li class="breadcrumb-item active">@lang('site::messages.edit')</li>
         </ol>
         <h1 class="header-title mb-4">@lang('site::messages.edit') @lang('site::engineer.engineer')</h1>
-        <hr/>
 
         @alert()@endalert
 
-        <div class="row justify-content-center mb-5">
-            <div class="col-md-12">
-
-                <form method="POST" action="{{ route('engineers.update', $engineer) }}">
+        <div class="card mt-2 mb-2">
+            <div class="card-body">
+                <form id="engineer-edit-form" method="POST" action="{{ route('engineers.update', $engineer) }}">
 
                     @csrf
 
@@ -50,7 +48,8 @@
                             <select class="form-control{{  $errors->has('name') ? ' is-invalid' : '' }}"
                                     name="country_id" id="country_id">
                                 @foreach($countries as $country)
-                                    <option @if($country->id == $engineer->country_id) selected @endif value="{{ $country->id }}">{{ $country->name }} {{ $country->phone }}</option>
+                                    <option @if($country->id == $engineer->country_id) selected
+                                            @endif value="{{ $country->id }}">{{ $country->name }} {{ $country->phone }}</option>
                                 @endforeach
                             </select>
                             @if ($errors->has('country_id'))
@@ -94,26 +93,20 @@
                             @endif
                         </div>
                     </div>
-
-                    <div class="form-row">
-                        <div class="col text-right">
-                            <button name="_stay" value="1" type="submit" class="btn btn-primary">
-                                <i class="fa fa-check"></i>
-                                <span>@lang('site::messages.save_stay')</span>
-                            </button>
-                            <button name="_stay" value="0" type="submit" class="btn btn-primary">
-                                <i class="fa fa-check"></i>
-                                <span>@lang('site::messages.save')</span>
-                            </button>
-                            <a href="{{ route('engineers.index') }}" class="btn btn-secondary">
-                                <i class="fa fa-close"></i>
-                                <span>@lang('site::messages.cancel')</span>
-                            </a>
-                        </div>
-
-                    </div>
                 </form>
             </div>
+        </div>
+        <div class=" border p-3 mb-2">
+
+            <button form="engineer-edit-form" name="_stay" value="0" type="submit"
+                    class="btn btn-ferroli  mr-0 mr-sm-1 mb-1 mb-sm-0 d-block d-sm-inline">
+                <i class="fa fa-check"></i>
+                <span>@lang('site::messages.save')</span>
+            </button>
+            <a href="{{ route('engineers.show', $engineer) }}" class="d-block d-sm-inline btn btn-secondary">
+                <i class="fa fa-close"></i>
+                <span>@lang('site::messages.cancel')</span>
+            </a>
         </div>
     </div>
 @endsection

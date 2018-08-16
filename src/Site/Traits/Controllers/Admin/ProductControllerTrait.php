@@ -69,7 +69,7 @@ trait ProductControllerTrait
     {
         $this->authorize('update', $product);
 
-        $this->products->update($request->only(['enabled', 'active', 'warranty', 'service']), $product->id);
+        $this->products->update($request->only(['enabled', 'active', 'warranty', 'service', 'description']), $product->id);
 
         if ($request->input('_stay') == 1) {
             $redirect = redirect()->route('admin.products.edit', $product)->with('success', trans('site::product.updated'));

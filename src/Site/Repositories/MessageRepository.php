@@ -4,6 +4,7 @@ namespace QuadStudio\Service\Site\Repositories;
 
 use QuadStudio\Repo\Eloquent\Repository;
 use QuadStudio\Service\Site\Filters\Message\SearchFilter;
+use QuadStudio\Service\Site\Filters\Message\SortFilter;
 use QuadStudio\Service\Site\Models\Message;
 
 class MessageRepository extends Repository
@@ -24,6 +25,7 @@ class MessageRepository extends Repository
     public function track(): array
     {
         return [
+            SortFilter::class,
             SearchFilter::class
         ];
     }

@@ -4,7 +4,6 @@ namespace QuadStudio\Service\Site\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use QuadStudio\Service\Site\Rules\ValidSerial;
 
 class RepairRequest extends FormRequest
 {
@@ -34,53 +33,44 @@ class RepairRequest extends FormRequest
             }
             case 'POST': {
                 return [
-
-                    'serial_id'       => [
-                        'required',
-                        'string',
-                        new ValidSerial()
-                    ],
-                    'number'          => 'required|string|max:10',
-                    'warranty_number' => 'required|string|max:10',
-                    'warranty_period' => 'required|numeric|digits:2',
-                    'client'          => 'required|string|max:255',
-                    'country_id'      => 'required|exists:' . $prefix . 'countries,id',
-                    'address'         => 'required|string|max:255',
-                    'phone_primary'   => 'required|numeric|digits:10',
-                    //'phone_secondary' => 'required|numeric|digits:10',
-                    'trade_id'        => [
+                    'product_id'    => 'required|exists:' . $prefix . 'products,id',
+                    'client'        => 'required|string|max:255',
+                    'country_id'    => 'required|exists:' . $prefix . 'countries,id',
+                    'address'       => 'required|string|max:255',
+                    'phone_primary' => 'required|numeric|digits:10',
+                    'trade_id'      => [
                         'required',
                         'exists:' . $prefix . 'trades,id',
                         Rule::exists($prefix . 'trades', 'id')->where(function ($query) use ($prefix) {
                             $query->where($prefix . 'trades.user_id', $this->user()->id);
                         }),
                     ],
-                    'date_trade'      => 'required|date_format:"Y-m-d"',
-                    'launch_id'       => [
+                    'date_trade'    => 'required|date_format:"Y-m-d"',
+                    'launch_id'     => [
                         'required',
                         'exists:' . $prefix . 'launches,id',
                         Rule::exists($prefix . 'launches', 'id')->where(function ($query) use ($prefix) {
                             $query->where($prefix . 'launches.user_id', $this->user()->id);
                         }),
                     ],
-                    'date_launch'     => 'required|date_format:"Y-m-d"',
-                    'engineer_id'     => [
+                    'date_launch'   => 'required|date_format:"Y-m-d"',
+                    'engineer_id'   => [
                         'required',
                         'exists:' . $prefix . 'engineers,id',
                         Rule::exists($prefix . 'engineers', 'id')->where(function ($query) use ($prefix) {
                             $query->where($prefix . 'engineers.user_id', $this->user()->id);
                         }),
                     ],
-                    'date_call'       => 'required|date_format:"Y-m-d"',
-                    'reason_call'     => 'required|string',
-                    'diagnostics'     => 'required|string',
-                    'works'           => 'required|string',
-                    'date_repair'     => 'required|date_format:"Y-m-d"',
-                    'allow_work'      => 'required|boolean',
-                    'allow_road'      => 'required|boolean',
-                    'allow_parts'     => 'required|boolean',
-                    'file.1'          => 'required|array',
-                    'file.2'          => 'required|array',
+                    'date_call'     => 'required|date_format:"Y-m-d"',
+                    'reason_call'   => 'required|string',
+                    'diagnostics'   => 'required|string',
+                    'works'         => 'required|string',
+                    'date_repair'   => 'required|date_format:"Y-m-d"',
+                    'allow_work'    => 'required|boolean',
+                    'allow_road'    => 'required|boolean',
+                    'allow_parts'   => 'required|boolean',
+                    'file.1'        => 'required|array',
+                    'file.2'        => 'required|array',
 
                 ];
             }
@@ -89,15 +79,6 @@ class RepairRequest extends FormRequest
                 $fails = $this->route('repair')->fails;
                 $rules = collect([]);
 
-                if ($fails->contains('field', 'number')) {
-                    $rules->put('number', 'required|string|max:10');
-                }
-                if ($fails->contains('field', 'warranty_number')) {
-                    $rules->put('warranty_number', 'required|string|max:10');
-                }
-                if ($fails->contains('field', 'warranty_period')) {
-                    $rules->put('warranty_period', 'required|numeric|digits:2');
-                }
                 if ($fails->contains('field', 'country_id')) {
                     $rules->put('country_id', 'required|exists:' . $prefix . 'countries,id');
                 }
@@ -187,10 +168,6 @@ class RepairRequest extends FormRequest
     public function attributes()
     {
         return [
-            'serial_id'       => trans('site::repair.serial_id'),
-            'number'          => trans('site::repair.number'),
-            'warranty_number' => trans('site::repair.warranty_number'),
-            'warranty_period' => trans('site::repair.warranty_period'),
             'client'          => trans('site::repair.client'),
             'country_id'      => trans('site::repair.country_id'),
             'address'         => trans('site::repair.address'),

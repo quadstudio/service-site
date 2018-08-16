@@ -18,7 +18,7 @@ return [
     'catalog_id'  => 'Родительский элемент',
     'image'       => 'Изображение',
     'description' => 'Описание',
-    'enabled'     => 'Статус',
+    'enabled'     => 'Включен?',
     'sort_order'  => 'Порядок сортировки',
     'placeholder' => [
         'search'      => 'Найти элемент каталога',

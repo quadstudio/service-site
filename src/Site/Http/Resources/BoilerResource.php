@@ -4,7 +4,7 @@ namespace QuadStudio\Service\Site\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CatalogResource extends JsonResource
+class BoilerResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,7 +16,10 @@ class CatalogResource extends JsonResource
     {
         return [
             'id'        => $this->id,
-            'name'      => $this->parentTreeName(),
+            'sku'       => $this->sku,
+            'name'      => $this->name,
+            'type'      => $this->type->name,
+            'equipment' => new EquipmentResource($this->equipment),
         ];
     }
 }

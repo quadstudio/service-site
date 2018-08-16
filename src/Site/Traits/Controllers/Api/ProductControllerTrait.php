@@ -2,8 +2,9 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers\Api;
 
+use QuadStudio\Service\Site\Filters\Product\BoilerSearchFilter;
 use QuadStudio\Service\Site\Filters\Product\SearchFilter;
-use QuadStudio\Service\Site\Filters\Product\SerialSearchFilter;
+use QuadStudio\Service\Site\Filters\Product\ProductSearchFilter;
 use QuadStudio\Service\Site\Http\Resources\ProductCollection;
 use QuadStudio\Service\Site\Models\Product;
 use QuadStudio\Service\Site\Repositories\ProductRepository;
@@ -28,7 +29,7 @@ trait ProductControllerTrait
     public function index()
     {
         $this->products->applyFilter(new SearchFilter());
-        $this->products->applyFilter(new SerialSearchFilter());
+        $this->products->applyFilter(new ProductSearchFilter());
         return new ProductCollection($this->products->all());
     }
 
@@ -38,7 +39,7 @@ trait ProductControllerTrait
     public function repair()
     {
         $this->products->applyFilter(new SearchFilter());
-        $this->products->applyFilter(new SerialSearchFilter());
+        $this->products->applyFilter(new ProductSearchFilter());
         return new ProductCollection($this->products->all());
     }
 
@@ -48,6 +49,14 @@ trait ProductControllerTrait
     public function analog()
     {
         $this->products->applyFilter(new SearchFilter());
+        return new ProductCollection($this->products->all());
+    }
+    /**
+     * @return ProductCollection
+     */
+    public function product()
+    {
+        $this->products->applyFilter(new BoilerSearchFilter());
         return new ProductCollection($this->products->all());
     }
 

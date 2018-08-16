@@ -3,6 +3,7 @@
 namespace QuadStudio\Service\Site\Traits\Controllers;
 
 use QuadStudio\Service\Site\Filters\BelongsUserFilter;
+use QuadStudio\Service\Site\Models\Contact;
 use QuadStudio\Service\Site\Repositories\ContactRepository;
 
 trait ContactControllerTrait
@@ -27,7 +28,7 @@ trait ContactControllerTrait
      */
     public function index()
     {
-
+        $this->authorize('index', Contact::class);
         $this->contacts->trackFilter();
         $this->contacts->applyFilter(new BelongsUserFilter());
         return view('site::contact.index', [

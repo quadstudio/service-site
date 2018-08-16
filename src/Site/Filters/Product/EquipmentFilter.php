@@ -53,7 +53,7 @@ class EquipmentFilter extends WhereFilter
             $query->whereHas('relations', function ($query) {
                 $query->where('enabled', 1)->where('active', 1)->whereNull('equipment_id');
             });
-        })->pluck('name', 'id');
+        })->orderBy('name')->pluck('name', 'id');
         $options->prepend(trans('site::messages.select_from_list'), '');
 
         return $options->toArray();

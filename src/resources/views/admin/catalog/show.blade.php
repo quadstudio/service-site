@@ -17,11 +17,10 @@
 
         </ol>
         <h1 class="header-title mb-4">{{ $catalog->name }}</h1>
-        <hr/>
 
         @alert()@endalert
 
-        <div class="justify-content-start border p-3 mb-4">
+        <div class="justify-content-start border p-3 mb-2">
             <a class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0" role="button"
                href="{{ route('admin.catalogs.edit', $catalog) }}">
                 <i class="fa fa-pencil"></i>
@@ -49,72 +48,54 @@
             </a>
         </div>
 
-        <div class="row">
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <table class="table table-sm">
-                            <tbody>
-                            <tr class="d-flex">
-                                <td class="col-6 col-sm-3 text-right"><b>@lang('site::catalog.full_name')</b></td>
-                                <td class="col-6 col-sm-9">
-                                    {{ $catalog->parentTreeName() }}
-                                </td>
-                            </tr>
-                            <tr class="d-flex">
-                                <td class="col-6 col-sm-3 text-right"><b>@lang('site::catalog.enabled')</b></td>
-                                <td class="col-6 col-sm-9">@include('site::admin.catalog.field.enabled')</td>
-                            </tr>
-                            <tr class="d-flex">
-                                <td class="col-6 col-sm-3 text-right"><b>@lang('site::catalog.catalog_id')</b></td>
-                                <td class="col-6 col-sm-9">
-                                    @if(!is_null($catalog->catalog))
-                                        <a href="{{route('admin.catalogs.show', $catalog->catalog)}}">{{ $catalog->catalog->name }}</a>
-                                    @endif
-                                </td>
-                            </tr>
-                            <tr class="d-flex">
-                                <td class="col-6 col-sm-3 text-right"><b>@lang('site::catalog.name')</b></td>
-                                <td class="col-6 col-sm-9">{{ $catalog->name }}</td>
-                            </tr>
-                            <tr class="d-flex">
-                                <td class="col-6 col-sm-3 text-right"><b>@lang('site::catalog.description')</b></td>
-                                <td class="col-6 col-sm-9">{{ $catalog->description }}</td>
-                            </tr>
-                            @if($catalog->canAddCatalog())
-                                <tr class="d-flex">
-                                    <td class="col-6 col-sm-3 text-right"><b>@lang('site::catalog.children')</b></td>
-                                    <td class="col-6 col-sm-9">
-                                        <div class="list-group">
-                                            @foreach($catalog->catalogs as $children)
-                                                <a class="list-group-item"
-                                                   href="{{route('admin.catalogs.show', $children)}}">{{ $children->name }}</a>
-                                            @endforeach
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endif
-                            @if($catalog->canAddEquipment())
-                                <tr class="d-flex">
-                                    <td class="col-6 col-sm-3 text-right"><b>@lang('site::equipment.equipments')</b>
-                                    </td>
-                                    <td class="col-6 col-sm-9">
-                                        <div class="list-group">
-                                            @foreach($catalog->equipments as $equipment)
-                                                <a class="list-group-item"
-                                                   href="{{route('admin.equipments.show', $equipment)}}">{{ $equipment->name }}</a>
-                                            @endforeach
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endif
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+        <div class="card mb-2">
+            <div class="card-body">
+                <dl class="row">
 
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::catalog.name')</dt>
+                    <dd class="col-sm-8">{{ $catalog->name }}</dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::catalog.description')</dt>
+                    <dd class="col-sm-8">{{ $catalog->description }}</dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::catalog.enabled')</dt>
+                    <dd class="col-sm-8">@bool(['bool' => $catalog->enabled == 1])@endbool</dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::catalog.full_name')</dt>
+                    <dd class="col-sm-8">{{ $catalog->parentTreeName() }}</dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::catalog.catalog_id')</dt>
+                    <dd class="col-sm-8">
+                        @if(!is_null($catalog->catalog))
+                            <a href="{{route('admin.catalogs.show', $catalog->catalog)}}">{{ $catalog->catalog->name }}</a>
+                        @endif
+                    </dd>
+
+
+                    @if($catalog->canAddCatalog())
+                        <dt class="col-sm-4 text-left text-sm-right">@lang('site::catalog.children')</dt>
+                        <dd class="col-sm-8">
+                            <div class="list-group">
+                                @foreach($catalog->catalogs as $children)
+                                    <a class="list-group-item"
+                                       href="{{route('admin.catalogs.show', $children)}}">{{ $children->name }}</a>
+                                @endforeach
+                            </div>
+                        </dd>
+                    @endif
+                    @if($catalog->canAddEquipment())
+                        <dt class="col-sm-4 text-left text-sm-right">@lang('site::equipment.equipments')</dt>
+                        <dd class="col-sm-8">
+                            <div class="list-group">
+                                @foreach($catalog->equipments as $equipment)
+                                    <a class="list-group-item"
+                                       href="{{route('admin.equipments.show', $equipment)}}">{{ $equipment->name }}</a>
+                                @endforeach
+                            </div>
+                        </dd>
+                    @endif
+                </dl>
             </div>
         </div>
-
     </div>
 @endsection

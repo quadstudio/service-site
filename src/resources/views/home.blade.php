@@ -9,6 +9,23 @@
             <li class="breadcrumb-item active">@lang('site::messages.home')</li>
         </ol>
         <h1 class="header-title mb-4"><i class="fa fa-desktop"></i> @lang('site::messages.home')</h1>
+        <div class=" border p-3 mb-4">
+            @permission('repairs')
+            <a href="{{ route('repairs.index') }}"
+               class="d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-ferroli">
+                <i class="fa fa-@lang('site::repair.icon')"></i>
+                <span>@lang('site::repair.repairs') <span class="badge badge-light">{{$user->repairs()->count()}}</span></span>
+            </a>
+            @endpermission()
+            @permission('orders')
+            <a href="{{ route('orders.index') }}"
+               class="d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-ferroli">
+                <i class="fa fa-@lang('site::order.icon')"></i>
+                <span>@lang('site::order.orders') <span
+                            class="badge badge-light">{{$user->orders()->count()}}</span></span>
+            </a>
+            @endpermission()
+        </div>
         <div class="row">
             <div class="col-xl-4">
                 <!-- Side info -->
@@ -81,28 +98,28 @@
             </div>
             <div class="col">
                 <div class="row no-gutters text-center mb-4">
-                    <a href="{{route('orders.index')}}" class="d-flex border border-right-0 col flex-column text-dark py-3">
-                        <div class="font-weight-bold">{{$user->orders()->count()}}</div>
-                        <div class="text-muted small">@lang('site::order.orders')</div>
-                    </a>
-                    <a href="{{route('repairs.index')}}" class="d-flex border border-right-0 col flex-column text-dark py-3">
-                        <div class="font-weight-bold">{{$user->repairs()->count()}}</div>
-                        <div class="text-muted small">@lang('site::repair.repairs')</div>
-                    </a>
-                    <a href="{{route('contragents.index')}}" class="d-flex border border-right-0 col flex-column text-dark py-3">
+                    @permission('contragents')
+                    <a href="{{route('contragents.index')}}"
+                       class="d-flex border border-right-0 col flex-column text-dark py-3">
                         <div class="font-weight-bold">{{$user->contragents()->count()}}</div>
-                        <div class="text-muted small">@lang('site::contragent.contragents')
+                        <div class="text-muted ">@lang('site::contragent.contragents')
                         </div>
                     </a>
-                    <a href="{{route('contacts.index')}}" class="d-flex border border-right-0 col flex-column text-dark py-3">
+                    @endpermission()
+                    @permission('contacts')
+                    <a href="{{route('contacts.index', $user)}}"
+                       class="d-flex border border-right-0 col flex-column text-dark py-3">
                         <div class="font-weight-bold">{{$user->contacts()->count()}}</div>
-                        <div class="text-muted small">@lang('site::contact.contacts')</div>
+                        <div class="text-muted ">@lang('site::contact.contacts')</div>
                     </a>
-                    <a href="{{route('addresses.index')}}" class="d-flex border col flex-column text-dark py-3">
-                        <div class="font-weight-bold">{{$user->addresses_count()}}</div>
-                        <div class="text-muted small">@lang('site::address.addresses')
+                    @endpermission()
+                    @permission('addresses')
+                    <a href="{{route('addresses.index', $user)}}" class="d-flex border col flex-column text-dark py-3">
+                        <div class="font-weight-bold">{{$user->addresses()->count()}}</div>
+                        <div class="text-muted ">@lang('site::address.addresses')
                         </div>
                     </a>
+                    @endpermission()
                 </div>
             </div>
         </div>

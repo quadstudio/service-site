@@ -12,6 +12,7 @@ use QuadStudio\Service\Site\Models\Product;
 use QuadStudio\Service\Site\Models\Repair;
 use QuadStudio\Service\Site\Repositories\CountryRepository;
 use QuadStudio\Service\Site\Repositories\EngineerRepository;
+use QuadStudio\Service\Site\Repositories\EquipmentRepository;
 use QuadStudio\Service\Site\Repositories\FileRepository;
 use QuadStudio\Service\Site\Repositories\FileTypeRepository;
 use QuadStudio\Service\Site\Repositories\LaunchRepository;
@@ -48,6 +49,10 @@ trait RepairControllerTrait
      * @var CountryRepository
      */
     private $countries;
+    /**
+     * @var EquipmentRepository
+     */
+    private $equipments;
 
     /**
      * Create a new controller instance.
@@ -58,6 +63,7 @@ trait RepairControllerTrait
      * @param LaunchRepository $launches
      * @param FileTypeRepository $types
      * @param CountryRepository $countries
+     * @param EquipmentRepository $equipments
      * @param FileRepository $files
      */
     public function __construct(
@@ -67,6 +73,7 @@ trait RepairControllerTrait
         LaunchRepository $launches,
         FileTypeRepository $types,
         CountryRepository $countries,
+        EquipmentRepository $equipments,
         FileRepository $files
     )
     {
@@ -77,6 +84,7 @@ trait RepairControllerTrait
         $this->types = $types;
         $this->files = $files;
         $this->countries = $countries;
+        $this->equipments = $equipments;
     }
 
     /**
@@ -121,6 +129,7 @@ trait RepairControllerTrait
      */
     public function create(RepairRequest $request)
     {
+
         $this->authorize('create', Repair::class);
 
         $engineers = $this->engineers
@@ -143,8 +152,8 @@ trait RepairControllerTrait
         $parts = $this->getParts($request);
         $files = $this->getFiles($request);
         $fails = collect([]);
-
-        return view('site::repair.create', compact('engineers', 'trades', 'launches', 'countries', 'types', 'files', 'parts', 'fails'));
+        $product = old('product_id', false) ? Product::find(old('product_id'))->name : null;
+        return view('site::repair.create', compact('engineers', 'trades', 'launches', 'countries', 'types', 'files', 'parts', 'fails', 'product'));
     }
 
     /**
@@ -164,7 +173,6 @@ trait RepairControllerTrait
                 $parts->put($product->id, collect([
                     'product_id' => $product->id,
                     'sku'        => $product->sku,
-                    'image'      => $product->image()->src(),
                     'cost'       => $product->price()->exists ? $product->price()->price() : '',
                     'format'     => $product->price()->exists ? $product->price()->format() : '',
                     'name'       => $product->name,
@@ -176,7 +184,6 @@ trait RepairControllerTrait
                 $parts->put($part->product_id, collect([
                     'product_id' => $part->product_id,
                     'sku'        => $part->product->sku,
-                    'image'      => $part->product->image()->src(),
                     'cost'       => $part->product->price()->exists ? $part->product->price()->price() : '',
                     'format'     => $part->product->price()->exists ? $part->product->price()->format() : '',
                     'name'       => $part->product->name,

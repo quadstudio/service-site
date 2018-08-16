@@ -15,8 +15,9 @@
                     class="fa fa-@lang('site::address.icon')"></i> @lang('site::address.addresses')</h1>
 
         @alert()@endalert
-        <div class="border p-3 mb-4">
-            <a class="disabled btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0" href="{{ route('addresses.create') }}"
+        <div class="border p-3 mb-2">
+            <a class="disabled btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0"
+               href="{{ route('addresses.create') }}"
                role="button">
                 <i class="fa fa-plus"></i>
                 <span>@lang('site::messages.add') @lang('site::address.address')</span>
@@ -26,10 +27,11 @@
                 <span>@lang('site::messages.back_home')</span>
             </a>
         </div>
-
+        @pagination(['pagination' => $addresses])@endpagination
+        {{$addresses->render()}}
         <div class="row items-row-view">
             @each('site::address.index.row', $addresses, 'address')
         </div>
-
+        {{$addresses->render()}}
     </div>
 @endsection

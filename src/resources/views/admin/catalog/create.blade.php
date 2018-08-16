@@ -16,8 +16,8 @@
 
         @alert()@endalert
 
-        <div class="row justify-content-center mb-5">
-            <div class="col-md-12">
+        <div class="card mt-2 mb-2">
+            <div class="card-body">
 
                 <form id="form-content" method="POST" action="{{ route('admin.catalogs.store') }}">
                     @csrf
@@ -31,7 +31,7 @@
                     <fieldset @if(is_null($parent_catalog_id)) disabled @endif>
 
                         <div class="form-group">
-                            <label for="catalog_id">@lang('site::catalog.catalog_id')</label>
+                            <label class="control-label" for="catalog_id">@lang('site::catalog.catalog_id')</label>
                             <select class="form-control{{  $errors->has('name') ? ' is-invalid' : '' }}"
                                     name="catalog_id" id="catalog_id">
                                 <option value="">@lang('site::catalog.default.catalog_id')</option>
@@ -40,9 +40,9 @@
                             <span class="invalid-feedback">{{ $errors->first('catalog_id') }}</span>
                         </div>
                     </fieldset>
-                    <div class="form-row">
+                    <div class="form-row required">
                         <div class="col mb-3">
-                            <label for="name">@lang('site::catalog.name')</label>
+                            <label class="control-label" for="name">@lang('site::catalog.name')</label>
                             <input type="text" name="name" id="name" required
                                    class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}"
                                    placeholder="@lang('site::catalog.placeholder.name')"
@@ -50,10 +50,20 @@
                             <span class="invalid-feedback">{{ $errors->first('name') }}</span>
                         </div>
                     </div>
+                    <div class="form-row">
+                        <div class="col mb-3">
+                            <label class="control-label" for="name_plural">@lang('site::catalog.name_plural')</label>
+                            <input type="text" name="name_plural" id="name_plural"
+                                   class="form-control{{ $errors->has('name_plural') ? ' is-invalid' : '' }}"
+                                   placeholder="@lang('site::catalog.placeholder.name_plural')"
+                                   value="{{ old('name_plural') }}">
+                            <span class="invalid-feedback">{{ $errors->first('name_plural') }}</span>
+                        </div>
+                    </div>
 
                     <div class="form-row">
                         <div class="col mb-3">
-                            <label for="description">@lang('site::catalog.description')</label>
+                            <label class="control-label" for="description">@lang('site::catalog.description')</label>
                             <textarea class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }}"
                                       placeholder="@lang('site::catalog.placeholder.description')"
                                       name="description" id="description">{{ old('description') }}</textarea>
@@ -61,25 +71,24 @@
                         </div>
                     </div>
                 </form>
-
-                <div class="form-row">
-                    <div class="col text-right">
-                        <button name="_create" form="form-content" value="1" type="submit" class="btn btn-primary mb-1">
-                            <i class="fa fa-check"></i>
-                            <span>@lang('site::messages.save_add')</span>
-                        </button>
-                        <button name="_create" form="form-content" value="0" type="submit" class="btn btn-primary mb-1">
-                            <i class="fa fa-check"></i>
-                            <span>@lang('site::messages.save')</span>
-                        </button>
-                        <a href="{{ route('admin.catalogs.index') }}" class="btn btn-secondary mb-1">
-                            <i class="fa fa-close"></i>
-                            <span>@lang('site::messages.cancel')</span>
-                        </a>
-                    </div>
-
-                </div>
             </div>
+        </div>
+        <div class=" border p-3 mb-2">
+
+            <button form="form-content" name="_create" value="1" type="submit"
+                    class="btn btn-ferroli mr-0 mr-sm-1 mb-1 mb-sm-0 d-block d-sm-inline">
+                <i class="fa fa-check"></i>
+                <span>@lang('site::messages.save_add')</span>
+            </button>
+            <button form="form-content" name="_create" value="0" type="submit"
+                    class="btn btn-ferroli mr-0 mr-sm-1 mb-1 mb-sm-0 d-block d-sm-inline">
+                <i class="fa fa-check"></i>
+                <span>@lang('site::messages.save')</span>
+            </button>
+            <a href="{{ route('admin.catalogs.index') }}" class="d-block d-sm-inline btn btn-secondary">
+                <i class="fa fa-close"></i>
+                <span>@lang('site::messages.cancel')</span>
+            </a>
         </div>
     </div>
 @endsection

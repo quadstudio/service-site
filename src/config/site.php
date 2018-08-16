@@ -127,10 +127,11 @@ return [
             'role_id'       => 1,
         ],
         'user'     => [
-            'warehouse_id'  => '6f87e83f-722c-11df-b336-0011955cba6b',
-            'price_type_id' => '08305aca-7303-11df-b338-0011955cba6b',
-            'currency_id'   => 643,
-            'role_id'       => 2,
+            'warehouse_id'    => '6f87e83f-722c-11df-b336-0011955cba6b',
+            'organization_id' => '0d667f0c-c180-11e4-a7a9-000d884fd00d',
+            'price_type_id'   => '08305aca-7303-11df-b338-0011955cba6b',
+            'currency_id'     => 643,
+            'role_id'         => 2,
         ],
 
     ],

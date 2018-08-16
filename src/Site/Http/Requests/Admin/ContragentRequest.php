@@ -35,7 +35,7 @@ class ContragentRequest extends FormRequest
             case 'PATCH': {
                 return [
                     'contragent.organization_id' => 'required|exists:' . $prefix . 'organizations,id',
-                    'contragent.currency_id'     => 'required|exists:' . $prefix . 'currencies,id',
+                    //'contragent.currency_id'     => 'required|exists:' . $prefix . 'currencies,id',
                 ];
             }
             default:

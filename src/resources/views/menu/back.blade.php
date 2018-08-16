@@ -125,38 +125,54 @@
                         <a class="dropdown-item" href="{{ route('home') }}">
                             <i class="fa fa-desktop"></i> @lang('site::messages.home')
                         </a>
-                        @if(Auth::user()->hasRole('buyer'))
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{{ route('orders.index') }}"><i
-                                        class="fa fa-@lang('site::order.icon')"></i> @lang('site::order.orders')</a>
-                        @endif
-                        @if(Auth::user()->hasRole('asc'))
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{{ route('repairs.index') }}"><i
-                                        class="fa fa-@lang('site::repair.icon')"></i> @lang('site::repair.repairs')</a>
-                            <a class="dropdown-item" href="{{ route('messages.index') }}"><i
-                                        class="fa fa-@lang('site::message.icon')"></i> @lang('site::message.messages')</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{{ route('engineers.index') }}">
-                                <i class="fa fa-@lang('site::engineer.icon')"></i> @lang('site::engineer.engineers')
-                            </a>
-                            <a class="dropdown-item" href="{{ route('launches.index') }}">
-                                <i class="fa fa-@lang('site::launch.icon')"></i> @lang('site::launch.launches')
-                            </a>
-                            <a class="dropdown-item" href="{{ route('trades.index') }}">
-                                <i class="fa fa-@lang('site::trade.icon')"></i> @lang('site::trade.trades')
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{{ route('contragents.index') }}">
-                                <i class="fa fa-@lang('site::contragent.icon')"></i> @lang('site::contragent.contragents')
-                            </a>
-                            <a class="dropdown-item" href="{{ route('contacts.index') }}">
-                                <i class="fa fa-@lang('site::contact.icon')"></i> @lang('site::contact.contacts')
-                            </a>
-                            <a class="dropdown-item" href="{{ route('addresses.index') }}">
-                                <i class="fa fa-@lang('site::address.icon')"></i> @lang('site::address.addresses')
-                            </a>
-                        @endif
+                        @permission('orders')
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ route('orders.index') }}"><i
+                                    class="fa fa-@lang('site::order.icon')"></i> @lang('site::order.orders')
+                        </a>
+                        @endpermission
+                        @permission('repairs')
+                        <a class="dropdown-item" href="{{ route('repairs.index') }}"><i
+                                    class="fa fa-@lang('site::repair.icon')"></i> @lang('site::repair.repairs')
+                        </a>
+                        @endpermission
+                        @permission('messages')
+                        <a class="dropdown-item" href="{{ route('messages.index') }}"><i
+                                    class="fa fa-@lang('site::message.icon')"></i> @lang('site::message.messages')
+                        </a>
+                        @endpermission
+                        @permission('engineers')
+                        <a class="dropdown-item" href="{{ route('engineers.index') }}">
+                            <i class="fa fa-@lang('site::engineer.icon')"></i> @lang('site::engineer.engineers')
+                        </a>
+                        @endpermission
+                        @permission('launches')
+                        <a class="dropdown-item" href="{{ route('launches.index') }}">
+                            <i class="fa fa-@lang('site::launch.icon')"></i> @lang('site::launch.launches')
+                        </a>
+                        @endpermission
+                        @permission('trades')
+                        <a class="dropdown-item" href="{{ route('trades.index') }}">
+                            <i class="fa fa-@lang('site::trade.icon')"></i> @lang('site::trade.trades')
+                        </a>
+                        @endpermission
+                        @permission('contragents')
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ route('contragents.index') }}">
+                            <i class="fa fa-@lang('site::contragent.icon')"></i> @lang('site::contragent.contragents')
+                        </a>
+                        @endpermission
+                        @permission('contacts')
+                        <a class="dropdown-item" href="{{ route('contacts.index') }}">
+                            <i class="fa fa-@lang('site::contact.icon')"></i> @lang('site::contact.contacts')
+                        </a>
+                        @endpermission
+                        @permission('addresses')
+                        <a class="dropdown-item" href="{{ route('addresses.index') }}">
+                            <i class="fa fa-@lang('site::address.icon')"></i> @lang('site::address.addresses')
+                        </a>
+                        @endpermission
+
                         @endadmin()
                         <div class="dropdown-divider"></div>
                         <a href="javascript:void(0);" class="dropdown-item notify-item"
