@@ -171,16 +171,35 @@
                                            class="form-control{{ $errors->has('date_repair') ? ' is-invalid' : '' }}"
                                            placeholder="@lang('site::repair.placeholder.date_repair')"
                                            required
-                                           value="{{ old('date_repair') }}" >
+                                           value="{{ old('date_repair') }}">
                                     <span class="invalid-feedback">{{ $errors->first('date_repair') }}</span>
                                 </div>
                             </div>
                         </div>
+
+                        {{-- ОПЛАТА --}}
                         <div class="card mt-2 mb-2">
                             <div class="card-body">
                                 <h5 class="card-title">@lang('site::repair.header.payment')</h5>
 
-                                {{-- ОБОРУДОВАНИЕ --}}
+                                <div class="form-group required">
+                                    <label class="control-label"
+                                           for="contragent_id">@lang('site::repair.contragent_id')</label>
+                                    <select class="form-control{{  $errors->has('contragent_id') ? ' is-invalid' : '' }}"
+                                            required
+                                            name="contragent_id"
+                                            id="contragent_id">
+                                        <option value="">@lang('site::messages.select_from_list')</option>
+                                        @foreach($contragents as $contragent)
+                                            <option
+                                                    @if(old('contragent_id') == $contragent->id) selected
+                                                    @endif
+                                                    value="{{ $contragent->id }}">{{ $contragent->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="invalid-feedback">{{ $errors->first('contragent_id') }}</span>
+                                </div>
+
                                 <div class="form-group required">
                                     <label class="control-label"
                                            for="product_id">@lang('site::repair.product_id')</label>

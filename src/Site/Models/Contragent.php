@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Contragent extends Model
 {
     protected $fillable = [
-        'type_id', 'name', 'nds',
-        'inn', 'ogrn', 'okpo', 'kpp',
-        'rs', 'ks', 'bik', 'bank',
+        'type_id', 'name', 'nds', 'inn', 'ogrn',
+        'okpo', 'kpp', 'rs', 'ks', 'bik', 'bank',
+        'organization_id', 'contract'
     ];
 
     /**
@@ -58,6 +58,30 @@ class Contragent extends Model
     public function addresses()
     {
         return $this->morphMany(Address::class, 'addressable');
+    }
+
+    /**
+     * @return bool
+     */
+    public function check()
+    {
+        return mb_strlen($this->getAttribute('name'), 'UTF-8') > 0
+            && (
+                $this->getAttribute('type_id') == 1
+                && strlen($this->getAttribute('inn')) == 10
+                || strlen($this->getAttribute('inn')) == 12
+            )
+            && in_array(strlen($this->getAttribute('ogrn')), [13, 15])
+            && in_array(strlen($this->getAttribute('okpo')), [8, 10])
+            && (
+                $this->getAttribute('type_id') == 2 || strlen($this->getAttribute('kpp')) == 9
+            )
+            && strlen($this->getAttribute('rs')) == 20
+            && in_array(strlen($this->getAttribute('bik')), [9, 11])
+            && mb_strlen($this->getAttribute('bank'), 'UTF-8') > 0
+            && in_array(strlen($this->getAttribute('ks')), [0, 20])
+            && !is_null($this->getAttribute('organization_id'))
+            && mb_strlen($this->getAttribute('contract'), 'UTF-8') > 0;
     }
 
     /**

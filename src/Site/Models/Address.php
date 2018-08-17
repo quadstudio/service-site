@@ -34,7 +34,8 @@ class Address extends Model
     public static function boot()
     {
         parent::boot();
-        static::creating(function (Address $address) {
+
+        static::saving(function (Address $address) {
             $httpClient = new \Http\Adapter\Guzzle6\Client();
             $provider = new \Geocoder\Provider\Yandex\Yandex($httpClient);
             $geocoder = new \Geocoder\StatefulGeocoder($provider, 'ru');
@@ -44,6 +45,7 @@ class Address extends Model
             $result[] = $address->locality;
             $result[] = $address->street;
             $result[] = $address->building;
+            $result[] = $address->apartment;
             $name = implode(', ', $result);
             $result = $geocoder->geocodeQuery(\Geocoder\Query\GeocodeQuery::create($name));
             if (!$result->isEmpty()) {

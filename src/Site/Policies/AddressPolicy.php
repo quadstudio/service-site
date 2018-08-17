@@ -22,7 +22,11 @@ class AddressPolicy
      */
     public function view(User $user, Address $address)
     {
-        return $user->hasPermission('addresses') && ($user->id == $address->user_id);
+        return $user->hasPermission('addresses') && $this->belongsUser($user, $address);
+    }
+
+    private function belongsUser(User $user, Address $address){
+        return $user->id == ($address->addressable_type == 'users' ? $address->addressable->id : $address->addressable->user_id);
     }
 
     /**
@@ -45,7 +49,7 @@ class AddressPolicy
      */
     public function edit(User $user, Address $address)
     {
-        return $user->hasPermission('addresses') && ($user->id == $address->addressable->user_id);
+        return $user->hasPermission('addresses') && $this->belongsUser($user, $address);
     }
 
     /**

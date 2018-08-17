@@ -2,8 +2,8 @@
 
 namespace QuadStudio\Service\Site\Policies;
 
-use QuadStudio\Service\Site\Models\User;
 use QuadStudio\Service\Site\Models\Repair;
+use QuadStudio\Service\Site\Models\User;
 
 class RepairPolicy
 {

@@ -7,14 +7,26 @@
                 <a href="{{ route('index') }}">@lang('site::messages.index')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('addresses.index') }}">@lang('site::address.addresses')</a>
+                <a href="{{ route('home') }}">@lang('site::messages.home')</a>
             </li>
+            @if($address->addressable_type == 'contragents')
+                <li class="breadcrumb-item">
+                    <a href="{{ route('contragents.index') }}">@lang('site::contragent.contragents')</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="{{ route('contragents.show', $address->addressable) }}">{{$address->addressable->name}}</a>
+                </li>
+            @else
+                <li class="breadcrumb-item">
+                    <a href="{{ route('addresses.index') }}">@lang('site::address.addresses')</a>
+                </li>
+            @endif
             <li class="breadcrumb-item">
-                <a href="{{ route('addresses.show', $address) }}">{{ $address->name }}</a>
+                <a href="{{ route('addresses.show', $address) }}">{{$address->type->name}}</a>
             </li>
             <li class="breadcrumb-item active">@lang('site::messages.edit')</li>
         </ol>
-        <h1 class="header-title mb-4">@lang('site::messages.edit') {{ $address->name }}</h1>
+        <h1 class="header-title mb-4">@lang('site::messages.edit') {{ $address->type->name }}</h1>
 
         @alert()@endalert()
 
@@ -148,7 +160,7 @@
                         <i class="fa fa-check"></i>
                         <span>@lang('site::messages.save')</span>
                     </button>
-                    <a href="{{ route($address->addressable_type.'.index') }}" class="btn btn-secondary mb-1">
+                    <a href="{{ route('addresses.show', $address) }}" class="btn btn-secondary mb-1">
                         <i class="fa fa-close"></i>
                         <span>@lang('site::messages.cancel')</span>
                     </a>

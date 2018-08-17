@@ -11,6 +11,7 @@ return [
     'status_id'       => 'Статус',
     'serial_id'       => 'Серийный номер',
     'product_id'      => 'Оборудование',
+    'contragent_id'   => 'Контрагент - исполнитель',
     'number'          => '№ акта гарантийного ремонта',
     'warranty_number' => '№ гарантийного талона',
     'warranty_period' => 'Гарантийный срок (месяцев)',
@@ -43,6 +44,11 @@ return [
     'phone_secondary' => 'Телефон (дополнительный)',
     //
     'status_defaults' => '- выбрать -',
+    'icons'           => [
+        'road' => 'car',
+        'work' => 'gavel',
+        'parts' => 'cogs',
+    ],
     //
     'placeholder'     => [
         'serial_id'       => 'Находится на шильдике оборудования',

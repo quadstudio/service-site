@@ -75,6 +75,9 @@
                 <h5 class="card-title">@lang('site::repair.header.payment')</h5>
                 <dl class="row">
 
+                    <dt class="@if($fails->contains('field', 'contragent_id')) bg-danger text-white @endif col-sm-4 text-left text-sm-right">@lang('site::repair.contragent_id')</dt>
+                    <dd class="col-sm-8">{{ $repair->contragent->name }}</dd>
+
                     <dt class="@if($fails->contains('field', 'allow_work')) bg-danger text-white @endif col-sm-4 text-left text-sm-right">@lang('site::repair.allow_work')</dt>
                     <dd class="col-sm-8"> @bool(['bool' => $repair->allow_work == 1])@endbool</dd>
 

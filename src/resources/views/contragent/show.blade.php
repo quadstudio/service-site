@@ -7,6 +7,9 @@
                 <a href="{{ route('index') }}">@lang('site::messages.index')</a>
             </li>
             <li class="breadcrumb-item">
+                <a href="{{ route('home') }}">@lang('site::messages.home')</a>
+            </li>
+            <li class="breadcrumb-item">
                 <a href="{{ route('contragents.index') }}">@lang('site::contragent.contragents')</a>
             </li>
             <li class="breadcrumb-item active">{{ $contragent->name }}</li>
@@ -22,7 +25,7 @@
             </a>
             <a href="{{ route('contragents.index') }}" class="d-block d-sm-inline btn btn-secondary">
                 <i class="fa fa-reply"></i>
-                <span>@lang('site::messages.back')</span>
+                <span>@lang('site::contragent.help.back_list')</span>
             </a>
         </div>
         <div class="card mb-2">
@@ -89,7 +92,7 @@
                                        @endcan class="dropdown-item">@lang('site::messages.edit')</a>
                                     <button @cannot('delete', $address) disabled @endcannot
                                     class="dropdown-item btn-row-delete"
-                                            data-form="#contragent-delete-form-{{$contragent->id}}"
+                                            data-form="#address-delete-form-{{$address->id}}"
                                             data-btn-delete="@lang('site::messages.delete')"
                                             data-btn-cancel="@lang('site::messages.cancel')"
                                             data-label="@lang('site::messages.delete_confirm')"
@@ -98,7 +101,7 @@
                                             href="javascript:void(0);" title="@lang('site::messages.delete')">
                                         @lang('site::messages.delete')
                                     </button>
-                                    <form id="contragent-delete-form-{{$address->id}}"
+                                    <form id="address-delete-form-{{$address->id}}"
                                           action="{{route('addresses.destroy', $address)}}"
                                           method="POST">
                                         @csrf
@@ -110,7 +113,8 @@
                             <h6 class="card-title">{{$address->type->name}}</h6>
                             <div class="item-content-about">
                                 <h5 class="item-content-name mb-1">
-                                    <a href="javascript:void(0)" class="text-dark">{{$address->name}}</a>
+                                    <a href="{{route('addresses.show', $address)}}"
+                                       class="text-dark">{{$address->name}}</a>
                                 </h5>
                                 <hr class="border-light">
                                 <div>

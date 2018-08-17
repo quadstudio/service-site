@@ -17,7 +17,7 @@ class Repair extends Model implements Messagable
     protected $table;
 
     protected $fillable = [
-        'serial_id', 'product_id',
+        'serial_id', 'product_id', 'contragent_id',
         'cost_work', 'cost_road',
         'allow_work', 'allow_road', 'allow_parts',
         'date_launch', 'date_trade', 'date_call',
@@ -92,6 +92,41 @@ class Repair extends Model implements Messagable
     public function hasEquipment()
     {
         return $this->product->hasEquipment();
+    }
+
+    public function check()
+    {
+        return $this->checkEquipment()
+            && $this->checkParts()
+            && $this->checkContragent();
+    }
+
+    public function checkEquipment()
+    {
+        return $this->checkEquipmentWork() && $this->checkEquipmentRoad();
+    }
+
+    public function checkEquipmentWork()
+    {
+        return $this->hasEquipment() && $this->product->equipment->checkWork();
+    }
+
+    public function checkEquipmentRoad()
+    {
+        return $this->hasEquipment() && $this->product->equipment->checkRoad();
+    }
+
+    public function checkParts()
+    {
+        return $this->getAttribute('allow_parts') == 0
+            || $this->parts->every(function ($part) {
+                return $part->hasPrice();
+            });
+    }
+
+    public function checkContragent()
+    {
+        return $this->contragent->check();
     }
 
     /**
@@ -258,6 +293,16 @@ class Repair extends Model implements Messagable
     public function status()
     {
         return $this->belongsTo(RepairStatus::class);
+    }
+
+    /**
+     * Контрагент - исполнитель
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function contragent()
+    {
+        return $this->belongsTo(Contragent::class);
     }
 
     /**

@@ -33,6 +33,13 @@ class RepairRequest extends FormRequest
             }
             case 'POST': {
                 return [
+                    'contragent_id' => [
+                        'required',
+                        'exists:' . $prefix . 'contragents,id',
+                        Rule::exists($prefix . 'contragents', 'id')->where(function ($query) use ($prefix) {
+                            $query->where($prefix . 'contragents.user_id', $this->user()->id);
+                        }),
+                    ],
                     'product_id'    => 'required|exists:' . $prefix . 'products,id',
                     'client'        => 'required|string|max:255',
                     'country_id'    => 'required|exists:' . $prefix . 'countries,id',
@@ -78,7 +85,15 @@ class RepairRequest extends FormRequest
             case 'PATCH': {
                 $fails = $this->route('repair')->fails;
                 $rules = collect([]);
-
+                if ($fails->contains('field', 'contragent_id')) {
+                    $rules->put('contragent_id', [
+                        'required',
+                        'exists:' . $prefix . 'contragents,id',
+                        Rule::exists($prefix . 'contragents', 'id')->where(function ($query) use ($prefix) {
+                            $query->where($prefix . 'contragents.user_id', $this->user()->id);
+                        }),
+                    ]);
+                }
                 if ($fails->contains('field', 'country_id')) {
                     $rules->put('country_id', 'required|exists:' . $prefix . 'countries,id');
                 }
@@ -168,6 +183,7 @@ class RepairRequest extends FormRequest
     public function attributes()
     {
         return [
+            'contragent_id'   => trans('site::repair.contragent_id'),
             'client'          => trans('site::repair.client'),
             'country_id'      => trans('site::repair.country_id'),
             'address'         => trans('site::repair.address'),

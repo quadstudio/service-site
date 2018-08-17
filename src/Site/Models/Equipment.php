@@ -25,8 +25,9 @@ class Equipment extends Model
         $this->table = env('DB_PREFIX', '') . 'equipments';
     }
 
-    public function detachImages(){
-        foreach ($this->images as $image){
+    public function detachImages()
+    {
+        foreach ($this->images as $image) {
             $image->imageable_id = null;
             $image->imageable_type = null;
             $image->save();
@@ -53,6 +54,11 @@ class Equipment extends Model
         return $this->belongsTo(Currency::class);
     }
 
+    public function image()
+    {
+        return $this->images()->firstOrNew([]);
+    }
+
     /**
      * Изображения
      *
@@ -72,17 +78,29 @@ class Equipment extends Model
         return $this->_images();
     }
 
-    public function image()
-    {
-        return $this->images()->firstOrNew([]);
-    }
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\morphMany
      */
     public function _images()
     {
         return $this->morphMany(Image::class, 'imageable');
+    }
+
+    public function check()
+    {
+        return $this->checkWork() && $this->checkRoad();
+    }
+
+    public function checkWork()
+    {
+        return !is_null($this->getAttribute('cost_work'))
+            && $this->getAttribute('cost_work') > 0;
+    }
+
+    public function checkRoad()
+    {
+        return !is_null($this->getAttribute('cost_road'))
+            && $this->getAttribute('cost_road') > 0;
     }
 
     /**
@@ -111,7 +129,8 @@ class Equipment extends Model
         return $this->hasMany(Product::class);
     }
 
-    public function canDelete(){
+    public function canDelete()
+    {
         return $this->products->isEmpty();
     }
 

@@ -38,6 +38,7 @@
             @csrf
             <div class="card mb-2">
                 <div class="card-body">
+
                     <h5 class="card-title">@lang('site::user.header.user')</h5>
                     <dl class="row">
 
@@ -99,6 +100,20 @@
                 <div class="card-body">
                     <h5 class="card-title">@lang('site::repair.header.payment')</h5>
                     <dl class="row">
+
+                        <dt class="col-sm-4 text-left text-sm-right @if($fails->contains('field', 'contragent_id')) bg-danger text-white @endif">
+                            <label for="contragent_id"
+                                   class="pointer control-label"><i
+                                        class="fa text-danger fa-hand-pointer-o"></i> @lang('site::repair.contragent_id')
+                            </label>
+                            <input id="contragent_id"
+                                   value="contragent_id"
+                                   @if($fails->contains('field', 'contragent_id')) checked @endif
+                                   type="checkbox" name="fail[][field]" class="d-none repair-error-check">
+                        </dt>
+                        <dd class="col-sm-8"><a
+                                    href="{{route('admin.contragents.show', $repair->contragent)}}">{{ $repair->contragent->name }}</a>
+                        </dd>
 
                         <dt class="col-sm-4 text-left text-sm-right @if($fails->contains('field', 'allow_work')) bg-danger text-white @endif">
                             <label for="allow_work"
@@ -390,7 +405,8 @@
             </div>
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
                 <h4 class="alert-heading">Обратите внимание</h4>
-                <p>Перед отправлением отчета на доработку - поля, отмеченные значком <i class="fa text-danger fa-hand-pointer-o"></i>, можно пометить как <span
+                <p>Перед отправлением отчета на доработку - поля, отмеченные значком <i
+                            class="fa text-danger fa-hand-pointer-o"></i>, можно пометить как <span
                             class="bg-danger text-white p-1">заполненные с ошибокой</span>.</p>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -440,8 +456,11 @@
                                     </div>
                                     @foreach($statuses as $key => $status)
                                         <button
+                                                @if($status->id == 5 && !$repair->check())
+                                                disabled
+                                                @endif
                                                 type="submit"
-                                                @if(!$repair->canSetStatus($status->id)) disabled @endif
+                                                {{--@if(!$repair->canSetStatus($status->id)) disabled @endif--}}
                                                 name="repair[status_id]"
                                                 value="{{$status->id}}"
                                                 style="color:#fff;background-color: {{$status->color}}"
@@ -450,6 +469,24 @@
                                             <span>{{$status->button}}</span>
                                         </button>
                                     @endforeach
+                                    <div class="card mt-4">
+                                        <div class="card-body">
+                                            <h6 class="card-title">@lang('site::messages.header.check')</h6>
+                                            <dl class="row">
+
+                                                <dt class="col-sm-4 text-left text-sm-right">@lang('site::repair.product_id')</dt>
+                                                <dd class="col-sm-8">@bool(['bool' => $repair->checkEquipment()])@endbool</dd>
+
+                                                <dt class="col-sm-4 text-left text-sm-right">@lang('site::part.parts')</dt>
+                                                <dd class="col-sm-8">@bool(['bool' => $repair->checkParts()])@endbool</dd>
+
+                                                <dt class="col-sm-4 text-left text-sm-right">@lang('site::repair.contragent_id')</dt>
+                                                <dd class="col-sm-8">@bool(['bool' => $repair->checkContragent()])@endbool</dd>
+
+                                            </dl>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
 

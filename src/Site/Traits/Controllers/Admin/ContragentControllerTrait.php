@@ -6,23 +6,39 @@ use QuadStudio\Service\Site\Http\Requests\ContragentRequest;
 use QuadStudio\Service\Site\Models\Contragent;
 use QuadStudio\Service\Site\Repositories\ContragentRepository;
 use QuadStudio\Service\Site\Repositories\ContragentTypeRepository;
+use QuadStudio\Service\Site\Repositories\OrganizationRepository;
 
 trait ContragentControllerTrait
 {
-
+    /**
+     * @var ContragentRepository
+     */
     protected $contragents;
+    /**
+     * @var ContragentTypeRepository
+     */
     protected $types;
+    /**
+     * @var OrganizationRepository
+     */
+    private $organizations;
 
     /**
      * Create a new controller instance.
      *
      * @param ContragentRepository $contragents
      * @param ContragentTypeRepository $types
+     * @param OrganizationRepository $organizations
      */
-    public function __construct(ContragentRepository $contragents, ContragentTypeRepository $types)
+    public function __construct(
+        ContragentRepository $contragents,
+        ContragentTypeRepository $types,
+        OrganizationRepository $organizations
+    )
     {
         $this->contragents = $contragents;
         $this->types = $types;
+        $this->organizations = $organizations;
     }
 
     /**
@@ -34,9 +50,10 @@ trait ContragentControllerTrait
     {
 
         $this->contragents->trackFilter();
+
         return view('site::admin.contragent.index', [
-            'repository' => $this->contragents,
-            'contragents'      => $this->contragents->paginate(config('site.per_page.contragent', 10), [env('DB_PREFIX', '').'contragents.*'])
+            'repository'  => $this->contragents,
+            'contragents' => $this->contragents->paginate(config('site.per_page.contragent', 10), [env('DB_PREFIX', '') . 'contragents.*'])
         ]);
     }
 
@@ -61,7 +78,9 @@ trait ContragentControllerTrait
     public function edit(Contragent $contragent)
     {
         $types = $this->types->all();
-        return view('site::admin.contragent.edit', compact('contragent', 'types'));
+        $organizations = $this->organizations->all();
+
+        return view('site::admin.contragent.edit', compact('contragent', 'types', 'organizations'));
     }
 
     /**
@@ -73,13 +92,8 @@ trait ContragentControllerTrait
      */
     public function update(ContragentRequest $request, Contragent $contragent)
     {
-        $this->contragents->update($request->input('contragent'), $contragent->id);
-        if ($request->input('_stay') == 1) {
-            $redirect = redirect()->route('admin.contragents.edit', $contragent)->with('success', trans('site::contragent.updated'));
-        } else {
-            $redirect = redirect()->route('admin.contragents.show', $contragent)->with('success', trans('site::contragent.updated'));
-        }
+        $contragent->update($request->input('contragent'));
 
-        return $redirect;
+        return redirect()->route('admin.contragents.show', $contragent)->with('success', trans('site::contragent.updated'));
     }
 }

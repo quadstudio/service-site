@@ -7,6 +7,9 @@
                 <a href="{{ route('index') }}">@lang('site::messages.index')</a>
             </li>
             <li class="breadcrumb-item">
+                <a href="{{ route('home') }}">@lang('site::messages.home')</a>
+            </li>
+            <li class="breadcrumb-item">
                 <a href="{{ route('contragents.index') }}">@lang('site::contragent.contragents')</a>
             </li>
             <li class="breadcrumb-item">

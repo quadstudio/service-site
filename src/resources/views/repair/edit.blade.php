@@ -278,10 +278,32 @@
                                 </div>
                             </div>
                         </div>
+                        {{--ОПЛАТА--}}
                         <div class="card mt-2 mb-2">
                             <div class="card-body">
                                 <h5 class="card-title">@lang('site::repair.header.payment')</h5>
-                                {{-- РАБОТА --}}
+                                <div class="form-group required">
+                                    <label class="control-label"
+                                           for="contragent_id">@lang('site::repair.contragent_id')</label>
+                                    @if($fails->contains('field', 'contragent_id'))
+                                        <span class="bg-danger text-white d-block d-sm-inline-block py-1 px-3 mb-1 mb-sm-0">@lang('site::messages.with_error')</span>
+                                        <select class="form-control{{  $errors->has('contragent_id') ? ' is-invalid' : '' }}"
+                                                required
+                                                name="contragent_id"
+                                                id="contragent_id">
+                                            <option value="">@lang('site::messages.select_from_list')</option>
+                                            @foreach($contragents as $contragent)
+                                                <option
+                                                        @if(old('contragent_id', $repair->contragent_id) == $contragent->id) selected
+                                                        @endif
+                                                        value="{{ $contragent->id }}">{{ $contragent->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <span class="invalid-feedback">{{ $errors->first('contragent_id') }}</span>
+                                    @else
+                                        <div class="text-success text-big">{{$repair->contragent->name}}</div>
+                                    @endif
+                                </div>
                                 <div class="form-group required">
                                     <label class="control-label"
                                            for="allow_work">@lang('site::repair.allow_work')</label>
@@ -410,7 +432,6 @@
                                                     @include('site::part.repair.show', [
                                                             'product_id' => $part['product_id'],
                                                             'sku' => $part['sku'],
-                                                            'image' => $part['image'],
                                                             'name' => $part['name'],
                                                             'cost' => $part['cost'],
                                                             'format' => $part['format'],

@@ -67,9 +67,18 @@ trait AddressControllerTrait
      */
     public function update(AddressRequest $request, Address $address)
     {
+        $address->update($request->except(['_token', '_method']));
+        return redirect()->route('addresses.show', $address)->with('success', trans('site::address.updated'));
+    }
 
-        $this->addresses->update($request->except(['_token', '_method']), $address->id);
-        return redirect()->route($address->addressable_type . '.index')->with('success', trans('site::address.updated'));
+    /**
+     * @param Address $address
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Address $address)
+    {
+        $this->authorize('view', $address);
+        return view('site::address.show', compact('address'));
     }
 
 }

@@ -10,6 +10,7 @@ use QuadStudio\Service\Site\Http\Requests\RepairRequest;
 use QuadStudio\Service\Site\Models\File;
 use QuadStudio\Service\Site\Models\Product;
 use QuadStudio\Service\Site\Models\Repair;
+use QuadStudio\Service\Site\Repositories\ContragentRepository;
 use QuadStudio\Service\Site\Repositories\CountryRepository;
 use QuadStudio\Service\Site\Repositories\EngineerRepository;
 use QuadStudio\Service\Site\Repositories\EquipmentRepository;
@@ -53,6 +54,10 @@ trait RepairControllerTrait
      * @var EquipmentRepository
      */
     private $equipments;
+    /**
+     * @var ContragentRepository
+     */
+    private $contragents;
 
     /**
      * Create a new controller instance.
@@ -65,6 +70,7 @@ trait RepairControllerTrait
      * @param CountryRepository $countries
      * @param EquipmentRepository $equipments
      * @param FileRepository $files
+     * @param ContragentRepository $contragents
      */
     public function __construct(
         RepairRepository $repairs,
@@ -74,7 +80,8 @@ trait RepairControllerTrait
         FileTypeRepository $types,
         CountryRepository $countries,
         EquipmentRepository $equipments,
-        FileRepository $files
+        FileRepository $files,
+        ContragentRepository $contragents
     )
     {
         $this->repairs = $repairs;
@@ -85,6 +92,7 @@ trait RepairControllerTrait
         $this->files = $files;
         $this->countries = $countries;
         $this->equipments = $equipments;
+        $this->contragents = $contragents;
     }
 
     /**
@@ -144,6 +152,7 @@ trait RepairControllerTrait
             ->applyFilter(new BelongsUserFilter())
             ->applyFilter(new ByNameSortFilter())
             ->all();
+        $contragents = $request->user()->contragents;
         $countries = $this->countries
             ->applyFilter(new CountryEnabledFilter())
             ->applyFilter(new CountrySortFilter())
@@ -153,7 +162,19 @@ trait RepairControllerTrait
         $files = $this->getFiles($request);
         $fails = collect([]);
         $product = old('product_id', false) ? Product::find(old('product_id'))->name : null;
-        return view('site::repair.create', compact('engineers', 'trades', 'launches', 'countries', 'types', 'files', 'parts', 'fails', 'product'));
+
+        return view('site::repair.create', compact(
+            'engineers',
+            'trades',
+            'contragents',
+            'launches',
+            'countries',
+            'types',
+            'files',
+            'parts',
+            'fails',
+            'product'
+        ));
     }
 
     /**
@@ -275,6 +296,7 @@ trait RepairControllerTrait
             $parts = collect($request->input('parts'))->values()->toArray();
             $repair->parts()->createMany($parts);
         }
+
         return redirect()->route('repairs.show', $repair)->with('success', trans('site::repair.updated'));
     }
 
