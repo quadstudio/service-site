@@ -1,6 +1,11 @@
 (function ($) {
 
     "use strict";
+
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    });
+
     let servicesRegionList = document.getElementById("services-region-list");
     if (servicesRegionList !== null) {
 
