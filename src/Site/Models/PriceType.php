@@ -13,6 +13,9 @@ class PriceType extends Model
     protected $table;
 
     public $incrementing = false;
+    public $timestamps = false;
+
+    protected $fillable = ['display_name'];
 
     /**
      * @param array $attributes
@@ -31,6 +34,16 @@ class PriceType extends Model
     public function currency()
     {
         return $this->belongsTo(Currency::class);
+    }
+
+    /**
+     * Цены
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function prices()
+    {
+        return $this->hasMany(Price::class, 'type_id');
     }
 
 

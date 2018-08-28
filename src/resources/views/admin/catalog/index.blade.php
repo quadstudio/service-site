@@ -31,25 +31,12 @@
                 <span>@lang('site::messages.back_admin')</span>
             </a>
         </div>
-        <div class="card mb-4">
-            <div class="card-body">
-                {{$items->render()}}
-                @filter(['repository' => $repository])@endfilter
-                <table class="table table-hover table-sm">
-                    <thead>
-                    <tr>
-                        <th class="text-center" scope="col"></th>
-                        <th scope="col">@lang('site::catalog.name')</th>
-                        <th scope="col" class="d-none d-sm-table-cell">@lang('site::catalog.catalog_id')</th>
-                        <th scope="col">#</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @each('site::admin.catalog.row', $items, 'catalog')
-                    </tbody>
-                </table>
-                {{$items->render()}}
-            </div>
+        @filter(['repository' => $repository])@endfilter
+        @pagination(['pagination' => $catalogs])@endpagination
+        {{$catalogs->render()}}
+        <div class="row items-row-view">
+            @each('site::admin.catalog.index.row', $catalogs, 'catalog')
         </div>
+        {{$catalogs->render()}}
     </div>
 @endsection

@@ -37,7 +37,8 @@ trait EquipmentControllerTrait
 
     public function show(Equipment $equipment)
     {
-        return view('site::equipment.show', ['equipment' => $equipment]);
+        $products = $equipment->products()->whereEnabled(1)->orderBy('name')->get();
+        return view('site::equipment.show', compact('equipment', 'products'));
     }
 
 }

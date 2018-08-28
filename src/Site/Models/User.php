@@ -9,10 +9,11 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use QuadStudio\Online\OnlineChecker;
 use QuadStudio\Rbac\Traits\Models\RbacUserTrait;
+use QuadStudio\Service\Site\Traits\Models\ScheduleTrait;
 
 class User extends Authenticatable
 {
-    use Notifiable, RbacUserTrait, OnlineChecker;
+    use Notifiable, RbacUserTrait, OnlineChecker, ScheduleTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -51,6 +52,14 @@ class User extends Authenticatable
     }
 
     /**
+     * @return bool
+     */
+    public function hasGuid()
+    {
+        return !is_null($this->getAttribute('guid'));
+    }
+
+    /**
      * @return string
      */
     public function getLogoAttribute()
@@ -72,10 +81,6 @@ class User extends Authenticatable
         return $this->belongsTo(Image::class);
     }
 
-    public function can_export()
-    {
-        return is_null($this->guid);
-    }
 
     public function created_at($time = false)
     {
@@ -129,6 +134,16 @@ class User extends Authenticatable
     public function contacts()
     {
         return $this->hasMany(Contact::class);
+    }
+
+    /**
+     * Акты выполненных работ
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function acts()
+    {
+        return $this->hasMany(Act::class);
     }
 
     public function sc_phones()

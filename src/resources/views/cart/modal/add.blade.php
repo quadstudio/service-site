@@ -12,7 +12,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('site::cart.add_form_cancel')</button>
-                <a href="{{route('cart')}}" class="btn btn-primary btn-ok">@lang('site::cart.add_form_ok')</a>
+                <a href="{{route('cart')}}" class="btn btn-ferroli btn-ok">@lang('site::cart.add_form_ok')</a>
             </div>
         </div>
     </div>

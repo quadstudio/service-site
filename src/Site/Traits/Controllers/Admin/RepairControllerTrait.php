@@ -3,6 +3,7 @@
 namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use QuadStudio\Service\Site\Filters\FileType\ModelHasFilesFilter;
 use QuadStudio\Service\Site\Filters\Repair\RegionFilter;
 use QuadStudio\Service\Site\Filters\Repair\ScSearchFilter;
 use QuadStudio\Service\Site\Models\Repair;
@@ -71,6 +72,7 @@ trait RepairControllerTrait
         $statuses = $repair->statuses()->get();
         $fails = $repair->fails;
         $files = $repair->files;
+        $this->types->applyFilter((new ModelHasFilesFilter())->setId($repair->id)->setMorph('repairs'));
         $types = $this->types->all();
 
         return view('site::admin.repair.show', compact('repair', 'statuses', 'fails', 'files', 'types'));

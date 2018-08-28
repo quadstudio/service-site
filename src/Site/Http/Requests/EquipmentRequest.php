@@ -7,28 +7,6 @@ use Illuminate\Foundation\Http\FormRequest;
 class EquipmentRequest extends FormRequest
 {
     /**
-     * @var string
-     */
-    protected $table;
-
-    /**
-     * PermissionRequest constructor.
-     * @param array $query
-     * @param array $request
-     * @param array $attributes
-     * @param array $cookies
-     * @param array $files
-     * @param array $server
-     * @param null $content
-     */
-    public function __construct(array $query = array(), array $request = array(), array $attributes = array(), array $cookies = array(), array $files = array(), array $server = array(), $content = null)
-    {
-        parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
-
-        $this->table = env("DB_PREFIX", "") . 'equipments';
-    }
-
-    /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
@@ -50,7 +28,8 @@ class EquipmentRequest extends FormRequest
             case 'PUT':
             case 'PATCH': {
                 return [
-                    'name'        => 'required|string|max:255',
+                    'name'       => 'required|string|max:255',
+                    'annotation' => 'max:255',
                 ];
             }
             default:
@@ -76,7 +55,8 @@ class EquipmentRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name'        => trans('site::equipment.name'),
+            'name'       => trans('site::equipment.name'),
+            'annotation' => trans('site::equipment.annotation'),
         ];
     }
 }

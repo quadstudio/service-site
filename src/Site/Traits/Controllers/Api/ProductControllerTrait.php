@@ -3,8 +3,10 @@
 namespace QuadStudio\Service\Site\Traits\Controllers\Api;
 
 use QuadStudio\Service\Site\Filters\Product\BoilerSearchFilter;
+use QuadStudio\Service\Site\Filters\Product\LimitFilter;
 use QuadStudio\Service\Site\Filters\Product\SearchFilter;
 use QuadStudio\Service\Site\Filters\Product\ProductSearchFilter;
+use QuadStudio\Service\Site\Filters\ProductCanBuyFilter;
 use QuadStudio\Service\Site\Http\Resources\ProductCollection;
 use QuadStudio\Service\Site\Models\Product;
 use QuadStudio\Service\Site\Repositories\ProductRepository;
@@ -49,6 +51,18 @@ trait ProductControllerTrait
     public function analog()
     {
         $this->products->applyFilter(new SearchFilter());
+        return new ProductCollection($this->products->all());
+    }
+
+    /**
+     * @return ProductCollection
+     */
+    public function fast()
+    {
+        $this->products->applyFilter(new ProductCanBuyFilter());
+        $this->products->applyFilter(new SearchFilter());
+        $this->products->applyFilter(new LimitFilter());
+
         return new ProductCollection($this->products->all());
     }
     /**

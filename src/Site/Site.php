@@ -2,8 +2,12 @@
 
 namespace QuadStudio\Service\Site;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use QuadStudio\Service\Site\Models\Catalog;
 use QuadStudio\Service\Site\Models\Currency;
+use QuadStudio\Service\Site\Models\Equipment;
+use QuadStudio\Service\Site\Models\FileType;
 
 class Site
 {
@@ -52,8 +56,10 @@ class Site
                 function () use ($router) {
                     $router->get('/', 'IndexController@index')->name('index');
                     $router->get('/services', 'ServiceController@index')->name('services');
+                    $router->get('/products/list', 'ProductController@list')->name('products.list');
                     $router->resource('/products', 'ProductController')->only(['index', 'show']);
                     $router->resource('/catalogs', 'CatalogController')->only(['index', 'show']);
+                    $router->get('/catalogs/{catalog}/list', 'CatalogController@list')->name('catalogs.list');
                     $router->resource('/equipments', 'EquipmentController')->only(['index', 'show']);
                     $router->get('/datasheets', 'DatasheetController@index')->name('datasheets');
 
@@ -66,7 +72,7 @@ class Site
                             $router->get('/home', 'HomeController@index')->name('home');
                             $router->post('/home/logo', 'HomeController@logo')->name('home.logo');
                             $router->resource('/acts', 'ActController')->middleware('permission:acts');
-                            $router->resource('/orders', 'OrderController')->only(['index', 'show', 'store'])->middleware('permission:orders');
+                            $router->resource('/orders', 'OrderController')->except(['edit', 'update', 'destroy'])->middleware('permission:orders');
                             $router->resource('/repairs', 'RepairController')->middleware('permission:repairs');
                             $router->resource('/engineers', 'EngineerController')->middleware('permission:engineers');
                             $router->resource('/trades', 'TradeController')->middleware('permission:trades');
@@ -101,18 +107,28 @@ class Site
                                 $router->name('admin')->get('/users/{user}/contragents', 'UserController@contragents')->name('.users.contragents');
                                 $router->name('admin')->get('/users/{user}/contacts', 'UserController@contacts')->name('.users.contacts');
                                 $router->name('admin')->get('/users/{user}/repairs', 'UserController@repairs')->name('.users.repairs');
-                                $router->name('admin')->get('/users/{user}/export', 'UserController@export')->name('.users.export');
+                                $router->name('admin')->get('/users/{user}/schedule', 'UserController@schedule')->name('.users.schedule');
                                 $router->name('admin')->resource('/banks', 'BankController');
                                 $router->name('admin')->resource('/orders', 'OrderController')->only(['index', 'show']);
+                                $router->name('admin')->get('/orders/{order}/schedule', 'OrderController@schedule')->name('.orders.schedule');
                                 $router->name('admin')->resource('/repairs', 'RepairController');
                                 $router->name('admin')->resource('/messages', 'MessageController');
                                 $router->name('admin')->post('/repairs/{repair}/status', 'RepairController@status')->name('.repairs.status');
                                 $router->name('admin')->resource('/serials', 'SerialController');
+                                $router->name('admin')->resource('/explodes', 'ExplodeController');
+                                $router->name('admin')->put('/catalogs/sort', function (Request $request) {
+                                    Catalog::sort($request);
+                                })->name('.catalogs.sort');
                                 $router->name('admin')->resource('/catalogs', 'CatalogController');
+
                                 $router->name('admin')->get('/tree', 'CatalogController@tree')->name('.catalogs.tree');
                                 $router->name('admin')->get('/catalogs/create/{catalog?}', 'CatalogController@create')->name('.catalogs.create.parent');
+                                $router->name('admin')->put('/equipments/sort', function (Request $request) {
+                                    Equipment::sort($request);
+                                })->name('.equipments.sort');
                                 $router->name('admin')->resource('/equipments', 'EquipmentController');
                                 $router->name('admin')->get('/equipments/create/{catalog?}', 'EquipmentController@create')->name('.equipments.create.parent');
+
                                 $router->name('admin')->resource('/images', 'ImageController');
                                 $router->name('admin')->resource('/products', 'ProductController');
                                 $router->name('admin')->post('/product-images/{product}/store', 'ProductImageController@store')->name('.products.images.store');
@@ -121,9 +137,14 @@ class Site
                                 $router->name('admin')->delete('/analogs/destroy/{product}/{analog}', 'AnalogController@destroy')->name('.analogs.destroy');
                                 $router->name('admin')->post('/relations/store/{product}', 'RelationController@store')->name('.relations.store');
                                 $router->name('admin')->delete('/relations/destroy/{product}/{relation}', 'RelationController@destroy')->name('.relations.destroy');
-                                $router->name('admin')->resource('/product-types', 'ProductTypeController');
+                                $router->name('admin')->resource('/product_types', 'ProductTypeController');
+                                $router->name('admin')->put('/file_types/sort', function (Request $request) {
+                                    FileType::sort($request);
+                                })->name('.file_types.sort');
+                                $router->name('admin')->resource('/file_types', 'FileTypeController');
+                                $router->name('admin')->resource('/file_groups', 'FileGroupController');
                                 $router->name('admin')->resource('/prices', 'PriceController');
-                                $router->name('admin')->resource('/price-types', 'PriceTypeController');
+                                $router->name('admin')->resource('/price_types', 'PriceTypeController')->except(['create', 'store', 'destroy']);
                                 $router->name('admin')->resource('/engineers', 'EngineerController');
                                 $router->name('admin')->resource('/trades', 'TradeController');
                                 $router->name('admin')->resource('/launches', 'LaunchController');
@@ -134,6 +155,10 @@ class Site
                                 $router->name('admin')->resource('/datasheets', 'DatasheetController');
                                 $router->name('admin')->resource('/contragents', 'ContragentController');
                                 $router->name('admin')->resource('/organizations', 'OrganizationController');
+                                $router->name('admin')->put('/difficulties/sort', 'DifficultyController@sort')->name('.difficulties.sort');
+                                $router->name('admin')->resource('/difficulties', 'DifficultyController');
+                                $router->name('admin')->put('/distances/sort', 'DistanceController@sort')->name('.distances.sort');
+                                $router->name('admin')->resource('/distances', 'DistanceController')->except(['show']);
 
                             });
                 });
@@ -149,6 +174,7 @@ class Site
                 $router->name('api')->get('/countries', 'CountryController@index')->name('.countries.index');
                 $router->name('api')->get('/services/{region?}', 'ServiceController@index')->name('.services.index');
                 $router->name('api')->resource('/users', 'UserController');
+                $router->name('api')->resource('/orders', 'OrderController');
                 $router->name('api')->resource('/serials', 'SerialController');
                 $router->name('api')->resource('/files', 'FileController')->only(['index', 'store', 'show', 'destroy'])->middleware('permission:files');
                 $router->name('api')->resource('/contragents', 'ContragentController');
@@ -157,6 +183,7 @@ class Site
                 $router->name('api')->get('/products/repair', 'ProductController@repair');
                 $router->name('api')->get('/products/analog', 'ProductController@analog');
                 $router->name('api')->get('/products/product', 'ProductController@product');
+                $router->name('api')->get('/products/fast', 'ProductController@fast');
                 $router->name('api')->get('/products/{product}', 'ProductController@show');
                 //
                 $router->name('api')->get('/boilers', 'BoilerController@index')->name('.boilers.search');

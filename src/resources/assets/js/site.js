@@ -331,8 +331,6 @@
             axios
                 .get("/api/boilers/" + boiler_id)
                 .then((response) => {
-                    $('[name="cost_work"]').val(response.data.data.equipment.cost_work);
-                    $('[name="cost_road"]').val(response.data.data.equipment.cost_road);
                     calc_parts();
                 })
                 .catch((error) => {
@@ -355,12 +353,12 @@
                 $(this).find('.parts_cost').val();
                 cost += (parseInt($(this).find('.parts_cost').val()) * $(this).find('.parts_count').val());
             });
-            if (allow_work.find('option:selected').val() === '1') {
-                cost += parseInt($('[name="cost_work"]').val())
-            }
-            if (allow_road.find('option:selected').val() === '1') {
-                cost += parseInt($('[name="cost_road"]').val())
-            }
+            // if (allow_work.find('option:selected').val() === '1') {
+            //     cost += parseInt($('[name="cost_work"]').val())
+            // }
+            // if (allow_road.find('option:selected').val() === '1') {
+            //     cost += parseInt($('[name="cost_road"]').val())
+            // }
             $('#total-cost').html(number_format(cost));
         };
 

@@ -16,7 +16,7 @@
 
         @alert()@endalert
 
-        <div  class="justify-content-start border p-3 mb-4">
+        <div  class="justify-content-start border p-3 mb-2">
             <a class="disabled btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0" href="{{ route('admin.currencies.create') }}"
                role="button">
                 <i class="fa fa-plus"></i>
@@ -28,25 +28,11 @@
                 <span>@lang('site::messages.refresh')</span>
             </a>
         </div>
-
-        <div class="card mb-4">
-            <div class="card-body">
-                <table class="table table-hover table-sm">
-                    <thead>
-                    <tr>
-                        <th scope="col"></th>
-                        <th scope="col">@lang('site::currency.name')</th>
-                        <th scope="col" class="d-none d-sm-table-cell">@lang('site::currency.title')</th>
-                        <th scope="col" class="text-right">@lang('site::currency.rates')</th>
-                        <th scope="col" class="d-none d-sm-table-cell text-center">@lang('site::currency.id')</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @each('site::admin.currency.index.row', $currencies, 'currency')
-                    </tbody>
-                </table>
-            </div>
+        @pagination(['pagination' => $currencies])@endpagination
+        {{$currencies->render()}}
+        <div class="row items-row-view">
+            @each('site::admin.currency.index.row', $currencies, 'currency')
         </div>
-
+        {{$currencies->render()}}
     </div>
 @endsection

@@ -26,8 +26,6 @@
                     @csrf
                     @method('PUT')
 
-                    <input type="hidden" name="contragent[inn]" value="{{$contragent->inn}}"/>
-                    <input type="hidden" name="contragent[type_id]" value="{{$contragent->type_id}}"/>
                     {{-- КОНТРАГЕНТ --}}
 
                     <h4 class=" mt-3" id="sc_info">@lang('site::contragent.header.contragent')</h4>
@@ -52,29 +50,30 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <fieldset disabled>
-                                <div class="form-row required">
-                                    <div class="col mb-3">
-                                        <label class="control-label"
-                                               for="contragent_type_id">@lang('site::contragent.type_id')</label>
-                                        @foreach($types as $type)
-                                            <div class="custom-control custom-radio">
-                                                <input type="radio"
-                                                       id="contragent_type_id_{{ $type->id }}"
-                                                       @if(old('contragent.type_id', $contragent->type_id) == $type->id) checked
-                                                       @endif
-                                                       value="{{ $type->id }}"
-                                                       class="custom-control-input">
-                                                <label class="custom-control-label"
-                                                       for="contragent_type_id_{{ $type->id }}">{{ $type->name }}</label>
-                                            </div>
-                                        @endforeach
-                                    </div>
+                            <div class="form-row required">
+                                <div class="col mb-3">
+                                    <label class="control-label"
+                                           for="contragent_type_id">@lang('site::contragent.type_id')</label>
+                                    @foreach($types as $type)
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio"
+                                                   name="contragent[type_id]"
+                                                   id="contragent_type_id_{{ $type->id }}"
+                                                   @if(old('contragent.type_id', $contragent->type_id) == $type->id) checked
+                                                   @endif
+                                                   value="{{ $type->id }}"
+                                                   class="custom-control-input {{$errors->has('contragent.type_id') ? ' is-invalid' : ''}}">
+                                            <label class="custom-control-label"
+                                                   for="contragent_type_id_{{ $type->id }}">{{ $type->name }}</label>
+                                        </div>
+                                    @endforeach
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('contragent.type_id') }}</strong>
+                                    </span>
                                 </div>
-                            </fieldset>
-
+                            </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-row required">
                                 <div class="col mb-3">
                                     <label class="control-label"
@@ -84,7 +83,7 @@
                                                id="contragent_nds_1"
                                                name="contragent[nds]"
                                                required
-                                               @if(old('contragent.nds') == 1) checked @endif
+                                               @if(old('contragent.nds', $contragent->nds) == 1) checked @endif
                                                value="1"
                                                class="custom-control-input {{$errors->has('contragent.nds') ? ' is-invalid' : ''}}">
                                         <label class="custom-control-label"
@@ -95,7 +94,7 @@
                                                id="contragent_nds_0"
                                                name="contragent[nds]"
                                                required
-                                               @if(old('contragent.nds') == 0) checked @endif
+                                               @if(old('contragent.nds', $contragent->nds) == 0) checked @endif
                                                value="0"
                                                class="custom-control-input {{$errors->has('contragent.nds') ? ' is-invalid' : ''}}">
                                         <label class="custom-control-label"
@@ -107,26 +106,64 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-3">
+                            <div class="form-row required">
+                                <div class="col mb-3">
+                                    <label class="control-label"
+                                           for="contragent_nds_act">@lang('site::contragent.nds_act')</label>
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio"
+                                               id="contragent_nds_act_1"
+                                               name="contragent[nds_act]"
+                                               required
+                                               @if(old('contragent.nds_act', $contragent->nds_act) == 1) checked @endif
+                                               value="1"
+                                               class="custom-control-input {{$errors->has('contragent.nds_act') ? ' is-invalid' : ''}}">
+                                        <label class="custom-control-label"
+                                               for="contragent_nds_act_1">@lang('site::messages.yes')</label>
+                                    </div>
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio"
+                                               id="contragent_nds_act_0"
+                                               name="contragent[nds_act]"
+                                               required
+                                               @if(old('contragent.nds_act', $contragent->nds_act) == 0) checked @endif
+                                               value="0"
+                                               class="custom-control-input {{$errors->has('contragent.nds_act') ? ' is-invalid' : ''}}">
+                                        <label class="custom-control-label"
+                                               for="contragent_nds_act_0">@lang('site::messages.no')</label>
+                                    </div>
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('contragent.nds_act') }}</strong>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6">
                             <h4 class="mb-4 mt-2" id="company_info">@lang('site::contragent.header.legal')</h4>
-                            <fieldset disabled>
-                                <div class="form-row required">
-                                    <div class="col mb-3">
-                                        <label class="control-label"
-                                               for="contragent_inn">@lang('site::contragent.inn')</label>
-                                        <input type="number"
-                                               id="contragent_inn"
-                                               maxlength="12"
-                                               pattern="\d{10}|\d{12}"
-                                               class="form-control"
-                                               placeholder="@lang('site::contragent.placeholder.inn')"
-                                               value="{{ old('contragent.inn', $contragent->inn) }}">
-                                    </div>
+                            <div class="form-row required">
+                                <div class="col mb-3">
+                                    <label class="control-label"
+                                           for="contragent_inn">@lang('site::contragent.inn')</label>
+                                    <input type="number"
+                                           name="contragent[inn]"
+                                           id="contragent_inn"
+                                           maxlength="12"
+                                           required
+                                           pattern="\d{10}|\d{12}"
+                                           class="form-control{{$errors->has('contragent.inn') ? ' is-invalid' : ''}}"
+                                           placeholder="@lang('site::contragent.placeholder.inn')"
+                                           value="{{ old('contragent.inn', $contragent->inn) }}">
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('contragent.inn') }}</strong>
+                                    </span>
                                 </div>
-                            </fieldset>
+
+                            </div>
+
 
                             <div class="form-row required">
                                 <div class="col mb-3">
@@ -265,17 +302,24 @@
 
                     <div class="form-group required">
                         <label class="control-label"
-                               for="contragent_organization_id">@lang('site::contragent.organization_id')</label>
+                               for="contragent_organization_id">
+                            @lang('site::account.organization_id')
+                        </label>
                         <select class="form-control{{  $errors->has('contragent.organization_id') ? ' is-invalid' : '' }}"
                                 required
                                 name="contragent[organization_id]"
                                 id="contragent_organization_id">
-                            @foreach($organizations as $organization)
-                                <option
-                                        @if(old('contragent.organization_id', $contragent->organization_id) == $organization->id) selected
-                                        @endif
-                                        value="{{ $organization->id }}">{{ $organization->name }}</option>
-                            @endforeach
+                            <option value="">@lang('site::messages.select_from_list')</option>
+                            @if($organizations->isNotEmpty())
+                                @foreach($organizations as $organization)
+                                    <option
+                                            @if(old('contragent.organization_id', $contragent->organization_id) == $organization->id) selected
+                                            @endif
+                                            value="{{ $organization->id }}">{{ $organization->name }}</option>
+                                @endforeach
+                            @else
+                                <option disabled value=""></option>
+                            @endif
                         </select>
                         <span class="invalid-feedback">{{ $errors->first('contragent.organization_id') }}</span>
 
@@ -306,7 +350,7 @@
                         <i class="fa fa-check"></i>
                         <span>@lang('site::messages.save')</span>
                     </button>
-                    <a href="{{ route('contragents.show', $contragent) }}" class="btn btn-secondary mb-1">
+                    <a href="{{ route('admin.contragents.show', $contragent) }}" class="btn btn-secondary mb-1">
                         <i class="fa fa-close"></i>
                         <span>@lang('site::messages.cancel')</span>
                     </a>

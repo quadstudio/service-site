@@ -17,7 +17,7 @@ class Product extends Model
     protected $table;
     protected $prefix;
     protected $fillable = [
-        'enabled', 'active', 'warranty', 'service', 'description'
+        'enabled', 'active', 'warranty', 'service', 'description', 'equipment_id'
     ];
 
     /**
@@ -52,15 +52,16 @@ class Product extends Model
 
     public function name()
     {
-        $name = [
-            $this->name,
-            //$this->brand->name
-        ];
+        $name = [];
         if (mb_strlen($this->sku, 'UTF-8') > 0) {
-            $name[] = "({$this->sku})";
+            $name[] = "{$this->sku}";
+        }
+        if (mb_strlen($this->name, 'UTF-8') > 0) {
+            $name[] = $this->name;
         }
 
-        return implode(' ', $name);
+
+        return !empty($name) ? implode(' &bull; ', $name) : $this->id;
     }
 
     /**
@@ -78,7 +79,7 @@ class Product extends Model
         return [
             'product_id'   => $this->id,
             'name'         => $this->name,
-            'price'        => $this->price()->price(),
+            'price'        => $this->hasPrice ? $this->price()->price() : null,
             'currency_id'  => Site::currency()->id,
             'image'        => $this->image()->src(),
             'brand_id'     => $this->brand_id,
@@ -115,16 +116,6 @@ class Product extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany|Price
-     */
-//    public function price()
-//    {
-//        $type_id = Auth::guest() ? config('shop.default_price_type') : Auth::user()->profile->price_type_id;
-//        $price = $this->prices()->where('type_id', '=', $type_id)->first();
-//        return is_null($price) ? new Price() : $price;
-//    }
-
-    /**
      * @return Model
      */
     public function image()
@@ -152,11 +143,54 @@ class Product extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|Price
+     */
+//    public function price()
+//    {
+//        $type_id = Auth::guest() ? config('shop.default_price_type') : Auth::user()->profile->price_type_id;
+//        $price = $this->prices()->where('type_id', '=', $type_id)->first();
+//        return is_null($price) ? new Price() : $price;
+//    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\morphMany
      */
     public function _images()
     {
         return $this->morphMany(Image::class, 'imageable');
+    }
+
+    public function getPriceTypeAttribute()
+    {
+        return Auth::guest() ? config('site.defaults.guest.price_type_id') : Auth::user()->price_type_id;
+    }
+
+    public function getPriceAttribute()
+    {
+        return $this
+            ->getPrice()
+            ->firstOrNew([]);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    private function getPrice()
+    {
+        return $this
+            ->prices()
+            ->where('type_id', '=', $this->priceType)
+            ->where('price', '<>', 0.00);
+    }
+
+    public function getHasPriceAttribute()
+    {
+        return $this->getPrice()->exists();
+    }
+
+    public function getCanBuyAttribute()
+    {
+        return $this->hasPrice && $this->getAttribute('active') == 1;
     }
 
     public function created_at($time = false)

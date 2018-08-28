@@ -39,7 +39,15 @@ class ContragentRequest extends FormRequest
                         'required',
                         'numeric',
                         'unique:' . $prefix . 'contragents,inn',
-                        'regex:/\d{10}|\d{12}/'
+                        'regex:/\d{10}|\d{12}/',
+                        function ($attribute, $value, $fail) {
+                            if ($this->input('contragent.type_id') == 1 && strlen($value) != 10) {
+                                return $fail(trans('site::contragent.inn') . ': ' . trans('site::contragent.placeholder.inn'));
+                            }
+                            if ($this->input('contragent.type_id') == 2 && strlen($value) != 12) {
+                                return $fail(trans('site::contragent.inn') . ': ' . trans('site::contragent.placeholder.inn'));
+                            }
+                        }
                     ),
                     'contragent.ogrn'           => array(
                         'required',
@@ -95,7 +103,15 @@ class ContragentRequest extends FormRequest
                         'unique:' . env('DB_PREFIX', '') . 'contragents,inn,' . $this->route()->parameter('contragent')->id,
                         'required',
                         'numeric',
-                        'regex:/\d{10}|\d{12}/'
+                        'regex:/\d{10}|\d{12}/',
+                        function ($attribute, $value, $fail) {
+                            if ($this->input('contragent.type_id') == 1 && strlen($value) != 10) {
+                                return $fail(trans('site::contragent.inn') . ': ' . trans('site::contragent.placeholder.inn'));
+                            }
+                            if ($this->input('contragent.type_id') == 2 && strlen($value) != 12) {
+                                return $fail(trans('site::contragent.inn') . ': ' . trans('site::contragent.placeholder.inn'));
+                            }
+                        }
                     ),
                     'contragent.ogrn'    => array(
                         'required',
@@ -119,6 +135,7 @@ class ContragentRequest extends FormRequest
                     ),
                     'contragent.bank'    => 'required|string|max:255',
                     'contragent.nds'     => 'required|boolean',
+                    'contragent.nds_act' => 'required|boolean',
                 ];
             }
             default:
@@ -160,6 +177,7 @@ class ContragentRequest extends FormRequest
             'contragent.bik'     => trans('site::contragent.bik'),
             'contragent.bank'    => trans('site::contragent.bank'),
             'contragent.nds'     => trans('site::contragent.nds'),
+            'contragent.nds_act' => trans('site::contragent.nds'),
         ];
     }
 }

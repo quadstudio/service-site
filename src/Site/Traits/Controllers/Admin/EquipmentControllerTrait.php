@@ -2,8 +2,10 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 
+use Illuminate\Http\Request;
 use QuadStudio\Service\Site\Http\Requests\EquipmentRequest;
 use QuadStudio\Service\Site\Models;
+use QuadStudio\Service\Site\Models\Equipment;
 use QuadStudio\Service\Site\Repositories;
 
 trait EquipmentControllerTrait
@@ -165,7 +167,9 @@ trait EquipmentControllerTrait
 
         $currencies = $this->currencies->all();
         $tree = $this->catalogs->tree();
-        return view('site::admin.equipment.edit', compact('images', 'currencies', 'tree','equipment'));
+        //dump($tree);
+
+        return view('site::admin.equipment.edit', compact('images', 'currencies', 'tree', 'equipment'));
     }
 
     /**
@@ -192,5 +196,34 @@ trait EquipmentControllerTrait
         return $redirect;
     }
 
+    /**
+     * @param Request $request
+     */
+    public function sort(Request $request)
+    {
+        Equipment::sort($request);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  Equipment $equipment
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Equipment $equipment)
+    {
+
+        $this->authorize('delete', $equipment);
+
+        if ($this->equipments->delete($equipment->id) > 0) {
+            $redirect = route('admin.equipments.index');
+        } else {
+            $redirect = route('admin.equipments.show', $equipment);
+        }
+        $json['redirect'] = $redirect;
+
+        return response()->json($json);
+
+    }
 
 }

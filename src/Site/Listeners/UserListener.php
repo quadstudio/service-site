@@ -25,12 +25,16 @@ class UserListener
      */
     public function onUserAuthorized(UserExport $event)
     {
-        Schedule::create([
+        $event->user->schedules()->create([
             'action_id' => 1,
             'url' => preg_split("/:\/\//", route('api.users.show', $event->user))[1]
         ]);
+        //Schedule::create();
     }
 
+    /**
+     * @param Dispatcher $events
+     */
     public function subscribe(Dispatcher $events)
     {
 

@@ -21,8 +21,11 @@ class TypeFilter extends WhereFilter
     public function options():array
     {
         $options = ProductType::whereHas('products', function ($query) {
-            $query->where('products.enabled', 1)->where('active', 1)->whereNull('equipment_id');
-        })->pluck('name', 'id');
+            $query->where('products.enabled', 1)
+                ->where('active', 1)
+                ->whereNull('equipment_id')
+            ;
+        })->orderBy('name')->pluck('name', 'id');
         $options->prepend(trans('site::product.type_defaults'), '');
         return $options->toArray();
     }

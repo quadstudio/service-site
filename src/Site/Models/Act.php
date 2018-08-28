@@ -11,17 +11,7 @@ class Act extends Model
      */
     protected $table;
 
-    protected $fillable = [
-        'period_id', 'number', 'client_name', 'client_address',
-        'client_inn', 'client_kpp', 'client_okpo',
-        'client_rs', 'client_ks', 'client_bik',
-        'client_bank',
-        'contract_number', 'contract_date', 'nds',
-        'nds_enabled', 'opened', 'our_name',
-        'our_address','our_inn','our_kpp',
-        'our_rs','our_ks','our_bik',
-        'our_bank',
-    ];
+    protected $fillable = ['number'];
 
     /**
      * @param array $attributes
@@ -29,7 +19,77 @@ class Act extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = env('DB_PREFIX', ''). 'acts';
+        $this->table = env('DB_PREFIX', '') . 'acts';
+    }
+
+    /**
+     * Реквизиты
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function details()
+    {
+        return $this->hasMany(ActDetail::class);
+    }
+
+    /**
+     * Сервисный центр
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Отчеты по ремонту
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function repairs()
+    {
+        return $this->hasMany(Repair::class);
+    }
+
+    /**
+     * Стоимость работ
+     *
+     * @return float
+     */
+    public function getDifficultyCostAttribute()
+    {
+        return $this->repairs->sum('total_difficulty_cost');
+    }
+
+    /**
+     * Стоимость дороги
+     *
+     * @return float
+     */
+    public function getDistanceCostAttribute()
+    {
+        return $this->repairs->sum('total_distance_cost');
+    }
+
+    /**
+     * Стоимость запчастей
+     *
+     * @return float
+     */
+    public function getCostPartsAttribute()
+    {
+        return $this->repairs->sum('total_cost_parts');
+    }
+
+    /**
+     * Стоимость запчастей
+     *
+     * @return float
+     */
+    public function getTotalAttribute()
+    {
+        return $this->getAttribute('difficulty_cost') + $this->getAttribute('distance_cost') + $this->getAttribute('cost_parts');
     }
 
     /**
@@ -38,9 +98,9 @@ class Act extends Model
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeOpened($query)
-    {
-        return $query->where('opened', 1);
-    }
+//    public function scopeOpened($query)
+//    {
+//        return $query->where('opened', 1);
+//    }
 
 }

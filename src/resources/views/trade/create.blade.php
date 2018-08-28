@@ -23,11 +23,11 @@
                         @include('site::trade.form')
                         <div class="form-row">
                             <div class="col text-right">
-                                <button name="_create" form="form-content" value="1" type="submit" class="btn btn-primary mb-1">
+                                <button name="_create" form="form-content" value="1" type="submit" class="btn btn-ferroli mb-1">
                                     <i class="fa fa-check"></i>
                                     <span>@lang('site::messages.save_add')</span>
                                 </button>
-                                <button name="_create" form="form-content" value="0" type="submit" class="btn btn-primary mb-1">
+                                <button name="_create" form="form-content" value="0" type="submit" class="btn btn-ferroli mb-1">
                                     <i class="fa fa-check"></i>
                                     <span>@lang('site::messages.save')</span>
                                 </button>

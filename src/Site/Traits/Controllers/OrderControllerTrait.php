@@ -62,7 +62,13 @@ trait OrderControllerTrait
         Cart::clear();
 
         return redirect()->route('orders.show', $order)->with('success', trans('site::order.created'));
+    }
 
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function create(){
+        return view('site::order.create');
     }
 
     /**

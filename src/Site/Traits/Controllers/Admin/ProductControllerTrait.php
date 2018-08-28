@@ -2,28 +2,34 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 
-use Illuminate\Http\File;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use QuadStudio\Service\Site\Filters\Product\TypeAdminFilter;
 use QuadStudio\Service\Site\Http\Requests\Admin\ProductRequest;
-use QuadStudio\Service\Site\Http\Requests\ImageRequest;
-use QuadStudio\Service\Site\Jobs\ProcessImage;
-use QuadStudio\Service\Site\Models\Image;
 use QuadStudio\Service\Site\Models\Product;
-use QuadStudio\Service\Site\Repositories\ProductRepository as Repository;
+use QuadStudio\Service\Site\Repositories\EquipmentRepository;
+use QuadStudio\Service\Site\Repositories\ProductRepository;
 
 trait ProductControllerTrait
 {
-
+    /**
+     * @var ProductRepository
+     */
     protected $products;
+    /**
+     * @var EquipmentRepository
+     */
+    private $equipments;
 
     /**
      * Create a new controller instance.
      *
-     * @param Repository $products
+     * @param ProductRepository $products
+     * @param EquipmentRepository $equipments
      */
-    public function __construct(Repository $products)
+    public function __construct(ProductRepository $products, EquipmentRepository $equipments)
     {
         $this->products = $products;
+        $this->equipments = $equipments;
     }
 
     /**
@@ -35,6 +41,7 @@ trait ProductControllerTrait
     {
 
         $this->products->trackFilter();
+        $this->products->pushTrackFilter(TypeAdminFilter::class);
 
         return view('site::admin.product.index', [
             'repository' => $this->products,
@@ -55,7 +62,9 @@ trait ProductControllerTrait
 
     public function edit(Product $product)
     {
-        return view('site::admin.product.edit', compact('product'));
+        $equipments = $this->equipments->all();
+
+        return view('site::admin.product.edit', compact('product', 'equipments'));
     }
 
     /**
@@ -68,8 +77,7 @@ trait ProductControllerTrait
     public function update(ProductRequest $request, Product $product)
     {
         $this->authorize('update', $product);
-
-        $this->products->update($request->only(['enabled', 'active', 'warranty', 'service', 'description']), $product->id);
+        $this->products->update($request->except(['_method', '_token', '_stay']), $product->id);
 
         if ($request->input('_stay') == 1) {
             $redirect = redirect()->route('admin.products.edit', $product)->with('success', trans('site::product.updated'));

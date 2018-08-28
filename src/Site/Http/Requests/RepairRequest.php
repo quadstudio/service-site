@@ -4,6 +4,7 @@ namespace QuadStudio\Service\Site\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use QuadStudio\Service\Site\Models\FileType;
 
 class RepairRequest extends FormRequest
 {
@@ -26,13 +27,14 @@ class RepairRequest extends FormRequest
     public function rules()
     {
         $prefix = env('DB_PREFIX', '');
+        $types = FileType::enabled()->required()->get();
         switch ($this->method()) {
             case 'GET':
             case 'DELETE': {
                 return [];
             }
             case 'POST': {
-                return [
+                $rules = [
                     'contragent_id' => [
                         'required',
                         'exists:' . $prefix . 'contragents,id',
@@ -73,13 +75,15 @@ class RepairRequest extends FormRequest
                     'diagnostics'   => 'required|string',
                     'works'         => 'required|string',
                     'date_repair'   => 'required|date_format:"Y-m-d"',
-                    'allow_work'    => 'required|boolean',
-                    'allow_road'    => 'required|boolean',
-                    'allow_parts'   => 'required|boolean',
-                    'file.1'        => 'required|array',
-                    'file.2'        => 'required|array',
+                    'distance_id'   => 'required|exists:' . $prefix . 'distances,id',
+                    'difficulty_id' => 'required|exists:' . $prefix . 'difficulties,id',
 
                 ];
+                foreach ($types as $type) {
+                    $rules['file.' . $type->id] = 'required|array';
+                }
+
+                return $rules;
             }
             case 'PUT':
             case 'PATCH': {
@@ -142,20 +146,16 @@ class RepairRequest extends FormRequest
                 if ($fails->contains('field', 'date_repair')) {
                     $rules->put('date_repair', 'required|date_format:"Y-m-d"');
                 }
-                if ($fails->contains('field', 'allow_work')) {
-                    $rules->put('allow_work', 'required|boolean');
+                if ($fails->contains('field', 'distance_id')) {
+                    $rules->put('distance_id', 'required|exists:' . $prefix . 'distances,id');
                 }
-                if ($fails->contains('field', 'allow_road')) {
-                    $rules->put('allow_road', 'required|boolean');
+                if ($fails->contains('field', 'difficulty_id')) {
+                    $rules->put('difficulty_id', 'required|exists:' . $prefix . 'difficulties,id');
                 }
-                if ($fails->contains('field', 'allow_parts')) {
-                    $rules->put('allow_parts', 'required|boolean');
-                }
-                if ($fails->contains('field', 'file_1')) {
-                    $rules->put('file.1', 'required|array');
-                }
-                if ($fails->contains('field', 'file_2')) {
-                    $rules->put('file.2', 'required|array');
+                foreach ($types as $type) {
+                    if ($fails->contains('field', 'file_' . $type->id)) {
+                        $rules->put('file.' . $type->id, 'required|array');
+                    }
                 }
 
                 return $rules->toArray();
@@ -199,9 +199,8 @@ class RepairRequest extends FormRequest
             'diagnostics'     => trans('site::repair.diagnostics'),
             'works'           => trans('site::repair.works'),
             'date_repair'     => trans('site::repair.date_repair'),
-            'allow_work'      => trans('site::repair.allow_work'),
-            'allow_road'      => trans('site::repair.allow_road'),
-            'allow_parts'     => trans('site::repair.allow_parts'),
+            'distance_id'     => trans('site::repair.distance_id'),
+            'difficulty_id'   => trans('site::repair.difficulty_id'),
             'file.1'          => trans('site::repair.file_1'),
             'file.2'          => trans('site::repair.file_2'),
             'file.3'          => trans('site::repair.file_3'),

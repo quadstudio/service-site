@@ -3,6 +3,7 @@
 namespace QuadStudio\Service\Site\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use QuadStudio\Service\Site\Facades\Site;
 
 class ProductResource extends JsonResource
 {
@@ -20,6 +21,8 @@ class ProductResource extends JsonResource
             'name' => $this->name,
             'type' => $this->type->name,
             'unit' => $this->unit,
+            'price' => $this->price()->price(),
+            'format' => Site::format($this->price()->price()),
             'image' => $this->image()->src(),
         ];
     }

@@ -38,7 +38,7 @@ class Image extends Model
     }
 
     public function src(){
-        return $this->exists ? Storage::disk($this->storage)->url($this->path) : config('site.defaults.image');
+        return $this->exists ? Storage::disk($this->storage)->url($this->path) : Storage::disk('products')->url('noimage.png');
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace QuadStudio\Service\Site\Repositories;
 
 use QuadStudio\Repo\Eloquent\Repository;
+use QuadStudio\Service\Site\Filters\ProductType\SortFilter;
 use QuadStudio\Service\Site\Models\ProductType;
 
 class ProductTypeRepository extends Repository
@@ -23,6 +24,7 @@ class ProductTypeRepository extends Repository
     public function track():array
     {
         return [
+            SortFilter::class
         ];
     }
 }

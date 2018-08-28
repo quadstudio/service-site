@@ -12,6 +12,8 @@ class ProductType extends Model
      */
     protected $table;
 
+    protected $fillable = ['name', 'description'];
+
     /**
      * @param array $attributes
      */

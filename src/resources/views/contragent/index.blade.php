@@ -9,10 +9,10 @@
             <li class="breadcrumb-item">
                 <a href="{{ route('home') }}">@lang('site::messages.home')</a>
             </li>
-            <li class="breadcrumb-item active">@lang('site::contragent.contragents')</li>
+            <li class="breadcrumb-item active">@lang('site::contragent.contragents_user')</li>
         </ol>
         <h1 class="header-title mb-4"><i
-                    class="fa fa-@lang('site::contragent.icon')"></i> @lang('site::contragent.contragents')</h1>
+                    class="fa fa-@lang('site::contragent.icon')"></i> @lang('site::contragent.contragents_user')</h1>
 
         @alert()@endalert
         <div class="justify-content-start border p-3 mb-2">
@@ -20,7 +20,7 @@
                href="{{ route('contragents.create') }}"
                role="button">
                 <i class="fa fa-plus"></i>
-                <span>@lang('site::messages.add') @lang('site::contragent.contragent')</span>
+                <span>@lang('site::messages.add') @lang('site::contragent.contragent_user')</span>
             </a>
             <a href="{{ route('home') }}" class="d-block d-sm-inline btn btn-secondary">
                 <i class="fa fa-reply"></i>

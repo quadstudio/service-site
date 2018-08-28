@@ -6,9 +6,11 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use QuadStudio\Service\Site\Contracts\Messagable;
+use QuadStudio\Service\Site\Traits\Models\ScheduleTrait;
 
 class Order extends Model implements Messagable
 {
+    use ScheduleTrait;
 
     /**
      * @var string
@@ -48,6 +50,8 @@ class Order extends Model implements Messagable
     {
         return $this->items->sum('quantity');
     }
+
+
 
     /**
      * Order items

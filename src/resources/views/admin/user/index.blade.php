@@ -16,7 +16,7 @@
 
         @alert()@endalert
 
-        <div class=" border p-3 mb-4">
+        <div class=" border p-3 mb-2">
             <a href="{{ route('admin') }}" class="d-block d-sm-inline btn btn-secondary">
                 <i class="fa fa-reply"></i>
                 <span>@lang('site::messages.back_admin')</span>
@@ -25,7 +25,7 @@
 
         {{$users->render()}}
         @filter(['repository' => $repository])@endfilter
-        <div class="row items-row-view">
+        <div class="row items-row-view mt-2 mb-4">
             @each('site::admin.user.index.row', $users, 'user')
         </div>
         {{$users->render()}}

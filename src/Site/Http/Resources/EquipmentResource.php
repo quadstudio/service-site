@@ -20,12 +20,6 @@ class EquipmentResource extends JsonResource
             'name'      => $this->name,
             'route' => route('equipments.show', $this),
             'image'     => $this->image()->src(),
-            'cost_work' => $this->cost_work,
-            'cost_road' => $this->cost_road,
-            'format' => [
-                'cost_work' => Site::format($this->cost_work),
-                'cost_road' => Site::format($this->cost_road),
-            ],
             'catalog'   => !is_null($this->catalog_id) ? new CatalogResource($this->catalog) : null,
         ];
     }

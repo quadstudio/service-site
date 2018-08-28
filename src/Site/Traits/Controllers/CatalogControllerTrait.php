@@ -39,7 +39,13 @@ trait CatalogControllerTrait
 
     public function show(Catalog $catalog)
     {
-        return view('site::catalog.show', ['catalog' => $catalog]);
+        return view('site::catalog.show', compact('catalog'));
+    }
+
+    public function list(Catalog $catalog)
+    {
+        $this->authorize('list', Catalog::class);
+        return view('site::catalog.list', compact('catalog'));
     }
 
 }

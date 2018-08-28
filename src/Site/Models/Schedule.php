@@ -24,4 +24,12 @@ class Schedule extends Model
         $this->table = env('DB_PREFIX', '') . 'schedules';
     }
 
+    /**
+     * Get all of the owning contactable models.
+     */
+    public function schedulable()
+    {
+        return $this->morphTo();
+    }
+
 }

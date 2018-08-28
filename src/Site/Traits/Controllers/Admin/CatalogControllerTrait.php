@@ -2,12 +2,12 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 
+use Illuminate\Http\Request;
 use QuadStudio\Service\Site\Filters\CatalogEnabledFilter;
 use QuadStudio\Service\Site\Http\Requests\CatalogRequest;
 use QuadStudio\Service\Site\Models\Catalog;
-use QuadStudio\Service\Site\Models\Image;
-use QuadStudio\Service\Site\Repositories\ImageRepository;
 use QuadStudio\Service\Site\Repositories\CatalogRepository;
+use QuadStudio\Service\Site\Repositories\ImageRepository;
 
 trait CatalogControllerTrait
 {
@@ -40,13 +40,15 @@ trait CatalogControllerTrait
 
         return view('site::admin.catalog.index', [
             'repository' => $this->catalogs,
-            'items'      => $this->catalogs->paginate(config('site.per_page.catalog', 10), [env('DB_PREFIX', '') . 'catalogs.*'])
+            'catalogs'   => $this->catalogs->paginate(config('site.per_page.catalog', 10), [env('DB_PREFIX', '') . 'catalogs.*'])
         ]);
     }
 
 
-    public function tree(){
+    public function tree()
+    {
         $tree = $this->catalogs->tree();
+
         return view('site::admin.catalog.tree', compact('tree'));
     }
 
@@ -62,6 +64,7 @@ trait CatalogControllerTrait
         $this->authorize('create', Catalog::class);
         $parent_catalog_id = !is_null($catalog) ? $catalog->id : null;
         $tree = $this->catalogs->tree();
+
         return view('site::admin.catalog.create', compact('parent_catalog_id', 'tree'));
     }
 
@@ -94,7 +97,6 @@ trait CatalogControllerTrait
     }
 
 
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -107,6 +109,7 @@ trait CatalogControllerTrait
         $this->authorize('update', $catalog);
         $tree = $this->catalogs->tree();
         $parent_catalog_id = null;
+
         return view('site::admin.catalog.edit', compact('tree', 'catalog', 'parent_catalog_id'));
     }
 
@@ -143,5 +146,35 @@ trait CatalogControllerTrait
     public function show(Catalog $catalog)
     {
         return view('site::admin.catalog.show', ['catalog' => $catalog]);
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function sort(Request $request)
+    {
+        Catalog::sort($request);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  Catalog $catalog
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Catalog $catalog)
+    {
+
+        $this->authorize('delete', $catalog);
+
+        if ($this->catalogs->delete($catalog->id) > 0) {
+            $redirect = route('admin.catalogs.index');
+        } else {
+            $redirect = route('admin.catalogs.show', $catalog);
+        }
+        $json['redirect'] = $redirect;
+
+        return response()->json($json);
+
     }
 }

@@ -12,9 +12,9 @@
             <li class="breadcrumb-item">
                 <a href="{{ route('orders.index') }}">@lang('site::order.breadcrumb_index')</a>
             </li>
-            <li class="breadcrumb-item active">@lang('site::order.breadcrumb_show', ['order' => $order->id(), 'date' => $order->created_at(true) ])</li>
+            <li class="breadcrumb-item active">@lang('site::order.breadcrumb_show', ['order' => $order->id, 'date' => $order->created_at(true) ])</li>
         </ol>
-        <h1 class="header-title mb-4">№ {{ $order->id() }}</h1>
+        <h1 class="header-title mb-4">№ {{ $order->id }}</h1>
         @alert()@endalert()
 
         <div class=" border p-3 mb-4">

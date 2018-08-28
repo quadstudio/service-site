@@ -30,7 +30,7 @@
                             <div class="form-group form-control{{ $errors->has('path') ? ' is-invalid' : '' }}">
                                 <input type="file" name="path"/>
                                 <input type="hidden" name="storage" value="products"/>
-                                <input type="button" class="btn btn-primary image-upload"
+                                <input type="button" class="btn btn-ferroli image-upload"
                                        value="@lang('site::messages.load')">
 
                             </div>

@@ -425,7 +425,7 @@
 
                     <div class="form-row required">
                         <div class="col mb-3">
-                            <label class="control-label" for="contragent_name">@lang('site::contragent.name')</label>
+                            <label class="control-label" for="contragent_name">@lang('site::contragent.help.name')</label>
                             <input type="text"
                                    required
                                    name="contragent[name]"
@@ -436,9 +436,6 @@
                             <span class="invalid-feedback">
                                 <strong>{{ $errors->first('contragent.name') }}</strong>
                             </span>
-                            <small id="contragent_nameHelp" class="form-text text-success">
-                                @lang('site::contragent.help.name')
-                            </small>
                         </div>
                     </div>
                     <div class="row">

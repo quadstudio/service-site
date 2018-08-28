@@ -11,6 +11,13 @@
 @endsection
 @section('content')
     <div class="container">
+        @can('equipment_list', Auth::user())
+            <div class=" border p-3 mb-2">
+                <a href="{{route('catalogs.list', $catalog)}}" class="d-block d-sm-inline btn btn-ferroli">
+                    <i class="fa fa-list-alt"></i> @lang('site::messages.show') @lang('site::catalog.view.list')
+                </a>
+            </div>
+        @endcan
         @include('site::catalog.show.children', ['catalog' => $catalog])
     </div>
 @endsection

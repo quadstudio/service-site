@@ -14,25 +14,21 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
-        //return parent::toArray($request);
-        //return array_merge(parent::toArray($request), ['files'  => $this->files]);
-        $this->load('contragents')->load('addresses')->load('contacts');
+        $this->load('addresses')->load('contacts');
+
         return [
-            'id'     => $this->id,
-            'guid' => $this->guid,
-            'name' => $this->name,
-            'type' => $this->type->name,
-            'email' => $this->email,
-            'address' => new AddressResource($this->address()),
-            'contragents' => ContragentResource::collection($this->whenLoaded('contragents')),
-            //'addresses' => AddressResource::collection($this->whenLoaded('addresses')),
-            'contacts' => ContactResource::collection($this->whenLoaded('contacts')),
-            //'files' => ContragentResource::collection($this->files),
+            'id'            => $this->id,
+            'guid'          => $this->guid,
+            'name'          => $this->name,
+//            'type'          => $this->type->name,
+            'email'         => $this->email,
+//            'currency_id'   => $this->currency_id,
+//            'warehouse_id'  => $this->warehouse_id,
+//            'price_type_id' => $this->price_type_id,
+            'address'       => new AddressResource($this->address()),
+            'contacts'      => ContactResource::collection($this->whenLoaded('contacts')),
+
         ];
-//        return [
-//            'id' => $this->id,
-//            'number' => $this->number,
-//            'files' => $this->files,
-//        ];
+
     }
 }

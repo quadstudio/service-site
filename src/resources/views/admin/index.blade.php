@@ -145,7 +145,7 @@
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Type your task">
                             <div class="input-group-append">
-                                <button type="button" class="btn btn-primary">Add</button>
+                                <button type="button" class="btn btn-ferroli">Add</button>
                             </div>
                         </div>
                     </div>

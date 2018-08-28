@@ -53,11 +53,11 @@
                                 {{--</div>--}}
 
                                 <div class="mt-3">
-                                    {{--<a href="javascript:void(0)" class="btn btn-primary btn-sm btn-round">Сменить--}}
+                                    {{--<a href="javascript:void(0)" class="btn btn-ferroli btn-sm btn-round">Сменить--}}
                                     {{--логотип</a>--}}
                                     <form action="{{route('home.logo')}}" method="post" enctype="multipart/form-data">
                                         <div class="form-group">
-                                            <label class="btn btn-primary btn-sm control-label" for="change-user-logo">Сменить
+                                            <label class="btn btn-ferroli btn-sm control-label" for="change-user-logo">Сменить
                                                 логотип</label>
                                             <input accept="image/jpeg" name="path" type="file"
                                                    class="d-none form-control-file" id="change-user-logo">
@@ -102,7 +102,7 @@
                     <a href="{{route('contragents.index')}}"
                        class="d-flex border border-right-0 col flex-column text-dark py-3">
                         <div class="font-weight-bold">{{$user->contragents()->count()}}</div>
-                        <div class="text-muted ">@lang('site::contragent.contragents')
+                        <div class="text-muted ">@lang('site::contragent.contragents_user')
                         </div>
                     </a>
                     @endpermission()

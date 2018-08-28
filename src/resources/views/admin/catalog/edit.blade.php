@@ -17,7 +17,6 @@
             <li class="breadcrumb-item active">@lang('site::messages.edit')</li>
         </ol>
         <h1 class="header-title mb-4">@lang('site::messages.edit') {{ $catalog->name }}</h1>
-        <hr/>
 
         @alert()@endalert
         <div class="card mt-2 mb-2">
@@ -33,7 +32,8 @@
                         <label class="custom-control-label" for="enabled">@lang('site::catalog.enabled')</label>
                         <span class="invalid-feedback">{{ $errors->first('enabled') }}</span>
                     </div>
-                    <fieldset @if(is_null($catalog->catalog_id)) disabled @endif>
+                    {{--@if(is_null($catalog->catalog_id)) disabled @endif--}}
+                    <fieldset >
                         <div class="form-group">
                             <label for="catalog_id">@lang('site::catalog.catalog_id')</label>
                             <select class="form-control{{  $errors->has('name') ? ' is-invalid' : '' }}"
@@ -75,21 +75,23 @@
                         </div>
                     </div>
                 </form>
-                <div class="form-row">
-                    <div class="col text-right">
-                        <button form="form-content" name="_stay" value="1" type="submit" class="btn btn-primary">
-                            <i class="fa fa-check"></i>
-                            <span>@lang('site::messages.save_stay')</span>
-                        </button>
-                        <button form="form-content" name="_stay" value="0" type="submit" class="btn btn-primary">
-                            <i class="fa fa-check"></i>
-                            <span>@lang('site::messages.save')</span>
-                        </button>
-                        <a href="{{ route('admin.catalogs.index') }}" class="btn btn-secondary">
-                            <i class="fa fa-close"></i>
-                            <span>@lang('site::messages.cancel')</span>
-                        </a>
-                    </div>
+                <hr/>
+                <div class=" mb-2 text-right">
+                    <button form="form-content" type="submit" name="_stay" value="1"
+                            class="btn btn-ferroli mb-1">
+                        <i class="fa fa-check"></i>
+                        <span>@lang('site::messages.save_stay')</span>
+                    </button>
+                    <button form="form-content" type="submit" name="_stay" value="0"
+                            class="btn btn-ferroli mb-1">
+                        <i class="fa fa-check"></i>
+                        <span>@lang('site::messages.save')</span>
+                    </button>
+                    <a href="{{ route('admin.catalogs.show', $catalog) }}" class="btn btn-secondary mb-1">
+                        <i class="fa fa-close"></i>
+                        <span>@lang('site::messages.cancel')</span>
+                    </a>
+
                 </div>
             </div>
         </div>

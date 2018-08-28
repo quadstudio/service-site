@@ -15,21 +15,24 @@ class ContragentResource extends JsonResource
     public function toArray($request)
     {
         $this->load('addresses');
+
         return [
-            'id' => $this->id,
-            'guid' => $this->guid,
-            'type' => $this->type->name,
-            'name' => $this->name,
-            'inn'  => $this->inn,
-            'ogrn' => $this->ogrn,
-            'okpo' => $this->okpo,
-            'kpp'  => $this->kpp,
-            'rs'   => $this->rs,
-            'ks'   => $this->ks,
-            'bik'  => $this->bik,
-            'bank' => $this->bank,
-            'nds' => $this->nds,
-            'addresses' => AddressResource::collection($this->whenLoaded('addresses')),
+            'id'              => $this->id,
+            'guid'            => $this->guid,
+            'type'            => $this->type->name,
+            'name'            => $this->name,
+            'inn'             => $this->inn,
+            'ogrn'            => $this->ogrn,
+            'okpo'            => $this->okpo,
+            'kpp'             => $this->kpp,
+            'rs'              => $this->rs,
+            'ks'              => $this->ks,
+            'bik'             => $this->bik,
+            'bank'            => $this->bank,
+            'nds'             => $this->nds,
+            'nds_act'         => $this->nds_act,
+            'organization_id' => $this->organization_id,
+            'addresses'       => AddressResource::collection($this->whenLoaded('addresses')),
         ];
     }
 }

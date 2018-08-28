@@ -137,11 +137,11 @@
                     <dt class="col-sm-4 text-left text-sm-right @if($fails->contains('field', 'allow_parts')) bg-danger text-white @endif">@lang('site::repair.allow_parts')</dt>
                     <dd class="col-sm-8"> @bool(['bool' => $repair->allow_parts == 1])@endbool</dd>
 
-                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::equipment.cost_work')</dt>
-                    <dd class="col-sm-8 text-right">{{ Site::format($repair->cost_work())}}</dd>
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::equipment.cost_difficulty')</dt>
+                    <dd class="col-sm-8 text-right">{{ Site::format($repair->cost_difficulty())}}</dd>
 
-                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::equipment.cost_road')</dt>
-                    <dd class="col-sm-8 text-right">{{ Site::format($repair->cost_road())}}</dd>
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::equipment.cost_distance')</dt>
+                    <dd class="col-sm-8 text-right">{{ Site::format($repair->cost_distance())}}</dd>
 
                     <dt class="col-sm-4  text-left text-sm-right">@lang('site::repair.cost_parts')</dt>
                     <dd class="col-sm-8 text-right">{{ Site::format($repair->cost_parts())}}</dd>
@@ -158,7 +158,7 @@
                         </dd>
                     @endif
                     <dt class="col-sm-4 text-right border-top">Итого к оплате</dt>
-                    <dd class="col-sm-8 text-right border-sm-top border-top-0">{{ Site::format($repair->cost_total())}}</dd>
+                    <dd class="col-sm-8 text-right border-sm-top border-top-0">{{ Site::format($repair->totalCost)}}</dd>
 
                 </dl>
             </div>

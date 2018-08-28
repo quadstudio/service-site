@@ -2,7 +2,7 @@
 return [
     'currency'     => 'валюту',
     'currencies'   => 'Валюты',
-    'icon'         => 'euro',
+    'icon'         => 'rub',
     //
     'created'     => 'Курсы валют успешно добавлен',
     'updated'     => 'Курсы валют успешно обновлены',

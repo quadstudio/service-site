@@ -20,8 +20,8 @@
             <a class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0"
                href="{{ route('repairs.create') }}"
                role="button">
-                <i class="fa fa-plus"></i>
-                <span>@lang('site::messages.add') @lang('site::repair.repair')</span>
+                <i class="fa fa-magic"></i>
+                <span>@lang('site::messages.create') @lang('site::repair.repair')</span>
             </a>
             <a href="{{ route('home') }}" class="d-block d-sm-inline btn btn-secondary">
                 <i class="fa fa-reply"></i>

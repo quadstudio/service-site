@@ -33,12 +33,12 @@ class CatalogRepository extends Repository
      */
     public function tree()
     {
-        if (config('site::cache.use', true) === true) {
-            $cacheKey = 'equipment_catalog_tree';
-            return cache()->remember($cacheKey, config('site::cache.ttl'), function () {
-                return $this->_tree();
-            });
-        }
+//        if (config('site::cache.use', true) === true) {
+//            $cacheKey = 'equipment_catalog_tree';
+//            return cache()->remember($cacheKey, config('site::cache.ttl'), function () {
+//                return $this->_tree();
+//            });
+//        }
 
         return $this->_tree();
 
@@ -51,10 +51,14 @@ class CatalogRepository extends Repository
     {
         $refs = array();
         $list = array();
-        $items = $this->orderBy(['sort_order' => 'ASC'])->all();
-        foreach ($items as $row) {
+        $items = Catalog::orderBy('catalog_id')->orderBy('sort_order')->get();
+
+        foreach ($items as $key => $row) {
+
             $r = $row->toArray();
+
             $ref = &$refs[$r['id']];
+
             $ref = $r;
             $ref['can'] = [
                 'addEquipment' => $row->canAddEquipment(),
@@ -68,6 +72,7 @@ class CatalogRepository extends Repository
                 $refs[$r['catalog_id']]['children'][$r['id']] = &$ref;
             }
         }
+        //dd($list);
 
         return $list;
     }

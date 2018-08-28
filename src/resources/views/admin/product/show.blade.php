@@ -99,34 +99,19 @@
                             <div class="text-muted">@lang('site::product.service')</div>
                             <div>@bool(['bool' => $product->service == 1])@endbool</div>
                         </li>
-                        {{--<li class="list-group-item d-flex justify-content-between align-items-center">--}}
-                        {{--<div class="text-muted">Priority</div>--}}
-                        {{--<div class="project-priority btn-group">--}}
-                        {{--<button type="button" class="btn btn-xs md-btn-flat dropdown-toggle btn-danger" data-toggle="dropdown">High</button>--}}
-                        {{--<div class="dropdown-menu dropdown-menu-right">--}}
-                        {{--<a class="dropdown-item active" href="javascript:void(0)">High</a>--}}
-                        {{--<a class="dropdown-item" href="javascript:void(0)">Medium</a>--}}
-                        {{--<a class="dropdown-item" href="javascript:void(0)">Low</a>--}}
-                        {{--</div>--}}
-                        {{--</div>--}}
-                        {{--</li>--}}
-                        {{--<li class="list-group-item">--}}
-                        {{--<div class="text-muted small">Tags</div>--}}
-                        {{--<div class="d-flex flex-wrap">--}}
-                        {{--<div class="badge badge-default mt-1 mr-1">Development</div>--}}
-                        {{--<div class="badge badge-default mt-1 mr-1">Frontend</div>--}}
-                        {{--<div class="badge badge-default mt-1 mr-1">Backend</div>--}}
-                        {{--<div class="badge badge-default mt-1 mr-1">Design</div>--}}
-                        {{--</div>--}}
-                        {{--</li>--}}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="text-muted">@lang('site::product.description')</div>
+                            <div>{!! $product->description !!}</div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="text-muted">@lang('site::product.equipment_id')</div>
+                            <div>
+                                @if($product->equipment)
+                                    <a href="{{route('admin.equipments.show', $product->equipment)}}">{{$product->equipment->name}}</a>
+                                @endif
+                            </div>
+                        </li>
                     </ul>
-                </div>
-
-                <div class="card mb-4">
-                    <h6 class="card-header">@lang('site::product.description')</h6>
-                    <div class="card-body">
-                        {!! $product->description !!}
-                    </div>
                 </div>
             </div>
             <div class="col">
@@ -179,7 +164,7 @@
                         </form>
                     </div>
                     <div class="card-body p-3">
-                        <div class="row no-gutters" data-target="{{route('admin.products.images.sort', $product)}}" id="images-list">
+                        <div class="row no-gutters" data-target="{{route('admin.products.images.sort', $product)}}" id="sort-list">
                             @foreach($product->images()->orderBy('sort_order')->get() as $image)
                                 @include('site::admin.product.show.image')
                             @endforeach

@@ -77,6 +77,7 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
         'api/ContragentController.stub'      => 'Api/ContragentController',
         'api/ProductController.stub'         => 'Api/ProductController',
         'api/BoilerController.stub'          => 'Api/BoilerController',
+        'api/OrderController.stub'           => 'Api/OrderController',
         //
         'admin/WarehouseController.stub'     => 'Admin/WarehouseController',
         'admin/OrganizationController.stub'  => 'Admin/OrganizationController',
@@ -104,6 +105,11 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
         'admin/RelationController.stub'      => 'Admin/RelationController',
         'admin/ProductImageController.stub'  => 'Admin/ProductImageController',
         'admin/MessageController.stub'       => 'Admin/MessageController',
+        'admin/DistanceController.stub'      => 'Admin/DistanceController',
+        'admin/DifficultyController.stub'    => 'Admin/DifficultyController',
+        'admin/FileTypeController.stub'      => 'Admin/FileTypeController',
+        'admin/FileGroupController.stub'     => 'Admin/FileGroupController',
+        'admin/ExplodeController.stub'       => 'Admin/ExplodeController',
     ];
 
     /**

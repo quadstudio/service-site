@@ -20,6 +20,22 @@ class ProductPolicy
         return $user->getAttribute('admin') == 1;
     }
 
+    public function buy(User $user, Product $product){
+        //dump($user->hasPermission('buy') && $product->canBuy);
+        return $user->hasPermission('buy') && $product->canBuy;
+    }
+
+    /**
+     * Determine whether the user can list products
+     *
+     * @param  User $user
+     * @return bool
+     */
+    public function list(User $user)
+    {
+        return $user->hasPermission('equipment.list');
+    }
+
     /**
      * Determine whether the user can create posts.
      *

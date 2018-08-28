@@ -58,18 +58,21 @@
                                 <div class="form-group">
                                     <label class="control-label" for="number">@lang('site::serial.product_id')</label>
                                     <div class="text-big">{{$repair->product->name}}</div>
+                                    <input type="hidden" value="{{$repair->product->id}}" id="product_id">
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label" for="number">@lang('site::product.sku')</label>
                                     <div class="text-big">{{$repair->product->sku}}</div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label" for="number">@lang('site::equipment.cost_work')</label>
-                                    <div class="text-big">{{Site::format($repair->cost_work())}}</div>
+                                    <label class="control-label"
+                                           for="number">@lang('site::equipment.cost_difficulty')</label>
+                                    <div class="text-big">{{Site::format($repair->cost_difficulty())}}</div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label" for="number">@lang('site::equipment.cost_road')</label>
-                                    <div class="text-big">{{Site::format($repair->cost_road())}}</div>
+                                    <label class="control-label"
+                                           for="number">@lang('site::equipment.cost_distance')</label>
+                                    <div class="text-big">{{Site::format($repair->cost_distance())}}</div>
                                 </div>
                             </div>
                         </div>
@@ -306,74 +309,54 @@
                                 </div>
                                 <div class="form-group required">
                                     <label class="control-label"
-                                           for="allow_work">@lang('site::repair.allow_work')</label>
-                                    @if($fails->contains('field', 'allow_work'))
+                                           for="difficulty_id">@lang('site::repair.difficulty_id')</label>
+                                    @if($fails->contains('field', 'difficulty_id'))
                                         <span class="bg-danger text-white d-block d-sm-inline-block py-1 px-3 mb-1 mb-sm-0">@lang('site::messages.with_error')</span>
-                                        <select class="form-control{{  $errors->has('allow_work') ? ' is-invalid' : '' }}"
+                                        <select class="form-control{{  $errors->has('difficulty_id') ? ' is-invalid' : '' }}"
                                                 required
-                                                name="allow_work"
-                                                id="allow_work">
+                                                name="difficulty_id"
+                                                id="difficulty_id">
                                             <option value="">@lang('site::messages.select_from_list')</option>
-
-                                            <option @if(old('allow_work', $repair->allow_work) == 0 ) selected @endif
-                                            value="0">@lang('site::messages.no')</option>
-                                            <option @if(old('allow_work', $repair->allow_work) == 1 ) selected @endif
-                                            value="1">@lang('site::messages.yes')</option>
+                                            @foreach($difficulties as $difficulty)
+                                                <option data-cost="{{$difficulty->cost}}"
+                                                        @if(old('difficulty_id', $repair->difficulty_id) == $difficulty->id) selected
+                                                        @endif
+                                                        value="{{ $difficulty->id }}">{{ $difficulty->name }}@if($difficulty->cost > 0)
+                                                        - {{ Site::format($difficulty->cost) }}@endif</option>
+                                            @endforeach
 
                                         </select>
-                                        <span class="invalid-feedback">{{ $errors->first('allow_work') }}</span>
+                                        <span class="invalid-feedback">{{ $errors->first('difficulty_id') }}</span>
                                     @else
-                                        <div class="text-success text-big">@bool(['bool' => $repair->allow_work == 1])@endbool</div>
+                                        <div class="text-success text-big">{{$repair->difficulty->name}}</div>
                                     @endif
                                 </div>
                                 {{-- ДОРОГА --}}
                                 <div class="form-group required">
                                     <label class="control-label"
-                                           for="allow_road">@lang('site::repair.allow_road')</label>
-                                    @if($fails->contains('field', 'allow_road'))
+                                           for="distance_id">@lang('site::repair.distance_id')</label>
+                                    @if($fails->contains('field', 'distance_id'))
                                         <span class="bg-danger text-white d-block d-sm-inline-block py-1 px-3 mb-1 mb-sm-0">@lang('site::messages.with_error')</span>
-                                        <select class="form-control{{  $errors->has('allow_road') ? ' is-invalid' : '' }}"
+                                        <select class="form-control{{  $errors->has('distance_id') ? ' is-invalid' : '' }}"
                                                 required
-                                                name="allow_road"
-                                                id="allow_road">
+                                                name="distance_id"
+                                                id="distance_id">
                                             <option value="">@lang('site::messages.select_from_list')</option>
-
-                                            <option @if(old('allow_road', $repair->allow_road) == 0 ) selected @endif
-                                            value="0">@lang('site::messages.no')</option>
-                                            <option @if(old('allow_road', $repair->allow_road) == 1 ) selected @endif
-                                            value="1">@lang('site::messages.yes')</option>
-
+                                            @foreach($distances as $distance)
+                                                <option data-cost="{{$distance->cost}}"
+                                                        @if(old('distance_id', $repair->distance_id) == $distance->id) selected
+                                                        @endif
+                                                        value="{{ $distance->id }}">{{ $distance->name }}@if($distance->cost > 0)
+                                                        - {{ Site::format($distance->cost) }}@endif</option>
+                                            @endforeach
                                         </select>
-                                        <span class="invalid-feedback">{{ $errors->first('allow_road') }}</span>
+                                        <span class="invalid-feedback">{{ $errors->first('distance_id') }}</span>
                                     @else
-                                        <div class="text-success text-big">@bool(['bool' => $repair->allow_road == 1])@endbool</div>
-                                    @endif
-                                </div>
-                                {{-- ЗАПЧАСТИ --}}
-                                <div class="form-group required">
-                                    <label class="control-label"
-                                           for="allow_parts">@lang('site::repair.allow_parts')</label>
-                                    @if($fails->contains('field', 'allow_parts'))
-                                        <span class="bg-danger text-white d-block d-sm-inline-block py-1 px-3 mb-1 mb-sm-0">@lang('site::messages.with_error')</span>
-                                        <select class="form-control{{  $errors->has('allow_parts') ? ' is-invalid' : '' }}"
-                                                required
-                                                name="allow_parts"
-                                                id="allow_parts">
-                                            <option @if(old('allow_parts', $repair->allow_parts) == 0 ) selected @endif
-                                            value="0">@lang('site::messages.no')</option>
-                                            <option @if(old('allow_parts', $repair->allow_parts) == 1 ) selected
-                                                    @endif
-                                                    value="1">@lang('site::messages.yes')</option>
-
-                                        </select>
-                                        <span class="invalid-feedback">{{ $errors->first('allow_parts') }}</span>
-                                    @else
-                                        <div class="text-success text-big">@bool(['bool' => $repair->allow_parts == 1])@endbool</div>
+                                        <div class="text-success text-big">{{$repair->distance->name}}</div>
                                     @endif
                                 </div>
                                 @if($fails->contains('field', 'parts'))
-                                    <fieldset id="parts-search-fieldset"
-                                              style="display: @if(old('allow_parts', $repair->allow_parts) == 1) block @else none @endif;">
+                                    <fieldset id="parts-search-fieldset">
                                         <div class="form-group">
                                             <label class="control-label"
                                                    for="parts_search">Найти замененную деталь</label>
@@ -393,6 +376,7 @@
                                             <div class="col my-3">
                                                 <label class="control-label"
                                                        for="">@lang('site::part.parts')</label>
+                                                <span class="bg-danger text-white d-block d-sm-inline-block py-1 px-3 mb-1 mb-sm-0">@lang('site::messages.with_error')</span>
                                                 <div class="card-group" id="parts">
                                                     @foreach($parts as $part)
 
@@ -464,73 +448,58 @@
                         <div class="card-body">
                             <h5 class="card-title">@lang('site::file.files')</h5>
                             @foreach($types as $type)
-                                @if(in_array($type->id, [1,2]))
-                                    @if($fails->contains('field', 'file_'.$type->id))
-
-                                        <div class="form-group @if(in_array($type->id, [1,2])) required @endif form-control{{ $errors->has('file.'.$type->id) ? ' is-invalid' : '' }}">
-                                            <div>
-                                                <label class="control-label"
-                                                       for="type_id">{{$type->name}}</label>
-                                                <span class="bg-danger text-white d-block d-sm-inline-block py-1 px-3 mb-1 mb-sm-0">@lang('site::messages.with_error')</span>
-                                            </div>
-                                            <form method="POST" enctype="multipart/form-data"
-                                                  action="{{route('files.store')}}">
-                                                @csrf
-                                                <input type="hidden" name="type_id" value="{{$type->id}}"/>
-                                                <input type="hidden" name="storage" value="repairs"/>
-                                                <input type="file" name="path"/>
-                                                <button class="btn btn-ferroli repair-file-upload"><i
-                                                            class="fa fa-download"></i> @lang('site::messages.load')
-                                                </button>
-
-                                                <small id="fileHelp-{{$type->id}}"
-                                                       class="form-text text-muted">{{$type->comment}}</small>
-                                            </form>
-                                            <ul class="list-group" class="file-list">
-                                                @if( !$files->isEmpty())
-                                                    @foreach($files as $file)
-                                                        @if($file->type_id == $type->id)
-                                                            @include('site::repair.field.file')
-                                                            {{--<li class="list-group-item">--}}
-                                                            {{--<a href="#"--}}
-                                                            {{--onclick="$(this).parent().remove();return false;"--}}
-                                                            {{--title="@lang('site::messages.delete')"--}}
-                                                            {{--class="d-inline-block text-danger mr-2"><i--}}
-                                                            {{--class="fa fa-close"></i></a>--}}
-                                                            {{--<a href="{{ route('files.show', $file) }}"--}}
-                                                            {{--class="">{{$file->name}}</a>--}}
-                                                            {{--<input form="repair-form" type="hidden"--}}
-                                                            {{--name="file[{{$file->type_id}}][]"--}}
-                                                            {{--value="{{$file->id}}">--}}
-                                                            {{--</li>--}}
-                                                        @endif
-                                                    @endforeach
-                                                @endif
-                                            </ul>
-                                        </div>
-                                        <span class="invalid-feedback">{{ $errors->first('file.'.$type->id) }}</span>
-                                    @else
-                                        <div class="form-group required form-control">
-                                            <label class="control-label d-block"
+                                @if($fails->contains('field', 'file_'.$type->id))
+                                    <div class="form-group @if($type->required == 1) required @endif form-control{{ $errors->has('file.'.$type->id) ? ' is-invalid' : '' }}">
+                                        <div>
+                                            <label class="control-label"
                                                    for="type_id">{{$type->name}}</label>
-                                            <ul class="list-group file-list">
-                                                @if( !$files->isEmpty())
-                                                    @foreach($files as $file)
-                                                        @if($file->type_id == $type->id)
-                                                            <li class="list-group-item">
-                                                                <a href="{{ route('files.show', $file) }}"
-                                                                   class="">{{$file->name}}</a>
-                                                                <input form="repair-form" type="hidden"
-                                                                       name="file[{{$file->type_id}}][]"
-                                                                       value="{{$file->id}}">
-                                                            </li>
-                                                        @endif
-                                                    @endforeach
-                                                @endif
-                                            </ul>
+                                            <span class="bg-danger text-white d-block d-sm-inline-block py-1 px-3 mb-1 mb-sm-0">@lang('site::messages.with_error')</span>
                                         </div>
+                                        <form method="POST" enctype="multipart/form-data"
+                                              action="{{route('files.store')}}">
+                                            @csrf
+                                            <input type="hidden" name="type_id" value="{{$type->id}}"/>
+                                            <input type="hidden" name="storage" value="repairs"/>
+                                            <input type="file" name="path"/>
+                                            <button class="btn btn-ferroli repair-file-upload"><i
+                                                        class="fa fa-download"></i> @lang('site::messages.load')
+                                            </button>
 
-                                    @endif
+                                            <small id="fileHelp-{{$type->id}}"
+                                                   class="form-text text-muted">{{$type->comment}}</small>
+                                        </form>
+                                        <ul class="list-group" class="file-list">
+                                            @if( !$files->isEmpty())
+                                                @foreach($files as $file)
+                                                    @if($file->type_id == $type->id)
+                                                        @include('site::repair.field.file')
+                                                        @endif
+                                                @endforeach
+                                            @endif
+                                        </ul>
+                                    </div>
+                                    <span class="invalid-feedback">{{ $errors->first('file.'.$type->id) }}</span>
+                                @else
+                                    <div class="form-group required form-control">
+                                        <label class="control-label d-block"
+                                               for="type_id">{{$type->name}}</label>
+                                        <ul class="list-group file-list">
+                                            @if( !$files->isEmpty())
+                                                @foreach($files as $file)
+                                                    @if($file->type_id == $type->id)
+                                                        <li class="list-group-item">
+                                                            <a href="{{ route('files.show', $file) }}"
+                                                               class="">{{$file->name}}</a>
+                                                            <input form="repair-form" type="hidden"
+                                                                   name="file[{{$file->type_id}}][]"
+                                                                   value="{{$file->id}}">
+                                                        </li>
+                                                    @endif
+                                                @endforeach
+                                            @endif
+                                        </ul>
+                                    </div>
+
                                 @endif
                             @endforeach
                         </div>

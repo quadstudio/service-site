@@ -2,7 +2,9 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 
-use QuadStudio\Service\Site\Http\Requests\ContragentRequest;
+use QuadStudio\Service\Site\Filters\Organization\HasAccountFilter;
+use QuadStudio\Service\Site\Filters\Organization\SortFilter;
+use QuadStudio\Service\Site\Http\Requests\Admin\ContragentRequest;
 use QuadStudio\Service\Site\Models\Contragent;
 use QuadStudio\Service\Site\Repositories\ContragentRepository;
 use QuadStudio\Service\Site\Repositories\ContragentTypeRepository;
@@ -78,6 +80,10 @@ trait ContragentControllerTrait
     public function edit(Contragent $contragent)
     {
         $types = $this->types->all();
+        $this->organizations->applyFilter(new SortFilter());
+        $this->organizations->applyFilter(new HasAccountFilter());
+        //dump($this->organizations->getBindings());
+        //dd($this->organizations->toSql());
         $organizations = $this->organizations->all();
 
         return view('site::admin.contragent.edit', compact('contragent', 'types', 'organizations'));

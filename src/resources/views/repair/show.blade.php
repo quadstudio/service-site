@@ -78,20 +78,17 @@
                     <dt class="@if($fails->contains('field', 'contragent_id')) bg-danger text-white @endif col-sm-4 text-left text-sm-right">@lang('site::repair.contragent_id')</dt>
                     <dd class="col-sm-8">{{ $repair->contragent->name }}</dd>
 
-                    <dt class="@if($fails->contains('field', 'allow_work')) bg-danger text-white @endif col-sm-4 text-left text-sm-right">@lang('site::repair.allow_work')</dt>
-                    <dd class="col-sm-8"> @bool(['bool' => $repair->allow_work == 1])@endbool</dd>
+                    <dt class="@if($fails->contains('field', 'distance_id')) bg-danger text-white @endif col-sm-4 text-left text-sm-right">@lang('site::repair.distance_id')</dt>
+                    <dd class="col-sm-8">{{ $repair->distance->name }}</dd>
 
-                    <dt class="@if($fails->contains('field', 'allow_road')) bg-danger text-white @endif col-sm-4 text-left text-sm-right">@lang('site::repair.allow_road')</dt>
-                    <dd class="col-sm-8"> @bool(['bool' => $repair->allow_road == 1])@endbool</dd>
+                    <dt class="@if($fails->contains('field', 'difficulty_id')) bg-danger text-white @endif col-sm-4 text-left text-sm-right">@lang('site::repair.difficulty_id')</dt>
+                    <dd class="col-sm-8">{{ $repair->difficulty->name }}</dd>
 
-                    <dt class="@if($fails->contains('field', 'allow_parts')) bg-danger text-white @endif col-sm-4 text-left text-sm-right">@lang('site::repair.allow_parts')</dt>
-                    <dd class="col-sm-8"> @bool(['bool' => $repair->allow_parts == 1])@endbool</dd>
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::repair.cost_distance')</dt>
+                    <dd class="col-sm-8 text-right">{{ Site::format($repair->cost_distance())}}</dd>
 
-                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::equipment.cost_work')</dt>
-                    <dd class="col-sm-8 text-right">{{ Site::format($repair->cost_work())}}</dd>
-
-                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::equipment.cost_road')</dt>
-                    <dd class="col-sm-8 text-right">{{ Site::format($repair->cost_road())}}</dd>
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::repair.cost_difficulty')</dt>
+                    <dd class="col-sm-8 text-right">{{ Site::format($repair->cost_difficulty())}}</dd>
 
                     <dt class="col-sm-4  text-left text-sm-right">@lang('site::repair.cost_parts')</dt>
                     <dd class="col-sm-8 text-right">{{ Site::format($repair->cost_parts())}}</dd>
@@ -107,8 +104,8 @@
                         @endforeach
                     </dd>
 
-                    <dt class="col-sm-4 text-right border-top">Итого к оплате</dt>
-                    <dd class="col-sm-8 text-right border-sm-top border-top-0">{{ Site::format($repair->cost_total())}}</dd>
+                    <dt class="col-sm-4 text-right border-top">@lang('site::repair.help.total')</dt>
+                    <dd class="col-sm-8 text-right border-sm-top border-top-0">{{ Site::format($repair->totalCost)}}</dd>
 
                 </dl>
             </div>

@@ -131,16 +131,13 @@ trait UserControllerTrait
      * @param User $user
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function export(User $user)
+    public function schedule(User $user)
     {
-        if ($user->can_export()) {
-            event(new UserExport($user));
-            $redirect = redirect()->route('admin.users.show', $user)->with('success', trans('site::user.success.export'));
-        } else {
-            $redirect = redirect()->route('admin.users.show', $user)->with('error', trans('site::user.error.export'));
-        }
+        $this->authorize('schedule', $user);
+        event(new UserExport($user));
 
-        return $redirect;
+        return redirect()->route('admin.users.show', $user)->with('success', trans('site::schedule.created'));
+
     }
 
     /**

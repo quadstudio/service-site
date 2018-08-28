@@ -41,6 +41,21 @@ class Contragent extends Model
     }
 
     /**
+     * Расписание экспортов контрагента в 1С
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function schedules()
+    {
+        return $this->morphMany(Schedule::class, 'schedulable');
+    }
+
+    public function hasOrganization()
+    {
+        return !is_null($this->getAttribute('organization_id'));
+    }
+
+    /**
      * Тип контрагента
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -48,16 +63,6 @@ class Contragent extends Model
     public function type()
     {
         return $this->belongsTo(ContragentType::class);
-    }
-
-    /**
-     * Адреса
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function addresses()
-    {
-        return $this->morphMany(Address::class, 'addressable');
     }
 
     /**
@@ -80,8 +85,8 @@ class Contragent extends Model
             && in_array(strlen($this->getAttribute('bik')), [9, 11])
             && mb_strlen($this->getAttribute('bank'), 'UTF-8') > 0
             && in_array(strlen($this->getAttribute('ks')), [0, 20])
-            && !is_null($this->getAttribute('organization_id'))
-            && mb_strlen($this->getAttribute('contract'), 'UTF-8') > 0;
+            && !is_null($this->getAttribute('organization_id'))//&& mb_strlen($this->getAttribute('contract'), 'UTF-8') > 0
+            ;
     }
 
     /**
@@ -92,6 +97,44 @@ class Contragent extends Model
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    /**
+     * Заказы
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function repairs()
+    {
+        return $this->hasMany(Repair::class);
+    }
+
+    public function toArray()
+    {
+        return [
+            'our'      => 0,
+            'name'     => $this->getAttribute('name'),
+            'inn'      => $this->getAttribute('inn'),
+            'okpo'     => $this->getAttribute('okpo'),
+            'rs'       => $this->getAttribute('rs'),
+            'ks'       => $this->getAttribute('ks'),
+            'bik'      => $this->getAttribute('bik'),
+            'bank'     => $this->getAttribute('bank'),
+            'address'  => $this->addresses()->whereTypeId(1)->first()->name,
+            'contract' => $this->getAttribute('contract'),
+            'nds'      => config('site.nds', 18),
+            'nds_act'  => $this->getAttribute('nds_act'),
+        ];
+    }
+
+    /**
+     * Адреса
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function addresses()
+    {
+        return $this->morphMany(Address::class, 'addressable');
     }
 
     /**

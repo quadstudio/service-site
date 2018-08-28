@@ -7,6 +7,9 @@
                 <a href="{{ route('index') }}">@lang('site::messages.index')</a>
             </li>
             <li class="breadcrumb-item">
+                <a href="{{ route('admin') }}">@lang('site::messages.admin')</a>
+            </li>
+            <li class="breadcrumb-item">
                 <a href="{{ route('admin.currencies.index') }}">@lang('site::currency.currencies')</a>
             </li>
             <li class="breadcrumb-item active">{{ $currency->title }}</li>
@@ -28,26 +31,26 @@
             </a>
         </div>
 
-        <div class="card mb-4">
+        <div class="card mb-2">
             <div class="card-body">
                 <dl class="row">
 
-                    <dt class="col-sm-4">@lang('site::currency.title')</dt>
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::currency.title')</dt>
                     <dd class="col-sm-8">{{ $currency->title }}</dd>
 
-                    <dt class="col-sm-4">@lang('site::currency.name')</dt>
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::currency.name')</dt>
                     <dd class="col-sm-8">{{ $currency->name }}</dd>
 
-                    <dt class="col-sm-4">@lang('site::currency.rates')</dt>
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::currency.rates')</dt>
                     <dd class="col-sm-8">{{ $currency->rates }}</dd>
 
-                    <dt class="col-sm-4">@lang('site::currency.multiplicity')</dt>
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::currency.multiplicity')</dt>
                     <dd class="col-sm-8">{{ $currency->multiplicity }}</dd>
 
-                    <dt class="col-sm-4">@lang('site::currency.symbol_left')</dt>
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::currency.symbol_left')</dt>
                     <dd class="col-sm-8">{{ $currency->symbol_left }}</dd>
 
-                    <dt class="col-sm-4">@lang('site::currency.symbol_right')</dt>
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::currency.symbol_right')</dt>
                     <dd class="col-sm-8">{{ $currency->symbol_right }}</dd>
 
                 </dl>

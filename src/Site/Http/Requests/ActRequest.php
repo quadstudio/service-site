@@ -32,7 +32,7 @@ class ActRequest extends FormRequest
             }
             case 'POST': {
                 return [
-                    //'client_name' => 'required|string|max:255',
+                    'repair' => 'required|array|min:1',
                 ];
             }
             case 'PUT':
@@ -51,7 +51,9 @@ class ActRequest extends FormRequest
      */
     public function messages()
     {
-        return [];
+        return [
+            'repair.required' => trans('site::act.error.require')
+        ];
     }
 
     /**
@@ -62,7 +64,7 @@ class ActRequest extends FormRequest
     public function attributes()
     {
         return [
-            'contragent_id'   => trans('site::repair.contragent_id'),
+            'repair'          => trans('site::repair.contragent_id'),
             'client'          => trans('site::repair.client'),
             'country_id'      => trans('site::repair.country_id'),
             'address'         => trans('site::repair.address'),

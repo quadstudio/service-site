@@ -18,8 +18,8 @@ class Repair extends Model implements Messagable
 
     protected $fillable = [
         'serial_id', 'product_id', 'contragent_id',
-        'cost_work', 'cost_road',
-        'allow_work', 'allow_road', 'allow_parts',
+        'cost_difficulty', 'cost_distance',
+        'distance_id', 'difficulty_id',
         'date_launch', 'date_trade', 'date_call',
         'date_repair',
         'engineer_id', 'trade_id', 'launch_id',
@@ -61,9 +61,9 @@ class Repair extends Model implements Messagable
                     $part->update(['cost' => Site::round($part->cost())]);
                 });
             $this->update([
-                'status_id' => $status_id,
-                'cost_work' => $this->equipmentCostWork,
-                'cost_road' => $this->equipmentCostRoad,
+                'status_id'       => $status_id,
+                'cost_difficulty' => $this->getAttribute('difficultyCost'),
+                'cost_distance'   => $this->getAttribute('distanceCost'),
 
             ]);
         } else {
@@ -81,7 +81,7 @@ class Repair extends Model implements Messagable
     {
         switch ($status_id) {
             case 5:
-                return $this->hasEquipment() && $this->parts->every(function ($part, $key) {
+                return $this->parts()->count() == 0 || $this->parts->every(function ($part) {
                         return $part->hasPrice();
                     });
             default:
@@ -89,31 +89,19 @@ class Repair extends Model implements Messagable
         }
     }
 
-    public function hasEquipment()
+    /**
+     * Запчасти
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function parts()
     {
-        return $this->product->hasEquipment();
+        return $this->hasMany(Part::class);
     }
 
     public function check()
     {
-        return $this->checkEquipment()
-            && $this->checkParts()
-            && $this->checkContragent();
-    }
-
-    public function checkEquipment()
-    {
-        return $this->checkEquipmentWork() && $this->checkEquipmentRoad();
-    }
-
-    public function checkEquipmentWork()
-    {
-        return $this->hasEquipment() && $this->product->equipment->checkWork();
-    }
-
-    public function checkEquipmentRoad()
-    {
-        return $this->hasEquipment() && $this->product->equipment->checkRoad();
+        return $this->checkParts() && $this->checkContragent();
     }
 
     public function checkParts()
@@ -148,6 +136,80 @@ class Repair extends Model implements Messagable
         }
     }
 
+
+    public function getTotalCostAttribute()
+    {
+        return $this->cost_difficulty() + $this->cost_distance() + $this->cost_parts();
+    }
+
+    /**
+     * Стоимость работ
+     *
+     * @return float
+     */
+    public function cost_difficulty()
+    {
+        switch ($this->getAttribute('status_id')) {
+            case 5:
+            case 6:
+                return $this->getAttribute('cost_difficulty');
+            default:
+                return $this->getAttribute('difficultyCost');
+        }
+    }
+
+    /**
+     * Стоимость дороги
+     *
+     * @return float
+     */
+    public function cost_distance()
+    {
+        switch ($this->getAttribute('status_id')) {
+            case 5:
+            case 6:
+                return $this->getAttribute('cost_distance');
+                break;
+            default:
+                return $this->getAttribute('distanceCost');
+        }
+    }
+
+    /**
+     * Стоимлсть запчастей
+     *
+     * @return float
+     */
+    public function cost_parts()
+    {
+        return $this->parts()->count() == 0 ? 0 : $this->parts->sum('total');
+    }
+
+    public function getTotalDifficultyCostAttribute()
+    {
+        return $this->cost_difficulty();
+    }
+
+    public function getTotalDistanceCostAttribute()
+    {
+        return $this->cost_distance();
+    }
+
+    public function getTotalCostPartsAttribute()
+    {
+        return $this->cost_parts();
+    }
+
+    public function getDifficultyCostAttribute()
+    {
+        return $this->difficulty->cost * Site::currencyRates($this->difficulty->currency, $this->user->currency);
+    }
+
+    public function getDistanceCostAttribute()
+    {
+        return $this->distance->cost * Site::currencyRates($this->distance->currency, $this->user->currency);
+    }
+
     public function created_at($time = false)
     {
         return !is_null($this->created_at) ? Carbon::instance($this->created_at)->format('d.m.Y' . ($time === true ? ' H:i' : '')) : '';
@@ -171,92 +233,6 @@ class Repair extends Model implements Messagable
     public function date_repair()
     {
         return !is_null($this->date_repair) ? Carbon::instance(\DateTime::createFromFormat('Y-m-d', $this->date_repair))->format('d.m.Y') : '';
-    }
-
-    public function cost_total()
-    {
-        return $this->cost_work() + $this->cost_road() + $this->cost_parts();
-    }
-
-    /**
-     * Стоимость работ
-     *
-     * @return float
-     */
-    public function cost_work()
-    {
-        if ($this->allow_work == 0 || !$this->hasEquipment()) {
-            return 0;
-        }
-        switch ($this->getAttribute('status_id')) {
-            case 5:
-            case 6:
-                return $this->getAttribute('cost_work');
-            default:
-                return $this->equipmentCostWork;
-        }
-    }
-
-    /**
-     * Стоимость дороги
-     *
-     * @return float
-     */
-    public function cost_road()
-    {
-        if ($this->allow_road == 0 || !$this->hasEquipment()) {
-            return 0;
-        }
-        switch ($this->getAttribute('status_id')) {
-            case 5:
-            case 6:
-                return $this->getAttribute('cost_road');
-                break;
-            default:
-                return $this->equipmentCostRoad;
-        }
-    }
-
-    /**
-     * Стоимлсть запчастей
-     *
-     * @return float
-     */
-    public function cost_parts()
-    {
-        if ($this->allow_parts == 0) {
-            return 0;
-        }
-
-        return $this->parts->sum('total');
-    }
-
-    public function getEquipmentCostWorkAttribute()
-    {
-        return $this->product->equipment->cost_work * $this->rates;
-    }
-
-    public function getEquipmentCostRoadAttribute()
-    {
-        return $this->product->equipment->cost_road * $this->rates;
-    }
-
-    /**
-     * @return float
-     */
-    public function getRatesAttribute()
-    {
-        return Site::currencyRates($this->product->equipment->currency, $this->user->currency);
-    }
-
-    /**
-     * Запчасти
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function parts()
-    {
-        return $this->hasMany(Part::class);
     }
 
     public function statuses()
@@ -293,6 +269,16 @@ class Repair extends Model implements Messagable
     public function status()
     {
         return $this->belongsTo(RepairStatus::class);
+    }
+
+    /**
+     * Акт выполненных работ
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function act()
+    {
+        return $this->belongsTo(Act::class);
     }
 
     /**
@@ -353,6 +339,26 @@ class Repair extends Model implements Messagable
     public function launch()
     {
         return $this->belongsTo(Launch::class);
+    }
+
+    /**
+     * Тариф на транспорт
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function distance()
+    {
+        return $this->belongsTo(Distance::class);
+    }
+
+    /**
+     * Класс сложности
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function difficulty()
+    {
+        return $this->belongsTo(Difficulty::class);
     }
 
     /**

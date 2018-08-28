@@ -64,26 +64,23 @@
 
                         <div class="dropdown-divider"></div>
 
-                        <a class="dropdown-item" href="{{ route('admin.engineers.index') }}">
-                            <i class="fa fa-@lang('site::engineer.icon')"></i> @lang('site::engineer.engineers')
+                        <a class="dropdown-item" href="{{ route('admin.price_types.index') }}">
+                            <i class="fa fa-@lang('site::price_type.icon')"></i> @lang('site::price_type.price_types')
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.launches.index') }}">
-                            <i class="fa fa-@lang('site::launch.icon')"></i> @lang('site::launch.launches')
+                        <a class="dropdown-item" href="{{ route('admin.product_types.index') }}">
+                            <i class="fa fa-@lang('site::product_type.icon')"></i> @lang('site::product_type.product_types')
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.trades.index') }}">
-                            <i class="fa fa-@lang('site::trade.icon')"></i> @lang('site::trade.trades')
+                        <a class="dropdown-item" href="{{ route('admin.distances.index') }}">
+                            <i class="fa fa-@lang('site::distance.icon')"></i> @lang('site::distance.distances')
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.contragents.index') }}">
-                            <i class="fa fa-@lang('site::contragent.icon')"></i> @lang('site::contragent.contragents')
+                        <a class="dropdown-item" href="{{ route('admin.difficulties.index') }}">
+                            <i class="fa fa-@lang('site::difficulty.icon')"></i> @lang('site::difficulty.difficulties')
                         </a>
-
-                        <div class="dropdown-divider"></div>
-
-                        <a class="dropdown-item" href="#">
-                            @lang('site::price_type.price_types')
+                        <a class="dropdown-item" href="{{ route('admin.file_groups.index') }}">
+                            <i class="fa fa-@lang('site::file_group.icon')"></i> @lang('site::file_group.file_groups')
                         </a>
-                        <a class="dropdown-item" href="#">
-                            @lang('site::product_type.product_types')
+                        <a class="dropdown-item" href="{{ route('admin.file_types.index') }}">
+                            <i class="fa fa-@lang('site::file_type.icon')"></i> @lang('site::file_type.file_types')
                         </a>
                     </div>
                 </li>
@@ -113,6 +110,21 @@
                                     class="fa fa-@lang('site::message.icon')"></i> @lang('site::message.messages')</a>
                         <a class="dropdown-item" href="{{ route('admin.orders.index') }}"><i
                                     class="fa fa-@lang('site::order.icon')"></i> @lang('site::order.orders')</a>
+
+                        <div class="dropdown-divider"></div>
+
+                        <a class="dropdown-item" href="{{ route('admin.engineers.index') }}">
+                            <i class="fa fa-@lang('site::engineer.icon')"></i> @lang('site::engineer.engineers')
+                        </a>
+                        <a class="dropdown-item" href="{{ route('admin.launches.index') }}">
+                            <i class="fa fa-@lang('site::launch.icon')"></i> @lang('site::launch.launches')
+                        </a>
+                        <a class="dropdown-item" href="{{ route('admin.trades.index') }}">
+                            <i class="fa fa-@lang('site::trade.icon')"></i> @lang('site::trade.trades')
+                        </a>
+                        <a class="dropdown-item" href="{{ route('admin.contragents.index') }}">
+                            <i class="fa fa-@lang('site::contragent.icon')"></i> @lang('site::contragent.contragents')
+                        </a>
 
                         <div class="dropdown-divider"></div>
 
@@ -161,7 +173,7 @@
                         @permission('contragents')
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ route('contragents.index') }}">
-                            <i class="fa fa-@lang('site::contragent.icon')"></i> @lang('site::contragent.contragents')
+                            <i class="fa fa-@lang('site::contragent.icon')"></i> @lang('site::contragent.contragents_user')
                         </a>
                         @endpermission
                         @permission('contacts')

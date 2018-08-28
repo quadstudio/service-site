@@ -5,6 +5,10 @@ namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 use QuadStudio\Service\Site\Filters\User\HasApprovedRepairFilter;
 use QuadStudio\Service\Site\Http\Requests\ActRequest;
 use QuadStudio\Service\Site\Models\Act;
+use QuadStudio\Service\Site\Models\ActDetail;
+use QuadStudio\Service\Site\Models\Contragent;
+use QuadStudio\Service\Site\Models\Repair;
+use QuadStudio\Service\Site\Models\User;
 use QuadStudio\Service\Site\Repositories\ActRepository;
 use QuadStudio\Service\Site\Repositories\RepairRepository;
 use QuadStudio\Service\Site\Repositories\UserRepository;
@@ -73,8 +77,33 @@ trait ActControllerTrait
 
     /**
      * @param ActRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(ActRequest $request){
-        dd('В РАЗРАБОТКЕ');
+    public function store(ActRequest $request)
+    {
+        //dd($request->all());
+        foreach ($request->input('repair') as $user_id => $contragents) {
+            /** @var User $user */
+            $user = User::find($user_id);
+            foreach ($contragents as $contragent_id => $repairs) {
+                $contragent = Contragent::find($contragent_id);
+                /** @var Act $act */
+                $user->acts()->save($act = Act::create([]));
+                $act->details()->saveMany([
+                    new ActDetail($contragent->organization->toArray()),
+                    new ActDetail($contragent->toArray())
+                ]);
+                foreach ($repairs as $repair_id) {
+                    /** @var Repair $repair */
+                    $repair = Repair::find($repair_id);
+
+                    $repair->act()->associate($act);
+
+                    $repair->save();
+                }
+            }
+        }
+
+        return redirect()->route('admin.acts.index')->with('success', trans('site::act.created'));
     }
 }

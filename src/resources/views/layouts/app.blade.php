@@ -18,7 +18,7 @@
     {{--<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600|Roboto:300,400&amp;subset=cyrillic"--}}
           {{--rel="stylesheet">--}}
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
+    @stack('styles')
     <link rel="apple-touch-icon" sizes="57x57" href="{{asset('/favicon/apple-icon-57x57.png')}}">
     <link rel="apple-touch-icon" sizes="60x60" href="{{asset('/favicon/apple-icon-60x60.png')}}">
     <link rel="apple-touch-icon" sizes="72x72" href="{{asset('/favicon/apple-icon-72x72')}}">
@@ -37,6 +37,7 @@
     <meta name="msapplication-TileImage" content="/favicon/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
     <script src="{{ asset('js/app.js') }}" defer></script>
+
 </head>
 <body id="page-top" class="{{ $current_body_class }}">
 @section('navbar') @include('site::menu.'.$current_menu) @show

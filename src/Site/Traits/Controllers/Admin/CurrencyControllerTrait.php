@@ -31,7 +31,7 @@ trait CurrencyControllerTrait
      */
     public function index()
     {
-        $currencies = $this->currencies->all();
+        $currencies = $this->currencies->paginate(config('site.per_page.currency', 10), [env('DB_PREFIX', '') . 'currencies.*']);
 
         return view('site::admin.currency.index', compact('currencies'));
     }

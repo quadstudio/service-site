@@ -58,65 +58,20 @@
                     </div>
                     <div class="form-row">
                         <div class="col mb-3">
+                            <label class="control-label" for="annotation">@lang('site::equipment.annotation')</label>
+                            <textarea class="form-control{{ $errors->has('annotation') ? ' is-invalid' : '' }}"
+                                      placeholder="@lang('site::equipment.placeholder.annotation')"
+                                      name="annotation" id="annotation">{{ old('annotation') }}</textarea>
+                            <span class="invalid-feedback">{{ $errors->first('annotation') }}</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col mb-3">
                             <label class="control-label" for="description">@lang('site::equipment.description')</label>
                             <textarea class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }}"
                                       placeholder="@lang('site::equipment.placeholder.description')"
                                       name="description" id="description">{{ old('description') }}</textarea>
                             <span class="invalid-feedback">{{ $errors->first('description') }}</span>
-                        </div>
-                    </div>
-                    <div class="form-row required">
-                        <div class="col mb-3">
-                            <label class="control-label" for="name">@lang('site::equipment.cost_work')</label>
-                            <input type="number"
-                                   name="cost_work"
-                                   id="cost_work"
-                                   min="0"
-                                   max="10000"
-                                   required
-                                   class="form-control{{ $errors->has('cost_work') ? ' is-invalid' : '' }}"
-                                   placeholder="@lang('site::equipment.placeholder.cost_work')"
-                                   value="{{ old('cost_work') }}">
-                            <span class="invalid-feedback">{{ $errors->first('cost_work') }}</span>
-                        </div>
-                    </div>
-                    <div class="form-row required">
-                        <div class="col mb-3">
-                            <label class="control-label" for="name">@lang('site::equipment.cost_road')</label>
-                            <input type="number"
-                                   name="cost_road"
-                                   id="cost_road"
-                                   min="0"
-                                   max="10000"
-                                   required
-                                   class="form-control{{ $errors->has('cost_road') ? ' is-invalid' : '' }}"
-                                   placeholder="@lang('site::equipment.placeholder.cost_road')"
-                                   value="{{ old('cost_road') }}">
-                            <span class="invalid-feedback">{{ $errors->first('cost_road') }}</span>
-                        </div>
-                    </div>
-                    <div class="form-row required">
-                        <div class="col mb-3">
-
-                            <label class="control-label"
-                                   for="currency_id">@lang('site::equipment.currency_id')</label>
-                            <select class="form-control{{  $errors->has('currency_id') ? ' is-invalid' : '' }}"
-                                    required
-                                    name="currency_id"
-                                    id="currency_id">
-                                <option value="">@lang('site::messages.select_from_list')</option>
-                                @foreach($currencies as $currency)
-                                    <option
-                                            @if(old('currency_id') == $currency->id) selected
-                                            @endif
-                                            value="{{ $currency->id }}">{{ $currency->title }}
-                                        ({{ $currency->name }})
-                                    </option>
-                                @endforeach
-                            </select>
-                            <span class="invalid-feedback">
-                                <strong>{{ $errors->first('currency_id') }}</strong>
-                            </span>
                         </div>
                     </div>
                 </form>
@@ -130,7 +85,7 @@
                                 <div class="form-group form-control{{ $errors->has('path') ? ' is-invalid' : '' }}">
                                     <input type="file" name="path"/>
                                     <input type="hidden" name="storage" value="equipments"/>
-                                    <input type="button" class="btn btn-primary image-upload"
+                                    <input type="button" class="btn btn-ferroli image-upload"
                                            value="@lang('site::messages.load')">
 
                                 </div>
@@ -146,13 +101,14 @@
                         </div>
                     </div>
                 </fieldset>
+                <hr />
                 <div class="form-row">
                     <div class="col text-right">
-                        <button name="_create" form="form-content" value="1" type="submit" class="btn btn-primary mb-1">
+                        <button name="_create" form="form-content" value="1" type="submit" class="btn btn-ferroli mb-1">
                             <i class="fa fa-check"></i>
                             <span>@lang('site::messages.save_add')</span>
                         </button>
-                        <button name="_create" form="form-content" value="0" type="submit" class="btn btn-primary mb-1">
+                        <button name="_create" form="form-content" value="0" type="submit" class="btn btn-ferroli mb-1">
                             <i class="fa fa-check"></i>
                             <span>@lang('site::messages.save')</span>
                         </button>

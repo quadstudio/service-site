@@ -4,9 +4,12 @@ namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use QuadStudio\Service\Site\Traits\Models\SortOrderTrait;
 
 class Catalog extends Model
 {
+
+    use SortOrderTrait;
 
     /**
      * @var string
@@ -18,7 +21,7 @@ class Catalog extends Model
      */
     protected $fillable = [
         'name', 'name_plural', 'description',
-        'catalog_id', 'enabled', 'model'
+        'catalog_id', 'enabled', 'model', 'sort_order'
     ];
 
     /**
@@ -45,10 +48,10 @@ class Catalog extends Model
     {
         return
             //Нет дочерних элементов
-            $this->has('catalogs')->get()->isEmpty() &&
+            $this->catalogs()->count() == 0 &&
             // и
             // Нет прикрепленных товаров
-            $this->has('equipments')->get()->isEmpty();
+            $this->equipments()->count() == 0;
     }
 
     public function parentTreeName()

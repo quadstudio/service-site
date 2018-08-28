@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('header')
     @include('site::header.front',[
-        'h1' => $equipment->name,
+        'h1' => $equipment->catalog->parentRoot()->name. ' '.$equipment->name,
         'breadcrumbs' => [
             ['url' => route('index'), 'name' => __('site::messages.index')],
             ['url' => route('catalogs.index'), 'name' => __('site::catalog.catalogs')],
@@ -15,7 +15,7 @@
         <div class="card mb-3">
             <div class="card-body">
                 <div class="media flex-wrap flex-lg-nowrap">
-                    <div id="carouselEquipmentIndicators" class="carousel slide col-12 col-lg-5 p-0"
+                    <div id="carouselEquipmentIndicators" class="carousel slide col-12 col-md-3 col-lg-4 p-0"
                          data-ride="carousel">
                         @if($equipment->images()->count() > 1)
                             <ol class="carousel-indicators">
@@ -48,57 +48,42 @@
                             </a>
                         @endif
                     </div>
-
-
-                    <div class="media-body p-md-5 px-4 pt-5 pb-4">
+                    <div class="media-body p-md-5 px-4 pt-5 pb-4 col-md-9 col-lg-8">
 
                         <h3>{{$equipment->catalog->parentTreeName()}} {{$equipment->name}}</h3>
+                        <p>{!! $equipment->annotation !!}</p>
+                        {{--<div class="mb-4">--}}
+                        {{--<div class="ui-stars text-big">--}}
+                        {{--<div class="d-inline-block">--}}
+                        {{--<i class="fa fa-star"></i>--}}
+                        {{--</div>--}}
+                        {{--<div class="d-inline-block">--}}
+                        {{--<i class="fa fa-star"></i>--}}
+                        {{--</div>--}}
+                        {{--<div class="d-inline-block">--}}
+                        {{--<i class="fa fa-star"></i>--}}
+                        {{--</div>--}}
+                        {{--<div class="d-inline-block">--}}
+                        {{--<i class="fa fa-star"></i>--}}
+                        {{--</div>--}}
+                        {{--<div class="d-inline-block filled">--}}
+                        {{--<i class="fa fa-star-half-full"></i>--}}
+                        {{--</div>--}}
+                        {{--</div>--}}
 
-                        <div class="mb-4">
-                            <div class="ui-stars text-big">
-                                <div class="d-inline-block">
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="d-inline-block">
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="d-inline-block">
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="d-inline-block">
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="d-inline-block filled">
-                                    <i class="fa fa-star-half-full"></i>
-                                </div>
-                            </div>
+                        {{--<a href="javascript:void(0)" class="text-muted small">23 отзыва</a>--}}
+                        {{--</div>--}}
 
-                            <a href="javascript:void(0)" class="text-muted small">23 отзыва</a>
-                        </div>
-                        @if(!$equipment->products->isEmpty())
-                            <h5 class="mt-4">@lang('site::equipment.equipments')</h5>
-
-                            <table class="table table-hover mt-1">
-                                <tbody>
-                                @foreach($equipment->products()->where('enabled', 1)->orderBy('name')->get() as $product)
-                                    <tr>
-                                        <td class="p-1">{{$product->name}}</td>
-                                        <td class="p-1"><a href="#">@lang('site::product.products')</a></td>
-                                        <td class="p-1">
-                                            @if(!$product->datasheets()->where('active', 1)->get()->isEmpty())
-                                                <a href="#">@lang('site::datasheet.datasheets')</a>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        @endif
                     </div>
                 </div>
                 <ul class="nav nav-tabs mt-3" id="myTab" role="tablist">
+
                     <li class="nav-item">
-                        <a class="nav-link active" id="description-tab" data-toggle="tab" href="#description" role="tab"
+                        <a class="nav-link active" id="equipments-tab" data-toggle="tab" href="#equipments" role="tab"
+                           aria-controls="equipments" aria-selected="true">@lang('site::equipment.equipments')</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="description-tab" data-toggle="tab" href="#description" role="tab"
                            aria-controls="description" aria-selected="true">Описание</a>
                     </li>
                     <li class="nav-item">
@@ -106,8 +91,8 @@
                            aria-selected="false">Характеристики</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="parts-tab" data-toggle="tab" href="#parts" role="tab"
-                           aria-controls="parts" aria-selected="false">@lang('site::product.products')</a>
+                        <a class="nav-link" id="products-tab" data-toggle="tab" href="#products" role="tab"
+                           aria-controls="products" aria-selected="false">@lang('site::product.products')</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="datasheet-tab" data-toggle="tab" href="#datasheet" role="tab"
@@ -115,13 +100,69 @@
                     </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active p-3" id="description" role="tabpanel"
+
+                    <div class="tab-pane fade show active p-3"
+                         id="equipments"
+                         role="tabpanel"
+                         aria-labelledby="equipments-tab">
+                        @foreach($equipment->products()->where('enabled', 1)->orderBy('name')->get() as $product)
+                            <div class="row border-bottom py-1">
+                                <div class="col-12 col-md-4">
+                                    <a class="d-block text-large"
+                                       href="{{route('products.show', $product)}}">{{$product->name}}</a>
+                                </div>
+                                <div class="col-12 col-md-4 mb-2 mb-md-0">
+                                    @if($product->hasPrice)
+                                        <div class="text-tiny text-muted">{{ $product->price()->type->display_name ?: __('site::price.price')}}</div>
+                                        <div class="text-large">{{ $product->price()->format() }}</div>
+                                    @endif
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    @can('buy', $product)
+                                        @include('site::cart.buy.large', $product->toCart())
+                                    @endcan
+                                </div>
+                            </div>
+
+                        @endforeach
+                    </div>
+                    <div class="tab-pane fade p-3"
+                         id="description"
+                         role="tabpanel"
                          aria-labelledby="home-tab">{!!$equipment->description!!}</div>
-                    <div class="tab-pane fade p-3" id="spec" role="tabpanel" aria-labelledby="spec-tab">...</div>
-                    <div class="tab-pane fade p-3" id="parts" role="tabpanel" aria-labelledby="parts-tab">...</div>
-                    <div class="tab-pane fade p-3" id="datasheet" role="tabpanel" aria-labelledby="datasheet-tab">...
+                    <div class="tab-pane fade p-3"
+                         id="spec"
+                         role="tabpanel"
+                         aria-labelledby="spec-tab">...
+                    </div>
+                    <div class="tab-pane fade p-3"
+                         id="products"
+                         role="tabpanel"
+                         aria-labelledby="products-tab">
+
+                        @foreach($products as $product)
+                            <div class="row py-1 border-bottom">
+                                <div class="col-sm-6">
+                                    <span>@lang('site::product.products') {!! $product->name !!}</span>
+                                </div>
+                                <div class="col-sm-6 text-left text-sm-right">
+                                    <a class="btn btn-sm btn-ferroli"
+                                       href="{{route('products.index', ['filter[boiler_id]' => $product->id])}}">
+                                        @lang('site::messages.show') <span
+                                                class="badge badge-light">{{$product->relations()->whereEnabled(1)->whereActive(1)->count()}}</span></a>
+                                </div>
+                            </div>
+                        @endforeach
+
+                    </div>
+                    <div class="tab-pane fade p-3"
+                         id="datasheet"
+                         role="tabpanel"
+                         aria-labelledby="datasheet-tab">...
+
                     </div>
                 </div>
+
             </div>
         </div>
     </div>

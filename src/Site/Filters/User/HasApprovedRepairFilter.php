@@ -12,7 +12,7 @@ class HasApprovedRepairFilter extends Filter
     {
         $builder = $builder
             ->whereHas("repairs", function($query){
-                $query->whereStatusId(5);
+                $query->whereStatusId(5)->whereNull('act_id');
             })
             ->orderBy("name");
 

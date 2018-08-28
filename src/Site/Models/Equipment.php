@@ -3,17 +3,19 @@
 namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use QuadStudio\Service\Site\Traits\Models\SortOrderTrait;
 
 class Equipment extends Model
 {
+
+    use SortOrderTrait;
     /**
      * @var string
      */
     protected $table;
 
     protected $fillable = [
-        'name', 'description', 'enabled', 'catalog_id',
-        'cost_work', 'cost_road', 'currency_id'
+        'name',  'annotation', 'description', 'enabled', 'catalog_id', 'sort_order'
     ];
 
     /**
@@ -42,16 +44,6 @@ class Equipment extends Model
     public function catalog()
     {
         return $this->belongsTo(Catalog::class);
-    }
-
-    /**
-     * Валюта расценок
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function currency()
-    {
-        return $this->belongsTo(Currency::class);
     }
 
     public function image()
@@ -84,23 +76,6 @@ class Equipment extends Model
     public function _images()
     {
         return $this->morphMany(Image::class, 'imageable');
-    }
-
-    public function check()
-    {
-        return $this->checkWork() && $this->checkRoad();
-    }
-
-    public function checkWork()
-    {
-        return !is_null($this->getAttribute('cost_work'))
-            && $this->getAttribute('cost_work') > 0;
-    }
-
-    public function checkRoad()
-    {
-        return !is_null($this->getAttribute('cost_road'))
-            && $this->getAttribute('cost_road') > 0;
     }
 
     /**

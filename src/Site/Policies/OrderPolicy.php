@@ -2,11 +2,19 @@
 
 namespace QuadStudio\Service\Site\Policies;
 
-use QuadStudio\Service\Site\Models\User;
 use QuadStudio\Service\Site\Models\Order;
+use QuadStudio\Service\Site\Models\User;
 
 class OrderPolicy
 {
+
+    public function schedule(User $user, Order $order)
+    {
+        return $user->admin == 1
+            && $order->user->hasGuid()
+            && $order->contragent->hasOrganization()
+            && $order->can_schedule();
+    }
 
     /**
      * Determine whether the user can view the post.

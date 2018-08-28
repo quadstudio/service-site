@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use QuadStudio\Service\Site\Http\ViewComposers\CurrentRouteViewComposer;
-use QuadStudio\Service\Site\Listeners\UserListener;
+use QuadStudio\Service\Site\Listeners;
 use QuadStudio\Service\Site\Middleware\Admin;
 use QuadStudio\Service\Site\Support\Cart;
 
@@ -33,6 +33,7 @@ class SiteServiceProvider extends ServiceProvider
         Models\Contact::class    => Policies\ContactPolicy::class,
         Models\Address::class    => Policies\AddressPolicy::class,
         Models\Contragent::class => Policies\ContragentPolicy::class,
+        Models\User::class       => Policies\UserPolicy::class,
     ];
 
     /**
@@ -264,7 +265,8 @@ class SiteServiceProvider extends ServiceProvider
 
     private function registerEvents()
     {
-        Event::subscribe(new UserListener());
+        Event::subscribe(new Listeners\UserListener());
+        Event::subscribe(new Listeners\OrderListener());
     }
 
     /**

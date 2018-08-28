@@ -12,7 +12,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('site::cart.delete_form_cancel')</button>
-                <button type="button" class="btn btn-primary btn-ok">@lang('site::cart.delete_form_ok')</button>
+                <button type="button" class="btn btn-ferroli btn-ok">@lang('site::cart.delete_form_ok')</button>
             </div>
         </div>
     </div>

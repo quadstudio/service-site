@@ -83,10 +83,10 @@
 
         <div class="container">
             <ul class="menu">
-                <li class="neromenu has-dropdown @if(Request::route()->getName() == 'products.index') active @endif">
+                <li class="neromenu has-dropdown @if(in_array(Request::route()->getName(), ['products.index', 'products.list', 'products.show'])) active @endif">
                     <a href="{{ route('products.index') }}" class="menuprinc">@lang('site::product.products')</a>
                 </li>
-                <li class="neromenu has-dropdown @if(Request::route()->getName() == 'catalogs.index') active @endif">
+                <li class="neromenu has-dropdown @if(in_array(Request::route()->getName(), ['catalogs.index', 'catalogs.show', 'catalogs.list']) ) active @endif">
                     <a href="{{ route('catalogs.index') }}" class="menuprinc">@lang('site::catalog.catalogs')</a>
                 </li>
                 <li class="neromenu has-dropdown @if(Request::route()->getName() == 'datasheets') active @endif">

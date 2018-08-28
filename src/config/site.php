@@ -21,9 +21,11 @@ return [
         'datasheets',
         'catalogs.index',
         'catalogs.show',
+        'catalogs.list',
         'equipments.show',
         'products.index',
         'products.show',
+        'products.list',
         'cart',
     ],
     'routes'       => [
@@ -31,12 +33,15 @@ return [
         'cart'
     ],
 
+    'nds' => 18,
+
     'cache' => [
         'use' => false,
         'ttl' => 60 * 60 * 24
     ],
 
     'per_page' => [
+        'catalog'      => 25,
         'repair'       => 10,
         'trade'        => 10,
         'launch'       => 10,
@@ -45,10 +50,18 @@ return [
         'serial'       => 10,
         'period'       => 10,
         'order'        => 10,
-        'product'      => 12,
-        'product_type' => 10,
+        'product'      => 16,
+        'product_list' => 100,
+        'product_type' => 25,
         'message'      => 30,
     ],
+
+    'sort_order' => [
+        'equipment' => 'sort_order',
+        'catalog'   => 'sort_order',
+    ],
+
+    'columns' => 5,
 
     'run'       => [
         ['site:resource', []],

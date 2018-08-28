@@ -22,8 +22,6 @@ class SerialResource extends JsonResource
             'sku' => $this->product->sku,
             'model' => $this->product->equipment->name,
             'catalog' => $this->product->equipment->catalog->parentTreeName(),
-            'cost_work' => Site::format($this->product->equipment->cost_work),
-            'cost_road' => Site::format($this->product->equipment->cost_road),
         ];
     }
 }

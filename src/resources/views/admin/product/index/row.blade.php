@@ -18,7 +18,7 @@
                 <div class="item-content-about">
                     <span class="text-muted">{{$product->type->name}}</span>
                     <h5 class="item-content-name mb-1">
-                        <a href="{{ route('admin.products.show', $product) }}" class="text-dark">{{$product->name}}</a>
+                        <a href="{{ route('admin.products.show', $product) }}" class="text-dark">{!! $product->name() !!}</a>
                     </h5>
                     {{--<div class="item-content-user text-muted mb-2">--}}
                         {{--@lang('site::product.address') : {{$product->address}}--}}

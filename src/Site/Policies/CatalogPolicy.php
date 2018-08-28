@@ -21,6 +21,17 @@ class CatalogPolicy
     }
 
     /**
+     * Determine whether the user can list equipments
+     *
+     * @param  User $user
+     * @return bool
+     */
+    public function list(User $user)
+    {
+        return $user->hasPermission('equipment.list');
+    }
+
+    /**
      * Determine whether the user can create engineers.
      *
      * @param  User $user
@@ -52,7 +63,7 @@ class CatalogPolicy
      */
     public function delete(User $user, Catalog $catalog)
     {
-        return $catalog->canDelete();
+        return $user->admin == 1 && $catalog->canDelete();
     }
 
 

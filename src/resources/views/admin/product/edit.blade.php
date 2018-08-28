@@ -23,7 +23,8 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <form method="POST" id="product-edit-form" action="{{ route('admin.products.update', $product) }}">
+                        <form method="POST" id="product-edit-form"
+                              action="{{ route('admin.products.update', $product) }}">
 
                             @csrf
 
@@ -150,6 +151,27 @@
                             </div>
                             <div class="form-row">
                                 <div class="col mb-3">
+                                    <label class="control-label"
+                                           for="equipment_id">@lang('site::product.equipment_id')</label>
+                                    <select class="form-control
+                                            {{$errors->has('equipment_id') ? ' is-invalid' : ''}}"
+                                            name="equipment_id"
+                                            id="equipment_id">
+                                        <option value="">@lang('site::messages.select_from_list')</option>
+                                        @foreach($equipments as $equipment)
+                                            <option
+                                                    @if(old('equipment_id', $product->equipment_id) == $equipment->id) selected
+                                                    @endif
+                                                    value="{{ $equipment->id }}">{{ $equipment->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('equipment_id') }}</strong>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col mb-3">
                                     <label for="description">@lang('site::product.description')</label>
                                     <textarea class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }}"
                                               placeholder="@lang('site::product.placeholder.description')"
@@ -166,9 +188,9 @@
         </div>
         <div class=" border p-3 mt-2 mb-4">
             {{--<a class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0" href="{{ route('products.create') }}"--}}
-               {{--role="button">--}}
-                {{--<i class="fa fa-plus"></i>--}}
-                {{--<span>@lang('site::messages.add') @lang('site::product.product')</span>--}}
+            {{--role="button">--}}
+            {{--<i class="fa fa-plus"></i>--}}
+            {{--<span>@lang('site::messages.add') @lang('site::product.product')</span>--}}
             {{--</a>--}}
             <button name="_stay" form="product-edit-form" value="1" type="submit" class="btn btn-ferroli">
                 <i class="fa fa-check"></i>

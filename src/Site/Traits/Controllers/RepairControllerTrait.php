@@ -6,12 +6,17 @@ use QuadStudio\Service\Site\Filters\BelongsUserFilter;
 use QuadStudio\Service\Site\Filters\ByNameSortFilter;
 use QuadStudio\Service\Site\Filters\CountryEnabledFilter;
 use QuadStudio\Service\Site\Filters\CountrySortFilter;
+use QuadStudio\Service\Site\Filters\FileType\ModelHasFilesFilter;
+use QuadStudio\Service\Site\Filters\FileType\RepairFilter;
+use QuadStudio\Service\Site\Filters\FileType\SortFilter;
 use QuadStudio\Service\Site\Http\Requests\RepairRequest;
 use QuadStudio\Service\Site\Models\File;
 use QuadStudio\Service\Site\Models\Product;
 use QuadStudio\Service\Site\Models\Repair;
 use QuadStudio\Service\Site\Repositories\ContragentRepository;
 use QuadStudio\Service\Site\Repositories\CountryRepository;
+use QuadStudio\Service\Site\Repositories\DifficultyRepository;
+use QuadStudio\Service\Site\Repositories\DistanceRepository;
 use QuadStudio\Service\Site\Repositories\EngineerRepository;
 use QuadStudio\Service\Site\Repositories\EquipmentRepository;
 use QuadStudio\Service\Site\Repositories\FileRepository;
@@ -58,6 +63,14 @@ trait RepairControllerTrait
      * @var ContragentRepository
      */
     private $contragents;
+    /**
+     * @var DistanceRepository
+     */
+    private $distances;
+    /**
+     * @var DifficultyRepository
+     */
+    private $difficulties;
 
     /**
      * Create a new controller instance.
@@ -71,6 +84,8 @@ trait RepairControllerTrait
      * @param EquipmentRepository $equipments
      * @param FileRepository $files
      * @param ContragentRepository $contragents
+     * @param DistanceRepository $distances
+     * @param DifficultyRepository $difficulties
      */
     public function __construct(
         RepairRepository $repairs,
@@ -81,7 +96,9 @@ trait RepairControllerTrait
         CountryRepository $countries,
         EquipmentRepository $equipments,
         FileRepository $files,
-        ContragentRepository $contragents
+        ContragentRepository $contragents,
+        DistanceRepository $distances,
+        DifficultyRepository $difficulties
     )
     {
         $this->repairs = $repairs;
@@ -93,6 +110,8 @@ trait RepairControllerTrait
         $this->countries = $countries;
         $this->equipments = $equipments;
         $this->contragents = $contragents;
+        $this->distances = $distances;
+        $this->difficulties = $difficulties;
     }
 
     /**
@@ -123,6 +142,7 @@ trait RepairControllerTrait
     {
         $statuses = $repair->statuses()->get();
         $fails = $repair->fails;
+        $this->types->applyFilter((new ModelHasFilesFilter())->setId($repair->id)->setMorph('repairs'));
         $types = $this->types->all();
         $files = $repair->files;
 
@@ -157,7 +177,11 @@ trait RepairControllerTrait
             ->applyFilter(new CountryEnabledFilter())
             ->applyFilter(new CountrySortFilter())
             ->all();
+        $this->types->applyFilter(new SortFilter());
+        $this->types->applyFilter(new RepairFilter());
         $types = $this->types->all();
+        $difficulties = $this->difficulties->all();
+        $distances = $this->distances->all();
         $parts = $this->getParts($request);
         $files = $this->getFiles($request);
         $fails = collect([]);
@@ -173,7 +197,9 @@ trait RepairControllerTrait
             'files',
             'parts',
             'fails',
-            'product'
+            'product',
+            'difficulties',
+            'distances'
         ));
     }
 
@@ -261,17 +287,32 @@ trait RepairControllerTrait
             ->applyFilter(new CountryEnabledFilter())
             ->applyFilter(new CountrySortFilter())
             ->all();
+        $this->types->applyFilter(new SortFilter());
+        $this->types->applyFilter(new RepairFilter());
         $types = $this->types->all();
         $parts = $this->getParts($request, $repair);
         $files = $this->getFiles($request, $repair);
+        $difficulties = $this->difficulties->all();
+        $distances = $this->distances->all();
         $statuses = $repair->statuses()->get();
 
         $fails = $repair->fails;
 
         //dd(old('allow_road', $repair->allow_road));
-        return view('site::repair.edit', compact('repair', 'engineers',
-            'trades', 'launches', 'countries', 'statuses',
-            'types', 'files', 'parts', 'fails'));
+        return view('site::repair.edit', compact(
+            'repair',
+            'engineers',
+            'trades',
+            'launches',
+            'countries',
+            'statuses',
+            'types',
+            'files',
+            'parts',
+            'fails',
+            'difficulties',
+            'distances'
+        ));
     }
 
     /**
@@ -290,7 +331,7 @@ trait RepairControllerTrait
         }
         $this->setFiles($request, $repair);
 
-        if ($repair->getAttribute('allow_parts') == 1 && $request->filled('parts')) {
+        if ($request->filled('parts')) {
             $repair->parts()->delete();
 
             $parts = collect($request->input('parts'))->values()->toArray();
@@ -330,7 +371,7 @@ trait RepairControllerTrait
         $this->authorize('create', Repair::class);
         $request->user()->repairs()->save($repair = $this->repairs->create($request->except(['_token', '_method', '_create', 'file', 'parts'])));
         $this->setFiles($request, $repair);
-        if ($request->input('allow_parts') == 1) {
+        if ($request->filled('parts')) {
             $parts = collect($request->input('parts'))->values()->toArray();
             $repair->parts()->createMany($parts);
         }

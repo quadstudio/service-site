@@ -17,71 +17,70 @@
             <li class="breadcrumb-item active">{{ $equipment->name }}</li>
         </ol>
         <h1 class="header-title mb-4">{{ $equipment->name }}</h1>
-        <hr/>
 
         @alert()@endalert
-
-        <div class="row">
-            <div class="col mb-2">
-                <a href="{{ route('admin.equipments.edit', $equipment) }}" class="btn btn-primary">
-                    <i class="fa fa-pencil"></i>
-                    <span>@lang('site::messages.edit')</span>
+        <div class="justify-content-start border p-3 mb-2">
+            <a class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0"
+               href="{{ route('admin.equipments.edit', $equipment) }}"
+               role="button">
+                <i class="fa fa-pencil"></i>
+                <span>@lang('site::messages.edit') @lang('site::equipment.equipment')</span>
+            </a>
+            <a href="{{ route('admin.equipments.index') }}" class="d-block mr-0 mr-sm-1 mb-1 mb-sm-0 d-sm-inline btn btn-secondary">
+                <i class="fa fa-reply"></i>
+                <span>@lang('site::messages.back')</span>
+            </a>
+            @can('delete', $equipment)
+                <a class="d-block d-sm-inline text-white btn btn-danger btn-row-delete"
+                   data-form="#equipment-delete-form-{{$equipment->id}}"
+                   data-btn-delete="@lang('site::messages.delete')"
+                   data-btn-cancel="@lang('site::messages.cancel')"
+                   data-label="@lang('site::messages.delete_confirm')"
+                   data-message="@lang('site::messages.delete_sure') @lang('site::equipment.equipment')? "
+                   data-toggle="modal" data-target="#form-modal"
+                   href="javascript:void(0);" title="@lang('site::messages.delete')"><i
+                            class="fa fa-close"></i> @lang('site::messages.delete')
                 </a>
+                <form id="equipment-delete-form-{{$equipment->id}}"
+                      action="{{route('admin.equipments.destroy', $equipment)}}"
+                      method="POST">
+                    @csrf
+                    @method('DELETE')
+                </form>
+            @endcan
+        </div>
+        <div class="card mb-2">
+            <div class="card-body">
+                <dl class="row">
 
-                <a href="{{ route('admin.equipments.index') }}" class="btn btn-secondary">
-                    <i class="fa fa-reply"></i>
-                    <span>@lang('site::messages.back')</span>
-                </a>
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::catalog.full_name')</dt>
+                    <dd class="col-sm-8">{{ $equipment->catalog->parentTreeName() }}</dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::equipment.enabled')</dt>
+                    <dd class="col-sm-8">@bool(['bool' => $equipment->enabled == 1])@endbool</dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::equipment.name')</dt>
+                    <dd class="col-sm-8">{{ $equipment->name }}</dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::equipment.annotation')</dt>
+                    <dd class="col-sm-8">{!! $equipment->annotation !!}</dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::equipment.description')</dt>
+                    <dd class="col-sm-8">{!! $equipment->description !!}</dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::image.images')</dt>
+                    <dd class="col-sm-8">@include('site::admin.equipment.images')</dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::product.header.boiler')</dt>
+                    <dd class="col-sm-8">
+                        @foreach($equipment->products as $product)
+                            <a class="d-block mr-2"
+                               href="{{route('admin.products.show', $product)}}">{{$product->name}}</a>
+                        @endforeach
+                    </dd>
+
+                </dl>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <table class="table table-sm">
-                            <tbody>
-                            <tr class="d-flex">
-                                <td class="col-6 col-sm-3 text-right"><b>@lang('site::catalog.full_name')</b></td>
-                                <td class="col-6 col-sm-9">
-                                    {{ $equipment->catalog->parentTreeName() }}
-                                </td>
-                            </tr>
-                            <tr class="d-flex">
-                                <td class="col-6 col-sm-3 text-right"><b>@lang('site::catalog.enabled')</b></td>
-                                <td class="col-6 col-sm-9">
-                                    @if($equipment->enabled)
-                                        <i data-toggle="tooltip" data-placement="top"
-                                           title="@lang('site::equipment.enabled')"
-                                           class="fa fa-check text-success"></i>
-                                    @else
-                                        <i data-toggle="tooltip" data-placement="top"
-                                           title="@lang('site::equipment.enabled')"
-                                           class="fa fa-close text-secondary"></i>
-                                    @endif
-                                </td>
-                            </tr>
-                            <tr class="d-flex">
-                                <td class="col-6 col-sm-3 text-right"><b>@lang('site::catalog.name')</b></td>
-                                <td class="col-6 col-sm-9">{{ $equipment->name }}</td>
-                            </tr>
-                            <tr class="d-flex">
-                                <td class="col-6 col-sm-3 text-right"><b>@lang('site::catalog.description')</b></td>
-                                <td class="col-6 col-sm-9">{!! $equipment->description !!}</td>
-                            </tr>
-                            <tr class="d-flex">
-                                <td class="col-6 col-sm-3 text-right"><b>@lang('site::image.images')</b></td>
-                                <td class="col-6 col-sm-9">
-                                    @include('site::admin.equipment.images')
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
     </div>
 @endsection

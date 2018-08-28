@@ -1,39 +1,101 @@
-<div class="product hover-style product-list">
-    <a class="product-image" href="{{ route('products.show', ['id' => $item->id]) }}">
-        <img class="card-img-top" src="{{ asset('storage/images/thumbs/'.$item->image) }}" alt="">
-    </a>
-    <div class="product-body">
-        <a style="font-size: 18px;"
-           href="{{ route('products.show', ['id' => $item->id]) }}">{!!  htmlspecialchars_decode($item->name) !!}
-            ({{ $item->sku }})</a>
-        <div class="row">
-            <div class="col-6">
-                @if($item->price())
-                    {{ Shop::format_price($item->price()->price()) }}
-                @endif
-            </div>
-            <div class="col-6">
-                @auth
-                @if($current_user->hasPermission('buy'))
-                    @includeIf('cart::add', [
-                        'product_id' => $item->id,
-                        'name' => $item->name,
-                        'price'=> $item->price()->price(),
-                        'currency_id'=> config('shop.currency'),
-                        'image' => config('shop.cart_storage').$item->image,
-                        'manufacturer' => $item->manufacturer,
-                        'weight' => $item->weight,
-                        'unit' => $item->unit,
-                        'sku' => $item->sku,
-                        'url' => route('products.show', ['id' => $item->id]),
-                        'availability' => $item->quantity > 0,
-                        'quantity' => 1
-                    ])
-                @endif
-                @endauth
-            </div>
-        </div>
-        <p>{{ $item->description }}</p>
+@extends('layouts.app')
+@push('styles')
+<style type="text/css">
+    #product-row .product-col {
+        border: 1px solid #f9f9f9;
+    }
 
+    #product-row .product-col:hover {
+        border: 1px solid #FFECB3;
+        background-color: #fcf3d8;
+    }
+</style>
+@endpush
+@section('header')
+    @include('site::header.front',[
+        'h1' => __('site::product.products'). ' '. __('site::product.view.list'),
+        'breadcrumbs' => [
+            ['url' => route('index'), 'name' => __('site::messages.index')],
+            ['name' => __('site::product.products'). ' '. __('site::product.view.list')]
+        ]
+    ])
+@endsection
+@section('content')
+    <div class="container">
+        @can('product_list', Auth::user())
+            <div class=" border p-3 mb-2">
+                <a href="{{route('products.index')}}" class="d-block d-sm-inline btn btn-ferroli">
+                    <i class="fa fa-@lang('site::product.icon')"></i> @lang('site::messages.show') @lang('site::product.view.shop')
+                </a>
+            </div>
+        @endcan
+        @filter(['repository' => $repository])@endfilter
+        @pagination(['pagination' => $products])@endpagination
+        {{$products->render()}}
+        <div class="row mt-2 mb-4" id="product-row">
+            @foreach($products as $key => $product)
+                <div class="col-12 product-col">
+                    @can('buy', $product)
+                        <div class="d-inline-block mr-2">
+                            @include('site::cart.buy.small', $product->toCart())
+                        </div>
+                    @endcan
+                    <span class="width-20 mr-1">
+                        <i data-toggle="tooltip"
+                           data-placement="top"
+                           title="@if($product->quantity > 0) @lang('site::product.in_stock') @else @lang('site::product.not_available') @endif"
+                           class="fa fa-circle text-@if($product->quantity > 0) text-success @else text-light @endif"></i>
+                    </span>
+                    <span>{{$product->sku}}</span>
+                    <a href="{{route('products.show', $product)}}">{!! $product->name !!}</a>
+                        @if($product->price()->exists)
+                            <span class="d-inline-block pull-right product-price font-weight-bold text-big">{{ $product->price()->format() }}</span>
+                        @endif
+                </div>
+            @endforeach
+        </div>
+        {{--<div id="product-row" class="row grid">--}}
+        {{--@foreach($products as $key => $product)--}}
+        {{--<div class="product-col mt-3">--}}
+        {{--<div class="row p-2 mx-2">--}}
+
+        {{--<div class="product-image">--}}
+        {{--<a href="{{route('products.show', $product)}}">--}}
+        {{--<img class="img-fluid" src="{{ $product->image()->src() }}" alt="{{$product->name}}">--}}
+        {{--</a>--}}
+        {{--</div>--}}
+
+        {{--<div class="product-content pl-2 pl-sm-0 pt-sm-2">--}}
+        {{--<div class="product-name">--}}
+        {{--<a class="text-dark"--}}
+        {{--href="{{route('products.show', $product)}}">{!! str_limit($product->name, 60) !!}</a>--}}
+        {{--<div class="text-muted mb-2">@lang('site::product.sku')--}}
+        {{--: {{$product->sku}}</div>--}}
+        {{--<div class="product-relations">--}}
+        {{--@if( $product->relation_equipments()->count() > 0)--}}
+        {{--@lang('site::relation.header.back_relations')--}}
+        {{--: {{ $product->relation_equipments()->implode('name', ', ') }}--}}
+        {{--@endif--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="product-cart">--}}
+        {{--@if($product->price()->exists)--}}
+        {{--<div class="product-price font-weight-bold text-xlarge my-3">{{ $product->price()->format() }}</div>--}}
+        {{--@endif--}}
+        {{--@auth--}}
+        {{--@if(Auth::user()->hasPermission('buy'))--}}
+        {{--<div class="product-button">--}}
+        {{--@include('site::cart.add', $product->toCart())--}}
+        {{--</div>--}}
+        {{--@endif--}}
+        {{--@endauth--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--@endforeach--}}
+        {{--@each('site::product.grid', $items, 'product', 'site::product.empty')--}}
+        {{--</div>--}}
+        {{$products->render()}}
     </div>
-</div>
+@endsection

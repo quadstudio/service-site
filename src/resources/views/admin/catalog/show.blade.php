@@ -42,10 +42,29 @@
                     <span>@lang('site::messages.add') @lang('site::equipment.equipment')</span>
                 </a>
             @endif
-            <a href="{{ route('admin.catalogs.index') }}" class="d-block d-sm-inline btn btn-secondary">
+            <a href="{{ route('admin.catalogs.index') }}"
+               class="d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-secondary">
                 <i class="fa fa-reply"></i>
                 <span>@lang('site::messages.back')</span>
             </a>
+            @can('delete', $catalog)
+                <a class="d-block d-sm-inline text-white btn btn-danger btn-row-delete"
+                   data-form="#catalog-delete-form-{{$catalog->id}}"
+                   data-btn-delete="@lang('site::messages.delete')"
+                   data-btn-cancel="@lang('site::messages.cancel')"
+                   data-label="@lang('site::messages.delete_confirm')"
+                   data-message="@lang('site::messages.delete_sure') @lang('site::catalog.catalog')? "
+                   data-toggle="modal" data-target="#form-modal"
+                   href="javascript:void(0);" title="@lang('site::messages.delete')"><i
+                            class="fa fa-close"></i> @lang('site::messages.delete')
+                </a>
+                <form id="catalog-delete-form-{{$catalog->id}}"
+                      action="{{route('admin.catalogs.destroy', $catalog)}}"
+                      method="POST">
+                    @csrf
+                    @method('DELETE')
+                </form>
+            @endcan
         </div>
 
         <div class="card mb-2">
@@ -75,23 +94,29 @@
                     @if($catalog->canAddCatalog())
                         <dt class="col-sm-4 text-left text-sm-right">@lang('site::catalog.children')</dt>
                         <dd class="col-sm-8">
-                            <div class="list-group">
-                                @foreach($catalog->catalogs as $children)
-                                    <a class="list-group-item"
-                                       href="{{route('admin.catalogs.show', $children)}}">{{ $children->name }}</a>
+                            <ul class="list-group" data-target="{{route('admin.catalogs.sort', $catalog)}}"
+                                id="sort-list">
+                                @foreach($catalog->catalogs()->orderBy('sort_order')->get() as $children)
+                                    <li class="sort-item list-group-item p-1" data-id="{{$children->id}}">
+                                        <i class="fa fa-arrows"></i>
+                                        <a href="{{route('admin.catalogs.show', $children)}}">{{ $children->name }}</a>
+                                    </li>
                                 @endforeach
-                            </div>
+                            </ul>
+
                         </dd>
                     @endif
                     @if($catalog->canAddEquipment())
                         <dt class="col-sm-4 text-left text-sm-right">@lang('site::equipment.equipments')</dt>
                         <dd class="col-sm-8">
-                            <div class="list-group">
-                                @foreach($catalog->equipments as $equipment)
-                                    <a class="list-group-item"
-                                       href="{{route('admin.equipments.show', $equipment)}}">{{ $equipment->name }}</a>
+                            <ul class="list-group" data-target="{{route('admin.equipments.sort')}}" id="sort-list">
+                                @foreach($catalog->equipments()->orderBy('sort_order')->get() as $equipment)
+                                    <li class="sort-item list-group-item p-1" data-id="{{$equipment->id}}">
+                                        <i class="fa fa-arrows"></i>
+                                        <a href="{{route('admin.equipments.show', $equipment)}}">{{ $equipment->name }}</a>
+                                    </li>
                                 @endforeach
-                            </div>
+                            </ul>
                         </dd>
                     @endif
                 </dl>

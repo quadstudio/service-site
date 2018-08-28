@@ -13,7 +13,7 @@
         </ol>
         <h1 class="header-title mb-4"><i class="fa fa-@lang('site::act.icon')"></i> @lang('site::act.acts')</h1>
         @alert()@endalert()
-        <div class=" border p-3 mb-4">
+        <div class=" border p-3 mb-2">
             <a class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0" href="{{ route('admin.acts.create') }}"
                role="button">
                 <i class="fa fa-magic"></i>
