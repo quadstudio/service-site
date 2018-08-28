@@ -19,6 +19,10 @@ body {
   }
 }
 
+.sort-item {
+  cursor: move;
+}
+
 .nav.nav-tabs li.nav-item a.active {
   background-color: $white;
 }
@@ -1721,6 +1725,37 @@ a.cart-nav:hover {
 
 .width-100 {
   width: 100px !important;
+}
+
+.width-110 {
+  width: 110px !important;
+}
+.width-120 {
+  width: 120px !important;
+}
+.width-130 {
+  width: 130px !important;
+}
+.width-140 {
+  width: 140px !important;
+}
+.width-150 {
+  width: 150px !important;
+}
+.width-160 {
+  width: 160px !important;
+}
+.width-170 {
+  width: 170px !important;
+}
+.width-180 {
+  width: 180px !important;
+}
+.width-190 {
+  width: 190px !important;
+}
+.width-200 {
+  width: 200px !important;
 }
 
 /** Contacts */

@@ -82,10 +82,10 @@
         });
     }
 
-    let sortableImagesList = document.getElementById("images-list");
+    let sortableImagesList = document.getElementById("sort-list");
     if (sortableImagesList !== null) {
         Sortable.create(sortableImagesList, {
-            group: 'images',
+            group: 'items',
             animation: 100,
             // Changed sorting within list
             onUpdate: function (/**Event*/evt) {
@@ -190,12 +190,65 @@
 
 
     }
+    let orderCreateForm = document.getElementById("order-create-form");
+    if (orderCreateForm !== null) {
+        let fast_product_id = $('#fast_product_id');
+        fast_product_id.select2({
+            theme: "bootstrap4",
+            ajax: {
+                url: '/api/products/fast',
+                dataType: 'json',
+                 delay: 200,
+                data: function (params) {
+                    return {
+                        'filter[search_part]': params.term,
+                        'filter[limit]': fast_product_id.data('limit'),
+                    };
+                },
+                processResults: function (data, params) {
+                    return {
+                        results: data.data,
+                    };
+                }
+            },
+            minimumInputLength: 3,
+
+            templateResult: function (product) {
+                if (product.loading) return "...";
+                //return product.name;
+                //if(product.enabled) return product.name;
+                //let markup = product.name + ' (' + product.sku + ')';
+                let markup = "<img style='width:70px;' src=" + product.image + " /> &nbsp; " + product.name + ' (' + product.sku + ') - ' + product.format;
+                return markup;
+            },
+            templateSelection: function (product) {
+                return product.name;
+            },
+            escapeMarkup: function (markup) {
+                return markup;
+            }
+        });
+
+        // fast_product_id.on('select2:select', function (e) {
+        //     let product_id = $(this).find('option:selected').val();
+        //
+        //     axios
+        //         .get("/api/products/" + product_id)
+        //         .then((response) => {
+        //             parts.append(response.data);
+        //             $('[name="parts[' + product_id + '][count]"]').focus();
+        //             calc_parts();
+        //             parts_search.val(null)
+        //         })
+        //         .catch((error) => {
+        //             this.status = 'Error:' + error;
+        //         });
+        // });
+    }
+
     let repairFormExists = document.getElementById("repair-form");
     if (repairFormExists !== null) {
-        let allow_parts = $('#allow_parts'),
-            allow_work = $('#allow_work'),
-            allow_road = $('#allow_road'),
-            part_delete = $('.part-delete'),
+        let part_delete = $('.part-delete'),
             boiler_search = $('#product_id'),
             parts_search = $('#parts_search'),
             serial_success = $('#serial-success'),
@@ -219,18 +272,6 @@
             $('.serial-' + index).html(value);
             $('.serial-' + index + '-value').val(value);
         };
-
-        allow_parts.change(function () {
-            if ($(this).find('option:selected').val() === "0") {
-                //parts_search_fieldset.css('display', 'none');
-                parts.html('');
-                $('#total-cost').html(0);
-                selected = [];
-            } else {
-                //parts_search_fieldset.css('display', 'block');
-            }
-
-        });
 
 
         parts_search.select2({
@@ -291,60 +332,55 @@
 
             //console.log(data.val());
         });
-
-        boiler_search.select2({
-            theme: "bootstrap4",
-            ajax: {
-                url: '/api/boilers',
-                dataType: 'json',
-                // delay: 200,
-                data: function (params) {
-                    return {
-                        'filter[search_boiler]': params.term,
-                    };
+        if (document.getElementById("product_id").tagName === 'select') {
+            boiler_search.select2({
+                theme: "bootstrap4",
+                ajax: {
+                    url: '/api/boilers',
+                    dataType: 'json',
+                    // delay: 200,
+                    data: function (params) {
+                        return {
+                            'filter[search_boiler]': params.term,
+                        };
+                    },
+                    processResults: function (data, params) {
+                        return {
+                            results: data.data,
+                        };
+                    }
                 },
-                processResults: function (data, params) {
-                    return {
-                        results: data.data,
-                    };
+                minimumInputLength: 3,
+                templateResult: function (boiler) {
+                    if (boiler.loading) return "...";
+                    //return product.name;
+                    //if(product.enabled) return product.name;
+                    let markup = boiler.type + ' ' + boiler.name + ' (' + boiler.sku + ')';
+                    //let markup = "<img style='width:70px;' src="+product.image+" /> &nbsp; "+ product.name + ' (' + product.sku + ')';
+                    return markup;
+                },
+                templateSelection: function (boiler) {
+                    return boiler.name;
+                },
+                escapeMarkup: function (markup) {
+                    return markup;
                 }
-            },
-            minimumInputLength: 3,
-            templateResult: function (boiler) {
-                if (boiler.loading) return "...";
-                //return product.name;
-                //if(product.enabled) return product.name;
-                let markup = boiler.type + ' ' + boiler.name + ' (' + boiler.sku + ')';
-                //let markup = "<img style='width:70px;' src="+product.image+" /> &nbsp; "+ product.name + ' (' + product.sku + ')';
-                return markup;
-            },
-            templateSelection: function (boiler) {
-                return boiler.name;
-            },
-            escapeMarkup: function (markup) {
-                return markup;
-            }
-        });
+            });
 
-        boiler_search.on('select2:select', function (e) {
-            let boiler_id = $(this).find('option:selected').val();
-            axios
-                .get("/api/boilers/" + boiler_id)
-                .then((response) => {
-                    calc_parts();
-                })
-                .catch((error) => {
-                    this.status = 'Error:' + error;
-                });
-            //console.log(data.val());
-        });
+            boiler_search.on('select2:select', function (e) {
+                let boiler_id = $(this).find('option:selected').val();
+                axios
+                    .get("/api/boilers/" + boiler_id)
+                    .then((response) => {
 
-        allow_work.on('change', function () {
-            calc_parts();
-        });
-        allow_road.on('change', function () {
-            calc_parts();
-        });
+                        calc_parts();
+                    })
+                    .catch((error) => {
+                        this.status = 'Error:' + error;
+                    });
+                //console.log(data.val());
+            });
+        }
 
 
         let calc_parts = function () {
@@ -353,12 +389,7 @@
                 $(this).find('.parts_cost').val();
                 cost += (parseInt($(this).find('.parts_cost').val()) * $(this).find('.parts_count').val());
             });
-            // if (allow_work.find('option:selected').val() === '1') {
-            //     cost += parseInt($('[name="cost_work"]').val())
-            // }
-            // if (allow_road.find('option:selected').val() === '1') {
-            //     cost += parseInt($('[name="cost_road"]').val())
-            // }
+
             $('#total-cost').html(number_format(cost));
         };
 
@@ -663,7 +694,7 @@
         })
         .on('click', ".add-to-cart", function (e) {
             e.preventDefault();
-            let _this = this, form = $(_this).parent('form');
+            let _this = this, form = $(_this).parents('form');
             submitForm(form, function () {
                 addToCartModal.modal('show');
             });
@@ -755,7 +786,9 @@
 
     function parseData(data, callback) {
 
-        if ("refresh" in data) {
+        if ("redirect" in data) {
+            document.location.href = data.redirect;
+        } else if ("refresh" in data) {
             document.location.reload();
         } else {
             if ("remove" in data) {
