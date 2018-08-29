@@ -47,6 +47,7 @@ class Organization extends Model
     {
         return [
             'our'     => 1,
+            'guid'    => $this->getAttribute('id'),
             'name'    => $this->getAttribute('name'),
             'inn'     => $this->getAttribute('inn'),
             'okpo'    => $this->getAttribute('okpo'),

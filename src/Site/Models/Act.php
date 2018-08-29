@@ -47,6 +47,26 @@ class Act extends Model
     }
 
     /**
+     * Организация
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class);
+    }
+
+    /**
+     * Контрагент
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function contragent()
+    {
+        return $this->belongsTo(Contragent::class);
+    }
+
+    /**
      * Отчеты по ремонту
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

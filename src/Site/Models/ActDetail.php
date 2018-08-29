@@ -14,7 +14,8 @@ class ActDetail extends Model
     protected $fillable = [
         'our', 'name', 'inn', 'kpp', 'okpo',
         'rs', 'ks', 'bik', 'bank', 'nds',
-        'nds_act', 'address'
+        'nds_act', 'address', 'nds_value',
+        'guid'
     ];
 
     /**

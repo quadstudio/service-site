@@ -112,18 +112,20 @@ class Contragent extends Model
     public function toArray()
     {
         return [
-            'our'      => 0,
-            'name'     => $this->getAttribute('name'),
-            'inn'      => $this->getAttribute('inn'),
-            'okpo'     => $this->getAttribute('okpo'),
-            'rs'       => $this->getAttribute('rs'),
-            'ks'       => $this->getAttribute('ks'),
-            'bik'      => $this->getAttribute('bik'),
-            'bank'     => $this->getAttribute('bank'),
-            'address'  => $this->addresses()->whereTypeId(1)->first()->name,
-            'contract' => $this->getAttribute('contract'),
-            'nds'      => config('site.nds', 18),
-            'nds_act'  => $this->getAttribute('nds_act'),
+            'our'       => 0,
+            'guid'      => $this->getAttribute('guid'),
+            'name'      => $this->getAttribute('name'),
+            'inn'       => $this->getAttribute('inn'),
+            'okpo'      => $this->getAttribute('okpo'),
+            'rs'        => $this->getAttribute('rs'),
+            'ks'        => $this->getAttribute('ks'),
+            'bik'       => $this->getAttribute('bik'),
+            'bank'      => $this->getAttribute('bank'),
+            'address'   => $this->addresses()->whereTypeId(1)->first()->name,
+            'contract'  => $this->getAttribute('contract'),
+            'nds_value' => config('site.nds', 18),
+            'nds'       => $this->getAttribute('nds'),
+            'nds_act'   => $this->getAttribute('nds_act'),
         ];
     }
 

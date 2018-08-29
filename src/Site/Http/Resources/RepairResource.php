@@ -16,10 +16,10 @@ class RepairResource extends JsonResource
     {
 //        return parent::toArray($request);
         return [
-            'id'     => $this->id,
-            'guid'     => $this->guid,
+            'id'     => 'Работы по гарантийному обслуживанию оборудования № '.$this->id.' '.\Carbon\Carbon::instance($this->created_at)->format('d.m.Y' ),
+            'count' => 1,
             'cost' => $this->totalCost,
-            'created_at' => \Carbon\Carbon::instance($this->created_at)->format('Y-m-d H:i:s' ),
+            //'nds_act' => $this->contragent,
             //'status' => new StatusResource($this->whenLoaded('status')),
             //'employee' => new EmployeeResource($this->whenLoaded('employee')),
             //'files' => FileResource::collection($this->whenLoaded('files')),
