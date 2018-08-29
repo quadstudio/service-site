@@ -14,20 +14,16 @@ class RepairResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
-        //return array_merge(parent::toArray($request), ['files'  => $this->files]);
-//        return [
-//            'id'     => $this->id,
-//            'number' => $this->number,
-//            'status' => new StatusResource($this->whenLoaded('status')),
-//            //'employee' => new EmployeeResource($this->whenLoaded('employee')),
-//            'files' => FileResource::collection($this->whenLoaded('files')),
-//            //'files' => FileResource::collection($this->files),
-//        ];
-//        return [
-//            'id' => $this->id,
-//            'number' => $this->number,
-//            'files' => $this->files,
-//        ];
+//        return parent::toArray($request);
+        return [
+            'id'     => $this->id,
+            'guid'     => $this->guid,
+            'cost' => $this->totalCost,
+            'created_at' => \Carbon\Carbon::instance($this->created_at)->format('Y-m-d H:i:s' ),
+            //'status' => new StatusResource($this->whenLoaded('status')),
+            //'employee' => new EmployeeResource($this->whenLoaded('employee')),
+            //'files' => FileResource::collection($this->whenLoaded('files')),
+            //'files' => FileResource::collection($this->files),
+        ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 
+use QuadStudio\Service\Site\Events\ActExport;
 use QuadStudio\Service\Site\Filters\User\HasApprovedRepairFilter;
 use QuadStudio\Service\Site\Http\Requests\ActRequest;
 use QuadStudio\Service\Site\Models\Act;
@@ -105,5 +106,18 @@ trait ActControllerTrait
         }
 
         return redirect()->route('admin.acts.index')->with('success', trans('site::act.created'));
+    }
+
+    /**
+     * @param Act $act
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function schedule(Act $act)
+    {
+        $this->authorize('schedule', $act);
+        event(new ActExport($act));
+
+        return redirect()->route('admin.acts.show', $act)->with('success', trans('site::schedule.created'));
+
     }
 }

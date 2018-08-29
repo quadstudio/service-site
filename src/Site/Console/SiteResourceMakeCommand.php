@@ -78,6 +78,7 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
         'api/ProductController.stub'         => 'Api/ProductController',
         'api/BoilerController.stub'          => 'Api/BoilerController',
         'api/OrderController.stub'           => 'Api/OrderController',
+        'api/ActController.stub'             => 'Api/ActController',
         //
         'admin/WarehouseController.stub'     => 'Admin/WarehouseController',
         'admin/OrganizationController.stub'  => 'Admin/OrganizationController',

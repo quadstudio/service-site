@@ -156,7 +156,7 @@
                             <dd class="col-sm-8">
                                 @foreach($parts as $part)
                                     <div class="row">
-                                        <div class="col-8">{{$part->product->name()}}
+                                        <div class="col-8">{!! $part->product->name !!}
                                             x {{$part->count}} {{$part->product->unit}}</div>
                                         <div class="col-4 text-right text-danger">{{Site::format($part->total)}}</div>
                                     </div>

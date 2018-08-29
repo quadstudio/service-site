@@ -91,12 +91,24 @@ trait ProductControllerTrait
             ->applyFilter(new SortFilter())
             ->applyFilter((new HasProductFilter())->setProduct($product))
             ->all();
+        $analogs = $product->analogs()->where('enabled', 1)->orderBy('name')->get();
+        $back_relations = $product->back_relations()->where('enabled', 1)->orderBy('name')->get();
+        $relations = $product->relations()->where('enabled', 1)->orderBy('name')->get();
+        $images = $product->images()->get();
 
-        return view('site::product.show', compact('product', 'equipments'));
+        return view('site::product.show', compact(
+            'product',
+            'equipments',
+            'analogs',
+            'back_relations',
+            'relations',
+            'images'
+        ));
     }
 
 
-    public function schemes(Product $product){
+    public function schemes(Product $product)
+    {
         return view('site::product.schemes', compact('product'));
     }
 

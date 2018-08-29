@@ -48,7 +48,7 @@ class Product extends Model
     public function brand()
     {
         return $this->belongsTo(Brand::class)->withDefault(function($brand){
-            $brand->name = trans('<span class="text-muted">No brand</span>');
+            $brand->name = '';
         });
     }
 
@@ -118,11 +118,14 @@ class Product extends Model
     }
 
     /**
-     * @return Model
+     * @return Model|\Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function image()
     {
-        return $this->images()->firstOrNew([]);
+        if($this->images()->count() == 0){
+            return new Image(['src' => storage_path('app/public/images/products/noimage.png')]);
+        }
+        return $this->images()->first();
     }
 
     /**
@@ -143,16 +146,6 @@ class Product extends Model
 
         return $this->_images();
     }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany|Price
-     */
-//    public function price()
-//    {
-//        $type_id = Auth::guest() ? config('shop.default_price_type') : Auth::user()->profile->price_type_id;
-//        $price = $this->prices()->where('type_id', '=', $type_id)->first();
-//        return is_null($price) ? new Price() : $price;
-//    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\morphMany

@@ -34,6 +34,7 @@ class SiteServiceProvider extends ServiceProvider
         Models\Address::class    => Policies\AddressPolicy::class,
         Models\Contragent::class => Policies\ContragentPolicy::class,
         Models\User::class       => Policies\UserPolicy::class,
+        Models\Act::class        => Policies\ActPolicy::class,
     ];
 
     /**
@@ -217,6 +218,7 @@ class SiteServiceProvider extends ServiceProvider
             'catalogs'    => Models\Catalog::class,
             'repairs'     => Models\Repair::class,
             'orders'      => Models\Order::class,
+            'acts'        => Models\Act::class,
         ]);
 
         return $this;
@@ -267,6 +269,7 @@ class SiteServiceProvider extends ServiceProvider
     {
         Event::subscribe(new Listeners\UserListener());
         Event::subscribe(new Listeners\OrderListener());
+        Event::subscribe(new Listeners\ActListener());
     }
 
     /**

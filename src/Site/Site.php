@@ -109,6 +109,7 @@ class Site
                             function () use ($router) {
                                 $router->name('admin')->get('/', 'IndexController@index');
                                 $router->name('admin')->resource('/acts', 'ActController');
+                                $router->name('admin')->get('/acts/{act}/schedule', 'ActController@schedule')->name('.acts.schedule');
                                 $router->name('admin')->put('/blocks/sort', function (Request $request) {
                                     Block::sort($request);
                                 })->name('.blocks.sort');
@@ -193,6 +194,7 @@ class Site
                 $router->name('api')->get('/services/{region?}', 'ServiceController@index')->name('.services.index');
                 $router->name('api')->resource('/users', 'UserController');
                 $router->name('api')->resource('/orders', 'OrderController');
+                $router->name('api')->resource('/acts', 'ActController');
                 $router->name('api')->resource('/serials', 'SerialController');
                 $router->name('api')->resource('/files', 'FileController')->only(['index', 'store', 'show', 'destroy'])->middleware('permission:files');
                 $router->name('api')->resource('/contragents', 'ContragentController');

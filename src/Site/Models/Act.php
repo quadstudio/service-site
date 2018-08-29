@@ -3,9 +3,13 @@
 namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use QuadStudio\Service\Site\Traits\Models\ScheduleTrait;
 
 class Act extends Model
 {
+
+    use ScheduleTrait;
+
     /**
      * @var string
      */

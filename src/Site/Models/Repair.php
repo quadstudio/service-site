@@ -193,12 +193,12 @@ class Repair extends Model implements Messagable
         foreach ($this->parts as $key => $part){
             $fpdf->Cell(10, $line_height,  $key + 1, 1, 0, 'C');
             $fpdf->Cell(70, $line_height,  w1251($part->product->sku), 1, 0, 'C');
-            $fpdf->Cell(30, $line_height,  number_format($part->cost, 2, '.', ' '), 1, 1, 'R');
+            $fpdf->Cell(30, $line_height,  number_format($part->total, 2, '.', ' '), 1, 1, 'R');
         }
         $bottom = $fpdf->getY();
         $fpdf->setXY(120, $y);
         $fpdf->Cell(30, $line_height * ($key + 1),  number_format($this->cost_difficulty, 2, '.', ' '), 1, 0, 'R');
-        $fpdf->Cell(20, $line_height * ($key + 1),  $this->difficulty->name, 1, 0, 'C');
+        $fpdf->Cell(20, $line_height * ($key + 1),  w1251($this->difficulty->name), 1, 0, 'C');
         $fpdf->Cell(30, $line_height * ($key + 1),  number_format($this->cost_distance, 2, '.', ' '), 1, 0, 'R');
         $fpdf->setXY(10, $bottom + 2);
         $fpdf->SetFont('Verdana', 'B', $font_size);
