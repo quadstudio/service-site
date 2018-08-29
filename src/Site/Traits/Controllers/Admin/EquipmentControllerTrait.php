@@ -149,7 +149,7 @@ trait EquipmentControllerTrait
             }
 
         }
-        $this->images->deleteLostImages();
+        //$this->images->deleteLostImages();
     }
 
     /**

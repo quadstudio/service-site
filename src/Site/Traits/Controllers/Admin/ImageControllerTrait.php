@@ -54,7 +54,7 @@ trait ImageControllerTrait
         $file = $request->file('path');
 
         $image = new Image([
-            'path' => Storage::disk($request->input('storage'))->putFile(config('site.files.path', ''), new File($file->getPathName())),
+            'path' => Storage::disk($request->input('storage'))->putFile('', new File($file->getPathName())),
             'mime' => $file->getMimeType(),
             'storage' => $request->input('storage'),
             'size' => $file->getSize(),

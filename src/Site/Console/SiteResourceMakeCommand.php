@@ -110,6 +110,9 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
         'admin/FileTypeController.stub'      => 'Admin/FileTypeController',
         'admin/FileGroupController.stub'     => 'Admin/FileGroupController',
         'admin/ExplodeController.stub'       => 'Admin/ExplodeController',
+        'admin/BlockController.stub'         => 'Admin/BlockController',
+        'admin/SchemeController.stub'        => 'Admin/SchemeController',
+        'admin/ElementController.stub'       => 'Admin/ElementController',
     ];
 
     /**

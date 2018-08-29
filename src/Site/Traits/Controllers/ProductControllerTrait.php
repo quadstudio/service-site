@@ -95,4 +95,9 @@ trait ProductControllerTrait
         return view('site::product.show', compact('product', 'equipments'));
     }
 
+
+    public function schemes(Product $product){
+        return view('site::product.schemes', compact('product'));
+    }
+
 }

@@ -334,6 +334,7 @@
                         <div class="card-body">
                             <h5 class="card-title">@lang('site::file.files')</h5>
                             @foreach($types as $type)
+
                                 <div class="form-group @if($type->required) required @endif form-control{{ $errors->has('file.'.$type->id) ? ' is-invalid' : '' }}">
                                     <label class="control-label d-block" for="type_id">{{$type->name}}</label>
                                     <form method="POST" enctype="multipart/form-data"
@@ -342,8 +343,8 @@
                                         <input type="hidden" name="type_id" value="{{$type->id}}"/>
                                         <input type="hidden" name="storage" value="repairs"/>
                                         <input type="file" name="path"/>
-                                        <button class="btn btn-ferroli repair-file-upload"><i
-                                                    class="fa fa-download"></i> @lang('site::messages.load')
+                                        <button class="btn btn-ferroli repair-file-upload">
+                                            <i class="fa fa-download"></i> @lang('site::messages.load')
                                         </button>
                                         <small id="fileHelp-{{$type->id}}"
                                                class="form-text text-muted">{{$type->comment}}</small>

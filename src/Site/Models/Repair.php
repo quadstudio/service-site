@@ -48,6 +48,173 @@ class Repair extends Model implements Messagable
 //        });
 //    }
 
+    public function pdf(\Codedge\Fpdf\Fpdf\Fpdf $fpdf)
+    {
+        $font_size = 9;
+        $font_size_small = 7;
+        $line_height = 4;
+        $fpdf->SetFillColor(255, 255, 255);
+        $fpdf->SetDrawColor(0, 0, 0);
+        $fpdf->AddFont('verdana', '',  'verdana.php');
+        $fpdf->AddFont('verdana', 'B', 'verdanab.php');
+        $fpdf->AddFont('verdana', 'I', 'verdanai.php');
+        $fpdf->AddFont('verdana', 'U', 'verdanaz.php');
+        $fpdf->SetMargins(10, 10, 10);
+        $fpdf->AddPage();
+        $fpdf->SetFont('Verdana', '', $font_size);
+        $fpdf->Cell(0, $line_height,  w1251(trans('site::repair.pdf.annex')), 0, 1, 'C');
+        $fpdf->SetFont('Verdana', 'B', $font_size);
+        $fpdf->Cell(0, $line_height,  w1251(trans('site::repair.pdf.contract'). ' ' .$this->contragent->contract), 0, 1, 'C');
+        $fpdf->ln(5);
+        // Город
+        $fpdf->SetFont('Verdana', 'B', $font_size);
+        $fpdf->Cell(13, $line_height,  w1251(trans('site::repair.pdf.city')), 0, 0, 'L');
+        $fpdf->SetFont('Verdana', '', $font_size);
+        $fpdf->Cell(177, $line_height,  w1251($this->user->address()->locality), 0, 1, 'L');
+        // Организация
+        $fpdf->SetFont('Verdana', 'B', $font_size);
+        $fpdf->Cell(53, $line_height,  w1251(trans('site::repair.pdf.organization')), 0, 0, 'L');
+        $fpdf->SetFont('Verdana', '', $font_size);
+        $fpdf->Cell(137, $line_height,  w1251($this->contragent->name), 0, 1, 'L');
+        // Акт
+        $fpdf->SetFont('Verdana', 'B', $font_size);
+        $fpdf->Cell(0, 14, w1251(trans('site::repair.pdf.title')), 0, 1, 'C');
+        // Клиент
+        $fpdf->SetFont('Verdana', 'B', $font_size);
+        $fpdf->Cell(43, $line_height,  w1251(trans('site::repair.pdf.client')), 0, 0, 'L');
+        $fpdf->SetFont('Verdana', '', $font_size);
+        $fpdf->Cell(147, $line_height,  w1251($this->client), 0, 1, 'L');
+        // Адрес
+        $fpdf->SetFont('Verdana', 'B', $font_size);
+        $fpdf->Cell(14, $line_height,  w1251(trans('site::repair.pdf.address')), 0, 0, 'L');
+        $fpdf->SetFont('Verdana', '', $font_size);
+        $fpdf->Cell(176, $line_height,  w1251($this->address), 0, 1, 'L');
+        // Телефон
+        $fpdf->SetFont('Verdana', 'B', $font_size);
+        $fpdf->Cell(38, $line_height,  w1251(trans('site::repair.pdf.phone')), 0, 0, 'L');
+        $fpdf->SetFont('Verdana', '', $font_size);
+        $fpdf->Cell(162, $line_height,  w1251($this->country->phone.$this->phone_primary), 0, 1, 'L');
+        //
+        $fpdf->ln(2);
+        $fpdf->Line(10, $fpdf->GetY(), 200, $fpdf->GetY());
+        $fpdf->ln(2);
+        // Модель котла
+        $fpdf->SetFont('Verdana', 'B', $font_size);
+        $fpdf->Cell(28, $line_height,  w1251(trans('site::repair.pdf.model')), 0, 0, 'L');
+        $fpdf->SetFont('Verdana', '', $font_size);
+        $fpdf->Cell(162, $line_height,  w1251($this->product->brand->name. ' ' .$this->product->name), 0, 1, 'L');
+        // Серийный номер
+        $fpdf->SetFont('Verdana', 'B', $font_size);
+        $fpdf->Cell(34, $line_height,  w1251(trans('site::repair.pdf.serial')), 0, 0, 'L');
+        $fpdf->SetFont('Verdana', '', $font_size);
+        $fpdf->Cell(166, $line_height,  w1251($this->serial_id), 0, 1, 'L');
+        // Дата продажи
+        $fpdf->SetFont('Verdana', 'B', $font_size);
+        $fpdf->Cell(28, $line_height,  w1251(trans('site::repair.pdf.date_trade')), 0, 0, 'L');
+        $fpdf->SetFont('Verdana', '', $font_size);
+        $fpdf->Cell(164, $line_height,  \Carbon\Carbon::instance(\DateTime::createFromFormat('Y-m-d', $this->date_trade))->format('d.m.Y'), 0, 1, 'L');
+        // Дата продажи
+        $fpdf->SetFont('Verdana', 'B', $font_size);
+        $fpdf->Cell(53, $line_height,  w1251(trans('site::repair.pdf.date_launch')), 0, 0, 'L');
+        $fpdf->SetFont('Verdana', '', $font_size);
+        $fpdf->Cell(137, $line_height,  \Carbon\Carbon::instance(\DateTime::createFromFormat('Y-m-d', $this->date_launch))->format('d.m.Y'), 0, 1, 'L');
+        //
+        $fpdf->ln(2);
+        $fpdf->Line(10, $fpdf->GetY(), 200, $fpdf->GetY());
+        $fpdf->ln(2);
+        // Дата поступления заявки
+        $fpdf->SetFont('Verdana', 'B', $font_size);
+        $fpdf->Cell(40, $line_height,  w1251(trans('site::repair.pdf.date_call')), 0, 0, 'L');
+        $fpdf->SetFont('Verdana', '', $font_size);
+        $fpdf->Cell(150, $line_height,  \Carbon\Carbon::instance(\DateTime::createFromFormat('Y-m-d', $this->date_call))->format('d.m.Y'), 0, 1, 'L');
+        // Дата выполенния работ
+        $fpdf->SetFont('Verdana', 'B', $font_size);
+        $fpdf->Cell(37, $line_height,  w1251(trans('site::repair.pdf.date_repair')), 0, 0, 'L');
+        $fpdf->SetFont('Verdana', '', $font_size);
+        $fpdf->Cell(153, $line_height,  \Carbon\Carbon::instance(\DateTime::createFromFormat('Y-m-d', $this->date_repair))->format('d.m.Y'), 0, 1, 'L');
+        $fpdf->SetFont('Verdana', 'B', $font_size);
+        // Неисправности
+        $fpdf->Cell(0, $line_height,  w1251(trans('site::repair.pdf.diagnostics')), 0, 1, 'L');
+        $fpdf->SetFont('Verdana', '', $font_size);
+        $y = $fpdf->GetY();
+        $fpdf->MultiCell(190, 4, w1251($this->diagnostics), 0, 'J');
+        // Работы
+        $fpdf->SetXY(10, $y + 16);
+        $fpdf->SetFont('Verdana', 'B', $font_size);
+        $fpdf->Cell(0, $line_height,  w1251(trans('site::repair.pdf.works')), 0, 1, 'L');
+        $fpdf->SetFont('Verdana', '', $font_size);
+        $y = $fpdf->GetY();
+        $fpdf->MultiCell(190, 4, w1251($this->works), 0, 'J');
+        // Исполнитель
+        $fpdf->SetXY(10, $y + 16);
+        $fpdf->SetFont('Verdana', 'B', $font_size);
+        $fpdf->Cell(30, $line_height,  w1251(trans('site::repair.pdf.executor')), 0, 0, 'L');
+        $fpdf->SetFont('Verdana', '', $font_size);
+        $fpdf->Cell(100, $line_height,  w1251($this->engineer->name), 'B', 0, 'C');
+        $fpdf->Cell(10, $line_height,  '/', 0, 0, 'C');
+        $fpdf->Cell(50, $line_height,  '', 'B', 1, 'L');
+        $fpdf->SetFont('Verdana', '', $font_size_small);
+        $fpdf->Cell(30, $line_height,  '', 0, 0, 'L');
+        $fpdf->Cell(100, $line_height,  w1251(trans('site::repair.pdf.fio')), 0, 0, 'C');
+        $fpdf->Cell(10, $line_height,  '', 0, 0, 'C');
+        $fpdf->Cell(50, $line_height,  w1251(trans('site::repair.pdf.sign')), 0, 1, 'C');
+        //
+        $fpdf->ln(5);
+        $fpdf->SetFont('Verdana', 'I', $font_size_small);
+        $fpdf->Cell(120, $line_height,  w1251(trans('site::repair.pdf.confirm')), 0, 0, 'L');
+        $fpdf->Cell(70, $line_height,  '', 'B', 1, 'C');
+        $fpdf->Cell(120, $line_height,  '', 0, 0, 'L');
+        $fpdf->Cell(70, $line_height,  w1251(trans('site::repair.pdf.sign_client')), 0, 1, 'C');
+        //
+        $fpdf->ln(2);
+        $fpdf->Line(10, $fpdf->GetY(), 200, $fpdf->GetY());
+        //
+        $fpdf->SetFont('Verdana', 'B', $font_size);
+        $fpdf->ln(5);
+        $y = $fpdf->GetY();
+        $fpdf->SetX(20);
+        $fpdf->MultiCell(170, 4,  w1251(trans('site::repair.pdf.cost')), 0, 'C');
+        $fpdf->ln(5);
+        //Детали
+        $fpdf->SetFont('Verdana', '', $font_size_small);
+        $fpdf->Cell(10, $line_height,  w1251('№'), 1, 0, 'C');
+        $fpdf->Cell(100, $line_height,  w1251(trans('site::repair.pdf.table.part')), 1, 0, 'C');
+        $fpdf->Cell(30, $line_height,  w1251(trans('site::repair.pdf.table.difficulty')), 1, 0, 'C');
+        $fpdf->Cell(50, $line_height,  w1251(trans('site::repair.pdf.table.distance')), 1, 1, 'C');
+        //
+        $fpdf->Cell(10, $line_height,  w1251(trans('site::repair.pdf.table.pp')), 1, 0, 'C');
+        $fpdf->Cell(70, $line_height,  w1251(trans('site::repair.pdf.table.sku')), 1, 0, 'C');
+        $fpdf->Cell(30, $line_height,  w1251(trans('site::repair.pdf.table.cost')), 1, 0, 'C');
+        $fpdf->Cell(30, $line_height,  w1251(trans('site::repair.pdf.table.cost')), 1, 0, 'C');
+        $fpdf->Cell(20, $line_height,  w1251(trans('site::repair.pdf.table.category')), 1, 0, 'C');
+        $fpdf->Cell(30, $line_height,  w1251(trans('site::repair.pdf.table.cost')), 1, 1, 'C');
+        $y = $fpdf->getY();
+        $key = 0;
+        foreach ($this->parts as $key => $part){
+            $fpdf->Cell(10, $line_height,  $key + 1, 1, 0, 'C');
+            $fpdf->Cell(70, $line_height,  w1251($part->product->sku), 1, 0, 'C');
+            $fpdf->Cell(30, $line_height,  number_format($part->cost, 2, '.', ' '), 1, 1, 'R');
+        }
+        $bottom = $fpdf->getY();
+        $fpdf->setXY(120, $y);
+        $fpdf->Cell(30, $line_height * ($key + 1),  number_format($this->cost_difficulty, 2, '.', ' '), 1, 0, 'R');
+        $fpdf->Cell(20, $line_height * ($key + 1),  $this->difficulty->name, 1, 0, 'C');
+        $fpdf->Cell(30, $line_height * ($key + 1),  number_format($this->cost_distance, 2, '.', ' '), 1, 0, 'R');
+        $fpdf->setXY(10, $bottom + 2);
+        $fpdf->SetFont('Verdana', 'B', $font_size);
+        $fpdf->Cell(140, $line_height,  w1251(trans('site::repair.pdf.table.total')), 0, 0, 'R');
+        $fpdf->Cell(30, $line_height,  number_format($this->totalCost, 2, '.', ' '), 0, 0, 'R');
+        $fpdf->Cell(20, $line_height,  w1251(trans('site::repair.pdf.table.rub')), 0, 1, 'R');
+        $fpdf->ln(5);
+        $fpdf->SetFont('Verdana', '', $font_size_small);
+        $fpdf->Cell(60, $line_height, '', 'B', 1, 'C');
+        $fpdf->Cell(60, $line_height,  w1251(trans('site::repair.pdf.sign')), 0, 1, 'C');
+        $fpdf->ln(5);
+        $fpdf->Cell(60, $line_height,  w1251(trans('site::repair.pdf.mp')), 0, 1, 'C');
+        //
+        return response($fpdf->Output(), 200)->header('Content-Type', 'application/pdf');
+    }
+
     public function setStatus($status_id)
     {
 

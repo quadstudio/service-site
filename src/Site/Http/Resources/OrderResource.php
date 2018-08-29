@@ -17,14 +17,15 @@ class OrderResource extends JsonResource
         $this->load('items');
 
         return [
-            'id'           => $this->id,
-            'guid'         => $this->guid,
-            'comment'      => $this->comment,
-            'user_guid'    => $this->user->guid,
-            'currency_id'  => $this->user->currency_id,
-            'warehouse_id' => $this->user->warehouse_id,
-            'items'        => OrderItemResource::collection($this->items),
-            'contragent'   => new ContragentResource($this->contragent),
+            'id'         => $this->id,
+            'guid'       => $this->guid,
+            'user'       => [
+                'guid'         => $this->user->guid,
+                'currency_id'  => $this->user->currency_id,
+                'warehouse_id' => $this->user->warehouse_id,
+            ],
+            'items'      => OrderItemResource::collection($this->items),
+            'contragent' => new ContragentResource($this->contragent),
         ];
 
     }

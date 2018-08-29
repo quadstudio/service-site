@@ -15,7 +15,7 @@ class OrderListener
     public function onOrderSchedule(OrderExport $event)
     {
         $event->order->schedules()->create([
-            'action_id' => 1,
+            'action_id' => 2,
             'url' => preg_split("/:\/\//", route('api.orders.show', $event->order))[1]
         ]);
         //Schedule::create();

@@ -34,6 +34,16 @@ class Catalog extends Model
     }
 
     /**
+     * Изображение каталога
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function image()
+    {
+        return $this->belongsTo(Image::class);
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function catalog()

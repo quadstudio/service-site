@@ -64,17 +64,34 @@
 
                         <div class="dropdown-divider"></div>
 
-                        <a class="dropdown-item" href="{{ route('admin.price_types.index') }}">
-                            <i class="fa fa-@lang('site::price_type.icon')"></i> @lang('site::price_type.price_types')
-                        </a>
-                        <a class="dropdown-item" href="{{ route('admin.product_types.index') }}">
-                            <i class="fa fa-@lang('site::product_type.icon')"></i> @lang('site::product_type.product_types')
-                        </a>
                         <a class="dropdown-item" href="{{ route('admin.distances.index') }}">
                             <i class="fa fa-@lang('site::distance.icon')"></i> @lang('site::distance.distances')
                         </a>
                         <a class="dropdown-item" href="{{ route('admin.difficulties.index') }}">
                             <i class="fa fa-@lang('site::difficulty.icon')"></i> @lang('site::difficulty.difficulties')
+                        </a>
+
+                        <div class="dropdown-divider"></div>
+
+                        <a class="dropdown-item" href="{{ route('admin.blocks.index') }}">
+                            <i class="fa fa-@lang('site::block.icon')"></i> @lang('site::block.blocks')
+                        </a>
+
+                        <a class="dropdown-item" href="{{ route('admin.schemes.index') }}">
+                            <i class="fa fa-@lang('site::scheme.icon')"></i> @lang('site::scheme.schemes')
+                        </a>
+
+                        <a class="dropdown-item" href="{{ route('admin.elements.index') }}">
+                            <i class="fa fa-@lang('site::element.icon')"></i> @lang('site::element.elements')
+                        </a>
+
+                        <div class="dropdown-divider"></div>
+
+                        <a class="dropdown-item" href="{{ route('admin.price_types.index') }}">
+                            <i class="fa fa-@lang('site::price_type.icon')"></i> @lang('site::price_type.price_types')
+                        </a>
+                        <a class="dropdown-item" href="{{ route('admin.product_types.index') }}">
+                            <i class="fa fa-@lang('site::product_type.icon')"></i> @lang('site::product_type.product_types')
                         </a>
                         <a class="dropdown-item" href="{{ route('admin.file_groups.index') }}">
                             <i class="fa fa-@lang('site::file_group.icon')"></i> @lang('site::file_group.file_groups')

@@ -14,9 +14,9 @@
             </li>
             <li class="breadcrumb-item active">{{$product->name}}</li>
         </ol>
-        <h1 class="header-title mb-4">{{$product->name()}}</h1>
+        <h1 class="header-title mb-4">{{$product->name}}</h1>
         @alert()@endalert
-        <div class=" border p-3 mb-4">
+        <div class=" border p-3 mb-2">
             <a href="{{route('admin.products.edit', $product)}}"
                class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0">
                 <i class="fa fa-pencil"></i>
@@ -31,7 +31,7 @@
             <div class="col-md-6 col-xl-5">
 
                 <!-- Project details -->
-                <div class="card mb-4">
+                <div class="card mb-2">
                     <h6 class="card-header">@lang('site::product.card')</h6>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -73,7 +73,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="card mb-4">
+                <div class="card mb-2">
                     <h6 class="card-header with-elements">
                         <span class="card-header-title">@lang('site::product.settings')</span>
                         <div class="card-header-elements ml-auto">
@@ -115,7 +115,7 @@
                 </div>
             </div>
             <div class="col">
-                <div class="card mb-4">
+                <div class="card mb-2">
                     <h6 class="card-header with-elements">
                         <span class="card-header-title">
                             <span class="badge badge-warning text-big">{{$product->prices()->count()}}</span>
@@ -136,7 +136,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="card mb-4">
+                <div class="card mb-2">
                     <h6 class="card-header with-elements">
                         <span class="card-header-title">
                             <span class="badge badge-warning text-big" id="images-count">{{$product->images()->count()}}</span>
@@ -172,7 +172,7 @@
                     </div>
                 </div>
 
-                <div class="card mb-4">
+                <div class="card mb-2">
                     <h6 class="card-header with-elements">
                         <span class="card-header-title">
                             <span class="badge badge-warning text-big" id="product-analogs-count">
@@ -228,7 +228,7 @@
 
                 </div>
 
-                <div class="card mb-4">
+                <div class="card mb-2">
                     <h6 class="card-header with-elements">
                         <span class="card-header-title">
                             <span class="badge badge-warning text-big" id="product-back-relations-count">
@@ -276,7 +276,7 @@
 
                 </div>
 
-                <div class="card mb-4">
+                <div class="card mb-2">
                     <h6 class="card-header with-elements">
                         <span class="card-header-title">
                             <span class="badge badge-warning text-big" id="product-relations-count">

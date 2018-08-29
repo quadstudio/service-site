@@ -47,7 +47,9 @@ class Product extends Model
      */
     public function brand()
     {
-        return $this->belongsTo(Brand::class);
+        return $this->belongsTo(Brand::class)->withDefault(function($brand){
+            $brand->name = trans('<span class="text-muted">No brand</span>');
+        });
     }
 
     public function name()
@@ -83,7 +85,7 @@ class Product extends Model
             'currency_id'  => Site::currency()->id,
             'image'        => $this->image()->src(),
             'brand_id'     => $this->brand_id,
-            'brand'        => $this->brand->name,
+            'brand'        => $this->brand ? $this->brand->name : null,
             'weight'       => $this->weight,
             'unit'         => $this->unit,
             'sku'          => $this->sku,

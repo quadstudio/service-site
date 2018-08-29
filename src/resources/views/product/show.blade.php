@@ -78,7 +78,7 @@
                             <dd class="col-sm-8">{{$product->sku}}</dd>
 
                             <dt class="col-sm-4">@lang('site::product.brand_id')</dt>
-                            <dd class="col-sm-8">{{$product->brand->name}}</dd>
+                            <dd class="col-sm-8">{!! $product->brand->name !!}</dd>
 
                             <dt class="col-sm-4">@lang('site::product.type_id')</dt>
                             <dd class="col-sm-8">{{$product->type->name}}</dd>
@@ -192,7 +192,7 @@
                                                class="">{{$analog->name}}</a>
                                         </td>
                                         <td>{{$analog->sku}}</td>
-                                        <td>{{$analog->brand->name}}</td>
+                                        <td>{!! $analog->brand->name !!}</td>
                                         <td>
                                             @if($analog->quantity > 0)
                                                 <span class="badge badge-success d-block d-md-inline-block">@lang('site::product.in_stock')</span>

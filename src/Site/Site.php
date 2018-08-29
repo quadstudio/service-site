@@ -4,10 +4,13 @@ namespace QuadStudio\Service\Site;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use QuadStudio\Service\Site\Models\Block;
 use QuadStudio\Service\Site\Models\Catalog;
 use QuadStudio\Service\Site\Models\Currency;
+use QuadStudio\Service\Site\Models\Element;
 use QuadStudio\Service\Site\Models\Equipment;
 use QuadStudio\Service\Site\Models\FileType;
+use QuadStudio\Service\Site\Models\Repair;
 
 class Site
 {
@@ -58,6 +61,8 @@ class Site
                     $router->get('/services', 'ServiceController@index')->name('services');
                     $router->get('/products/list', 'ProductController@list')->name('products.list');
                     $router->resource('/products', 'ProductController')->only(['index', 'show']);
+                    $router->get('/products/{product}/schemes', 'ProductController@schemes')->name('products.schemes');
+                    $router->get('/products/{product}/schemes/{scheme}', 'ProductController@scheme')->name('products.scheme');
                     $router->resource('/catalogs', 'CatalogController')->only(['index', 'show']);
                     $router->get('/catalogs/{catalog}/list', 'CatalogController@list')->name('catalogs.list');
                     $router->resource('/equipments', 'EquipmentController')->only(['index', 'show']);
@@ -74,6 +79,9 @@ class Site
                             $router->resource('/acts', 'ActController')->middleware('permission:acts');
                             $router->resource('/orders', 'OrderController')->except(['edit', 'update', 'destroy'])->middleware('permission:orders');
                             $router->resource('/repairs', 'RepairController')->middleware('permission:repairs');
+                            $router->get('/repairs/{repair}/pdf', function (\Codedge\Fpdf\Fpdf\Fpdf $fpdf, Repair $repair) {
+                                return $repair->pdf($fpdf);
+                            })->middleware('permission:repairs.pdf')->name('repairs.pdf');
                             $router->resource('/engineers', 'EngineerController')->middleware('permission:engineers');
                             $router->resource('/trades', 'TradeController')->middleware('permission:trades');
                             $router->resource('/files', 'FileController')->only(['index', 'store', 'show', 'destroy'])->middleware('permission:files');
@@ -101,6 +109,16 @@ class Site
                             function () use ($router) {
                                 $router->name('admin')->get('/', 'IndexController@index');
                                 $router->name('admin')->resource('/acts', 'ActController');
+                                $router->name('admin')->put('/blocks/sort', function (Request $request) {
+                                    Block::sort($request);
+                                })->name('.blocks.sort');
+                                $router->name('admin')->resource('/blocks', 'BlockController');
+                                $router->name('admin')->post('/schemes/image', 'SchemeController@image')->name('.schemes.image');
+                                $router->name('admin')->resource('/schemes', 'SchemeController');
+                                $router->name('admin')->put('/elements/sort', function (Request $request) {
+                                    Element::sort($request);
+                                })->name('.elements.sort');
+                                $router->name('admin')->resource('/elements', 'ElementController');
                                 $router->name('admin')->resource('/users', 'UserController');
                                 $router->name('admin')->get('/users/{user}/orders', 'UserController@orders')->name('.users.orders');
                                 $router->name('admin')->get('/users/{user}/addresses', 'UserController@addresses')->name('.users.addresses');

@@ -2,6 +2,7 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers;
 
+use Illuminate\Http\Response;
 use QuadStudio\Service\Site\Filters\BelongsUserFilter;
 use QuadStudio\Service\Site\Filters\ByNameSortFilter;
 use QuadStudio\Service\Site\Filters\CountryEnabledFilter;

@@ -19,7 +19,7 @@
             searchControlProvider: 'yandex#search'
         });
 
-        ymaps.geocode('РБ, г.Минск, ул. Ленина, д.5', {results: 1}).then(function (res) {
+        ymaps.geocode('Россия, Москва, Дмитровское ш 71 Б', {results: 1}).then(function (res) {
 
             console.log(res.geoObjects.get(0).geometry.getCoordinates());
 
@@ -27,7 +27,7 @@
             let c = firstGeoObject.geometry.getCoordinates();
 
             let myPlacemark = new ymaps.Placemark(c, {
-                    balloonContent: '<p><b>Представительство Ferroli</b></p>' + '<p>РБ, г.Минск, ул. Ленина, д.5</p>',
+                    balloonContent: '<p><b>Представительство Ferroli</b></p>' + '<p>Россия, Москва, Дмитровское ш 71 Б</p>',
                     iconContent: 'FERROLI'
                 }, {
                     preset: 'islands#redStretchyIcon',
@@ -59,11 +59,10 @@
             @alert()@endalert
             <div class="row">
                 <div class="col-sm-6 col-lg-5 mb-5">
-                    <p>Для быстрой, экспертной помощи и консультаций по всем нашим отопительным приборам, запасным частям, технической поддержке и обучению есть специальная команда, ожидающая вашего звонка. Вот номера телефонов и адреса электронной почты, которые вам нужны:</p>
+                    <p>ООО «ФерролиРус»</p>
+                    <p>127238, Москва, Дмитровское ш 71 Б</p>
                     <hr/>
-                    <p>Ferroli S.p.A. via Ritonda 78/a 37047 San Bonifacio (VR)</p>
-                    <hr/>
-                    <p>Телефон: +39 045 6139411</p>
+                    <p>Тел. (495) 646 06 23</p>
                     <p>Email: info@ferroli.ru</p>
                 </div>
                 <div class="d-none d-lg-block col-lg-2"></div>

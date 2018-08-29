@@ -41,6 +41,7 @@ return [
     ],
 
     'per_page' => [
+        'block'      => 25,
         'catalog'      => 25,
         'repair'       => 10,
         'trade'        => 10,
@@ -84,6 +85,21 @@ return [
             'canvas' => [
                 'width'  => 500,
                 'height' => 500
+            ],
+        ],
+
+    ],
+
+    'schemes' => [
+        'mime' => 'jpg,jpeg',
+        'size' => [
+            'image'  => [
+                'width'  => 740,
+                'height' => null
+            ],
+            'canvas' => [
+                'width'  => 740,
+                'height' => null
             ],
         ],
 

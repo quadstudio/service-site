@@ -53,11 +53,9 @@
                     <img alt="Logo" class="logo" src="{{asset('images/logo_bianco.svg')}}"
                          style="max-width:70%; margin-left:-30px; margin-top:-20px;">
                     <div>
-                        Ферроли ООО<br>
-                        РБ, г.Минск<br>
-                        ул. Ленина, д.5<br>
-                        Тел: +375-000-000-0000<br>
-                        Факс: +375-000-000-0000<br>
+                        ООО «ФерролиРус» <br>
+                        127238, Москва, Дмитровское ш 71 Б<br>
+                        Тел. (495) 646 06 23<br>
                         Email: info@ferroli.ru<br>
                     </div>
                 </div>

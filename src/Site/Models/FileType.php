@@ -43,7 +43,7 @@ class FileType extends Model
 
     public function scopeRequired($query)
     {
-        return $query->whereReuqired(1);
+        return $query->whereRequired(1);
     }
 
 

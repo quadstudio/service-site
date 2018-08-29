@@ -40,5 +40,4 @@ trait EquipmentControllerTrait
         $products = $equipment->products()->whereEnabled(1)->orderBy('name')->get();
         return view('site::equipment.show', compact('equipment', 'products'));
     }
-
 }
