@@ -44,6 +44,7 @@ trait RegisterControllerTrait
      */
     public function showRegistrationForm()
     {
+
         $countries = Country::enabled()->orderBy('sort_order')->get();
         $address_sc_regions = $address_legal_regions = $address_postal_regions = collect([]);
         if (old('address.sc.country_id', false)) {

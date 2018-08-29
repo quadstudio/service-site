@@ -21,7 +21,7 @@
                         @if($catalog->canAddCatalog())
                             <a class="btn btn-ferroli" data-toggle="tooltip" data-placement="top"
                                title="@lang('site::messages.add') @lang('site::catalog.catalog')"
-                               href="{{ route('admin.equipments.create.parent', $catalog) }}">
+                               href="{{ route('admin.catalogs.create.parent', $catalog) }}">
                                 <i class="fa fa-plus" aria-hidden="true"></i> <i class="fa fa-@lang('site::catalog.icon')" aria-hidden="true"></i>
                             </a>
                         @endif

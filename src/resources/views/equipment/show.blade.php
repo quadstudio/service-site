@@ -107,17 +107,17 @@
                          aria-labelledby="equipments-tab">
                         @foreach($equipment->products()->where('enabled', 1)->orderBy('name')->get() as $product)
                             <div class="row border-bottom py-1">
-                                <div class="col-12 col-md-4">
+                                <div class="col-12 col-md-6">
                                     <a class="d-block text-large"
                                        href="{{route('products.show', $product)}}">{{$product->name}}</a>
                                 </div>
-                                <div class="col-12 col-md-4 mb-2 mb-md-0">
+                                <div class="col-12 col-md-3 mb-2 mb-md-0">
                                     @if($product->hasPrice)
                                         <div class="text-tiny text-muted">{{ $product->price()->type->display_name ?: __('site::price.price')}}</div>
                                         <div class="text-large">{{ $product->price()->format() }}</div>
                                     @endif
                                 </div>
-                                <div class="col-12 col-md-4">
+                                <div class="col-12 col-md-3">
                                     @can('buy', $product)
                                         @include('site::cart.buy.large', $product->toCart())
                                     @endcan

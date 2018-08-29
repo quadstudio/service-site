@@ -190,11 +190,18 @@ class Repair extends Model implements Messagable
         $fpdf->Cell(30, $line_height,  w1251(trans('site::repair.pdf.table.cost')), 1, 1, 'C');
         $y = $fpdf->getY();
         $key = 0;
-        foreach ($this->parts as $key => $part){
-            $fpdf->Cell(10, $line_height,  $key + 1, 1, 0, 'C');
-            $fpdf->Cell(70, $line_height,  w1251($part->product->sku), 1, 0, 'C');
-            $fpdf->Cell(30, $line_height,  number_format($part->total, 2, '.', ' '), 1, 1, 'R');
+        if(($parts = $this->parts)->count() > 0){
+            foreach ($parts as $key => $part){
+                $fpdf->Cell(10, $line_height,  $key + 1, 1, 0, 'C');
+                $fpdf->Cell(70, $line_height,  w1251($part->product->sku), 1, 0, 'C');
+                $fpdf->Cell(30, $line_height,  number_format($part->total, 2, '.', ' '), 1, 1, 'R');
+            }
+        } else{
+            $fpdf->Cell(10, $line_height,  '', 1, 0, 'C');
+            $fpdf->Cell(70, $line_height,  '-', 1, 0, 'C');
+            $fpdf->Cell(30, $line_height,  '-', 1, 1, 'R');
         }
+
         $bottom = $fpdf->getY();
         $fpdf->setXY(120, $y);
         $fpdf->Cell(30, $line_height * ($key + 1),  number_format($this->cost_difficulty, 2, '.', ' '), 1, 0, 'R');

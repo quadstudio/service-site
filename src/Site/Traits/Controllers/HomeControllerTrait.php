@@ -2,9 +2,9 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers;
 
+use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 use QuadStudio\Service\Site\Http\Requests\ImageRequest;
 use QuadStudio\Service\Site\Jobs\ProcessLogo;
@@ -19,7 +19,11 @@ trait HomeControllerTrait
      */
     public function index(Request $request)
     {
+        if (app('site')->isAdmin()) {
+            return redirect()->route('admin');
+        }
         $user = Auth::user();
+
         return view('site::home', compact('user'));
     }
 
@@ -36,11 +40,11 @@ trait HomeControllerTrait
         $file = $request->file('path');
 
         $image = new Image([
-            'path' => Storage::disk($request->input('storage'))->putFile('', new File($file->getPathName())),
-            'mime' => $file->getMimeType(),
+            'path'    => Storage::disk($request->input('storage'))->putFile('', new File($file->getPathName())),
+            'mime'    => $file->getMimeType(),
             'storage' => $request->input('storage'),
-            'size' => $file->getSize(),
-            'name' => $file->getClientOriginalName(),
+            'size'    => $file->getSize(),
+            'name'    => $file->getClientOriginalName(),
         ]);
 
         $image->save();
