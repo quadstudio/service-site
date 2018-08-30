@@ -28,8 +28,9 @@
                                 class="badge badge-light">{{$repair->messages()->count()}}</span></span>
                 </a>
             @endif
+
             <a href="{{ route('repairs.pdf', $repair) }}"
-               class="d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-primary">
+               class="@cannot('pdf', $repair) disabled @endcannot d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-primary">
                 <i class="fa fa-print"></i>
                 <span>@lang('site::messages.print')</span>
             </a>

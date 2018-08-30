@@ -3,6 +3,7 @@
 namespace QuadStudio\Service\Site\Repositories;
 
 use QuadStudio\Repo\Eloquent\Repository;
+use QuadStudio\Service\Site\Filters\Product\LazyLoadFilter;
 use QuadStudio\Service\Site\Filters\Product\SearchFilter;
 use QuadStudio\Service\Site\Models\Product;
 
@@ -24,6 +25,7 @@ class ProductRepository extends Repository
     public function track():array
     {
         return [
+            LazyLoadFilter::class,
             SearchFilter::class,
 //            ProductSortFilter::class,
         ];

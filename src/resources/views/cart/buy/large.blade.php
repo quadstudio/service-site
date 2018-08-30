@@ -7,13 +7,9 @@
                max="{{config('cart.item_max_quantity')}}"
                class="form-control"
                value="1"
-               style="max-width:100px;"
-               placeholder="@lang('site::cart.quantity')"
-               aria-label="@lang('site::cart.quantity')"
-               aria-describedby="to-cart-btn-{{ $product_id }}">
+               placeholder="@lang('site::cart.quantity')">
         <div class="input-group-append">
-            <button type="submit" id="to-cart-btn-{{ $product_id }}"
-                    class="add-to-cart btn btn-ferroli">
+            <button type="submit" class="add-to-cart btn btn-ferroli">
                 <i class="fa fa-shopping-cart"></i>
                 <span class="d-none d-sm-inline-block">@lang('site::cart.to_cart')</span>
             </button>

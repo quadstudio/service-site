@@ -164,7 +164,8 @@
                         </form>
                     </div>
                     <div class="card-body p-3">
-                        <div class="row no-gutters" data-target="{{route('admin.products.images.sort', $product)}}" id="sort-list">
+                        <div class="row no-gutters" data-target="{{route('admin.products.images.sort', $product)}}"
+                             id="sort-list">
                             @foreach($product->images()->orderBy('sort_order')->get() as $image)
                                 @include('site::admin.product.show.image')
                             @endforeach

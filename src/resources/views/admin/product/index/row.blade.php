@@ -16,7 +16,7 @@
             </div>
             <div class="item-content">
                 <div class="item-content-about">
-                    <span class="text-muted">{{$product->type->name}}</span>
+                    <span class="text-muted">{{$product->type ? $product->type->name : null}}</span>
                     <h5 class="item-content-name mb-1">
                         <a href="{{ route('admin.products.show', $product) }}" class="text-dark">{!! $product->name() !!}</a>
                     </h5>

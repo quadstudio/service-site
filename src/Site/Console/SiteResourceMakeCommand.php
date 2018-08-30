@@ -129,10 +129,11 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
 
     protected $views = [
         'layouts/app.stub' => 'layouts/app.blade.php',
+        'layouts/email.stub' => 'layouts/email.blade.php',
     ];
 
     protected $seeds = [
-        'SiteSeeder.stub' => 'SiteSeeder',
+        //'SiteSeeder.stub' => 'SiteSeeder',
     ];
 
     /**

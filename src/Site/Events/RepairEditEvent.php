@@ -3,9 +3,9 @@
 namespace QuadStudio\Service\Site\Events;
 
 use Illuminate\Queue\SerializesModels;
-use QuadStudio\Service\Site\Models\Order;
+use QuadStudio\Service\Site\Models\Repair;
 
-class OrderExport
+class RepairEditEvent
 {
     use SerializesModels;
 
@@ -14,15 +14,15 @@ class OrderExport
      *
      * @var \Illuminate\Contracts\Auth\Authenticatable
      */
-    public $order;
+    public $repair;
 
     /**
      * Create a new event instance.
      *
-     * @param  Order $order
+     * @param  Repair $repair
      */
-    public function __construct($order)
+    public function __construct($repair)
     {
-        $this->order = $order;
+        $this->repair = $repair;
     }
 }

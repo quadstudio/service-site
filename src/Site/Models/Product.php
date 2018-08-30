@@ -47,7 +47,7 @@ class Product extends Model
      */
     public function brand()
     {
-        return $this->belongsTo(Brand::class)->withDefault(function($brand){
+        return $this->belongsTo(Brand::class)->withDefault(function ($brand) {
             $brand->name = '';
         });
     }
@@ -80,41 +80,18 @@ class Product extends Model
     {
         return [
             'product_id'   => $this->id,
-            'name'         => $this->name,
-            'price'        => $this->hasPrice ? $this->price()->price() : null,
-            'currency_id'  => Site::currency()->id,
-            'image'        => $this->image()->src(),
-            'brand_id'     => $this->brand_id,
-            'brand'        => $this->brand ? $this->brand->name : null,
-            'weight'       => $this->weight,
-            'unit'         => $this->unit,
             'sku'          => $this->sku,
+            'name'         => $this->name,
+            'type'         => $this->type->name,
+            'unit'         => $this->unit,
+            'price'        => $this->hasPrice ? $this->price->value : null,
+            'format'       => Site::format($this->price->value),
+            'currency_id'  => Site::currency()->id,
             'url'          => route('products.show', $this),
+            'image'        => $this->image()->src(),
             'availability' => $this->quantity > 0,
-            'quantity'     => 1
+            'service'      => $this->service == 1,
         ];
-    }
-
-    public function price()
-    {
-        $type_id = Auth::guest() ? config('site.defaults.guest.price_type_id') : Auth::user()->price_type_id;
-        $table = (new Price())->getTable();
-
-        return $this
-            ->prices()
-            ->where($table . '.type_id', '=', $type_id)
-            ->where($table . '.price', '<>', 0.00)
-            ->firstOrNew([]);
-    }
-
-    /**
-     * Цены
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function prices()
-    {
-        return $this->hasMany(Price::class);
     }
 
     /**
@@ -122,9 +99,10 @@ class Product extends Model
      */
     public function image()
     {
-        if($this->images()->count() == 0){
+        if ($this->images()->count() == 0) {
             return new Image(['src' => storage_path('app/public/images/products/noimage.png')]);
         }
+
         return $this->images()->first();
     }
 
@@ -160,6 +138,17 @@ class Product extends Model
         return Auth::guest() ? config('site.defaults.guest.price_type_id') : Auth::user()->price_type_id;
     }
 
+
+
+//    public function price()
+//    {
+//        return $this
+//            ->prices()
+//            ->where('prices.type_id', '=', Auth::guest() ? config('site.defaults.guest.price_type_id') : Auth::user()->price_type_id)
+//            ->where('prices.price', '<>', 0.00)
+//            ->firstOrNew([]);
+//    }
+
     public function getPriceAttribute()
     {
         return $this
@@ -176,6 +165,16 @@ class Product extends Model
             ->prices()
             ->where('type_id', '=', $this->priceType)
             ->where('price', '<>', 0.00);
+    }
+
+    /**
+     * Цены
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function prices()
+    {
+        return $this->hasMany(Price::class);
     }
 
     public function getHasPriceAttribute()

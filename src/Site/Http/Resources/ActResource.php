@@ -20,7 +20,6 @@ class ActResource extends JsonResource
         return [
             'id'              => $this->id,
             'guid'            => $this->guid,
-            'organization_id' => $this->organization_id,
             'nds'             => $detail->nds_act == 0 ? 'БезНДС' : 'НДС' . $detail->nds_value,
             'user'            => [
                 'guid'         => $this->user->guid,

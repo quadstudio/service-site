@@ -205,14 +205,13 @@
                                            for="product_id">@lang('site::repair.product_id')</label>
                                     @if(old('product_id'))
                                         <select style="width:100%" title=""
-                                                class="form-control{{ $errors->has('serial_id') ? ' is-invalid' : '' }}">
+                                                class="form-control{{ $errors->has('product_id') ? ' is-invalid' : '' }}">
                                             <option value="{{old('product_id')}}">{{$product}}</option>
                                         </select>
                                         <input type="hidden" name="product_id" value="{{old('product_id')}}"/>
                                     @else
-                                        <select style="width:100%" name="product_id"
-                                                class="form-control{{ $errors->has('serial_id') ? ' is-invalid' : '' }}"
-                                                id="product_id">
+                                        <select id="product_id" name="product_id" style="width:100%"
+                                                class="form-control">
                                             <option value=""></option>
                                         </select>
                                     @endif

@@ -2,7 +2,8 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers;
 
-use Illuminate\Http\Response;
+use QuadStudio\Service\Site\Events\RepairCreateEvent;
+use QuadStudio\Service\Site\Events\RepairEditEvent;
 use QuadStudio\Service\Site\Filters\BelongsUserFilter;
 use QuadStudio\Service\Site\Filters\ByNameSortFilter;
 use QuadStudio\Service\Site\Filters\CountryEnabledFilter;
@@ -339,6 +340,8 @@ trait RepairControllerTrait
             $repair->parts()->createMany($parts);
         }
 
+        event(new RepairEditEvent($repair));
+
         return redirect()->route('repairs.show', $repair)->with('success', trans('site::repair.updated'));
     }
 
@@ -376,6 +379,9 @@ trait RepairControllerTrait
             $parts = collect($request->input('parts'))->values()->toArray();
             $repair->parts()->createMany($parts);
         }
+
+        event(new RepairCreateEvent($repair));
+
         $route = $request->input('_create') == 1 ? 'repairs.create' : 'repairs.index';
 
         return redirect()->route($route)->with('success', trans('site::repair.created'));

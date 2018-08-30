@@ -190,14 +190,10 @@
                             <div class="product-cart">
                                 @if($product->hasPrice)
 
-                                    <div class="product-price font-weight-bold text-xlarge mt-3">{{ $product->price()->format() }}</div>
-                                    <span class="d-block text-muted mb-3">{{ $product->price()->type->display_name ?: __('site::price.price')}}</span>
+                                    <div class="product-price font-weight-bold text-xlarge mt-3">{{ Site::format($product->price->value) }}</div>
+                                    <span class="d-block text-muted mb-3">{{ $product->price->type->display_name ?: __('site::price.price')}}</span>
                                 @endif
-                                @can('buy', $product)
-                                    <div class="product-button">
-                                        @include('site::cart.buy.large', $product->toCart())
-                                    </div>
-                                @endcan
+                                @include('site::cart.buy.large')
                             </div>
                         </div>
                     </div>

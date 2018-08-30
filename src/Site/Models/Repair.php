@@ -52,7 +52,7 @@ class Repair extends Model implements Messagable
     {
         $font_size = 9;
         $font_size_small = 7;
-        $line_height = 4;
+        $line_height = 5;
         $fpdf->SetFillColor(255, 255, 255);
         $fpdf->SetDrawColor(0, 0, 0);
         $fpdf->AddFont('verdana', '',  'verdana.php');

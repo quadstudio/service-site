@@ -93,7 +93,7 @@ class Site
                             $router->resource('/messages', 'MessageController')->middleware('permission:messages');
                             // Cart
                             $router->get('/cart', 'CartController@index')->name('cart');
-                            $router->post('/cart/add', 'CartController@add')->name('buy');
+                            $router->post('/cart/{product}/add', 'CartController@add')->name('buy');
                             $router->delete('/cart/remove', 'CartController@remove')->name('removeCartItem');
                             $router->put('/cart/update', 'CartController@update')->name('updateCart');
                             $router->get('/cart/clear', 'CartController@clear')->name('clearCart');
@@ -204,6 +204,7 @@ class Site
                 $router->name('api')->get('/products/analog', 'ProductController@analog');
                 $router->name('api')->get('/products/product', 'ProductController@product');
                 $router->name('api')->get('/products/fast', 'ProductController@fast');
+                $router->name('api')->get('/products/{product}/part', 'ProductController@part');
                 $router->name('api')->get('/products/{product}', 'ProductController@show');
                 //
                 $router->name('api')->get('/boilers', 'BoilerController@index')->name('.boilers.search');

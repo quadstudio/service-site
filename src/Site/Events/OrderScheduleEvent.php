@@ -3,25 +3,26 @@
 namespace QuadStudio\Service\Site\Events;
 
 use Illuminate\Queue\SerializesModels;
+use QuadStudio\Service\Site\Models\Order;
 
-class UserExport
+class OrderScheduleEvent
 {
     use SerializesModels;
 
     /**
-     * The authenticated user.
+     * Заказ
      *
      * @var \Illuminate\Contracts\Auth\Authenticatable
      */
-    public $user;
+    public $order;
 
     /**
      * Create a new event instance.
      *
-     * @param  \Illuminate\Contracts\Auth\Authenticatable $user
+     * @param  Order $order
      */
-    public function __construct($user)
+    public function __construct($order)
     {
-        $this->user = $user;
+        $this->order = $order;
     }
 }

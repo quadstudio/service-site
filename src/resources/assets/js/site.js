@@ -198,7 +198,7 @@
             ajax: {
                 url: '/api/products/fast',
                 dataType: 'json',
-                 delay: 200,
+                delay: 200,
                 data: function (params) {
                     return {
                         'filter[search_part]': params.term,
@@ -315,8 +315,9 @@
                 parts_search.removeClass('is-invalid');
                 selected.push(product_id);
                 axios
-                    .get("/api/products/" + product_id)
+                    .get("/api/products/" + product_id + "/part")
                     .then((response) => {
+                        console.log(response.data);
                         parts.append(response.data);
                         $('[name="parts[' + product_id + '][count]"]').focus();
                         calc_parts();
@@ -332,7 +333,8 @@
 
             //console.log(data.val());
         });
-        if (document.getElementById("product_id").tagName === 'select') {
+
+        if (document.getElementById("product_id").tagName === 'SELECT') {
             boiler_search.select2({
                 theme: "bootstrap4",
                 ajax: {
@@ -599,7 +601,6 @@
         .on('click', '.image-upload-button', function () {
             let
                 form = $(this).parents('form'),
-                list = form.data('target'),
                 fd = new FormData(),
                 path = form.find('[name="path"]')[0].files[0],
                 storage = form.find('[name="storage"]')[0].value,
@@ -696,6 +697,7 @@
             e.preventDefault();
             let _this = this, form = $(_this).parents('form');
             submitForm(form, function () {
+                addToCartModal.find('.modal-body').html(form.data('name'));
                 addToCartModal.modal('show');
             });
         })

@@ -184,7 +184,7 @@
                                 </div>
                                 <div class="col-sm-8">
                                     <a class="d-block"
-                                       href="{{route('products.show', $item->product)}}">{!! $item->name() !!}</a>
+                                       href="{{route('products.show', $item->product)}}">{!! $item->product->name() !!}</a>
                                     <div class="text-muted">
                                         {{ $item->quantity }} {{ $item->product->unit }}
                                         x {{ Site::format($item->price) }}

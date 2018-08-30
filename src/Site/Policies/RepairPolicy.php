@@ -31,6 +31,15 @@ class RepairPolicy
         return $user->id > 0;
     }
 
+    public function pdf(User $user, Repair $repair)
+    {
+        return $repair->getAttribute('status_id') == 5
+            && (
+                $user->getAttribute('admin') == 1
+                || $user->getAuthIdentifier() == $repair->getAttribute('user_id')
+            );
+    }
+
     /**
      * Determine whether the user can update the post.
      *

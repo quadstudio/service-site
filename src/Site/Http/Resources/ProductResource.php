@@ -21,8 +21,10 @@ class ProductResource extends JsonResource
             'name' => $this->name,
             'type' => $this->type->name,
             'unit' => $this->unit,
-            'price' => $this->price()->price(),
-            'format' => Site::format($this->price()->price()),
+            'price' => $this->price->value,
+            'format' => Site::format($this->price->value),
+            'currency_id' => $this->price->currency_id,
+            'url' => route('products.show', $this),
             'image' => $this->image()->src(),
         ];
     }

@@ -41,7 +41,7 @@ trait ProductImageControllerTrait
 
         return response()->json([
             'append' => [
-                '#images-list' => view('site::admin.product.show.image', ['image' => $image])->render()
+                '#sort-list' => view('site::admin.product.show.image', ['image' => $image])->render()
             ],
             'update' => [
                 '#images-count' => $product->images()->count()

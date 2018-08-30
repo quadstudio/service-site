@@ -2,12 +2,14 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers\Api;
 
+use QuadStudio\Service\Site\Facades\Site;
 use QuadStudio\Service\Site\Filters\Product\BoilerSearchFilter;
 use QuadStudio\Service\Site\Filters\Product\LimitFilter;
-use QuadStudio\Service\Site\Filters\Product\SearchFilter;
 use QuadStudio\Service\Site\Filters\Product\ProductSearchFilter;
+use QuadStudio\Service\Site\Filters\Product\SearchFilter;
 use QuadStudio\Service\Site\Filters\ProductCanBuyFilter;
 use QuadStudio\Service\Site\Http\Resources\ProductCollection;
+use QuadStudio\Service\Site\Http\Resources\ProductResource;
 use QuadStudio\Service\Site\Models\Product;
 use QuadStudio\Service\Site\Repositories\ProductRepository;
 
@@ -32,6 +34,7 @@ trait ProductControllerTrait
     {
         $this->products->applyFilter(new SearchFilter());
         $this->products->applyFilter(new ProductSearchFilter());
+
         return new ProductCollection($this->products->all());
     }
 
@@ -42,6 +45,7 @@ trait ProductControllerTrait
     {
         $this->products->applyFilter(new SearchFilter());
         $this->products->applyFilter(new ProductSearchFilter());
+
         return new ProductCollection($this->products->all());
     }
 
@@ -51,6 +55,7 @@ trait ProductControllerTrait
     public function analog()
     {
         $this->products->applyFilter(new SearchFilter());
+
         return new ProductCollection($this->products->all());
     }
 
@@ -65,12 +70,14 @@ trait ProductControllerTrait
 
         return new ProductCollection($this->products->all());
     }
+
     /**
      * @return ProductCollection
      */
     public function product()
     {
         $this->products->applyFilter(new BoilerSearchFilter());
+
         return new ProductCollection($this->products->all());
     }
 
@@ -80,25 +87,38 @@ trait ProductControllerTrait
     public function relation()
     {
         $this->products->applyFilter(new SearchFilter());
+
         return new ProductCollection($this->products->all());
     }
 
     /**
-     * Display the specified resource.
-     *
      * @param Product $product
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return ProductResource
      */
     public function show(Product $product)
     {
+        return new ProductResource($product);
+//        return view('site::part.repair.row', collect([
+//            'product_id' => $product->id,
+//            'sku' => $product->sku,
+//            'image' => $product->image()->src(),
+//            'cost' => $product->price()->exists ? $product->price()->price() : '',
+//            'format' => $product->price()->exists ? $product->price()->format() : '',
+//            'name' => $product->name,
+//            'count' => 1,
+//        ]));
+    }
+
+    public function part(Product $product)
+    {
         return view('site::part.repair.row', collect([
             'product_id' => $product->id,
-            'sku' => $product->sku,
-            'image' => $product->image()->src(),
-            'cost' => $product->price()->exists ? $product->price()->price() : '',
-            'format' => $product->price()->exists ? $product->price()->format() : '',
-            'name' => $product->name,
-            'count' => 1,
+            'sku'        => $product->sku,
+            'image'      => $product->image()->src(),
+            'cost'       => $product->hasPrice ? $product->price->value : '',
+            'format'     => $product->hasPrice ? Site::format($product->price->value): '',
+            'name'       => $product->name,
+            'count'      => 1,
         ]));
     }
 

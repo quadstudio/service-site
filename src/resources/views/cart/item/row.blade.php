@@ -1,35 +1,26 @@
 <tr class="cart-item" id="cart-item-{{ $item->product_id }}">
-
     <td class="text-left">
         <div class="row">
-            @if(config('cart.image', false))
-                <div class="col item-img d-none d-xl-block">
-                    <img class="img-fluid img-thumbnail" src="{{ $item->image }}">
-                </div>
-            @endif
+            <div class="col item-img d-none d-xl-block">
+                @if($item->hasImage())
+                    <img class="img-fluid border" src="{{ $item->image }}">
+                @endif
+            </div>
             <div class="col item-info">
+                @if($item->hasType())
+                    <small class="d-block text-muted">{{ $item->type }}</small>
+                @endif
                 <a href="{{ $item->url() }}">
                     <span class="item-name">{!! htmlspecialchars_decode($item->name) !!}</span>
-                    @if(config('cart.brand', false) === true && $item->hasBrand())
-                        <span class="item-manufacturer">{{ $item->brand }}</span>
-                    @endif
-                    @if(config('cart.sku', false) === true && $item->hasSku())
+                    @if($item->hasSku())
                         <span class="item-sku">({{ $item->sku }})</span>
                     @endif
                 </a>
                 <div>
-                    @if(config('cart.availability', false) === true)
-
-                        @if($item->availability)
-                            <span class="item-availability badge badge-success">@lang('site::cart.in_stock')</span>
-                        @else
-                            <span class="item-availability badge badge-light">@lang('site::cart.out_of_stock')</span>
-                        @endif
-
-                    @endif
-
-                    @if(config('cart.weight', false) === true && $item->hasWeight())
-                        <small class="item-weight badge badge-light">{{ Cart::weight_format(Cart::weight_convert($item->weight)) }} @lang('site::cart.weight_unit.'.(config('cart.weight_output')))</small>
+                    @if($item->availability)
+                        <span class="item-availability badge badge-success">@lang('site::cart.in_stock')</span>
+                    @else
+                        <span class="item-availability badge badge-light">@lang('site::cart.out_of_stock')</span>
                     @endif
                 </div>
                 <a class="text-danger d-block btn-row-delete mt-3"
@@ -39,7 +30,8 @@
                    data-label="@lang('site::messages.delete_confirm')"
                    data-message="@lang('site::messages.delete_sure') {{ $item->name }}?"
                    data-toggle="modal" data-target="#form-modal"
-                   href="javascript:void(0);" title="@lang('site::messages.delete')"><i class="fa fa-close"></i> @lang('site::cart.item_delete')
+                   href="javascript:void(0);" title="@lang('site::messages.delete')"><i
+                            class="fa fa-close"></i> @lang('site::cart.item_delete')
                 </a>
                 <form id="cart-item-delete-form-{{$item->id}}"
                       action="{{route('removeCartItem')}}"
@@ -48,16 +40,6 @@
                     @method('DELETE')
                     <input type="hidden" name="product_id" value="{{ $item->product_id }}">
                 </form>
-
-                {{--<form action="{{route('removeCartItem')}}" method="post">--}}
-                    {{--@csrf--}}
-                    {{--@method('delete')--}}
-                    {{--<a data-toggle="modal" data-target="#confirm-delete" class="text-danger small"--}}
-                       {{--href="javascript:void(0);">--}}
-                        {{--<i class="fa fa-close"></i> @lang('site::cart.item_delete')--}}
-                    {{--</a>--}}
-                    {{--<input type="hidden" name="product_id" value="{{ $item->product_id }}">--}}
-                {{--</form>--}}
             </div>
         </div>
     </td>
@@ -78,7 +60,7 @@
                 <i class="fa fa-chevron-up"></i>
             </button>
         </form>
-        @if(config('cart.unit', false) === true && $item->hasUnit())
+        @if($item->hasUnit())
             <small class="item-unit badge badge-light">{{ $item->unit }}</small>
         @endif
     </td>

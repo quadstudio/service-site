@@ -2,6 +2,7 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers;
 
+use Illuminate\Http\Request;
 use QuadStudio\Service\Site\Filters\Equipment\HasProductFilter;
 use QuadStudio\Service\Site\Filters\Equipment\SortFilter;
 use QuadStudio\Service\Site\Filters\Product\BoilerFilter;
@@ -9,6 +10,7 @@ use QuadStudio\Service\Site\Filters\Product\EquipmentFilter;
 use QuadStudio\Service\Site\Filters\Product\HasNameFilter;
 use QuadStudio\Service\Site\Filters\Product\TypeFilter;
 use QuadStudio\Service\Site\Filters\ProductCanBuyFilter;
+use QuadStudio\Service\Site\Http\Resources\ProductResource;
 use QuadStudio\Service\Site\Models\Product;
 use QuadStudio\Service\Site\Repositories\EquipmentRepository;
 use QuadStudio\Service\Site\Repositories\ProductRepository;

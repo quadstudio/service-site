@@ -6,9 +6,7 @@ namespace QuadStudio\Service\Site\Traits\Controllers\Auth;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use QuadStudio\Service\Site\Http\Requests\Register as Request;
-use QuadStudio\Service\Site\Mail\ConfirmationEmail;
 use QuadStudio\Service\Site\Models\Address;
 use QuadStudio\Service\Site\Models\Contact;
 use QuadStudio\Service\Site\Models\Contragent;
@@ -70,8 +68,7 @@ trait RegisterControllerTrait
      */
     public function register(Request $request)
     {
-
-        event(new Registered($user = $this->createUser($request->all())));
+        $user = $this->createUser($request->all());
         /** @var $contact Contact */
         $user->contacts()->save($contact = Contact::create($request->input('contact')));
         $contact->phones()->save(Phone::create($request->input('phone.contact')));
@@ -86,7 +83,8 @@ trait RegisterControllerTrait
             Address::create($request->input('address.postal')),
         ]);
         $user->attachRole(config('site.defaults.user.role_id', 2));
-        Mail::to($user->getEmailForPasswordReset())->send(new ConfirmationEmail($user));
+
+        event(new Registered($user));
 
         return redirect()->route('login')->with('success', trans('site::user.confirm_email', ['email' => $user->getEmailForPasswordReset()]));
 

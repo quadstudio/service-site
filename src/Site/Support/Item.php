@@ -4,7 +4,6 @@ namespace QuadStudio\Service\Site\Support;
 
 use Illuminate\Support\Collection;
 use QuadStudio\Service\Site\Contracts\Buyable;
-use ReflectionClass;
 
 class Item implements Buyable
 {
@@ -12,19 +11,17 @@ class Item implements Buyable
      * @var Item
      */
     protected $product_id;
+    protected $sku;
     protected $name;
+    protected $type;
+    protected $unit;
     protected $price;
-    protected $image = null;
-    protected $url = null;
-    protected $weight = null;
-    protected $unit = null;
-    protected $currency_id = null;
-    protected $brand_id = null;
-    protected $brand = null;
-    protected $availability = null;
-    protected $sku = null;
-    protected $service = 0;
-    protected $properties = [];
+    protected $format;
+    protected $currency_id;
+    protected $url;
+    protected $image;
+    protected $availability = false;
+    protected $service = false;
     protected $quantity = 0;
 
 
@@ -34,10 +31,8 @@ class Item implements Buyable
         $this->properties = new Collection();
 
         foreach ($item as $key => $value) {
-            if (property_exists($this, $key) && !in_array($key, ['properties'])) {
+            if (property_exists($this, $key)) {
                 $this->{$key} = $value;
-            } else {
-                $this->properties->put($key, $value);
             }
         }
     }
@@ -56,15 +51,13 @@ class Item implements Buyable
      */
     public function toArray()
     {
-        $reflectionClass = new ReflectionClass(get_class($this));
-        $array = array();
-        foreach ($reflectionClass->getProperties() as $property) {
-            $property->setAccessible(true);
-            $array[$property->getName()] = $property->name == 'properties' ? $property->getValue($this)->toJson() : $property->getValue($this);
-            $property->setAccessible(false);
-        }
+        return [
+            'product_id'  => $this->product_id,
+            'quantity'    => $this->quantity,
+            'price'       => $this->price,
+            'currency_id' => $this->currency_id,
+        ];
 
-        return $array;
     }
 
     /**
@@ -90,12 +83,20 @@ class Item implements Buyable
     }
 
     /**
-     * @param $property
      * @return bool
      */
-    public function hasProperty($property)
+    public function hasUnit()
     {
-        return $this->properties->has($property);
+        return !is_null($this->unit);
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function hasType()
+    {
+        return !is_null($this->type);
     }
 
     /**
@@ -117,22 +118,6 @@ class Item implements Buyable
     public function hasSku()
     {
         return !is_null($this->sku);
-    }
-
-    public function hasWeight()
-    {
-        return !is_null($this->weight);
-    }
-
-    public function hasUnit()
-    {
-        return !is_null($this->unit);
-    }
-
-
-    public function hasBrand()
-    {
-        return !is_null($this->brand);
     }
 
     public function setQuantity($quantity = 1)

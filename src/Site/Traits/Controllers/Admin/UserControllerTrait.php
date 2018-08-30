@@ -2,8 +2,9 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 
+use Illuminate\Support\Facades\Mail;
 use QuadStudio\Rbac\Repositories\RoleRepository;
-use QuadStudio\Service\Site\Events\UserExport;
+use QuadStudio\Service\Site\Events\UserScheduleEvent;
 use QuadStudio\Service\Site\Filters\AddressableFilter;
 use QuadStudio\Service\Site\Filters\User\ActiveFilter;
 use QuadStudio\Service\Site\Filters\User\AddressSearchFilter;
@@ -15,6 +16,11 @@ use QuadStudio\Service\Site\Filters\User\VerifiedFilter;
 use QuadStudio\Service\Site\Filters\UserFilter;
 use QuadStudio\Service\Site\Filters\UserIsServiceFilter;
 use QuadStudio\Service\Site\Http\Requests\Admin\UserRequest;
+use QuadStudio\Service\Site\Mail\Admin\Order\OrderCreateEmail;
+use QuadStudio\Service\Site\Mail\Admin\Repair\RepairCreateEmail;
+use QuadStudio\Service\Site\Mail\Admin\Repair\RepairEditEmail;
+use QuadStudio\Service\Site\Mail\Admin\User\UserRegisteredEmail;
+use QuadStudio\Service\Site\Mail\User\UserConfirmationEmail;
 use QuadStudio\Service\Site\Models\User;
 use QuadStudio\Service\Site\Repositories\AddressRepository;
 use QuadStudio\Service\Site\Repositories\ContactRepository;
@@ -104,6 +110,7 @@ trait UserControllerTrait
      */
     public function show(User $user)
     {
+
         $address = $user->addresses()->where('type_id', 2)->firstOrNew([]);
         $contact = $user->contacts()->where('type_id', 1)->firstOrNew([]);
         $sc = $user->contacts()->where('type_id', 2)->firstOrNew([]);
@@ -134,7 +141,7 @@ trait UserControllerTrait
     public function schedule(User $user)
     {
         $this->authorize('schedule', $user);
-        event(new UserExport($user));
+        event(new UserScheduleEvent($user));
 
         return redirect()->route('admin.users.show', $user)->with('success', trans('site::schedule.created'));
 

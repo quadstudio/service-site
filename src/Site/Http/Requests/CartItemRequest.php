@@ -4,7 +4,7 @@ namespace QuadStudio\Service\Site\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class Order extends FormRequest
+class CartItemRequest extends FormRequest
 {
 
     /**
@@ -29,17 +29,16 @@ class Order extends FormRequest
                 return [];
             }
             case 'DELETE': {
-                return [];
-            }
-            case 'POST': {
                 return [
-                    'status_id' => 'required|in:1',
-                    'comment'   => 'max:5000',
+                    'product_id' => 'required',
                 ];
             }
+            case 'POST':
             case 'PUT':
             case 'PATCH': {
-                return [];
+                return [
+                    'quantity'   => 'required|integer|between:1,' . config('cart.item_max_quantity', 99)
+                ];
             }
             default:
                 return [];
@@ -54,7 +53,7 @@ class Order extends FormRequest
     public function messages()
     {
         return [
-            'products.required' => trans('site::messages.products_required'),
+            'quantity.required' => trans('site::cart.error.quantity.required'),
         ];
     }
 
@@ -66,8 +65,7 @@ class Order extends FormRequest
     public function attributes()
     {
         return [
-            'products' => trans('site::messages.products'),
-            'comments' => trans('site::messages.comments'),
+            'quantity'   => trans('site::cart.quantity'),
         ];
     }
 }

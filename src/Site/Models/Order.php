@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use QuadStudio\Service\Site\Contracts\Messagable;
+use QuadStudio\Service\Site\Events\OrderCreateEvent;
 use QuadStudio\Service\Site\Traits\Models\ScheduleTrait;
 
 class Order extends Model implements Messagable
@@ -17,7 +18,7 @@ class Order extends Model implements Messagable
      */
     protected $table;
 
-    protected $fillable = ['status_id', 'comment'];
+    protected $fillable = ['status_id', 'contragent_id'];
 
     /**
      * @param array $attributes

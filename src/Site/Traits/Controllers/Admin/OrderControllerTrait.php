@@ -5,7 +5,7 @@ namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 
 
 //use QuadStudio\Service\Shop\Http\Requests\Order As Request;
-use QuadStudio\Service\Site\Events\OrderExport;
+use QuadStudio\Service\Site\Events\OrderScheduleEvent;
 use QuadStudio\Service\Site\Filters\Order\ScSearchFilter;
 use QuadStudio\Service\Site\Models\Order;
 use QuadStudio\Service\Site\Repositories\OrderRepository As Repository;
@@ -62,7 +62,7 @@ trait OrderControllerTrait
     public function schedule(Order $order)
     {
         $this->authorize('schedule', $order);
-        event(new OrderExport($order));
+        event(new OrderScheduleEvent($order));
 
         return redirect()->route('admin.orders.show', $order)->with('success', trans('site::schedule.created'));
 

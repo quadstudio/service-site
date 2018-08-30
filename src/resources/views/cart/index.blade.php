@@ -13,18 +13,22 @@
 
         @if(!Cart::isEmpty())
 
+            <div class=" border p-3 mb-2">
+                <a class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0"
+                   href="{{ route('products.index') }}"
+                   role="button">
+                    <i class="fa fa-shopping-cart"></i>
+                    <span>@lang('site::cart.add_form_cancel')</span>
+                </a>
+                <a href="{{route('clearCart')}}" class="d-block d-sm-inline btn btn-secondary">
+                    <i class="fa fa-close"></i>
+                    <span>@lang('site::cart.cart_clear')</span>
+                </a>
+            </div>
+
             <div class="row mb-3">
                 <div class="col-12">
                     <table class="table">
-                        <caption class="text-left">
-                            @if(config('cart.shop_route') !== false)
-                                <a class="btn btn-sm btn-warning" href="{{ route(config('cart.shop_route')) }}">
-                                    <i class="fa fa-shopping-cart"></i> @lang('site::cart.add_form_cancel')</a>
-
-                            @endif
-                            <a class="btn btn-sm btn-warning" href="{{route('clearCart')}}">
-                                <i class="fa fa-close"></i> @lang('site::cart.cart_clear')</a>
-                        </caption>
                         <thead class="thead-light">
                         <tr>
                             <th class="text-left">@lang('site::cart.name')</th>
@@ -40,30 +44,45 @@
                     @include('site::cart.modal.delete')
                 </div>
                 <div class="col-12">
-                    <form action="{{route(config('cart.checkout', 'orders.store'))}}" method="post">
+                    <form action="{{route('orders.store')}}" method="post">
                         @csrf
-                        <div class="card text-center border-0">
+                        <div class="card border-0">
 
                             <div class="card-body">
 
+                                <div class="form-group required">
+                                    <label class="control-label"
+                                           for="contragent_id">@lang('site::repair.contragent_id')</label>
+                                    <select class="form-control{{  $errors->has('contragent_id') ? ' is-invalid' : '' }}"
+                                            required
+                                            name="contragent_id"
+                                            id="contragent_id">
+                                        @if($contragents->count() == 0 || $contragents->count() > 1)
+                                            <option value="">@lang('site::messages.select_from_list')</option>
+                                        @endif
+                                        @foreach($contragents as $contragent)
+                                            <option
+                                                    @if(old('contragent_id') == $contragent->id) selected
+                                                    @endif
+                                                    value="{{ $contragent->id }}">{{ $contragent->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="invalid-feedback">{{ $errors->first('contragent_id') }}</span>
+                                </div>
+
                                 <div class="form-group text-right">
                                     <textarea placeholder="@lang('site::cart.order_comment')" class="form-control"
-                                              name="message[text]"  rows="3"></textarea>
-                                    <input type="hidden" name="message[receiver_id]" value="{{config('site.receiver_id')}}">
+                                              name="message[text]" maxlength="5000" rows="3"></textarea>
+                                    <input type="hidden" name="message[receiver_id]"
+                                           value="{{config('site.receiver_id')}}">
                                     <input type="hidden" name="status_id" value="1">
                                 </div>
-                                @if(config('cart.weight', false) === true)
-                                    <h6 class="text-right">
-                                        <span id="cart-weight">{{ Cart::weight_format() }}</span>
-                                        <span id="cart-weight-unit">@lang('site::cart.weight_unit.' . (config('cart.weight_output')))</span>
-                                    </h6>
-                                @endif
                                 <h5 class="text-right">@lang('site::cart.total'):</h5>
                                 <h2 class="text-right">
-                                    <span id="cart-total">{{ Cart::price_format(Cart::total()) }}</span>
+                                    <span id="cart-total">{{ Site::format(Cart::total()) }}</span>
                                 </h2>
                             </div>
-                            <div class="card-footer text-muted">
+                            <div class="card-footer text-muted text-center">
                                 <button type="submit" class="btn btn-ferroli btn-lg ">
                                     <i class="fa fa-check"></i> @lang('site::cart.order_confirm')</button>
                             </div>
@@ -81,9 +100,10 @@
                     </div>
                     <h1 class="font-weight-normal my-3">@lang('site::cart.cart_is_empty')</h1>
                     {{--<p>Add products to it. Check out our wide range of products!</p>--}}
-                    @if(config('cart.shop_route') !== false)
-                        <a href="{{ route(config('cart.shop_route')) }}" role="button" class="btn btn-ferroli">Перейти в каталог запчастей</a>
-                    @endif
+
+                    <a href="{{ route('products.index') }}" role="button" class="btn btn-ferroli">Перейти в каталог
+                        запчастей</a>
+
                 </div>
             </div>
         @endif

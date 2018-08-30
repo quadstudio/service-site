@@ -2,10 +2,11 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers;
 
+use QuadStudio\Service\Site\Events\OrderCreateEvent;
 use QuadStudio\Service\Site\Facades\Cart;
 use QuadStudio\Service\Site\Filters\BelongsUserFilter;
 use QuadStudio\Service\Site\Filters\OrderDateFilter;
-use QuadStudio\Service\Site\Http\Requests\Order as Request;
+use QuadStudio\Service\Site\Http\Requests\OrderRequest;
 use QuadStudio\Service\Site\Models\Order;
 use QuadStudio\Service\Site\Repositories\OrderRepository;
 
@@ -48,18 +49,20 @@ trait OrderControllerTrait
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request $request
+     * @param  OrderRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(OrderRequest $request)
     {
 
-        $request->user()->orders()->save($order = $this->orders->create($request->only(['status_id'])));
+        $request->user()->orders()->save($order = $this->orders->create($request->only(['status_id', 'contragent_id'])));
         if ($request->filled('message.text')) {
             $order->messages()->save($request->user()->outbox()->create($request->input('message')));
         }
         $order->items()->createMany(Cart::toArray());
         Cart::clear();
+
+        event(new OrderCreateEvent($order));
 
         return redirect()->route('orders.show', $order)->with('success', trans('site::order.created'));
     }
@@ -81,7 +84,7 @@ trait OrderControllerTrait
     {
         $this->authorize('view', $order);
 
-        return view('site::order.show', ['order' => $order]);
+        return view('site::order.show', compact('order'));
     }
 
 }

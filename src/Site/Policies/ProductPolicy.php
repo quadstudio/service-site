@@ -4,6 +4,7 @@ namespace QuadStudio\Service\Site\Policies;
 
 use QuadStudio\Service\Site\Models\Product;
 use QuadStudio\Service\Site\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class ProductPolicy
 {

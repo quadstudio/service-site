@@ -83,17 +83,13 @@
                                 </dd>
 
                                 @if($product->hasPrice)
-                                    <dt class="col-sm-4">{{ $product->price()->type->display_name ?: __('site::price.price')}}</dt>
-                                    <dd class="col-sm-8 h2">{{ $product->price()->format() }}</dd>
+                                    <dt class="col-sm-4">{{ $product->price->type->display_name ?: __('site::price.price')}}</dt>
+                                    <dd class="col-sm-8 h2">{{ Site::format($product->price->value) }}</dd>
                                 @endif
-                                @auth
-                                @can('buy', $product)
-                                    <dt class="col-sm-4"></dt>
-                                    <dd class="col-sm-8">
-                                        @include('site::cart.buy.large', $product->toCart())
-                                    </dd>
-                                @endcan
-                                @endauth
+                                <dt class="col-sm-4"></dt>
+                                <dd class="col-sm-8">
+                                    @include('site::cart.buy.large')
+                                </dd>
                             </dl>
                             {{--@if(!$equipment->products->isEmpty())--}}
                             {{--<h5 class="mt-4">Оборудование</h5>--}}
@@ -195,7 +191,7 @@
                                     </div>
                                     <div class="col-sm-2 text-left text-sm-right">
                                         @if($relation->hasPrice)
-                                            {{ $relation->price()->format() }}
+                                            {{ Site::format($relation->price->value) }}
                                         @endif
                                     </div>
                                 </div>
@@ -220,7 +216,7 @@
                                     </div>
                                     <div class="col-sm-2 text-left text-sm-right">
                                         @if($analog->hasPrice)
-                                            {{ $analog->price()->format() }}
+                                            {{ Site::format($analog->price->value) }}
                                         @endif
                                     </div>
                                 </div>
