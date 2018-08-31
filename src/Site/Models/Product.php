@@ -5,9 +5,10 @@ namespace QuadStudio\Service\Site\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use QuadStudio\Service\Site\Contracts\Imageable;
 use QuadStudio\Service\Site\Facades\Site;
 
-class Product extends Model
+class Product extends Model implements Imageable
 {
 
     public $incrementing = false;

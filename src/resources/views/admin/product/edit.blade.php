@@ -23,7 +23,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <form method="POST" id="product-edit-form"
+                        <form method="POST" id="form-content"
                               action="{{ route('admin.products.update', $product) }}">
 
                             @csrf
@@ -181,6 +181,31 @@
                                 </div>
                             </div>
                         </form>
+
+                        {{--<div class="card mt-2 mb-2">--}}
+                            {{--<div class="card-body">--}}
+                                {{--<h5 class="card-title">@lang('site::image.images')</h5>--}}
+                                {{--<form method="POST" enctype="multipart/form-data"--}}
+                                      {{--action="{{route('admin.images.store')}}">--}}
+                                    {{--@csrf--}}
+                                    {{--<div class="form-group form-control{{ $errors->has('path') ? ' is-invalid' : '' }}">--}}
+                                        {{--<input type="file" name="path"/>--}}
+                                        {{--<input type="hidden" name="storage" value="products"/>--}}
+                                        {{--<input type="button" class="btn btn-ferroli image-upload"--}}
+                                               {{--value="@lang('site::messages.load')">--}}
+
+                                    {{--</div>--}}
+                                    {{--<span class="invalid-feedback">{{ $errors->first('path') }}</span>--}}
+                                {{--</form>--}}
+                                {{--<div class="d-flex flex-row bd-highlight">--}}
+                                    {{--@if( !$images->isEmpty())--}}
+                                        {{--@foreach($images as $image)--}}
+                                            {{--@include('site::admin.image.image')--}}
+                                        {{--@endforeach--}}
+                                    {{--@endif--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
                     </div>
                 </div>
 
@@ -192,11 +217,11 @@
             {{--<i class="fa fa-plus"></i>--}}
             {{--<span>@lang('site::messages.add') @lang('site::product.product')</span>--}}
             {{--</a>--}}
-            <button name="_stay" form="product-edit-form" value="1" type="submit" class="btn btn-ferroli">
+            <button name="_stay" form="form-content" value="1" type="submit" class="btn btn-ferroli">
                 <i class="fa fa-check"></i>
                 <span>@lang('site::messages.save_stay')</span>
             </button>
-            <button name="_stay" form="product-edit-form" value="0" type="submit" class="btn btn-ferroli">
+            <button name="_stay" form="form-content" value="0" type="submit" class="btn btn-ferroli">
                 <i class="fa fa-check"></i>
                 <span>@lang('site::messages.save')</span>
             </button>

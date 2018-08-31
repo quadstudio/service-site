@@ -29,7 +29,7 @@
                         <span>{{$product->sku}}</span>
                         <a href="{{route('products.show', $product)}}">{!! $product->name !!}</a>
                         @can('buy', $product)
-                            <span class=" pull-right font-weight-bold text-big">{{ $product->price()->format() }}</span>
+                            <span class=" pull-right font-weight-bold text-big">{{ Site::format($product->price->value) }}</span>
                         @endcan
                     </div>
                 @endforeach

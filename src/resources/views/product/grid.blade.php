@@ -5,8 +5,8 @@
         </a>
         <div class="card-body">
             <div class="row">
-                @if($product->price()->exists)
-                    <div class="col-8 h4">{{ $product->price()->format() }}</div>
+                @if($product->hasPrice)
+                    <div class="col-8 h4">{{ Site::format($product->price->value) }}</div>
                 @endif
                 <div class="col-4 text-right">
                     @auth

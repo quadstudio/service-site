@@ -1,4 +1,4 @@
-<div class="border mx-2 px-2 d-inline-block" id="image-{{$image->id}}">
+<div class="mx-2 px-2 d-inline-block" id="image-{{$image->id}}">
     @if($image->canDelete())
         <a class="text-danger btn-row-delete"
            data-form="#image-delete-form-{{$image->id}}"
@@ -18,7 +18,7 @@
         </form>
     @endif
 
-    <img style="width:150px;" class="img-fluid" src="{{ Storage::disk($image->storage)->url($image->path) }}">
+    <img style="width:150px;" class="img-fluid border" src="{{ Storage::disk($image->storage)->url($image->path) }}">
     <input form="form-content" type="hidden" name="image[{{$image->id}}]" value="{{$image->id}}">
 </div>
 

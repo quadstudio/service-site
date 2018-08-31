@@ -22,6 +22,11 @@
                 <i class="fa fa-@lang('site::schedule.icon')"></i>
                 <span>@lang('site::schedule.synchronize')</span>
             </a>
+            <a href="{{ route('acts.pdf', $act) }}"
+               class="@cannot('pdf', $act) disabled @endcannot d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-primary">
+                <i class="fa fa-print"></i>
+                <span>@lang('site::messages.print')</span>
+            </a>
             <a href="{{ route('admin.acts.index') }}" class="d-block d-sm-inline btn btn-secondary">
                 <i class="fa fa-reply"></i>
                 <span>@lang('site::act.help.back_list')</span>

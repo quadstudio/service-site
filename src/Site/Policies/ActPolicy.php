@@ -24,7 +24,12 @@ class ActPolicy
      */
     public function view(User $user, Act $act)
     {
-        return $user->id == $act->user_id;
+        return $user->getAttribute('admin') == 1 || $user->id == $act->getAttribute('user_id');
+    }
+
+    public function pdf(User $user, Act $act)
+    {
+        return $this->view($user, $act) && $user->hasPermission('acts.pdf');
     }
 
     /**

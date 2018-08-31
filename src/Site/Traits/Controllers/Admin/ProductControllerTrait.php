@@ -2,15 +2,16 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 
-use Illuminate\Support\Facades\Auth;
 use QuadStudio\Service\Site\Filters\Product\TypeAdminFilter;
 use QuadStudio\Service\Site\Http\Requests\Admin\ProductRequest;
 use QuadStudio\Service\Site\Models\Product;
 use QuadStudio\Service\Site\Repositories\EquipmentRepository;
 use QuadStudio\Service\Site\Repositories\ProductRepository;
+use QuadStudio\Service\Site\Traits\Support\ImageLoaderTrait;
 
 trait ProductControllerTrait
 {
+    use ImageLoaderTrait;
     /**
      * @var ProductRepository
      */
@@ -65,6 +66,28 @@ trait ProductControllerTrait
         $equipments = $this->equipments->all();
 
         return view('site::admin.product.edit', compact('product', 'equipments'));
+    }
+
+    public function images(ProductRequest $request, Product $product)
+    {
+        if ($request->isMethod('post')) {
+            $this->setImages($request, $product);
+            return redirect()->route('admin.products.show', $product)->with('success', trans('site::image.updated'));
+        } else {
+            $images = $this->getImages($request, $product);
+            return view('site::admin.product.images', compact('product', 'images'));
+        }
+    }
+
+    public function analogs(ProductRequest $request, Product $product)
+    {
+        if ($request->isMethod('post')) {
+            //$this->setImages($request, $product);
+            return redirect()->route('admin.products.show', $product)->with('success', trans('site::image.updated'));
+        } else {
+            $analogs = $product->analogs()->orderBy('name')->get();
+            return view('site::admin.product.analogs', compact('product', 'analogs'));
+        }
     }
 
     /**

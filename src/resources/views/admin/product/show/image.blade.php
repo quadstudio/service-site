@@ -1,10 +1,10 @@
-<div class="col-12 p-1" data-id="{{$image->id}}" id="image-{{$image->id}}">
+<div class="col-12 p-1 sort-item" data-id="{{$image->id}}" id="image-{{$image->id}}">
     <div class="project-attachment ui-bordered p-2">
-        <div class="project-attachment-img"
+        <div class="border project-attachment-img"
              style="background-image: url({{ Storage::disk($image->storage)->url($image->path) }})"></div>
         <div class="media-body ml-3">
-            <strong class="project-attachment-filename">{{$image->name}}</strong>
-            <div class="text-muted small">{{$image->size}}</div>
+            <strong class="project-attachment-filename"><i class="fa fa-arrows"></i> {{$image->name}}</strong>
+            <div class="text-muted small">{{formatFileSize($image->size)}}</div>
             <div>
                 {{--<a href="javascript:void(0)">View</a> &nbsp;--}}
                 <a href="{{route('admin.images.show', $image)}}">@lang('site::messages.download')</a>

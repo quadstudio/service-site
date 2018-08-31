@@ -137,6 +137,37 @@
                                 </div>
                             </div>
 
+                            <div class="form-row required">
+                                <div class="col mb-3">
+                                    <label class="control-label d-block"
+                                           for="user_verified">@lang('site::user.verified')</label>
+                                    <div class="custom-control custom-radio  custom-control-inline">
+                                        <input class="custom-control-input
+                                                    {{$errors->has('user.verified') ? ' is-invalid' : ''}}"
+                                               type="radio"
+                                               name="user[verified]"
+                                               required
+                                               @if(old('user.verified', $user->verified) == 1) checked @endif
+                                               id="user_verified_1"
+                                               value="1">
+                                        <label class="custom-control-label"
+                                               for="user_verified_1">@lang('site::messages.yes')</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input class="custom-control-input
+                                                    {{$errors->has('user.verified') ? ' is-invalid' : ''}}"
+                                               type="radio"
+                                               name="user[verified]"
+                                               required
+                                               @if(old('user.verified', $user->verified) == 0) checked @endif
+                                               id="user_verified_0"
+                                               value="0">
+                                        <label class="custom-control-label"
+                                               for="user_verified_0">@lang('site::messages.no')</label>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="form-row">
                                 <div class="col mb-3">
                                     @foreach($roles->all() as $role)

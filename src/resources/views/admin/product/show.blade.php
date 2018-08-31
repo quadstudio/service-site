@@ -22,6 +22,16 @@
                 <i class="fa fa-pencil"></i>
                 <span>@lang('site::messages.edit')</span>
             </a>
+            <a href="{{route('admin.products.images', $product)}}"
+               class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0">
+                <i class="fa fa-@lang('site::image.icon')"></i>
+                <span>@lang('site::image.images')</span> <span class="badge badge-light">{{$product->images()->count()}}</span>
+            </a>
+            <a href="{{route('admin.products.analogs', $product)}}"
+               class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0">
+                <i class="fa fa-@lang('site::analog.icon')"></i>
+                <span>@lang('site::analog.analogs')</span> <span class="badge badge-light">{{$product->analogs()->count()}}</span>
+            </a>
             <a href="{{ route('admin.products.index') }}" class="d-block d-sm-inline btn btn-secondary">
                 <i class="fa fa-reply"></i>
                 <span>@lang('site::messages.back')</span>
@@ -143,26 +153,11 @@
                             @lang('site::image.images')
                         </span>
                         <div class="card-header-elements ml-auto">
-                            <a data-toggle="collapse" href="#collapseImages" role="button" aria-expanded="false"
-                               aria-controls="collapseImages" class="btn btn-light btn-sm">
-                                <i class="fa fa-plus"></i>
+                            <a href="{{route('admin.products.images', $product)}}" class="btn btn-light btn-sm">
+                                <i class="fa fa-pencil"></i>
                             </a>
                         </div>
                     </h6>
-                    <div class="card-body py-3 collapse" id="collapseImages">
-                        <form method="POST" enctype="multipart/form-data"
-                              action="{{route('admin.products.images.store', $product)}}">
-                            @csrf
-                            <div class="form-group form-control{{ $errors->has('path') ? ' is-invalid' : '' }}">
-                                <input type="file" name="path"/>
-                                <input type="hidden" name="storage" value="products"/>
-                                <input type="button" class="btn btn-ferroli image-upload-button"
-                                       value="@lang('site::messages.load')">
-
-                            </div>
-                            <span class="invalid-feedback">{{ $errors->first('path') }}</span>
-                        </form>
-                    </div>
                     <div class="card-body p-3">
                         <div class="row no-gutters" data-target="{{route('admin.products.images.sort', $product)}}"
                              id="sort-list">

@@ -4,6 +4,7 @@ namespace QuadStudio\Service\Site;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use QuadStudio\Service\Site\Models\Act;
 use QuadStudio\Service\Site\Models\Block;
 use QuadStudio\Service\Site\Models\Catalog;
 use QuadStudio\Service\Site\Models\Currency;
@@ -11,6 +12,8 @@ use QuadStudio\Service\Site\Models\Element;
 use QuadStudio\Service\Site\Models\Equipment;
 use QuadStudio\Service\Site\Models\FileType;
 use QuadStudio\Service\Site\Models\Repair;
+use QuadStudio\Service\Site\Pdf\ActPdf;
+use QuadStudio\Service\Site\Pdf\RepairPdf;
 
 class Site
 {
@@ -77,11 +80,14 @@ class Site
                             $router->get('/home', 'HomeController@index')->name('home');
                             $router->post('/home/logo', 'HomeController@logo')->name('home.logo');
                             $router->resource('/acts', 'ActController')->middleware('permission:acts');
+                            $router->get('/acts/{act}/pdf', function (Act $act) {
+                                return (new ActPdf())->setModel($act)->render();
+                            })->middleware('can:pdf,act')->name('acts.pdf');
                             $router->resource('/orders', 'OrderController')->except(['edit', 'update', 'destroy'])->middleware('permission:orders');
                             $router->resource('/repairs', 'RepairController')->middleware('permission:repairs');
-                            $router->get('/repairs/{repair}/pdf', function (\Codedge\Fpdf\Fpdf\Fpdf $fpdf, Repair $repair) {
-                                return $repair->pdf($fpdf);
-                            })->middleware('permission:repairs.pdf')->name('repairs.pdf');
+                            $router->get('/repairs/{repair}/pdf', function (Repair $repair) {
+                                return (new RepairPdf())->setModel($repair)->render();
+                            })->middleware('can:pdf,repair')->name('repairs.pdf');
                             $router->resource('/engineers', 'EngineerController')->middleware('permission:engineers');
                             $router->resource('/trades', 'TradeController')->middleware('permission:trades');
                             $router->resource('/files', 'FileController')->only(['index', 'store', 'show', 'destroy'])->middleware('permission:files');
@@ -150,7 +156,11 @@ class Site
 
                                 $router->name('admin')->resource('/images', 'ImageController');
                                 $router->name('admin')->resource('/products', 'ProductController');
-                                $router->name('admin')->post('/product-images/{product}/store', 'ProductImageController@store')->name('.products.images.store');
+                                $router->name('admin')->get('/products/{product}/images', 'ProductController@images')->name('.products.images');
+                                $router->name('admin')->post('/products/{product}/images', 'ProductController@images')->name('.products.images.update');
+                                $router->name('admin')->get('/products/{product}/analogs', 'ProductController@analogs')->name('.products.analogs');
+                                $router->name('admin')->post('/products/{product}/analogs', 'ProductController@analogs')->name('.products.analogs.update');
+                                //$router->name('admin')->post('/product-images/{product}/store', 'ProductImageController@store')->name('.products.images.store');
                                 $router->name('admin')->put('/product-images/{product}/sort', 'ProductImageController@sort')->name('.products.images.sort');
                                 $router->name('admin')->post('/analogs/store/{product}', 'AnalogController@store')->name('.analogs.store');
                                 $router->name('admin')->delete('/analogs/destroy/{product}/{analog}', 'AnalogController@destroy')->name('.analogs.destroy');

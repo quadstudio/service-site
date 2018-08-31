@@ -156,7 +156,11 @@ trait UserControllerTrait
      */
     public function update(UserRequest $request, User $user)
     {
-        $this->users->update($request->input('user'), $user->id);
+        $data = $request->input('user');
+        if($request->input('user.verified') == 1){
+            $data = array_merge($data, ['verify_token' => null]);
+        }
+        $this->users->update($data, $user->id);
         $user->syncRoles($request->input('roles', []));
         if ($request->input('_stay') == 1) {
             $redirect = redirect()->route('admin.users.edit', $user)->with('success', trans('site::user.updated'));

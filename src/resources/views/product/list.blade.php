@@ -48,8 +48,8 @@
                     </span>
                     <span>{{$product->sku}}</span>
                     <a href="{{route('products.show', $product)}}">{!! $product->name !!}</a>
-                        @if($product->price()->exists)
-                            <span class="d-inline-block pull-right product-price font-weight-bold text-big">{{ $product->price()->format() }}</span>
+                        @if($product->hasPrice)
+                            <span class="d-inline-block pull-right product-price font-weight-bold text-big">{{ Site::format($product->price->value) }}</span>
                         @endif
                 </div>
             @endforeach

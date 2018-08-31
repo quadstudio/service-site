@@ -113,8 +113,8 @@
                                 </div>
                                 <div class="col-12 col-md-3 mb-2 mb-md-0">
                                     @if($product->hasPrice)
-                                        <div class="text-tiny text-muted">{{ $product->price()->type->display_name ?: __('site::price.price')}}</div>
-                                        <div class="text-large">{{ $product->price()->format() }}</div>
+                                        <div class="text-tiny text-muted">{{ $product->price->type->display_name ?: __('site::price.price')}}</div>
+                                        <div class="text-large">{{ Site::format($product->price->value) }}</div>
                                     @endif
                                 </div>
                                 <div class="col-12 col-md-3">

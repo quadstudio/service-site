@@ -5,8 +5,8 @@
                 <div class="col-7 col-md-4 col-xl-2">
                     <a href="{{ route('admin.repairs.show', $repair) }}"
                        class="text-large text-dark">№ {{$repair->id}}</a>
-                    <div class="p-1" style="font-weight:normal;color: {{ $repair->status->color }}"><i
-                                class="fa fa-{{ $repair->status->icon }}"></i> {{ $repair->status->name }}
+                    <div class="p-1" style="font-weight:normal;color: {{ $repair->status->color }}">
+                        <i class="fa fa-{{ $repair->status->icon }}"></i> {{ $repair->status->name }}
                         @if($repair->fails()->count())
                             <span data-toggle="tooltip" data-placement="top" title="@lang('site::fail.fails')"
                                   class="badge badge-danger text-big">{{$repair->fails()->count()}}</span>

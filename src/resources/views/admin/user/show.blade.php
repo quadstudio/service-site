@@ -102,6 +102,20 @@
                             <span class="text-muted">@lang('site::user.guid'):</span>&nbsp;
                             <span class="text-dark">{{ $user->guid }}</span>
                         </div>
+                        <div class="mb-2">
+                            <span class="d-block text-normal @if($user->active) text-success @else text-danger @endif">
+                                @lang('site::user.active_'.($user->active))
+                            </span>
+                            <span class="d-block text-normal @if($user->verified) text-success @else text-danger @endif">
+                                @lang('site::user.verified_'.($user->verified))
+                            </span>
+                            <span class="d-block text-normal @if($user->hasRole('asc')) text-success @else text-danger @endif">
+                                @lang('site::user.asc_'.($user->hasRole('asc') ? '1' : '0'))
+                            </span>
+                            <span class="d-block text-normal @if($user->display) text-success @else text-danger @endif">
+                                @lang('site::user.display_'.($user->display))
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div class="card mb-4">

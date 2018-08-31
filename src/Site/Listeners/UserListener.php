@@ -39,7 +39,7 @@ class UserListener
      * События при регистрации сервисного центра на сайте
      * @param UserScheduleEvent $event
      */
-    public function onUserRegistered(UserScheduleEvent $event)
+    public function onUserRegistered(Registered $event)
     {
 
         // Отправка сервисному центру письма о подтверждении E-mail

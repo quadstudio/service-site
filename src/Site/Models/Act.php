@@ -117,6 +117,14 @@ class Act extends Model
     }
 
     /**
+     * @return string
+     */
+    public function number()
+    {
+        return !is_null($this->getAttribute('number')) ? $this->getAttribute('number') : $this->getKey();
+    }
+
+    /**
      * Scope a query to only opened acts
      *
      * @param \Illuminate\Database\Eloquent\Builder $query

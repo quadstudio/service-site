@@ -11,6 +11,11 @@
                                 <span class="badge badge-danger">{{$repair->fails()->count()}}</span>
                             @endif
                         </span>
+                        @if($repair->act)
+                            <a href="{{route('acts.show', $repair->act)}}"><i
+                                        class="fa fa-@lang('site::act.icon')"></i> @lang('site::repair.act_id')
+                                № {{ $repair->act->id }}</a>
+                        @endif
                     </h5>
                     <div class="repair-list-row row no-gutters">
                         <div class="col-md-6 col-xl-2 py-md-2 px-2 pb-2">

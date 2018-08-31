@@ -1,31 +1,44 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: user097
- * Date: 29.08.2018
- * Time: 11:18
- */
 
-namespace Site\Support;
-
+namespace QuadStudio\Service\Site\Support;
 
 use Codedge\Fpdf\Fpdf\Fpdf;
+use Illuminate\Database\Eloquent\Model;
 
-class Pdf extends Fpdf
+abstract class Pdf extends Fpdf
 {
-    public function __construct($orientation = 'P', $unit = 'mm', $size = 'A4')
+    protected $model;
+
+    protected $defaults = [
+        'font_size' => 9,
+        'font_size_small' => 7,
+        'line_height' => 5,
+    ];
+
+    /**
+     * @param Model $model
+     * @return $this
+     */
+    public function setModel(Model $model)
     {
-        parent::__construct($orientation, $unit, $size);
+        $this->model = $model;
+
+        return $this;
+    }
+
+    public function render()
+    {
         $this->SetFillColor(255, 255, 255);
         $this->SetDrawColor(0, 0, 0);
-        $this->AddFont('verdana', '',  'verdana.php');
+        $this->SetMargins(10, 10, 10);
+        $this->AddFont('verdana', '', 'verdana.php');
         $this->AddFont('verdana', 'B', 'verdanab.php');
         $this->AddFont('verdana', 'I', 'verdanai.php');
         $this->AddFont('verdana', 'U', 'verdanaz.php');
+        $this->build();
 
-    }
-
-    public function render(){
         return response($this->Output(), 200)->header('Content-Type', 'application/pdf');
     }
+
+    abstract function build();
 }
