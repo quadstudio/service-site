@@ -2,7 +2,7 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers;
 
-use QuadStudio\Service\Site\Filters\Region\OnlyEnabledAscFilter;
+use QuadStudio\Service\Site\Filters\Region\OnlyEnabledUserFilter;
 use QuadStudio\Service\Site\Filters\Region\SelectFilter;
 use QuadStudio\Service\Site\Models\Region;
 use QuadStudio\Service\Site\Models\Service;
@@ -38,7 +38,7 @@ trait ServiceControllerTrait
         //return view('site::service.index');
         $this->regions->trackFilter();
         $this->regions->applyFilter(new SelectFilter());
-        $this->regions->applyFilter(new OnlyEnabledAscFilter());
+        $this->regions->applyFilter(new OnlyEnabledUserFilter());
 
         return view('site::service.index', [
             //'repository' => $this->services,

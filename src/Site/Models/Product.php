@@ -321,6 +321,52 @@ class Product extends Model implements Imageable
     }
 
     /**
+     * Добавить связь запчасть - оборудование
+     *
+     * @param mixed $relation
+     */
+    public function attachBackRelation($relation)
+    {
+        if (is_object($relation)) {
+            $relation = $relation->getKey();
+        }
+        if (is_array($relation)) {
+            $relation = $relation['id'];
+        }
+        $this->back_relations()->attach($relation);
+    }
+
+    /**
+     * Обрантая связь товаров
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
+     */
+    public function back_relations()
+    {
+        return $this->belongsToMany(
+            Product::class,
+            $this->prefix . 'relations',
+            'relation_id',
+            'product_id');
+    }
+
+    /**
+     * Удалить связь запчасть - оборудование
+     *
+     * @param mixed $relation
+     */
+    public function detachBackRelation($relation)
+    {
+        if (is_object($relation)) {
+            $relation = $relation->getKey();
+        }
+        if (is_array($relation)) {
+            $relation = $relation['id'];
+        }
+        $this->back_relations()->detach($relation);
+    }
+
+    /**
      * Удалить связь оборудование - запчасть
      *
      * @param mixed $relation
@@ -369,20 +415,6 @@ class Product extends Model implements Imageable
         }
 
         return $equipments;
-    }
-
-    /**
-     * Обрантая связь товаров
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
-     */
-    public function back_relations()
-    {
-        return $this->belongsToMany(
-            Product::class,
-            $this->prefix . 'relations',
-            'relation_id',
-            'product_id');
     }
 
 

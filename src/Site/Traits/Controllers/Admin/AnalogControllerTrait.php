@@ -14,7 +14,7 @@ trait AnalogControllerTrait
         $analog = Product::find($request->input('analog_id'));
         if (!$product->analogs->contains($analog->id)) {
             $product->attachAnalog($analog);
-            $json['update']['#product-analogs-count'] = $product->analogs()->count();
+            $json['update']['.product-analogs-count'] = $product->analogs()->count();
             $json['prepend']['#product-analogs-list'] = view('site::admin.product.show.analog', compact('product', 'analog'))->render();
         } else {
             $json['errors']['#analog_search'] = 'Такой аналог уже есть';
@@ -34,7 +34,7 @@ trait AnalogControllerTrait
             $analog->detachAnalog($product);
         }
         $json['remove'][] = '#product-analog-' . $analog->id;
-        $json['update']['#product-analogs-count'] = $product->analogs()->count();
+        $json['update']['.product-analogs-count'] = $product->analogs()->count();
 
         return response()->json($json);
     }

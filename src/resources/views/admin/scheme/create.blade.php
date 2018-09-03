@@ -61,50 +61,55 @@
 
                     <div class="form-group required">
                         <label class="control-label"
+                               for="image_id">@lang('site::scheme.image_id')</label>
+
+                        <form method="POST" enctype="multipart/form-data"
+                              action="{{route('admin.schemes.image')}}">
+                            @csrf
+                            <input type="hidden" name="storage" value="schemes"/>
+                            <input class="d-inline-block form-control-file{{ $errors->has('image_id') ? ' is-invalid' : '' }}"
+                                   type="file"
+                                   name="path"/>
+
+                            <input type="button" class="btn btn-ferroli image-upload-button"
+                                   value="@lang('site::messages.load')"/>
+                            <span class="invalid-feedback">{{ $errors->first('image_id') }}</span>
+                        </form>
+
+                        <div id="image-src" class="bg-light"
+                             style="width: {{config('site.schemes.size.image.width', 740)}}px;height: {{config('site.schemes.size.image.height', 1000)}}px;">
+                        </div>
+
+                    </div>
+
+                    <div class="form-group required">
+                        <label class="control-label"
                                for="block_id">@lang('site::scheme.equipments')</label>
 
                         @foreach($equipments as $key => $equipment)
-                            <div class="custom-control custom-checkbox">
-                                <input name="equipments[]" value="{{ $equipment->id }}" type="checkbox"
-                                       @if(in_array($equipment->id, old('equipments', [])))
-                                       checked
-                                       @endif
-                                       class="custom-control-input{{ $errors->has('equipments') ? ' is-invalid' : '' }}"
-                                       id="equipment-{{ $equipment->id }}">
-                                <label class="custom-control-label"
-                                       for="equipment-{{ $equipment->id }}">{{ $equipment->name }}</label>
-                                @if($key + 1 == $equipments->count())
-                                    <span class="invalid-feedback">{{ $errors->first('equipments') }}</span>
-                                @endif
-                            </div>
+                            <hr/>
+                            <b class="d-block">{{$equipment->name}}</b>
+                            @foreach($equipment->products as $product)
+                                <div class="custom-control custom-checkbox">
+                                    <input name="products[]" value="{{ $product->id }}" type="checkbox"
+                                           @if(in_array($product->id, old('products', [])))
+                                           checked
+                                           @endif
+                                           class="custom-control-input{{ $errors->has('products') ? ' is-invalid' : '' }}"
+                                           id="equipment-{{ $product->id }}">
+                                    <label class="custom-control-label"
+                                           for="equipment-{{ $product->id }}">{{ $product->name }} {{ $product->id }}</label>
+                                    @if($key + 1 == $product->count())
+                                        <span class="invalid-feedback">{{ $errors->first('products') }}</span>
+                                    @endif
+                                </div>
+                            @endforeach
                         @endforeach
 
                     </div>
 
                 </form>
 
-                <div class="form-group required">
-                    <label class="control-label"
-                           for="image_id">@lang('site::scheme.image_id')</label>
-
-                    <form method="POST" enctype="multipart/form-data"
-                          action="{{route('admin.schemes.image')}}">
-                        @csrf
-                        <input type="hidden" name="storage" value="schemes"/>
-                        <input class="d-inline-block form-control-file{{ $errors->has('image_id') ? ' is-invalid' : '' }}"
-                               type="file"
-                               name="path"/>
-
-                        <input type="button" class="btn btn-ferroli image-upload-button"
-                               value="@lang('site::messages.load')"/>
-                        <span class="invalid-feedback">{{ $errors->first('image_id') }}</span>
-                    </form>
-
-                    <div id="image-src" class="bg-light"
-                         style="width: {{config('site.schemes.size.image.width', 740)}}px;height: {{config('site.schemes.size.image.height', 1000)}}px;">
-                    </div>
-
-                </div>
                 <hr/>
                 <div class="form-row">
                     <div class="col text-right">

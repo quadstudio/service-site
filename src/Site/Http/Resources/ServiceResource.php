@@ -14,13 +14,6 @@ class ServiceResource extends JsonResource
      */
     public function toArray($request)
     {
-//        $d = $this->sc_phones();
-//        dd($d);
-//        dump($d->toSql());
-//        dd($d->getBindings());
-//        return parent::toArray($request);
-//        //return array_merge(parent::toArray($request), ['files'  => $this->files]);
-//        $this->load('contragents')->load('addresses')->load('contacts');
         return [
             'type'       => 'Feature',
             'id'         => $this->id,
@@ -30,8 +23,11 @@ class ServiceResource extends JsonResource
             ],
             'properties' => [
                 'balloonContentBody' => view('site::service.balloon', [
-                    'sc'      => $this->sc(),
-                    //'web'     => $this->web,
+                    'sc'      => $this->sc()->name ? $this->sc()->name : $this->name,
+                    'asc'      => $this->hasRole('asc'),
+                    'dealer'      => $this->hasRole('dealer'),
+                    'web'      => $this->sc()->web ? $this->sc()->web : $this->web,
+                    'phones'     => $this->sc()->phones()->exists() ? $this->sc()->phones : $this->phones,
                     'email'   => $this->email,
                     'address' => $this->address(),
                     //'phones'  => $this->sc_phones()
@@ -39,9 +35,6 @@ class ServiceResource extends JsonResource
                 'balloonMaxWidth'    => 700
             ],
             'options'    => ['preset' => 'islands#orangeStarIcon', 'zIndex' => 10],
-            //'contragents' => ContragentResource::collection($this->whenLoaded('contragents')),
-            //'addresses' => AddressResource::collection($this->whenLoaded('addresses')),
-            //'contacts' => ContactResource::collection($this->whenLoaded('contacts')),
         ];
     }
 }

@@ -51,6 +51,14 @@
                     <div class="media-body p-md-5 px-4 pt-5 pb-4 col-md-9 col-lg-8">
 
                         <h3>{{$equipment->catalog->parentTreeName()}} {{$equipment->name}}</h3>
+                        @admin()
+                        <p>
+                            <a href="{{route('admin.equipments.show', $equipment)}}">
+                                <i class="fa fa-folder-open"></i>
+                                @lang('site::messages.open') @lang('site::messages.in_admin')
+                            </a>
+                        </p>
+                        @endadmin()
                         <p>{!! $equipment->annotation !!}</p>
                         {{--<div class="mb-4">--}}
                         {{--<div class="ui-stars text-big">--}}

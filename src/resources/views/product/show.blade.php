@@ -64,6 +64,11 @@
                             <h1>{!! $product->name!!}</h1>
 
                             <dl class="row">
+
+                                @admin()
+                                <dd class="col-sm-12"><a href="{{route('admin.products.show', $product)}}"><i class="fa fa-folder-open"></i> @lang('site::messages.open') @lang('site::messages.in_admin')</a></dd>
+                                @endadmin()
+
                                 <dt class="col-sm-4">@lang('site::product.sku')</dt>
                                 <dd class="col-sm-8">{{$product->sku}}</dd>
 
@@ -90,6 +95,7 @@
                                 <dd class="col-sm-8">
                                     @include('site::cart.buy.large')
                                 </dd>
+
                             </dl>
                             {{--@if(!$equipment->products->isEmpty())--}}
                             {{--<h5 class="mt-4">Оборудование</h5>--}}

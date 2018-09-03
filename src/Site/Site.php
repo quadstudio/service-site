@@ -74,6 +74,7 @@ class Site
                     // Static pages
                     $router->get('/feedback', 'StaticPageController@feedback')->name('feedback');
                     $router->post('/feedback', 'StaticPageController@message')->name('message');
+                    $router->get('/where-to-buy', 'StaticPageController@whereToBuy')->name('whereToBuy');
 
                     $router->group(['middleware' => ['auth']],
                         function () use ($router) {
@@ -90,7 +91,7 @@ class Site
                             })->middleware('can:pdf,repair')->name('repairs.pdf');
                             $router->resource('/engineers', 'EngineerController')->middleware('permission:engineers');
                             $router->resource('/trades', 'TradeController')->middleware('permission:trades');
-                            $router->resource('/files', 'FileController')->only(['index', 'store', 'show', 'destroy'])->middleware('permission:files');
+                            $router->resource('/files', 'FileController')->only(['index', 'store', 'show', 'destroy']);
                             $router->resource('/launches', 'LaunchController')->middleware('permission:launches');
                             $router->resource('/costs', 'CostController')->middleware('permission:costs');
                             $router->resource('/contragents', 'ContragentController')->middleware('permission:contragents');
@@ -160,6 +161,10 @@ class Site
                                 $router->name('admin')->post('/products/{product}/images', 'ProductController@images')->name('.products.images.update');
                                 $router->name('admin')->get('/products/{product}/analogs', 'ProductController@analogs')->name('.products.analogs');
                                 $router->name('admin')->post('/products/{product}/analogs', 'ProductController@analogs')->name('.products.analogs.update');
+                                $router->name('admin')->get('/products/{product}/relations', 'ProductController@relations')->name('.products.relations');
+                                $router->name('admin')->post('/products/{product}/relations', 'ProductController@relations')->name('.products.relations.update');
+                                $router->name('admin')->get('/products/{product}/back_relations', 'ProductController@back_relations')->name('.products.back_relations');
+                                $router->name('admin')->post('/products/{product}/back_relations', 'ProductController@back_relations')->name('.products.back_relations.update');
                                 //$router->name('admin')->post('/product-images/{product}/store', 'ProductImageController@store')->name('.products.images.store');
                                 $router->name('admin')->put('/product-images/{product}/sort', 'ProductImageController@sort')->name('.products.images.sort');
                                 $router->name('admin')->post('/analogs/store/{product}', 'AnalogController@store')->name('.analogs.store');

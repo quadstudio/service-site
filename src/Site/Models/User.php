@@ -21,7 +21,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'sc', 'web',
+        'name', 'email', 'password', 'dealer',
         'display', 'type_id', 'active', 'image_id',
         'warehouse_id', 'price_type_id', 'currency_id',
     ];
@@ -115,7 +115,7 @@ class User extends Authenticatable
      */
     public function address()
     {
-        return $this->addresses()->where('type_id', 2)->first();
+        return $this->addresses()->where('type_id', 2)->firstOrNew([]);
     }
 
     /**

@@ -6,7 +6,7 @@ namespace QuadStudio\Service\Site\Traits\Controllers\Auth;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use QuadStudio\Service\Site\Http\Requests\Register as Request;
+use QuadStudio\Service\Site\Http\Requests\RegisterRequest;
 use QuadStudio\Service\Site\Models\Address;
 use QuadStudio\Service\Site\Models\Contact;
 use QuadStudio\Service\Site\Models\Contragent;
@@ -63,18 +63,21 @@ trait RegisterControllerTrait
     /**
      * Handle a registration request for the application.
      *
-     * @param  Request $request
+     * @param  RegisterRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
+        //dd($request->all());
         $user = $this->createUser($request->all());
         /** @var $contact Contact */
         $user->contacts()->save($contact = Contact::create($request->input('contact')));
         $contact->phones()->save(Phone::create($request->input('phone.contact')));
-        /** @var $sc Contact */
-        $user->contacts()->save($sc = Contact::create($request->input('sc')));
-        $sc->phones()->save(Phone::create($request->input('phone.sc')));
+        if ($request->filled('sc')) {
+            /** @var $sc Contact */
+            $user->contacts()->save($sc = Contact::create($request->input('sc')));
+            $sc->phones()->save(Phone::create($request->input('phone.sc')));
+        }
         $user->addresses()->save(Address::create($request->input('address.sc')));
         /** @var $contragent Contragent */
         $user->contragents()->save($contragent = Contragent::create($request->input('contragent')));
@@ -101,8 +104,7 @@ trait RegisterControllerTrait
         return User::create([
             'name'          => $data['name'],
             'email'         => $data['email'],
-//            'sc'            => $data['sc'],
-//            'web'           => $data['web'],
+            'dealer'        => $data['dealer'],
             'type_id'       => $data['type_id'],
             'currency_id'   => config('site.defaults.user.currency_id'),
             'price_type_id' => config('site.defaults.user.price_type_id'),

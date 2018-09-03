@@ -4,7 +4,9 @@ namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use QuadStudio\Service\Site\Filters\Equipment\HasProductsFilter;
 use QuadStudio\Service\Site\Filters\Equipment\SortByNameFilter;
+use QuadStudio\Service\Site\Filters\Equipment\WithProductsFilter;
 use QuadStudio\Service\Site\Http\Requests\Admin\SchemeRequest;
 use QuadStudio\Service\Site\Http\Requests\ImageRequest;
 use QuadStudio\Service\Site\Jobs\ProcessSchemeImage;
@@ -75,7 +77,12 @@ trait SchemeControllerTrait
     {
         $blocks = $this->blocks->trackFilter()->all();
         $datasheets = $this->datasheets->trackFilter()->all();
-        $equipments = $this->equipments->trackFilter()->pushTrackFilter(SortByNameFilter::class)->all();
+        $equipments = $this->equipments
+            ->trackFilter()
+            ->pushTrackFilter(SortByNameFilter::class)
+            ->pushTrackFilter(HasProductsFilter::class)
+            ->pushTrackFilter(WithProductsFilter::class)
+            ->all();
         return view('site::admin.scheme.create', compact('blocks', 'datasheets', 'equipments'));
     }
 
@@ -121,7 +128,7 @@ trait SchemeControllerTrait
 
         //dd($request->all());
         $scheme = $this->schemes->create($request->except(['_token', '_method', '_create']));
-        $scheme->attachEquipments($request->input('equipments', []));
+        $scheme->attachProducts($request->input('products', []));
         if ($request->input('_create') == 1) {
             $redirect = redirect()->route('admin.schemes.create')->with('success', trans('site::scheme.created'));
         } else {

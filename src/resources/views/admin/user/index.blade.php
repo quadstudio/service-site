@@ -17,6 +17,11 @@
         @alert()@endalert
 
         <div class=" border p-3 mb-2">
+            <a href="{{ route('admin.users.create') }}"
+               class="d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn-ferroli">
+                <i class="fa fa-plus"></i>
+                <span>@lang('site::messages.add') @lang('site::user.create.dealer')</span>
+            </a>
             <a href="{{ route('admin') }}" class="d-block d-sm-inline btn btn-secondary">
                 <i class="fa fa-reply"></i>
                 <span>@lang('site::messages.back_admin')</span>

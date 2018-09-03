@@ -26,6 +26,7 @@ return [
         'products.index',
         'products.show',
         'products.list',
+        'whereToBuy',
         'cart',
     ],
     'routes'       => [

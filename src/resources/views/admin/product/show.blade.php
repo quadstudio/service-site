@@ -25,12 +25,26 @@
             <a href="{{route('admin.products.images', $product)}}"
                class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0">
                 <i class="fa fa-@lang('site::image.icon')"></i>
-                <span>@lang('site::image.images')</span> <span class="badge badge-light">{{$product->images()->count()}}</span>
+                <span>@lang('site::image.images')</span> <span
+                        class="badge badge-light">{{$product->images()->count()}}</span>
             </a>
             <a href="{{route('admin.products.analogs', $product)}}"
                class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0">
                 <i class="fa fa-@lang('site::analog.icon')"></i>
-                <span>@lang('site::analog.analogs')</span> <span class="badge badge-light">{{$product->analogs()->count()}}</span>
+                <span>@lang('site::analog.analogs')</span>
+                <span class="badge badge-light product-analogs-count">{{$product->analogs()->count()}}</span>
+            </a>
+            <a href="{{route('admin.products.relations', $product)}}"
+               class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0">
+                <i class="fa fa-@lang('site::relation.icon')"></i>
+                <span>@lang('site::relation.header.relations')</span>
+                <span class="badge badge-light product-relations-count">{{$product->relations()->count()}}</span>
+            </a>
+            <a href="{{route('admin.products.back_relations', $product)}}"
+               class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0">
+                <i class="fa fa-@lang('site::relation.back_icon')"></i>
+                <span>@lang('site::relation.header.back_relations')</span>
+                <span class="badge badge-light product-back-relations-count">{{$product->back_relations()->count()}}</span>
             </a>
             <a href="{{ route('admin.products.index') }}" class="d-block d-sm-inline btn btn-secondary">
                 <i class="fa fa-reply"></i>
@@ -44,6 +58,12 @@
                 <div class="card mb-2">
                     <h6 class="card-header">@lang('site::product.card')</h6>
                     <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <a href="{{route('products.show', $product)}}">
+                                <i class="fa fa-folder-open"></i>
+                                @lang('site::messages.open') @lang('site::messages.in_front')
+                            </a>
+                        </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <div class="text-muted">@lang('site::product.name')</div>
                             <div>{{ $product->name }}</div>
@@ -81,6 +101,7 @@
                             <div class="text-muted">@lang('site::serial.serials')</div>
                             <div>{{$product->serials()->count()}}</div>
                         </li>
+
                     </ul>
                 </div>
                 <div class="card mb-2">
@@ -149,7 +170,8 @@
                 <div class="card mb-2">
                     <h6 class="card-header with-elements">
                         <span class="card-header-title">
-                            <span class="badge badge-warning text-big" id="images-count">{{$product->images()->count()}}</span>
+                            <span class="badge badge-warning text-big"
+                                  id="images-count">{{$product->images()->count()}}</span>
                             @lang('site::image.images')
                         </span>
                         <div class="card-header-elements ml-auto">
@@ -171,49 +193,17 @@
                 <div class="card mb-2">
                     <h6 class="card-header with-elements">
                         <span class="card-header-title">
-                            <span class="badge badge-warning text-big" id="product-analogs-count">
+                            <span class="badge badge-warning text-big product-analogs-count">
                                 {{$product->analogs()->count()}}
                             </span>
                             @lang('site::analog.analogs')
                         </span>
                         <div class="card-header-elements ml-auto">
-                            <a data-toggle="collapse" href="#collapseAnalogs" role="button" aria-expanded="false"
-                               aria-controls="collapseAnalogs" class="btn btn-light btn-sm">
-                                <i class="fa fa-plus"></i>
+                            <a href="{{route('admin.products.analogs', $product)}}" class="btn btn-light btn-sm">
+                                <i class="fa fa-pencil"></i>
                             </a>
                         </div>
                     </h6>
-                    <div class="card-body py-3 collapse" id="collapseAnalogs">
-                        <form id="analog-add-form"
-                              method="POST"
-                              action="{{ route('admin.analogs.store', $product) }}">
-                            @csrf
-                            <div class="form-group">
-                                <select name="analog_id" class="form-control" id="analog_search"
-                                        title="">
-
-                                </select>
-                                <span class="invalid-feedback">Такая деталь ужде есть в списке</span>
-                                <div id="analogHelp" class="d-block form-text text-success">
-                                    Введите артикул или наименование аналога
-                                </div>
-
-                            </div>
-                            <button class="btn btn-ferroli"
-                                    name="mirror"
-                                    value="0"
-                                    type="submit">
-                                <i class="fa fa-check"></i> @lang('site::messages.save')
-                            </button>
-                            <button class="btn btn-ferroli"
-                                    name="mirror"
-                                    value="1"
-                                    type="submit">
-                                <i class="fa fa-exchange"></i> @lang('site::messages.save')
-                                @lang('site::messages.mirror')
-                            </button>
-                        </form>
-                    </div>
                     <div class="card-body p-3">
                         <ul class="list-group list-group-flush" id="product-analogs-list">
                             @foreach($product->analogs as $analog)
@@ -227,45 +217,21 @@
                 <div class="card mb-2">
                     <h6 class="card-header with-elements">
                         <span class="card-header-title">
-                            <span class="badge badge-warning text-big" id="product-back-relations-count">
+                            <span class="badge badge-warning text-big product-back-relations-count">
                                 {{$product->back_relations()->count()}}
                             </span>
                             @lang('site::relation.header.back_relations')
                         </span>
                         <div class="card-header-elements ml-auto">
-                            <a data-toggle="collapse" href="#collapseBackRelations" role="button"
-                               aria-expanded="false"
-                               aria-controls="collapseBackRelations" class="btn btn-light btn-sm">
-                                <i class="fa fa-plus"></i>
+                            <a href="{{route('admin.products.back_relations', $product)}}" class="btn btn-light btn-sm">
+                                <i class="fa fa-pencil"></i>
                             </a>
                         </div>
                     </h6>
-                    <div class="card-body py-3 collapse" id="collapseBackRelations">
-                        <form class="relation-add-form"
-                              method="POST"
-                              action="{{ route('admin.relations.store', $product) }}">
-                            <input type="hidden" name="back" value="1"/>
-                            @csrf
-                            <div class="form-group">
-                                <select name="relation_id" class="form-control relation_search"
-                                        title="">
-                                </select>
-                                <span class="invalid-feedback">Такое оборудование ужде есть в списке</span>
-                                <div id="backRelationHelp" class="d-block form-text text-success">
-                                    Введите артикул или наименование оборудования
-                                </div>
-
-                            </div>
-                            <button class="btn btn-ferroli" data-target="#product-back-relations-list"
-                                    type="submit">
-                                <i class="fa fa-check"></i> @lang('site::messages.save')
-                            </button>
-                        </form>
-                    </div>
                     <div class="card-body p-3">
                         <ul class="list-group list-group-flush" id="product-back-relations-list">
                             @foreach($product->back_relations()->orderBy('name')->get() as $relation)
-                                @include('site::admin.product.show.relation', ['back' => 1])
+                                @include('site::admin.product.show.back_relation')
                             @endforeach
                         </ul>
                     </div>
@@ -275,45 +241,21 @@
                 <div class="card mb-2">
                     <h6 class="card-header with-elements">
                         <span class="card-header-title">
-                            <span class="badge badge-warning text-big" id="product-relations-count">
+                            <span class="badge badge-warning text-big product-relations-count">
                                 {{$product->relations()->count()}}
                             </span>
                             @lang('site::relation.header.relations')
                         </span>
                         <div class="card-header-elements ml-auto">
-                            <a data-toggle="collapse" href="#collapseRelations" role="button"
-                               aria-expanded="false"
-                               aria-controls="collapseRelations" class="btn btn-light btn-sm">
-                                <i class="fa fa-plus"></i>
+                            <a href="{{route('admin.products.relations', $product)}}" class="btn btn-light btn-sm">
+                                <i class="fa fa-pencil"></i>
                             </a>
                         </div>
                     </h6>
-                    <div class="card-body py-3 collapse" id="collapseRelations">
-                        <form class="relation-add-form"
-                              method="POST"
-                              action="{{ route('admin.relations.store', $product) }}">
-                            <input type="hidden" name="back" value="0"/>
-                            @csrf
-                            <div class="form-group">
-                                <select name="relation_id" class="form-control relation_search"
-                                        title="">
-                                </select>
-                                <span class="invalid-feedback">Такая деталь ужде есть в списке</span>
-                                <div id="backRelationHelp" class="d-block form-text text-success">
-                                    Введите артикул или наименование детали
-                                </div>
-
-                            </div>
-                            <button class="btn btn-ferroli" data-target="#product-relations-list"
-                                    type="submit">
-                                <i class="fa fa-check"></i> @lang('site::messages.save')
-                            </button>
-                        </form>
-                    </div>
                     <div class="card-body p-3">
                         <ul class="list-group list-group-flush" id="product-relations-list">
                             @foreach($product->relations()->orderBy('name')->get() as $relation)
-                                @include('site::admin.product.show.relation', ['back' => 0])
+                                @include('site::admin.product.show.relation')
                             @endforeach
                         </ul>
                     </div>

@@ -10,9 +10,16 @@
                             <span class="d-block">{{ $user->addresses->where('type_id', 2)->first()->region->name }}
                                 &bull; {{ $user->addresses->where('type_id', 2)->first()->locality }}
                             </span>
-                            <span class="d-block">{{ $user->sc()->name }} <span title="ID" class="text-muted">[ #{{ $user->id }} ]</span></span>
                         </div>
                     @endif
+                    <div>
+                         <span class="d-inline-block text-normal @if($user->hasRole('asc')) text-success @else text-danger @endif">
+                            @lang('site::user.asc_'.($user->hasRole('asc') ? '1' : '0'))
+                        </span>
+                        <span class="d-inline-block text-normal @if($user->hasRole('dealer')) text-success @else text-danger @endif">
+                            @lang('site::user.dealer_'.($user->hasRole('dealer') ? '1' : '0'))
+                        </span>
+                    </div>
 
                 </div>
                 <div class="col-12 col-md-4 col-xl-4">
@@ -25,11 +32,11 @@
                 </div>
                 <div class="col-12 col-md-4 col-xl-3">
                     <div class="mb-2 mb-md-0 text-secondary text-left text-md-right">
+                        <span class="d-block text-normal @if($user->active) text-success @else text-danger @endif">
+                            @lang('site::user.active_'.($user->active))
+                        </span>
                         <span class="d-block text-normal @if($user->verified) text-success @else text-danger @endif">
                             @lang('site::user.verified_'.($user->verified))
-                        </span>
-                        <span class="d-block text-normal @if($user->hasRole('asc')) text-success @else text-danger @endif">
-                            @lang('site::user.asc_'.($user->hasRole('asc') ? '1' : '0'))
                         </span>
                         <span class="d-block text-normal @if($user->display) text-success @else text-danger @endif">
                             @lang('site::user.display_'.($user->display))

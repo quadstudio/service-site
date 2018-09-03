@@ -57,30 +57,30 @@ class Scheme extends Model
     }
 
     /**
-     * @param $equipment
+     * @param $product
      * @return $this
      */
-    public function attachEquipment($equipment)
+    public function attachProduct($product)
     {
-        if ($equipment instanceof Equipment) {
-            $equipment = $equipment->getKey();
+        if ($product instanceof Product) {
+            $product = $product->getKey();
         }
-        if (is_array($equipment)) {
-            return $this->attachEquipments($equipment);
+        if (is_array($product)) {
+            return $this->attachProducts($product);
         }
-        $this->equipments()->attach($equipment);
+        $this->products()->attach($product);
 
         return $this;
     }
 
     /**
-     * @param array $equipments
+     * @param array $products
      * @return $this
      */
-    public function attachEquipments(array $equipments)
+    public function attachProducts(array $products)
     {
-        foreach ($equipments as $equipment) {
-            $this->attachEquipment($equipment);
+        foreach ($products as $product) {
+            $this->attachProduct($product);
         }
 
         return $this;
@@ -89,30 +89,30 @@ class Scheme extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function equipments()
+    public function products()
     {
         if (config('site::cache.use', true) === true) {
             $key = $this->primaryKey;
-            $cacheKey = 'equipment_scheme_' . $this->{$key};
+            $cacheKey = 'product_scheme_' . $this->{$key};
 
             return cache()->remember($cacheKey, config('site::cache.ttl'), function () {
-                return $this->_equipments();
+                return $this->_products();
             });
         }
 
-        return $this->_equipments();
+        return $this->_products();
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function _equipments()
+    public function _products()
     {
         return $this->belongsToMany(
-            Equipment::class,
-            env('DB_PREFIX', '') . 'equipment_scheme',
+            Product::class,
+            env('DB_PREFIX', '') . 'product_scheme',
             'scheme_id',
-            'equipment_id'
+            'product_id'
         );
     }
 

@@ -6,7 +6,7 @@ use QuadStudio\Repo\Contracts\RepositoryInterface;
 use QuadStudio\Repo\Filters\BooleanFilter;
 use QuadStudio\Repo\Filters\BootstrapSelect;
 
-class IsAscFilter extends BooleanFilter
+class IsAscSelectFilter extends BooleanFilter
 {
     use BootstrapSelect;
 
@@ -14,7 +14,6 @@ class IsAscFilter extends BooleanFilter
 
     function apply($builder, RepositoryInterface $repository)
     {
-
         if ($this->canTrack() && $this->filled($this->name())) {
             switch ($this->get($this->name())) {
                 case "1":

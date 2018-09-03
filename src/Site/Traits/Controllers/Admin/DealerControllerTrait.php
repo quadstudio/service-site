@@ -17,12 +17,6 @@ use QuadStudio\Service\Site\Filters\User\VerifiedFilter;
 use QuadStudio\Service\Site\Filters\UserFilter;
 use QuadStudio\Service\Site\Filters\User\IsServiceFilter;
 use QuadStudio\Service\Site\Http\Requests\Admin\UserRequest;
-use QuadStudio\Service\Site\Models\Address;
-use QuadStudio\Service\Site\Models\Contact;
-use QuadStudio\Service\Site\Models\ContragentType;
-use QuadStudio\Service\Site\Models\Country;
-use QuadStudio\Service\Site\Models\Phone;
-use QuadStudio\Service\Site\Models\Region;
 use QuadStudio\Service\Site\Models\User;
 use QuadStudio\Service\Site\Repositories\AddressRepository;
 use QuadStudio\Service\Site\Repositories\ContactRepository;
@@ -33,7 +27,7 @@ use QuadStudio\Service\Site\Repositories\RepairRepository;
 use QuadStudio\Service\Site\Repositories\UserRepository;
 use QuadStudio\Service\Site\Repositories\WarehouseRepository;
 
-trait UserControllerTrait
+trait DealerControllerTrait
 {
     protected $users;
     protected $types;
@@ -99,61 +93,9 @@ trait UserControllerTrait
         $this->users->pushTrackFilter(VerifiedFilter::class);
         $this->users->pushTrackFilter(DisplaySelectFilter::class);
 
-        return view('site::admin.user.index', [
+        return view('site::admin.dealer.index', [
             'repository' => $this->users,
             'users'      => $this->users->paginate(config('site.per_page.user', 10), [env('DB_PREFIX', '') . 'users.*'])
-        ]);
-    }
-
-    public function create(){
-        $countries = Country::enabled()->orderBy('sort_order')->get();
-        $address_sc_regions = collect([]);
-        if (old('address.sc.country_id', false)) {
-            $address_sc_regions = Region::where('country_id', old('address.sc.country_id'))->orderBy('name')->get();
-        }
-        $types = ContragentType::all();
-        return view('site::admin.user.create', compact('countries', 'address_sc_regions', 'types'));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  UserRequest $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(UserRequest $request)
-    {
-
-        //dd($request->all());
-        $user = $this->createUser($request->all());
-        /** @var $sc Contact */
-        if ($request->filled('sc')) {
-            /** @var $sc Contact */
-            $user->contacts()->save($sc = Contact::create($request->input('sc')));
-            $sc->phones()->save(Phone::create($request->input('phone.sc')));
-        }
-        $user->addresses()->save(Address::create($request->input('address.sc')));
-        $user->attachRole(4);
-        return redirect()->route('admin.users.show', $user)->with('success', trans('site::user.created'));
-    }
-
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array $data
-     * @return User
-     */
-    protected function createUser(array $data)
-    {
-        return User::create([
-
-            'dealer'        => $data['dealer'],
-            'active'        => $data['active'],
-            'display'        => $data['display'],
-            'verified'        => $data['verified'],
-            'name'          => $data['name'],
-            'type_id'       => $data['type_id'],
-            'email'         => $data['email'],
         ]);
     }
 

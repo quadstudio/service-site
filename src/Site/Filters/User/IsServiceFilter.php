@@ -1,12 +1,12 @@
 <?php
 
-namespace QuadStudio\Service\Site\Filters;
+namespace QuadStudio\Service\Site\Filters\User;
 
 use QuadStudio\Repo\Contracts\RepositoryInterface;
 use QuadStudio\Repo\Filter;
 use QuadStudio\Repo\Filters\BootstrapCheckbox;
 
-class UserIsServiceFilter extends Filter
+class IsServiceFilter extends Filter
 {
     use BootstrapCheckbox;
 

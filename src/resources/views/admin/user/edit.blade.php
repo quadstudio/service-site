@@ -105,37 +105,40 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-row required">
-                                <div class="col mb-3">
-                                    <label class="control-label d-block"
-                                           for="user_display">@lang('site::user.display')</label>
-                                    <div class="custom-control custom-radio  custom-control-inline">
-                                        <input class="custom-control-input
+                            <fieldset>
+                                <div class="form-row required">
+                                    <div class="col mb-3">
+                                        <label class="control-label d-block"
+                                               for="user_display">@lang('site::user.display')</label>
+                                        <div class="custom-control custom-radio  custom-control-inline">
+                                            <input class="custom-control-input
                                                     {{$errors->has('user.display') ? ' is-invalid' : ''}}"
-                                               type="radio"
-                                               name="user[display]"
-                                               required
-                                               @if(old('user.display', $user->display) == 1) checked @endif
-                                               id="user_display_1"
-                                               value="1">
-                                        <label class="custom-control-label"
-                                               for="user_display_1">@lang('site::messages.yes')</label>
-                                    </div>
-                                    <div class="custom-control custom-radio  custom-control-inline">
-                                        <input class="custom-control-input
+                                                   type="radio"
+                                                   name="user[display]"
+                                                   required
+                                                   @if(old('user.display', $user->display) == 1) checked @endif
+                                                   id="user_display_1"
+                                                   value="1">
+                                            <label class="custom-control-label"
+                                                   for="user_display_1">@lang('site::messages.yes')</label>
+                                        </div>
+                                        <div class="custom-control custom-radio  custom-control-inline">
+                                            <input class="custom-control-input
                                                     {{$errors->has('user.display') ? ' is-invalid' : ''}}"
-                                               type="radio"
-                                               name="user[display]"
-                                               required
-                                               @if(old('user.display', $user->display) == 0) checked @endif
-                                               id="user_display_0"
-                                               value="0">
-                                        <label class="custom-control-label"
-                                               for="user_display_0">@lang('site::messages.no')</label>
-                                    </div>
+                                                   type="radio"
+                                                   name="user[display]"
+                                                   required
+                                                   @if(old('user.display', $user->display) == 0 || $user->addresses()->where('type_id', 1)->count() == 0) checked
+                                                   @endif
+                                                   id="user_display_0"
+                                                   value="0">
+                                            <label class="custom-control-label"
+                                                   for="user_display_0">@lang('site::messages.no')</label>
+                                        </div>
 
+                                    </div>
                                 </div>
-                            </div>
+                            </fieldset>
 
                             <div class="form-row required">
                                 <div class="col mb-3">
@@ -168,11 +171,43 @@
                                 </div>
                             </div>
 
+                            <div class="form-row required">
+                                <div class="col mb-3">
+                                    <label class="control-label d-block"
+                                           for="user_dealer">@lang('site::user.dealer')</label>
+                                    <div class="custom-control custom-radio  custom-control-inline">
+                                        <input class="custom-control-input
+                                                    {{$errors->has('user.dealer') ? ' is-invalid' : ''}}"
+                                               type="radio"
+                                               name="user[dealer]"
+                                               required
+                                               @if(old('user.dealer', $user->dealer) == 1) checked @endif
+                                               id="user_dealer_1"
+                                               value="1">
+                                        <label class="custom-control-label"
+                                               for="user_dealer_1">@lang('site::messages.yes')</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input class="custom-control-input
+                                                    {{$errors->has('user.dealer') ? ' is-invalid' : ''}}"
+                                               type="radio"
+                                               name="user[dealer]"
+                                               required
+                                               @if(old('user.dealer', $user->dealer) == 0) checked @endif
+                                               id="user_dealer_0"
+                                               value="0">
+                                        <label class="custom-control-label"
+                                               for="user_dealer_0">@lang('site::messages.no')</label>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="form-row">
                                 <div class="col mb-3">
                                     @foreach($roles->all() as $role)
 
-                                        <div class="custom-control custom-checkbox" style="@if($role->name == 'admin') display:none;@endif">
+                                        <div class="custom-control custom-checkbox"
+                                             style="@if($role->name == 'admin') display:none;@endif">
                                             <input name="roles[]"
                                                    value="{{ $role->id }}"
                                                    type="checkbox"
@@ -181,7 +216,7 @@
                                                    @endif
                                                    class="custom-control-input" id="role-{{ $role->id }}">
                                             <label class="custom-control-label"
-                                                   for="role-{{ $role->id }}">{{ $role->description }}</label>
+                                                   for="role-{{ $role->id }}">{{ $role->title }}</label>
                                         </div>
                                     @endforeach
                                 </div>
@@ -202,7 +237,6 @@
                                         <span>@lang('site::messages.cancel')</span>
                                     </a>
                                 </div>
-
                             </div>
                         </form>
                     </div>

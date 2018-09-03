@@ -2,40 +2,17 @@
 
 namespace QuadStudio\Service\Site\Filters\User;
 
-use QuadStudio\Repo\Filters\BooleanFilter;
-use QuadStudio\Repo\Filters\BootstrapSelect;
+use QuadStudio\Repo\Contracts\RepositoryInterface;
+use QuadStudio\Repo\Filter;
 
-class ActiveFilter extends BooleanFilter
+class ActiveFilter extends Filter
 {
-    use BootstrapSelect;
 
-    protected $render = true;
-
-    /**
-     * @return string
-     */
-    public function name(): string
-    {
-        return 'active';
-    }
-
-    /**
-     * @return string
-     */
-    public function column(): string
+    function apply($builder, RepositoryInterface $repository)
     {
 
-        return 'active';
+        $builder = $builder->where('active', 1);
 
-    }
-
-    public function defaults(): array
-    {
-        return [];
-    }
-
-    public function label()
-    {
-        return trans('site::user.active');
+        return $builder;
     }
 }

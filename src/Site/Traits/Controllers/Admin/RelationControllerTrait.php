@@ -15,7 +15,7 @@ trait RelationControllerTrait
         if ($request->has('back') && $request->input('back') == 1) {
             if(!$relation->relations->contains($product->id)){
                 $relation->attachRelation($product);
-                $json['update']['#product-back-relations-count'] = $product->back_relations()->count();
+                $json['update']['.product-back-relations-count'] = $product->back_relations()->count();
                 $back = 1;
                 $json['prepend']['#product-back-relations-list'] = view('site::admin.product.show.relation', compact('product', 'relation', 'back'))->render();
             }
@@ -23,7 +23,7 @@ trait RelationControllerTrait
         } else{
             if(!$product->relations->contains($relation->id)){
                 $product->attachRelation($relation);
-                $json['update']['#product-relations-count'] = $product->relations()->count();
+                $json['update']['.product-relations-count'] = $product->relations()->count();
                 $back = 0;
                 $json['prepend']['#product-relations-list'] = view('site::admin.product.show.relation', compact('product', 'relation', 'back'))->render();
             }
@@ -36,15 +36,17 @@ trait RelationControllerTrait
 
         if($request->has('back') && $request->input('back') == 1){
             $relation->detachRelation($product);
-            $count_id = '#product-back-relations-count';
+            $count_id = '.product-back-relations-count';
             $count = $product->back_relations()->count();
+            $remove = '#product-back-relation-' . $relation->id;
         } else{
             $product->detachRelation($relation);
-            $count_id = '#product-relations-count';
+            $count_id = '.product-relations-count';
             $count = $product->relations()->count();
+            $remove = '#product-relation-' . $relation->id;
         }
         $json['update'][$count_id] = $count;
-        $json['remove'][] = '#product-relation-' . $relation->id;
+        $json['remove'][] = $remove;
         return response()->json($json);
     }
 }

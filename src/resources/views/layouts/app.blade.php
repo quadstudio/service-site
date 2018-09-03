@@ -16,7 +16,7 @@
 
     {{--<link rel="shortcut icon" href="{{asset('favicon.ico')}}">--}}
     {{--<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600|Roboto:300,400&amp;subset=cyrillic"--}}
-          {{--rel="stylesheet">--}}
+    {{--rel="stylesheet">--}}
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @stack('styles')
     <link rel="apple-touch-icon" sizes="57x57" href="{{asset('/favicon/apple-icon-57x57.png')}}">
@@ -64,7 +64,7 @@
                         <p class="title">Услуги для вас</p>
                         <hr>
                         <ul class="recent-post">
-                            <li><b class="title">Консультации продажи</b></li>
+                            <li><a href="{{route('whereToBuy')}}" class="title">Где купить?</a></li>
                             <li></li>
                         </ul>
                     </div>

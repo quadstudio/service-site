@@ -26,7 +26,8 @@
                 <i class="fa fa-pencil"></i>
                 <span>@lang('site::messages.edit') @lang('site::equipment.equipment')</span>
             </a>
-            <a href="{{ route('admin.equipments.index') }}" class="d-block mr-0 mr-sm-1 mb-1 mb-sm-0 d-sm-inline btn btn-secondary">
+            <a href="{{ route('admin.equipments.index') }}"
+               class="d-block mr-0 mr-sm-1 mb-1 mb-sm-0 d-sm-inline btn btn-secondary">
                 <i class="fa fa-reply"></i>
                 <span>@lang('site::messages.back')</span>
             </a>
@@ -52,6 +53,12 @@
         <div class="card mb-2">
             <div class="card-body">
                 <dl class="row">
+                    <dt class="col-sm-4 text-left text-sm-right"></dt>
+                    <dd class="col-sm-8">
+                        <a href="{{route('equipments.show', $equipment)}}">
+                            <i class="fa fa-folder-open"></i> @lang('site::messages.open') @lang('site::messages.in_front')
+                        </a>
+                    </dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::catalog.full_name')</dt>
                     <dd class="col-sm-8">{{ $equipment->catalog->parentTreeName() }}</dd>

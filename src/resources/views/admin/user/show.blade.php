@@ -28,12 +28,12 @@
                 <span>@lang('site::schedule.synchronize')</span>
             </a>
             <a href="{{ route('admin.users.repairs', $user) }}"
-               class="d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-secondary">
+               class="@notpermission('repairs') disabled @endnotpermission() d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-secondary">
                 <i class="fa fa-@lang('site::repair.icon')"></i>
                 <span>@lang('site::repair.repairs') <span class="badge badge-light">{{$user->repairs()->count()}}</span></span>
             </a>
             <a href="{{ route('admin.users.orders', $user) }}"
-               class="d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-secondary">
+               class="@notpermission('buy') disabled @endnotpermission() d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-secondary">
                 <i class="fa fa-@lang('site::order.icon')"></i>
                 <span>@lang('site::order.orders') <span
                             class="badge badge-light">{{$user->orders()->count()}}</span></span>
@@ -111,6 +111,9 @@
                             </span>
                             <span class="d-block text-normal @if($user->hasRole('asc')) text-success @else text-danger @endif">
                                 @lang('site::user.asc_'.($user->hasRole('asc') ? '1' : '0'))
+                            </span>
+                            <span class="d-block text-normal @if($user->hasRole('dealer')) text-success @else text-danger @endif">
+                                @lang('site::user.dealer_'.($user->hasRole('dealer') ? '1' : '0'))
                             </span>
                             <span class="d-block text-normal @if($user->display) text-success @else text-danger @endif">
                                 @lang('site::user.display_'.($user->display))

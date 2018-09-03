@@ -29,17 +29,32 @@ class UserRequest extends FormRequest
             case 'GET':
             case 'DELETE':
             case 'POST': {
-                return [];
+                return [
+                    'display'               => 'required|boolean',
+                    'active'                => 'required|boolean',
+                    'dealer'                => 'required|boolean',
+                    'verified'              => 'required|boolean',
+                    //
+                    'name'                  => 'required|string|max:255',
+                    'email'                 => 'required|string|email|max:255|unique:' . $prefix . 'users',
+                    'web'                   => 'max:255',
+                    //
+                    'address.sc.country_id' => 'required|exists:' . $prefix . 'countries,id',
+                    'address.sc.region_id'  => 'required|exists:' . $prefix . 'regions,id',
+                    'address.sc.locality'   => 'required|string|max:255',
+                    //
+                    'phone.sc.country_id'   => 'required|exists:' . $prefix . 'countries,id',
+                    'phone.sc.number'       => 'required|numeric|digits:10',
+                    'phone.sc.extra'        => 'max:20',
+                ];
             }
             case 'PUT':
             case 'PATCH': {
                 return [
-                    //'name'          => 'required|string|max:255',
-                    //'sc'            => 'required|string|max:255',
-                    //'web'           => 'max:255',
-                    //'email'         => 'required|string|email|max:255|unique:' .$prefix . 'users,email,' . $this->route()->parameter('user')->id,
                     'user.display'       => 'required|boolean',
                     'user.active'        => 'required|boolean',
+                    'user.dealer'        => 'required|boolean',
+                    'user.verified'      => 'required|boolean',
                     'user.price_type_id' => 'required|exists:' . $prefix . 'price_types,id',
                 ];
             }
@@ -66,9 +81,20 @@ class UserRequest extends FormRequest
     public function attributes()
     {
         return [
-            'user.price_type_id' => trans('site::user.price_type_id'),
-            'user.display'       => trans('site::user.display'),
-            'user.active'        => trans('site::user.active'),
+            'name'                  => trans('site::user.name'),
+            'email'                 => trans('site::user.email'),
+            'web'                   => trans('site::user.web'),
+            //
+            'phone.sc.country_id'   => trans('site::phone.country_id'),
+            'phone.sc.number'       => trans('site::phone.number'),
+            'phone.sc.extra'        => trans('site::phone.extra'),
+            //
+            'address.sc.country_id' => trans('site::address.country_id'),
+            'address.sc.region_id'  => trans('site::address.region_id'),
+            'address.sc.locality'   => trans('site::address.locality'),
+            //
+            'display'               => trans('site::user.display'),
+            'active'                => trans('site::user.active'),
         ];
     }
 }

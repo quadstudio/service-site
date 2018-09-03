@@ -10,10 +10,32 @@
     ])
 @endsection
 
+@push('scripts')
+<script type="text/javascript">
+    document.getElementById("dealer").addEventListener("click", checkDealer);
+    function checkDealer() {
+        document.getElementById("sc_name").disabled = !!this.checked;
+        let class_inputs = document.getElementsByClassName('class_required');
+        let attr_inputs = document.getElementsByClassName('attr_required');
+        for (let i = 0; i < class_inputs.length; i++) {
+            if (this.checked) {
+                class_inputs[i].classList.remove('required');
+                attr_inputs[i].required = false;
+                attr_inputs[i].value = '';
+            } else {
+                class_inputs[i].classList.add('required');
+                attr_inputs[i].required = true;
+            }
+        }
+    }
+</script>
+@endpush
+
 @section('content')
     <div class="container">
         <div class="row pt-5 pb-5">
             <div class="col">
+                {{--{{dump($errors ?: null)}}--}}
 
                 <form id="register-form" method="POST" action="{{ route('register') }}">
                     @csrf
@@ -56,7 +78,8 @@
                                                    @if(old('type_id') == $type->id) checked @endif
                                                    id="type_id_{{ $type->id }}"
                                                    value="{{ $type->id }}">
-                                            <label class="custom-control-label" for="type_id_{{ $type->id }}">{{ $type->name }}</label>
+                                            <label class="custom-control-label"
+                                                   for="type_id_{{ $type->id }}">{{ $type->name }}</label>
                                             @if($key == $types->count()-1)
                                                 <span class="invalid-feedback">
                                                     <strong>{{ $errors->first('user.type_id') }}</strong>
@@ -96,7 +119,8 @@
                         <div class="col-md-6">
                             <div class="form-row">
                                 <div class="col mb-3">
-                                    <label class="control-label" for="contact_position">@lang('site::contact.position')</label>
+                                    <label class="control-label"
+                                           for="contact_position">@lang('site::contact.position')</label>
                                     <input type="text" name="contact[position]" id="contact_position"
                                            class="form-control{{ $errors->has('contact.position') ? ' is-invalid' : '' }}"
                                            placeholder="@lang('site::contact.placeholder.position')"
@@ -115,7 +139,8 @@
                             <div class="form-row required">
                                 <div class="col mb-3">
 
-                                    <label class="control-label" for="phone_contact_country_id">@lang('site::phone.country_id')</label>
+                                    <label class="control-label"
+                                           for="phone_contact_country_id">@lang('site::phone.country_id')</label>
                                     <select class="form-control{{  $errors->has('phone.contact.country_id') ? ' is-invalid' : '' }}"
                                             required
                                             name="phone[contact][country_id]"
@@ -139,7 +164,8 @@
                         <div class="col-md-6">
                             <div class="form-row required">
                                 <div class="col">
-                                    <label class="control-label" for="phone_contact_number">@lang('site::phone.number')</label>
+                                    <label class="control-label"
+                                           for="phone_contact_number">@lang('site::phone.number')</label>
                                     <input type="text"
                                            name="phone[contact][number]"
                                            id="phone_contact_number"
@@ -162,7 +188,8 @@
                         <div class="col-md-3">
                             <div class="form-row">
                                 <div class="col mb-3">
-                                    <label class="control-label" for="phone_contact_extra">@lang('site::phone.extra')</label>
+                                    <label class="control-label"
+                                           for="phone_contact_extra">@lang('site::phone.extra')</label>
                                     <input type="text"
                                            name="phone[contact][extra]"
                                            id="phone_contact_extra"
@@ -177,122 +204,129 @@
                         </div>
                     </div>
 
-
                     <div class="row">
                         <div class="col-md-6">
+                            <fieldset id="sc-content">
+                                {{-- ИНФОРМАЦИЯ ДЛЯ ПОЛЬЗОВТЕЛЕЙ --}}
 
-                            {{-- ИНФОРМАЦИЯ ДЛЯ ПОЛЬЗОВТЕЛЕЙ --}}
+                                <h4 class="mt-4">@lang('site::register.header.sc')</h4>
+                                {{--<h4 class="mb-2 text-success small">@lang('site::register.help.sc')</h4>--}}
 
-                            <h4 class="mt-4">@lang('site::register.header.sc')</h4>
-                            <h4 class="mb-2 text-success small">@lang('site::register.help.sc')</h4>
+                                <div class="custom-control custom-checkbox mb-1">
+                                    <input value="1" name="dealer" type="checkbox" class="custom-control-input" id="dealer">
+                                    <label class="custom-control-label text-big"
+                                           for="dealer">@lang('site::user.help.dealer')</label>
+                                </div>
 
-                            <div class="form-row required">
-                                <div class="col mb-3">
-                                    <input type="hidden" name="sc[type_id]" value="2">
-                                    <label class="control-label"
-                                           for="sc">@lang('site::contact.sc')</label>
-                                    <input type="text"
-                                           name="sc[name]"
-                                           id="sc_name"
-                                           required
-                                           class="form-control{{ $errors->has('sc.name') ? ' is-invalid' : '' }}"
-                                           placeholder="@lang('site::contact.placeholder.sc')"
-                                           value="{{ old('sc.name') }}">
-                                    <span class="invalid-feedback">
+                                <div class="form-row class_required required">
+                                    <div class="col mb-3">
+                                        <input type="hidden" name="sc[type_id]" value="2">
+                                        <label class="control-label"
+                                               for="sc">@lang('site::contact.sc')</label>
+                                        <input type="text"
+                                               name="sc[name]"
+                                               id="sc_name"
+                                               required
+                                               class="attr_required form-control{{ $errors->has('sc.name') ? ' is-invalid' : '' }}"
+                                               placeholder="@lang('site::contact.placeholder.sc')"
+                                               value="{{ old('sc.name') }}">
+                                        <span class="invalid-feedback">
                                         <strong>{{ $errors->first('sc.name') }}</strong>
                                     </span>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="form-row">
-                                <div class="col mb-3">
-                                    <label class="control-label" for="web">@lang('site::contact.web')</label>
-                                    <input type="text"
-                                           name="sc[web]"
-                                           id="sc_web"
-                                           class="form-control{{ $errors->has('sc.web') ? ' is-invalid' : '' }}"
-                                           pattern="https?://.+" title="@lang('site::contact.help.web')"
-                                           placeholder="@lang('site::contact.placeholder.web')"
-                                           value="{{ old('sc.web') }}">
-                                    <span class="invalid-feedback">
+                                <div class="form-row">
+                                    <div class="col mb-3">
+                                        <label class="control-label" for="web">@lang('site::contact.web')</label>
+                                        <input type="text"
+                                               name="sc[web]"
+                                               id="sc_web"
+                                               class="form-control{{ $errors->has('sc.web') ? ' is-invalid' : '' }}"
+                                               pattern="https?://.+" title="@lang('site::contact.help.web')"
+                                               placeholder="@lang('site::contact.placeholder.web')"
+                                               value="{{ old('sc.web') }}">
+                                        <span class="invalid-feedback">
                                         <strong>{{ $errors->first('sc.web') }}</strong>
                                     </span>
-                                    <small id="webHelp" class="form-text text-success">
-                                        @lang('site::contact.help.web')
-                                    </small>
+                                        <small id="webHelp" class="form-text text-success">
+                                            @lang('site::contact.help.web')
+                                        </small>
+                                    </div>
                                 </div>
-                            </div>
 
-                            {{-- ТЕЛЕФОН АСЦ --}}
+                                {{-- ТЕЛЕФОН АСЦ --}}
 
-                            <h4 class="mb-2 mt-2">@lang('site::register.sc_phone')</h4>
-                            <div class="form-row required">
-                                <div class="col mb-3">
+                                <h4 class="mb-2 mt-2">@lang('site::register.sc_phone')</h4>
+                                <div class="form-row required">
+                                    <div class="col mb-3">
 
-                                    <label class="control-label" for="phone_sc_country_id">@lang('site::phone.country_id')</label>
-                                    <select class="form-control{{  $errors->has('phone.sc.country_id') ? ' is-invalid' : '' }}"
-                                            name="phone[sc][country_id]"
-                                            required
-                                            id="phone_sc_country_id">
-                                        <option value="">@lang('site::messages.select_from_list')</option>
-                                        @foreach($countries as $country)
-                                            <option
-                                                    @if(old('phone.sc.country_id') == $country->id) selected
-                                                    @endif
-                                                    value="{{ $country->id }}">{{ $country->name }}
-                                                ({{ $country->phone }})
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    <span class="invalid-feedback">
+                                        <label class="control-label"
+                                               for="phone_sc_country_id">@lang('site::phone.country_id')</label>
+                                        <select class="form-control{{  $errors->has('phone.sc.country_id') ? ' is-invalid' : '' }}"
+                                                name="phone[sc][country_id]"
+                                                required
+                                                id="phone_sc_country_id">
+                                            <option value="">@lang('site::messages.select_from_list')</option>
+                                            @foreach($countries as $country)
+                                                <option
+                                                        @if(old('phone.sc.country_id') == $country->id) selected
+                                                        @endif
+                                                        value="{{ $country->id }}">{{ $country->name }}
+                                                    ({{ $country->phone }})
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <span class="invalid-feedback">
                                         <strong>{{ $errors->first('phone.sc.country_id') }}</strong>
                                     </span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-row required">
-                                        <div class="col">
-                                            <label class="control-label" for="phone_sc_number">@lang('site::phone.number')</label>
-                                            <input type="tel"
-                                                   required
-                                                   name="phone[sc][number]"
-                                                   id="phone_sc_number"
-                                                   title="@lang('site::phone.placeholder.number')"
-                                                   pattern="^\d{10}$"
-                                                   maxlength="10"
-                                                   class="form-control{{ $errors->has('phone.sc.number') ? ' is-invalid' : '' }}"
-                                                   placeholder="@lang('site::phone.placeholder.number')"
-                                                   value="{{ old('phone.sc.number') }}">
-                                            <span class="invalid-feedback">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-row required">
+                                            <div class="col">
+                                                <label class="control-label"
+                                                       for="phone_sc_number">@lang('site::phone.number')</label>
+                                                <input type="tel"
+                                                       required
+                                                       name="phone[sc][number]"
+                                                       id="phone_sc_number"
+                                                       title="@lang('site::phone.placeholder.number')"
+                                                       pattern="^\d{10}$"
+                                                       maxlength="10"
+                                                       class="form-control{{ $errors->has('phone.sc.number') ? ' is-invalid' : '' }}"
+                                                       placeholder="@lang('site::phone.placeholder.number')"
+                                                       value="{{ old('phone.sc.number') }}">
+                                                <span class="invalid-feedback">
                                                 <strong>{{ $errors->first('phone.sc.number') }}</strong>
                                             </span>
-                                            <small id="sc_phone_numberHelp"
-                                                   class="mb-4 form-text text-success">
-                                                @lang('site::phone.help.number')
-                                            </small>
+                                                <small id="sc_phone_numberHelp"
+                                                       class="mb-4 form-text text-success">
+                                                    @lang('site::phone.help.number')
+                                                </small>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-row">
-                                        <div class="col mb-3">
-                                            <label class="control-label" for="phone_sc_extra">@lang('site::phone.extra')</label>
-                                            <input type="text"
-                                                   name="phone[sc][extra]"
-                                                   id="phone_sc_extra"
-                                                   class="form-control{{ $errors->has('phone.sc.extra') ? ' is-invalid' : '' }}"
-                                                   placeholder="@lang('site::phone.placeholder.extra')"
-                                                   value="{{ old('phone.sc.extra') }}">
-                                            <span class="invalid-feedback">
+                                    <div class="col-md-6">
+                                        <div class="form-row">
+                                            <div class="col mb-3">
+                                                <label class="control-label"
+                                                       for="phone_sc_extra">@lang('site::phone.extra')</label>
+                                                <input type="text"
+                                                       name="phone[sc][extra]"
+                                                       id="phone_sc_extra"
+                                                       class="form-control{{ $errors->has('phone.sc.extra') ? ' is-invalid' : '' }}"
+                                                       placeholder="@lang('site::phone.placeholder.extra')"
+                                                       value="{{ old('phone.sc.extra') }}">
+                                                <span class="invalid-feedback">
                                                 <strong>{{ $errors->first('phone.sc.extra') }}</strong>
                                             </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-
+                            </fieldset>
                         </div>
                         <div class="col-md-6">
 
@@ -303,7 +337,8 @@
                             <div class="form-row required">
                                 <div class="col mb-3">
                                     <input type="hidden" name="address[sc][type_id]" value="2">
-                                    <label class="control-label" for="address_sc_country_id">@lang('site::address.country_id')</label>
+                                    <label class="control-label"
+                                           for="address_sc_country_id">@lang('site::address.country_id')</label>
                                     <select class="country-select form-control{{  $errors->has('address.sc.country_id') ? ' is-invalid' : '' }}"
                                             name="address[sc][country_id]"
                                             required
@@ -327,7 +362,8 @@
                             <div class="form-row required">
                                 <div class="col mb-3">
 
-                                    <label class="control-label" for="address_sc_region_id">@lang('site::address.region_id')</label>
+                                    <label class="control-label"
+                                           for="address_sc_region_id">@lang('site::address.region_id')</label>
                                     <select class="form-control{{  $errors->has('address.sc.region_id') ? ' is-invalid' : '' }}"
                                             name="address[sc][region_id]"
                                             required
@@ -350,7 +386,8 @@
 
                             <div class="form-row required">
                                 <div class="col mb-3">
-                                    <label class="control-label" for="address_sc_locality">@lang('site::address.locality')</label>
+                                    <label class="control-label"
+                                           for="address_sc_locality">@lang('site::address.locality')</label>
                                     <input type="text"
                                            name="address[sc][locality]"
                                            id="address_sc_locality"
@@ -365,7 +402,8 @@
                             </div>
                             <div class="form-row">
                                 <div class="col mb-3">
-                                    <label class="control-label" for="address_sc_street">@lang('site::address.street')</label>
+                                    <label class="control-label"
+                                           for="address_sc_street">@lang('site::address.street')</label>
                                     <input type="text"
                                            name="address[sc][street]"
                                            id="address_sc_street"
@@ -425,7 +463,8 @@
 
                     <div class="form-row required">
                         <div class="col mb-3">
-                            <label class="control-label" for="contragent_name">@lang('site::contragent.help.name')</label>
+                            <label class="control-label"
+                                   for="contragent_name">@lang('site::contragent.help.name')</label>
                             <input type="text"
                                    required
                                    name="contragent[name]"
@@ -442,7 +481,8 @@
                         <div class="col-md-6">
                             <div class="form-row required">
                                 <div class="col mb-3">
-                                    <label class="control-label" for="contragent_type_id">@lang('site::contragent.type_id')</label>
+                                    <label class="control-label"
+                                           for="contragent_type_id">@lang('site::contragent.type_id')</label>
                                     @foreach($types as $key => $type)
                                         <div class="form-check">
                                             <input class="form-check-input
@@ -470,7 +510,8 @@
                         <div class="col-md-6">
                             <div class="form-row required">
                                 <div class="col mb-3">
-                                    <label class="control-label" for="contragent_nds">@lang('site::contragent.nds')</label>
+                                    <label class="control-label"
+                                           for="contragent_nds">@lang('site::contragent.nds')</label>
 
                                     <div class="form-check">
                                         <input class="form-check-input
@@ -481,7 +522,8 @@
                                                @if(old('contragent.nds') == 1) checked @endif
                                                id="contragent_nds_1"
                                                value="1">
-                                        <label class="form-check-label" for="contragent_nds_1">@lang('site::messages.yes')</label>
+                                        <label class="form-check-label"
+                                               for="contragent_nds_1">@lang('site::messages.yes')</label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input
@@ -492,7 +534,8 @@
                                                @if(old('contragent.nds') == 0) checked @endif
                                                id="contragent_nds_0"
                                                value="0">
-                                        <label class="form-check-label" for="contragent_nds_0">@lang('site::messages.no')</label>
+                                        <label class="form-check-label"
+                                               for="contragent_nds_0">@lang('site::messages.no')</label>
                                         <span class="invalid-feedback">
                                             <strong>{{ $errors->first('contragent.nds') }}</strong>
                                         </span>
@@ -508,7 +551,8 @@
 
                             <div class="form-row required">
                                 <div class="col mb-3">
-                                    <label class="control-label" for="contragent_inn">@lang('site::contragent.inn')</label>
+                                    <label class="control-label"
+                                           for="contragent_inn">@lang('site::contragent.inn')</label>
                                     <input type="number"
                                            name="contragent[inn]"
                                            id="contragent_inn"
@@ -526,7 +570,8 @@
 
                             <div class="form-row required">
                                 <div class="col mb-3">
-                                    <label class="control-label" for="contragent_ogrn">@lang('site::contragent.ogrn')</label>
+                                    <label class="control-label"
+                                           for="contragent_ogrn">@lang('site::contragent.ogrn')</label>
                                     <input type="number"
                                            name="contragent[ogrn]"
                                            id="contragent_ogrn"
@@ -544,7 +589,8 @@
 
                             <div class="form-row required">
                                 <div class="col mb-3">
-                                    <label class="control-label" for="contragent_okpo">@lang('site::contragent.okpo')</label>
+                                    <label class="control-label"
+                                           for="contragent_okpo">@lang('site::contragent.okpo')</label>
                                     <input type="number"
                                            name="contragent[okpo]"
                                            id="contragent_okpo"
@@ -562,7 +608,8 @@
 
                             <div class="form-row">
                                 <div class="col mb-3">
-                                    <label class="control-label" for="contragent_kpp">@lang('site::contragent.kpp')</label>
+                                    <label class="control-label"
+                                           for="contragent_kpp">@lang('site::contragent.kpp')</label>
                                     <input type="number"
                                            name="contragent[kpp]"
                                            id="contragent_kpp"
@@ -581,7 +628,8 @@
 
                             <div class="form-row required">
                                 <div class="col mb-3">
-                                    <label class="control-label" for="contragent_rs">@lang('site::contragent.rs')</label>
+                                    <label class="control-label"
+                                           for="contragent_rs">@lang('site::contragent.rs')</label>
                                     <input type="number"
                                            name="contragent[rs]"
                                            required
@@ -599,7 +647,8 @@
 
                             <div class="form-row required">
                                 <div class="col mb-3">
-                                    <label class="control-label" for="contragent_bik">@lang('site::contragent.bik')</label>
+                                    <label class="control-label"
+                                           for="contragent_bik">@lang('site::contragent.bik')</label>
                                     <input type="number"
                                            name="contragent[bik]"
                                            id="contragent_bik"
@@ -616,7 +665,8 @@
 
                             <div class="form-row required">
                                 <div class="col mb-3">
-                                    <label class="control-label" for="contragent_bank">@lang('site::contragent.bank')</label>
+                                    <label class="control-label"
+                                           for="contragent_bank">@lang('site::contragent.bank')</label>
                                     <input type="text"
                                            name="contragent[bank]"
                                            id="contragent_bank"
@@ -633,7 +683,8 @@
 
                             <div class="form-row">
                                 <div class="col mb-3">
-                                    <label class="control-label" for="contragent_ks">@lang('site::contragent.ks')</label>
+                                    <label class="control-label"
+                                           for="contragent_ks">@lang('site::contragent.ks')</label>
                                     <input type="number"
                                            name="contragent[ks]"
                                            id="contragent_ks"
@@ -664,7 +715,8 @@
                                     <input type="hidden"
                                            name="address[legal][type_id]"
                                            value="1">
-                                    <label class="control-label" for="address_legal_country_id">@lang('site::address.country_id')</label>
+                                    <label class="control-label"
+                                           for="address_legal_country_id">@lang('site::address.country_id')</label>
                                     <select class="country-select form-control
                                     {{$errors->has('address.legal.country_id') ? ' is-invalid' : ''}}"
                                             data-regions="#address_legal_region_id"
@@ -689,7 +741,8 @@
                             <div class="form-row required">
                                 <div class="col mb-3">
 
-                                    <label class="control-label" for="address_legal_region_id">@lang('site::address.region_id')</label>
+                                    <label class="control-label"
+                                           for="address_legal_region_id">@lang('site::address.region_id')</label>
                                     <select class="form-control{{  $errors->has('address.legal.region_id') ? ' is-invalid' : '' }}"
                                             name="address[legal][region_id]"
                                             required
@@ -710,7 +763,8 @@
                             </div>
                             <div class="form-row required">
                                 <div class="col mb-3">
-                                    <label class="control-label" for="address_legal_locality">@lang('site::address.locality')</label>
+                                    <label class="control-label"
+                                           for="address_legal_locality">@lang('site::address.locality')</label>
                                     <input type="text"
                                            name="address[legal][locality]"
                                            id="address_legal_locality"
@@ -725,7 +779,8 @@
                             </div>
                             <div class="form-row">
                                 <div class="col mb-3">
-                                    <label class="control-label" for="address_legal_street">@lang('site::address.street')</label>
+                                    <label class="control-label"
+                                           for="address_legal_street">@lang('site::address.street')</label>
                                     <input type="text"
                                            name="address[legal][street]"
                                            id="address_legal_street"
@@ -741,7 +796,8 @@
                                 <div class="col-md-6">
                                     <div class="form-row ">
                                         <div class="col mb-3">
-                                            <label class="control-label" for="address_legal_building">@lang('site::address.building')</label>
+                                            <label class="control-label"
+                                                   for="address_legal_building">@lang('site::address.building')</label>
                                             <input type="text"
                                                    name="address[legal][building]"
                                                    id="address_legal_building"
@@ -758,7 +814,8 @@
                                 <div class="col-md-6">
                                     <div class="form-row">
                                         <div class="col mb-3">
-                                            <label class="control-label" for="address_legal_apartment">@lang('site::address.apartment')</label>
+                                            <label class="control-label"
+                                                   for="address_legal_apartment">@lang('site::address.apartment')</label>
                                             <input type="text"
                                                    name="address[legal][apartment]"
                                                    id="address_legal_apartment"
@@ -785,7 +842,8 @@
                                     <input type="hidden"
                                            name="address[postal][type_id]"
                                            value="3">
-                                    <label class="control-label" for="address_postal_country_id">@lang('site::address.country_id')</label>
+                                    <label class="control-label"
+                                           for="address_postal_country_id">@lang('site::address.country_id')</label>
                                     <select class="country-select form-control{{  $errors->has('address.postal.country_id') ? ' is-invalid' : '' }}"
                                             name="address[postal][country_id]"
                                             required
@@ -809,7 +867,8 @@
                             <div class="form-row required">
                                 <div class="col mb-3 required">
 
-                                    <label class="control-label" for="address_postal_region_id">@lang('site::address.region_id')</label>
+                                    <label class="control-label"
+                                           for="address_postal_region_id">@lang('site::address.region_id')</label>
                                     <select class="form-control{{  $errors->has('address.postal.region_id') ? ' is-invalid' : '' }}"
                                             name="address[postal][region_id]"
                                             required
@@ -830,7 +889,8 @@
                             </div>
                             <div class="form-row required">
                                 <div class="col mb-3">
-                                    <label class="control-label" for="address_postal_locality">@lang('site::address.locality')</label>
+                                    <label class="control-label"
+                                           for="address_postal_locality">@lang('site::address.locality')</label>
                                     <input type="text"
                                            name="address[postal][locality]"
                                            id="address_postal_locality"
@@ -845,7 +905,8 @@
                             </div>
                             <div class="form-row">
                                 <div class="col mb-3">
-                                    <label class="control-label" for="address_postal_street">@lang('site::address.street')</label>
+                                    <label class="control-label"
+                                           for="address_postal_street">@lang('site::address.street')</label>
                                     <input type="text"
                                            name="address[postal][street]"
                                            id="address_postal_street"
@@ -861,7 +922,8 @@
                                 <div class="col-md-6">
                                     <div class="form-row required">
                                         <div class="col mb-3">
-                                            <label class="control-label" for="address_postal_building">@lang('site::address.building')</label>
+                                            <label class="control-label"
+                                                   for="address_postal_building">@lang('site::address.building')</label>
                                             <input type="text"
                                                    name="address[postal][building]"
                                                    required
@@ -878,7 +940,8 @@
                                 <div class="col-md-6">
                                     <div class="form-row">
                                         <div class="col mb-3">
-                                            <label class="control-label" for="address_postal_apartment">@lang('site::address.apartment')</label>
+                                            <label class="control-label"
+                                                   for="address_postal_apartment">@lang('site::address.apartment')</label>
                                             <input type="text"
                                                    name="address[postal][apartment]"
                                                    id="address_postal_apartment"
@@ -939,7 +1002,8 @@
 
                     <div class="form-row required">
                         <div class="col mb-3">
-                            <label class="control-label" for="password-confirmation">@lang('site::user.password_confirmation')</label>
+                            <label class="control-label"
+                                   for="password-confirmation">@lang('site::user.password_confirmation')</label>
                             <input id="password-confirmation"
                                    type="password"
                                    required
@@ -960,7 +1024,4 @@
             </div>
         </div>
     </div>
-    <script>
-
-    </script>
 @endsection

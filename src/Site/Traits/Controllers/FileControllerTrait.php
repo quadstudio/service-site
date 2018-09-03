@@ -74,7 +74,8 @@ trait FileControllerTrait
 
     public function show(File $file)
     {
-        $this->authorize('view', $file);
+
+        //$this->authorize('view', $file);
         return Storage::disk($file->storage)->download($file->path);
     }
 
