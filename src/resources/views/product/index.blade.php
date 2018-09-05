@@ -205,21 +205,21 @@
     </div>
 @endsection
 @push('scripts')
-<script type="text/javascript">
+{{--<script type="text/javascript">--}}
 
-    let product_row = document.getElementById("product-row");
+    {{--let product_row = document.getElementById("product-row");--}}
 
-    // List View
-    function listView() {
+    {{--// List View--}}
+    {{--function listView() {--}}
 
-        product_row.classList.remove("grid");
-        product_row.classList.add("list");
-    }
+        {{--product_row.classList.remove("grid");--}}
+        {{--product_row.classList.add("list");--}}
+    {{--}--}}
 
-    // Grid View
-    function gridView() {
-        product_row.classList.remove("list");
-        product_row.classList.add("grid");
-    }
-</script>
+    {{--// Grid View--}}
+    {{--function gridView() {--}}
+        {{--product_row.classList.remove("list");--}}
+        {{--product_row.classList.add("grid");--}}
+    {{--}--}}
+{{--</script>--}}
 @endpush

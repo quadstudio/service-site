@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use QuadStudio\Service\Site\Http\ViewComposers\CurrentRouteViewComposer;
+use QuadStudio\Service\Site\Http\ViewComposers\UserViewComposer;
 use QuadStudio\Service\Site\Listeners;
 use QuadStudio\Service\Site\Middleware\Admin;
 use QuadStudio\Service\Site\Support\Cart;
@@ -232,6 +233,7 @@ class SiteServiceProvider extends ServiceProvider
     private function loadViews()
     {
         view()->composer("*", CurrentRouteViewComposer::class);
+        view()->composer("*", UserViewComposer::class);
 
         $viewsPath = $this->packagePath('resources/views/');
 

@@ -104,7 +104,7 @@ trait RegisterControllerTrait
         return User::create([
             'name'          => $data['name'],
             'email'         => $data['email'],
-            'dealer'        => $data['dealer'],
+            'dealer'        => isset($data['dealer']) ? 1 : 0,
             'type_id'       => $data['type_id'],
             'currency_id'   => config('site.defaults.user.currency_id'),
             'price_type_id' => config('site.defaults.user.price_type_id'),

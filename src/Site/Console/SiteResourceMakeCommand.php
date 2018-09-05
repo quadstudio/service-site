@@ -65,6 +65,7 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
         'ContactController.stub'             => 'ContactController',
         'AddressController.stub'             => 'AddressController',
         'ContragentController.stub'          => 'ContragentController',
+        'SchemeController.stub'              => 'SchemeController',
         //
         'api/FileController.stub'            => 'Api/FileController',
         'api/RepairController.stub'          => 'Api/RepairController',
@@ -128,7 +129,7 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
     ];
 
     protected $views = [
-        'layouts/app.stub' => 'layouts/app.blade.php',
+        'layouts/app.stub'   => 'layouts/app.blade.php',
         'layouts/email.stub' => 'layouts/email.blade.php',
     ];
 

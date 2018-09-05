@@ -9,6 +9,13 @@ use QuadStudio\Service\Site\Models\User;
 class FilePolicy
 {
 
+    public function before(User $user, $ability)
+    {
+        if ($user->admin == 1) {
+            return true;
+        }
+    }
+
     /**
      * Determine whether the user can view the file.
      *
@@ -18,8 +25,7 @@ class FilePolicy
      */
     public function view(User $user, File $file)
     {
-        return true;
-        //return is_null($file->user_id) || $user->id == $file->user_id;
+        return $file->user_id == $user->getKey() || $file->fileable->user_id == $user->getKey();
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers;
 
-use Illuminate\Http\Request;
 use QuadStudio\Service\Site\Filters\Equipment\HasProductFilter;
 use QuadStudio\Service\Site\Filters\Equipment\SortFilter;
 use QuadStudio\Service\Site\Filters\Product\BoilerFilter;
@@ -10,8 +9,8 @@ use QuadStudio\Service\Site\Filters\Product\EquipmentFilter;
 use QuadStudio\Service\Site\Filters\Product\HasNameFilter;
 use QuadStudio\Service\Site\Filters\Product\TypeFilter;
 use QuadStudio\Service\Site\Filters\ProductCanBuyFilter;
-use QuadStudio\Service\Site\Http\Resources\ProductResource;
 use QuadStudio\Service\Site\Models\Product;
+use QuadStudio\Service\Site\Models\Scheme;
 use QuadStudio\Service\Site\Repositories\EquipmentRepository;
 use QuadStudio\Service\Site\Repositories\ProductRepository;
 
@@ -96,7 +95,9 @@ trait ProductControllerTrait
         $analogs = $product->analogs()->where('enabled', 1)->orderBy('name')->get();
         $back_relations = $product->back_relations()->where('enabled', 1)->orderBy('name')->get();
         $relations = $product->relations()->where('enabled', 1)->orderBy('name')->get();
-        $images = $product->images()->get();
+        $images = $product->images;
+        $schemes = $product->schemes;
+        $datasheets = $product->datasheets;
 
         return view('site::product.show', compact(
             'product',
@@ -104,14 +105,38 @@ trait ProductControllerTrait
             'analogs',
             'back_relations',
             'relations',
-            'images'
+            'images',
+            'schemes',
+            'datasheets'
         ));
     }
 
 
     public function schemes(Product $product)
     {
-        return view('site::product.schemes', compact('product'));
+        $all_datasheets = $product->datasheets()
+            ->where('type_id', 1)
+            ->has('schemes')
+            ->with('schemes');
+        $datasheet = $all_datasheets->first();
+        $datasheets = $all_datasheets->get();
+
+        return view('site::product.schemes', compact('product', 'datasheets', 'datasheet'));
+    }
+    public function scheme(Product $product, Scheme $scheme)
+    {
+        $datasheets = $product->datasheets()
+            ->where('type_id', 1)
+            ->has('schemes')
+            ->with('schemes')
+            ->get();
+        $elements = $scheme->elements()
+            ->with('product')
+            ->with('pointers')
+            ->with('shapes')
+            ->orderBy('sort_order')
+            ->get();
+        return view('site::product.scheme', compact('product', 'datasheets', 'scheme', 'elements'));
     }
 
 }

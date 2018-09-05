@@ -89,6 +89,10 @@ if (!function_exists('num2str')) {
         return $f5;
     }
 
+
+}
+
+if (!function_exists('formatFileSize')) {
     function formatFileSize($bytes)
     {
         if ($bytes >= 1073741824) {
@@ -106,5 +110,41 @@ if (!function_exists('num2str')) {
         }
 
         return $bytes;
+    }
+}
+
+if (!function_exists('monthYear')) {
+    function monthYear($date)
+    {
+        if (!validateDate($date)) {
+            return $date;
+        }
+        $date = DateTime::createFromFormat("Y-m-d", $date);
+
+        $months = array(
+            1  => 'января',
+            2  => 'февраля',
+            3  => 'марта',
+            4  => 'апреля',
+            5  => 'мая',
+            6  => 'июня',
+            7  => 'июля',
+            8  => 'августа',
+            9  => 'сентября',
+            10 => 'октября',
+            11 => 'ноября',
+            12 => 'декабря'
+        );
+
+        return $date->format("d") . ' ' . $months[$date->format("m") - 1] . ' ' . $date->format("Y");
+
+    }
+}
+if (!function_exists('validateDate')) {
+    function validateDate($date, $format = 'Y-m-d')
+    {
+        $d = DateTime::createFromFormat($format, $date);
+
+        return $d && $d->format($format) == $date;
     }
 }

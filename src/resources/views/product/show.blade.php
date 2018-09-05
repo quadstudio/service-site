@@ -66,7 +66,9 @@
                             <dl class="row">
 
                                 @admin()
-                                <dd class="col-sm-12"><a href="{{route('admin.products.show', $product)}}"><i class="fa fa-folder-open"></i> @lang('site::messages.open') @lang('site::messages.in_admin')</a></dd>
+                                <dd class="col-sm-12"><a href="{{route('admin.products.show', $product)}}"><i
+                                                class="fa fa-folder-open"></i> @lang('site::messages.open') @lang('site::messages.in_admin')
+                                    </a></dd>
                                 @endadmin()
 
                                 <dt class="col-sm-4">@lang('site::product.sku')</dt>
@@ -123,7 +125,7 @@
                                role="tab"
                                aria-controls="back-relation"
                                aria-selected="false">@lang('site::relation.header.back_relations')
-                                <span class="badge badge-secondary">
+                                <span class="text-big badge badge-secondary">
                                     {{$back_relations->count()}}
                                 </span>
                             </a>
@@ -133,7 +135,7 @@
                         <li class="nav-item">
                             <a class="nav-link" id="relation-tab" data-toggle="tab" href="#relation" role="tab"
                                aria-controls="relation" aria-selected="false">@lang('site::relation.header.relations')
-                                <span class="badge badge-secondary">
+                                <span class="text-big badge badge-secondary">
                                 {{$relations->count()}}
                             </span>
                             </a>
@@ -143,8 +145,28 @@
                         <li class="nav-item">
                             <a class="nav-link" id="analog-tab" data-toggle="tab" href="#analog" role="tab"
                                aria-controls="analog" aria-selected="false">@lang('site::analog.analogs')
-                                <span class="badge badge-secondary">
+                                <span class="text-big badge badge-secondary">
                                 {{$analogs->count()}}
+                            </span>
+                            </a>
+                        </li>
+                    @endif
+                    @if($schemes->isNotEmpty())
+                        <li class="nav-item">
+                            <a class="nav-link" id="scheme-tab" data-toggle="tab" href="#scheme" role="tab"
+                               aria-controls="scheme" aria-selected="false">@lang('site::scheme.schemes')
+                                <span class="text-big badge badge-secondary">
+                                {{$schemes->count()}}
+                            </span>
+                            </a>
+                        </li>
+                    @endif
+                    @if($datasheets->isNotEmpty())
+                        <li class="nav-item">
+                            <a class="nav-link" id="datasheet-tab" data-toggle="tab" href="#datasheet" role="tab"
+                               aria-controls="datasheet" aria-selected="false">@lang('site::datasheet.datasheets')
+                                <span class="text-big badge badge-secondary">
+                                {{$datasheets->count()}}
                             </span>
                             </a>
                         </li>
@@ -224,6 +246,36 @@
                                         @if($analog->hasPrice)
                                             {{ Site::format($analog->price->value) }}
                                         @endif
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                    @if($schemes->isNotEmpty())
+                        <div class="tab-pane fade p-3" id="scheme" role="tabpanel" aria-labelledby="scheme-tab">
+
+                            @foreach($schemes as $scheme)
+                                <div class="row border-bottom p-1">
+                                    <div class="col-sm-8">
+                                        <a href="{{route('products.scheme', [$product, $scheme])}}">{!! $scheme->block->name !!}</a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                    @if($datasheets->isNotEmpty())
+                        <div class="tab-pane fade p-3" id="datasheet" role="tabpanel" aria-labelledby="datasheet-tab">
+
+                            @foreach($datasheets as $datasheet)
+                                <div class="row border-bottom p-1">
+                                    <div class="col-sm-4">
+                                        <h4>{{$datasheet->type->name}}</h4>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        @include('site::datasheet.date')
+                                    </div>
+                                    <div class="col-sm-4 text-left text-sm-right">
+                                        @include('site::file.download', ['file' => $datasheet->file])
                                     </div>
                                 </div>
                             @endforeach

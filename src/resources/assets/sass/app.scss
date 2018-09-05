@@ -166,15 +166,20 @@ nav ul {
   transform: translateX(-50%);
   -webkit-transform: translateX(-50%);
 }
+//
+//.bg-light {
+//  background: white;
+//  background-color: white !important;
+//}
+//
+//.bg-dark {
+//  background: #292929;
+//  background-color: #292929 !important;
+//}
 
-.bg-light {
-  background: white;
-  background-color: white !important;
-}
-
-.bg-dark {
-  background: #292929;
-  background-color: #292929 !important;
+.bg-ferroli{
+    color: $white;
+    background-color: $ferroli-color !important;
 }
 
 .text-muted {
@@ -1006,12 +1011,12 @@ nav.nav-centered.outOfSight .logo {
   margin-right: 0px;
   color: #fff;
   text-align: center;
-  border-left: solid 1px #f85900;
-  border-right: solid 1px #f85900;
+  border-left: solid 1px $light;
+  border-right: solid 1px $light;
 }
 
 .menu > .neromenu:hover {
-  background-color: #f85900;
+  background-color: $ferroli-color;
 }
 
 .menu > .neromenu.active {
@@ -3742,4 +3747,46 @@ html:not([dir=rtl]) .card-hover[class]:not(:hover), html[dir=rtl] .card-hover[cl
 
 .text-lightest {
   color: #e8e8e9 !important
+}
+
+.scheme {
+  height: 1040px;
+  width: 740px;
+}
+
+.table-pointer td.number,
+.img-pointer {
+  background-color: $dark;
+  color: $white;
+}
+
+.img-pointer {
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  width: 38px;
+  height: 25px;
+  line-height: 25px;
+  position: absolute;
+  border: 1px solid $black;
+  display: inline-block;
+  text-align: center;
+}
+
+.img-pointer.hover,
+.table-pointer.hover td.number {
+  background-color: $danger;
+  color: $white;
+}
+
+.sticky-top {
+  position: fixed;
+  top: 20px;
+  width: 100%
+}
+
+.sticky-bottom {
+  position: fixed;
+  bottom: 20px;
+  width: 100%
 }

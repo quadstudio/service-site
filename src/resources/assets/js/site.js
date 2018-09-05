@@ -6,6 +6,29 @@
         $('[data-toggle="tooltip"]').tooltip()
     });
 
+    let blockElements = document.getElementById("block-elements");
+    if (blockElements !== null) {
+        $('.map').maphilight();
+
+        $('.pointer').hover(
+            function () {
+                $(".pointer[data-number=" + $(this).data('number') + "]").addClass('hover');
+                $("map area[data-number=" + $(this).data('number') + "]").mouseover();
+            },
+            function () {
+                $(".pointer[data-number=" + $(this).data('number') + "]").removeClass('hover');
+                $("map area[data-number=" + $(this).data('number') + "]").mouseout();
+            }
+        );
+        $('map area').hover(
+            function () {
+                $(".pointer[data-number=" + $(this).data('number') + "]").addClass('hover');
+            },
+            function () {
+                $(".pointer[data-number=" + $(this).data('number') + "]").removeClass('hover');
+            }
+        );
+    }
     let servicesRegionList = document.getElementById("services-region-list");
     if (servicesRegionList !== null) {
 
@@ -44,12 +67,23 @@
         $('.services-region-select').on('click', function (e) {
             let _this = $(this),
                 region = _this.data('region'),
+                data = {
+                    'filter[show]': []
+                },
                 action = _this.parent().data('action');
+            if ($('#asc').is(':checked')) {
+                data['filter[show]'].push('asc');
+            }
+            if ($('#dealer').is(':checked')) {
+                data['filter[show]'].push('dealer');
+            }
             _this.parent().children().removeClass('active');
             _this.addClass('active');
+
             axios
-                .get(action + '/' + region)
+                .get(action + '/' + region, {params: data})
                 .then((response) => {
+                    $('#row-count').html(response.data.data.features.length);
                     myMap.geoObjects.remove(objectManager);
                     objectManager.removeAll();
                     objectManager.add(response.data.data);

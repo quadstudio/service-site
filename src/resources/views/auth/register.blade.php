@@ -1,4 +1,4 @@
-@extends('site::layouts.app')
+@extends('layouts.app')
 
 @section('header')
     @include('site::header.front',[

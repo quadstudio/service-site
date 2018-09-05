@@ -27,12 +27,13 @@
             <dt class="col-sm-4">@lang('site::user.email')</dt>
             <dd class="col-sm-8"><a href="mailto:{{$email}}">{{$email}}</a></dd>
 
+            @if(!is_null($web))
+                <dt class="col-sm-4">@lang('site::contact.web')</dt>
+                <dd class="col-sm-8"><a target="_blank" href="{{$web}}" class="card-link">{{$web}}</a></dd>
+            @endif
+
         </dl>
-        @if(!is_null($web))
-            <ul class="list-group list-group-flush">
-                <li><a target="_blank" href="{{$web}}" class="card-link">@lang('site::contact.web')</a></li>
-            </ul>
-        @endif
+
     </div>
     {{--<img style="width: 25px;" class="img-fluid border" src="{{ asset($address->country->flag) }}" alt="">--}}
 </div>

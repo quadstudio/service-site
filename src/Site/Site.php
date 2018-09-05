@@ -70,6 +70,8 @@ class Site
                     $router->get('/catalogs/{catalog}/list', 'CatalogController@list')->name('catalogs.list');
                     $router->resource('/equipments', 'EquipmentController')->only(['index', 'show']);
                     $router->get('/datasheets', 'DatasheetController@index')->name('datasheets');
+                    $router->resource('/files', 'FileController')->only(['index', 'store', 'show', 'destroy']);
+                    //$router->resource('/schemes', 'SchemeController')->only(['index','show']);
 
                     // Static pages
                     $router->get('/feedback', 'StaticPageController@feedback')->name('feedback');
@@ -91,7 +93,7 @@ class Site
                             })->middleware('can:pdf,repair')->name('repairs.pdf');
                             $router->resource('/engineers', 'EngineerController')->middleware('permission:engineers');
                             $router->resource('/trades', 'TradeController')->middleware('permission:trades');
-                            $router->resource('/files', 'FileController')->only(['index', 'store', 'show', 'destroy']);
+
                             $router->resource('/launches', 'LaunchController')->middleware('permission:launches');
                             $router->resource('/costs', 'CostController')->middleware('permission:costs');
                             $router->resource('/contragents', 'ContragentController')->middleware('permission:contragents');

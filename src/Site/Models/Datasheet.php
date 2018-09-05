@@ -36,6 +36,16 @@ class Datasheet extends Model
     }
 
     /**
+     * Взрывные схемы
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function schemes()
+    {
+        return $this->hasMany(Scheme::class);
+    }
+
+    /**
      * Файл
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

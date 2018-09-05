@@ -214,6 +214,21 @@ class Product extends Model implements Imageable
     }
 
     /**
+     * Взрывные схемы
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function schemes()
+    {
+        return $this->belongsToMany(
+            Scheme::class,
+            env('DB_PREFIX', '') . 'product_scheme',
+            'product_id',
+            'scheme_id'
+        );
+    }
+
+    /**
      * Позиции в заказе
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

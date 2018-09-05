@@ -1,15 +1,11 @@
 {
     "name": "quadstudio/service-site",
     "description": "Service Site template for Laravel 5",
-    "keywords": [
-        "laravel",
-        "ferroli",
-        "service"
-    ],
+    "keywords": ["laravel","ferroli","service"],
     "homepage": "https://github.com/quadstudio/service-site",
     "type": "library",
     "license": "MIT",
-    "version": "0.1.25",
+    "version": "0.1.26",
     "authors": [
         {
             "name": "Alexander Shuleyko",

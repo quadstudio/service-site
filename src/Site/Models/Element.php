@@ -49,4 +49,23 @@ class Element extends Model
         return $this->belongsTo(Product::class);
     }
 
+    /**
+     * Указатели
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function pointers()
+    {
+        return $this->hasMany(Pointer::class);
+    }
+    /**
+     * Контуры
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function shapes()
+    {
+        return $this->hasMany(Shape::class);
+    }
+
 }

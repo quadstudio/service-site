@@ -4,7 +4,6 @@ namespace QuadStudio\Service\Site\Traits\Controllers;
 
 use Illuminate\Support\Facades\Storage;
 use QuadStudio\Service\Site\Http\Requests\FileRequest;
-use QuadStudio\Service\Site\Jobs\ProcessFile;
 use QuadStudio\Service\Site\Models\File;
 use QuadStudio\Service\Site\Repositories\FileRepository;
 use QuadStudio\Service\Site\Repositories\FileTypeRepository;
@@ -56,14 +55,15 @@ trait FileControllerTrait
         $this->authorize('create', File::class);
         $f = $request->file('path');
         $file = new File(array_merge($request->only(['type_id']), [
-            'path' => Storage::disk($request->input('storage'))->putFile(config('site.files.path'), new \Illuminate\Http\File($f->getPathName())),
-            'mime' => $f->getMimeType(),
+            'path'    => Storage::disk($request->input('storage'))->putFile(config('site.files.path'), new \Illuminate\Http\File($f->getPathName())),
+            'mime'    => $f->getMimeType(),
             'storage' => $request->input('storage'),
-            'size' => $f->getSize(),
-            'name' => $f->getClientOriginalName(),
+            'size'    => $f->getSize(),
+            'name'    => $f->getClientOriginalName(),
         ]));
 
         $file->save();
+
         //ProcessFile::dispatch($file)->onQueue('images');
 
         return response()->json([
@@ -75,7 +75,10 @@ trait FileControllerTrait
     public function show(File $file)
     {
 
-        //$this->authorize('view', $file);
+        if (!is_null($file->fileable)) {
+            $this->authorize('view', $file);
+        }
+
         return Storage::disk($file->storage)->download($file->path);
     }
 
