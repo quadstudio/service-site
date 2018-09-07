@@ -36,7 +36,7 @@ class RegisterRequest extends FormRequest
             case 'POST': {
                 return [
                     'name'                      => 'required|string|max:255',
-                    'email'                     => 'required|string|email|max:255|unique:' . $prefix . 'users',
+                    'email'                     => 'required|string|email|max:191|unique:' . $prefix . 'users',
                     'password'                  => 'required|string|min:6|confirmed',
                     'type_id'                   => 'required|exists:' . $prefix . 'contragent_types,id',
                     //

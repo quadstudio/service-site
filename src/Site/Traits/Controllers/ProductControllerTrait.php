@@ -87,6 +87,9 @@ trait ProductControllerTrait
      */
     public function show(Product $product)
     {
+        if($product->enabled == 0){
+            abort(404);
+        }
         $equipments = $this
             ->equipments
             ->applyFilter(new SortFilter())

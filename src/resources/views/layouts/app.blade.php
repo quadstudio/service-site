@@ -61,27 +61,29 @@
                 </div>
                 <div class="col-md-4 col-lg-3">
                     <div class="widget">
-                        <p class="title">Услуги для вас</p>
                         <hr>
                         <ul class="recent-post">
-                            <li><a href="{{route('whereToBuy')}}" class="title">Где купить?</a></li>
-                            <li></li>
+				<li><a class="title" href="http://service.ferroli.ru/services">Сервисные центры и дилеры</a></li>
+				<li><a class="title" href="http://service.ferroli.ru/products" class="title">Запчасти</a></li>
+        		        <li><a class="title" href="http://service.ferroli.ru/catalogs" class="title">Оборудование</a></li>
+	                	<li><a class="title" href="http://service.ferroli.ru/datasheets" class="title">Документация</a></li>
+                                <li><a class="title" href="http://service.ferroli.ru/feedback">Контакты</a></li>
+
                         </ul>
                     </div>
                 </div>
                 <div class="col-md-4 col-lg-3">
                     <div class="widget">
-                        <p class="title">&nbsp;</p>
                         <hr>
                         <ul class="recent-post">
-                            <li><b class="title">Консультации сервис</b></li>
-                            <li></li>
+                        <li><a class="title" href="http://service.ferroli.ru/login">Вход</a></li>
+                        <li><a class="title" href="http://service.ferroli.ru/register">Регистрация</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-md-4 col-lg-3">
                     <div class="widget">
-                        <p class="title">Сертификаты</p>
+                        <p class="title"></p>
                         <hr>
                         <div>
                             <img src="{{asset('images/certificazioni.png')}}" style="margin-right:22px;"/>

@@ -68,6 +68,10 @@
                             <span class="text-muted">@lang('site::user.logged_at')
                                 :</span>&nbsp;&nbsp;{{ $user->logged_at() }}
                         </div>
+                        <div class="mb-2">
+                            <span class="text-muted">@lang('site::user.email')
+                                :</span>&nbsp;&nbsp;{{ $user->email }}
+                        </div>
                         @if($user->orders()->count() > 0)
                             <div class="mb-2">
                             <span class="text-muted">@lang('site::repair.help.last')

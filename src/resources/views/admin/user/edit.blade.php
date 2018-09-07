@@ -199,6 +199,7 @@
                                         <label class="custom-control-label"
                                                for="user_dealer_0">@lang('site::messages.no')</label>
                                     </div>
+                                    <div class="text-muted">@lang('site::user.dealer_comment')</div>
                                 </div>
                             </div>
 

@@ -2,6 +2,7 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers;
 
+use QuadStudio\Service\Site\Events\FeedbackCreateEvent;
 use QuadStudio\Service\Site\Filters\User\ActiveFilter;
 use QuadStudio\Service\Site\Filters\User\DisplayFilter;
 use QuadStudio\Service\Site\Filters\User\IsDealerFilter;
@@ -9,6 +10,7 @@ use QuadStudio\Service\Site\Filters\User\IsServiceFilter;
 use QuadStudio\Service\Site\Filters\User\SortByRegionFilter;
 use QuadStudio\Service\Site\Filters\User\WithAddressesFilter;
 use QuadStudio\Service\Site\Filters\User\WithPhonesFilter;
+use QuadStudio\Service\Site\Http\Requests\FeedbackRequest;
 use QuadStudio\Service\Site\Repositories\UserRepository;
 
 trait StaticPageControllerTrait
@@ -45,8 +47,10 @@ trait StaticPageControllerTrait
         return view('site::static.feedback');
     }
 
-    public function message()
+    public function message(FeedbackRequest $request)
     {
+        event(new FeedbackCreateEvent($request->only(['name', 'email', 'message'])));
+
         return redirect()->route('feedback')->with('success', trans('Сообщение отправлено'));
     }
 

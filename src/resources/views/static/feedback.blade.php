@@ -10,11 +10,11 @@
 
     ymaps.ready(init);
 
-    function init () {
+    function init() {
         myMap = new ymaps.Map('contact-map', {
             center: [55.76, 37.64],
             zoom: 8,
-            controls: ['zoomControl', 'typeSelector',  'fullscreenControl']
+            controls: ['zoomControl', 'typeSelector', 'fullscreenControl']
         }, {
             searchControlProvider: 'yandex#search'
         });
@@ -67,22 +67,39 @@
                 </div>
                 <div class="d-none d-lg-block col-lg-2"></div>
                 <div class="col-sm-6 col-lg-5">
+                    <h4>@lang('site::feedback.feedback')</h4>
+
                     <form action="{{route('message')}}" method="POST" autocomplete="off">
                         @csrf
-                        <div class="control-group form-group {{ $errors->has('name') ? 'has-error' : '' }}">
-                            <input name="name" type="text" placeholder="ИМЯ" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}">
+                        <div class="form-row required">
+                            <div class="col mb-3">
+                                <input name="name" type="text" placeholder="@lang('site::feedback.name')"
+                                       required
+                                       class="mb-0 form-control {{ $errors->has('name') ? 'is-invalid' : '' }}">
+                                <span class="invalid-feedback">{{ $errors->first('name') }}</span>
+                            </div>
                         </div>
-                        <div class="control-group form-group {{ $errors->has('email') ? 'has-error' : '' }}">
-                            <input name="email" type="text" placeholder="EMAIL" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}">
+                        <div class="form-row required">
+                            <div class="col mb-3">
+                                <input name="email" type="email" placeholder="@lang('site::feedback.email')"
+                                       required
+                                       class="mb-0 form-control {{ $errors->has('email') ? 'is-invalid' : '' }}">
+                                <span class="invalid-feedback">{{ $errors->first('email') }}</span>
+                            </div>
                         </div>
-                        <div class="control-group form-group {{ $errors->has('message') ? 'has-error' : '' }}">
-                            <textarea name="message" placeholder="СООБЩЕНИЕ" rows="4" class="form-control {{ $errors->has('message') ? 'is-invalid' : '' }}"></textarea>
+                        <div class="form-row required">
+                            <div class="col mb-3">
+                            <textarea name="message" placeholder="@lang('site::feedback.message')" rows="4"
+                                      required
+                                      class="mb-0 form-control {{ $errors->has('message') ? 'is-invalid' : '' }}"></textarea>
+                                <span class="invalid-feedback">{{ $errors->first('message') }}</span>
+                            </div>
                         </div>
+                        <p class="text-muted text-small">@lang('site::feedback.require')</p>
                         <div class="control-group form-group">
-                            <button type="submit" class="btn btn-ferroli">ОТПРАВИТЬ</button>
+                            <button type="submit" class="btn btn-ferroli"><i
+                                        class="fa fa-send"></i> @lang('site::messages.send')</button>
                         </div>
-                        <div class="form-error" style="display: none;">Возникла ошибка</div>
-                        <div class="form-success" style="display: none;">Сообщение отправлено</div>
                     </form>
                 </div>
             </div>

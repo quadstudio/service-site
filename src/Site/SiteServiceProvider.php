@@ -274,6 +274,7 @@ class SiteServiceProvider extends ServiceProvider
         Event::subscribe(new Listeners\OrderListener());
         Event::subscribe(new Listeners\ActListener());
         Event::subscribe(new Listeners\RepairListener());
+        Event::subscribe(new Listeners\FeedbackListener());
     }
 
     /**

@@ -161,16 +161,16 @@ return [
         'currency' => 643,
         'image'    => 'http://placehold.it/500x500',
         'guest'    => [
-            'price_type_id' => '08305aca-7303-11df-b338-0011955cba6b',
+            'price_type_id' => '7fb003f2-aca8-11e8-80cc-85ebbdeccdc7',
         ],
         'admin'    => [
-            'price_type_id' => '08305aca-7303-11df-b338-0011955cba6b',
+            'price_type_id' => '7fb003f2-aca8-11e8-80cc-85ebbdeccdc7',
             'role_id'       => 1,
         ],
         'user'     => [
             'warehouse_id'    => '6f87e83f-722c-11df-b336-0011955cba6b',
             'organization_id' => '0d667f0c-c180-11e4-a7a9-000d884fd00d',
-            'price_type_id'   => '08305aca-7303-11df-b338-0011955cba6b',
+            'price_type_id'   => '7fb003f2-aca8-11e8-80cc-85ebbdeccdc7',
             'currency_id'     => 643,
             'role_id'         => 2,
         ],

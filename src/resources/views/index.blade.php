@@ -36,14 +36,29 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-4">
+                    <h3>02.09.2018</h3>
+                    <p class="text-justify">Компания ТЕПЛОЦЕЛЬ, г. Ростов-на-Дону стала генеральным дистрибьютором по водонагревателям и котельному оборудованию Ferroli.
+			<img src="/images/teplocel.jpg"></p>
+                </div>
+                <div class="col-sm-4">
+		<h3>15.08.2018</h3>
+                    <p class="text-justify">Компания Авангард Система, г. Москва стала официальным дистрибьютором компании Ferroli.<br /> <br />
+                        <img src="/images/avangard-cert.jpg"></p>
+                </div>
+
+		<div class="col-sm-4">
                     <h3>02.08.2018</h3>
-                    <p class="text-justify">Приглашаем к сотрудничеству профессионалов. ООО «Ферроли Рус», официальное
+                    <p class="text-justify">Приглашаем к сотрудничеству профессионалов. <br /> ООО «Ферроли Рус», официальное
                         представительство
                         компании FerroliS.p.A в России, приглашает к сотрудничеству сервисные центры для работы по
                         обслуживанию оборудования FERROLI. Для отправки запроса на авторизацию необходимо
                         зарегистрироваться в разделе <a href="{{route('register')}}">Регистрация</a></p>
                 </div>
+            </div>
+
+
+<div class="row">
                 <div class="col-sm-6">
                     <h3>01.07.2018</h3>
                     <p class="text-justify">С 1 Августа 2018 года импорт продукции под маркой FERROLI на территорию
@@ -65,10 +80,12 @@
                         </li>
                         <li class="p-1 text-justify">&bull;&nbsp;Маркетинговая поддержка и поддержка продаж</li>
                         <li class="p-1 text-justify">&bull;&nbsp;Информирование рынка о продукции под маркой Ferroli</li>
+			<a href="http://service.ferroli.ru/up/ferroli-letter-1.pdf"><b>ПОДРОБНЕЕ</b></a>
                     </ul>
 
                 </div>
             </div>
+
         </div>
     </section>
 @endsection

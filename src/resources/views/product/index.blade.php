@@ -151,19 +151,19 @@
         @filter(['repository' => $repository])@endfilter
         @pagination(['pagination' => $products])@endpagination
         {{$products->render()}}
-        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-            <label class="btn btn-ferroli active" onclick="gridView()">
-                <input type="radio"
-                       name="options" id="option2" autocomplete="off" checked>
-                <i class="fa fa-th-large"></i> Таблица
-            </label>
-            <label class="btn btn-ferroli" onclick="listView()">
-                <input type="radio"
-                       name="options" id="option1" autocomplete="off">
-                <i class="fa fa-bars"></i> Список
-            </label>
-        </div>
-        <div id="product-row" class="row grid">
+        {{--<div class="btn-group btn-group-toggle" data-toggle="buttons">--}}
+            {{--<label class="btn btn-ferroli active" onclick="gridView()">--}}
+                {{--<input type="radio"--}}
+                       {{--name="options" id="option2" autocomplete="off" checked>--}}
+                {{--<i class="fa fa-th-large"></i> Таблица--}}
+            {{--</label>--}}
+            {{--<label class="btn btn-ferroli" onclick="listView()">--}}
+                {{--<input type="radio"--}}
+                       {{--name="options" id="option1" autocomplete="off">--}}
+                {{--<i class="fa fa-bars"></i> Список--}}
+            {{--</label>--}}
+        {{--</div>--}}
+        <div id="product-row" class="row grid mb-2">
             @foreach($products as $key => $product)
                 <div class="product-col mt-3">
                     <div class="row p-2 mx-2">
