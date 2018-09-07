@@ -2,11 +2,11 @@
 
 @section('header')
     @include('site::header.front',[
-        'h1' => $product->name. ' '.__('site::scheme.schemes'),
+        'h1' => $scheme->block->name. ' '.$product->name,
         'breadcrumbs' => [
             ['url' => route('index'), 'name' => __('site::messages.index')],
             ['url' => route('products.show', $product), 'name' => $product->name],
-            ['url' => route('products.schemes', [$product, $scheme]), 'name' => __('site::scheme.schemes')],
+            //['url' => route('products.schemes', [$product, $scheme]), 'name' => __('site::scheme.schemes')],
             ['name' => $scheme->block->name],
         ]
     ])
@@ -16,49 +16,54 @@
     <div class="container">
         @alert()@endalert
 
-        <ul class="nav bg-light nav-pills nav-fill">
-            @foreach($datasheets as $datasheet)
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        {{$datasheet->date_from}} - {{$datasheet->date_to}}
-                    </a>
-                </li>
-            @endforeach
-        </ul>
+        @foreach($datasheets as $datasheet)
+            <ul class="nav nav-pills nav-fill">
+                @foreach($datasheet->schemes as $datasheet_scheme)
+                    <li class="nav-item">
+                        <a class="nav-link mx-1 @if($datasheet_scheme->id == $scheme->id) bg-ferroli text-white @else bg-light @endif"
+                           href="{{route('products.scheme', [$product, $datasheet_scheme])}}">{{$datasheet_scheme->block->name}}</a>
+                    </li>
+                @endforeach
+            </ul>
+        @endforeach
+
 
         <div class="card mb-2 mt-4">
             <div class="card-body d-flex align-items-start">
                 <nav class="nav nav-fill flex-column" style="width:300px!important;">
 
-                    @foreach($datasheet->schemes as $datasheet_scheme)
-                        <a class="nav-link @if($datasheet_scheme->id == $scheme->id) bg-ferroli text-white @else border-bottom bg-light @endif"
-                           href="{{route('products.scheme', [$product, $datasheet_scheme])}}">
-                            {{$datasheet_scheme->block->name}}
-                        </a>
-                        @if($datasheet_scheme->id == $scheme->id)
-                            <div class="nav-item">
-                                <table id="block-elements" style="width:300px!important;"
-                                       class="table m-0 table-sm table-bordered table-hover">
-                                    <tbody>
-                                    @foreach($elements as $element)
-                                        <tr class="pointer table-pointer"
-                                            {{--onmouseleave="pointerLeave()"--}}
-                                            {{--onmouseover="pointerOver(this.dataset.number)"--}}
-                                            data-number="{{$element->number}}">
-                                            <td class="number">{{$element->number}}</td>
-                                            <td class="">{{$element->product->sku}}</td>
-                                            <td>
-                                                <a href="{{route('products.show', $element->product)}}">
-                                                    {{str_limit($element->product->name, 22)}}
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        @endif
-                    @endforeach
+                    <div class="nav-item">
+                        <b>Период производства</b>
+                        <ul class="mb-2 nav bg-light nav-pills nav-fill">
+                            @foreach($datasheets as $datasheet)
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                       href="{{route('products.scheme', [$product, $datasheet->schemes()->where('block_id', $scheme->block_id)->first()])}}">
+                                        @include('site::datasheet.date')
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                        <table id="block-elements" style="width:300px!important;"
+                               class="table m-0 table-sm table-bordered table-hover">
+                            <tbody>
+                            @foreach($elements as $element)
+                                <tr class="pointer table-pointer"
+                                    {{--onmouseleave="pointerLeave()"--}}
+                                    {{--onmouseover="pointerOver(this.dataset.number)"--}}
+                                    data-number="{{$element->number}}">
+                                    <td class="number">{{$element->number}}</td>
+                                    <td class="">{{$element->product->sku}}</td>
+                                    <td>
+                                        <a href="{{route('products.show', $element->product)}}">
+                                            {{str_limit($element->product->name, 22)}}
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </nav>
                 <div class="scheme content d-inline-block p-0" style="position:relative;">
                     <canvas class="scheme" height="1040" width="740"
@@ -90,7 +95,8 @@
                         @endforeach
                     @endforeach
 
-                </div>`
+                </div>
+                `
 
             </div>
         </div>

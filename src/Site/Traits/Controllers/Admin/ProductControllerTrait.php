@@ -2,6 +2,7 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 
+use QuadStudio\Service\Site\Filters\Equipment\SortByNameFilter;
 use QuadStudio\Service\Site\Filters\Product\TypeAdminFilter;
 use QuadStudio\Service\Site\Http\Requests\Admin\ProductAnalogRequest;
 use QuadStudio\Service\Site\Http\Requests\Admin\ProductRelationRequest;
@@ -65,7 +66,7 @@ trait ProductControllerTrait
 
     public function edit(Product $product)
     {
-        $equipments = $this->equipments->all();
+        $equipments = $this->equipments->applyFilter(new SortByNameFilter())->all();
 
         return view('site::admin.product.edit', compact('product', 'equipments'));
     }

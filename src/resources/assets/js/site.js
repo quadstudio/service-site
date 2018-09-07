@@ -224,6 +224,7 @@
 
 
     }
+
     let orderCreateForm = document.getElementById("order-create-form");
     if (orderCreateForm !== null) {
         let fast_product_id = $('#fast_product_id');
@@ -475,6 +476,7 @@
 
 
     }
+
     let registerFormExists = document.getElementById("register-form");
     let contragentFormExists = document.getElementById("contragent-form");
     if (registerFormExists !== null || contragentFormExists !== null) {
@@ -591,6 +593,33 @@
                     $.each(error.response.data.errors.path, function (name, error) {
                         form.find('.invalid-feedback').html(error);
                     });
+                    console.log();
+                });
+            e.preventDefault();
+        })
+        .on('click', '.file-upload-button', function (e) {
+            let
+                form = $(this).parents('form'),
+                fd = new FormData(),
+                path = form.find('[name="path"]')[0].files[0],
+                type_id = form.find('[name="type_id"]').val(),
+                storage = form.find('[name="storage"]').val(),
+                preview = form.data('preview'),
+                action = form.attr('action');
+            fd.append('path', path);
+            fd.append('type_id', type_id);
+            fd.append('storage', storage);
+            fd.append('preview', preview);
+            axios
+                .post(action, fd, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
+                .then((response) => {
+                    parseData(response.data)
+                })
+                .catch((error) => {
                     console.log();
                 });
             e.preventDefault();

@@ -18,7 +18,8 @@ return [
         'register',
         'feedback',
         'services',
-        'datasheets',
+        'datasheets.index',
+        'datasheets.show',
         'catalogs.index',
         'catalogs.show',
         'catalogs.list',
@@ -68,7 +69,11 @@ return [
         'catalog'   => 'sort_order',
     ],
 
-    'columns' => 5,
+    'datasheet' => [
+        'products' => [
+            'count' => 3
+        ]
+    ],
 
     'run'       => [
         ['site:resource', []],
@@ -148,7 +153,8 @@ return [
     'files' => [
         'mime' => 'jpg,jpeg,png,pdf',
         'size' => 8092,
-        'path' => date('Ym'),
+        'path' => '',
+        //'path' => date('Ym'),
     ],
 
     'defaults' => [

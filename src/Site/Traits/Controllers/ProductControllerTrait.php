@@ -97,7 +97,7 @@ trait ProductControllerTrait
         $relations = $product->relations()->where('enabled', 1)->orderBy('name')->get();
         $images = $product->images;
         $schemes = $product->schemes;
-        $datasheets = $product->datasheets;
+        $datasheets = $product->datasheets()->with('schemes')->get();
 
         return view('site::product.show', compact(
             'product',
@@ -111,22 +111,9 @@ trait ProductControllerTrait
         ));
     }
 
-
-    public function schemes(Product $product)
-    {
-        $all_datasheets = $product->datasheets()
-            ->where('type_id', 1)
-            ->has('schemes')
-            ->with('schemes');
-        $datasheet = $all_datasheets->first();
-        $datasheets = $all_datasheets->get();
-
-        return view('site::product.schemes', compact('product', 'datasheets', 'datasheet'));
-    }
     public function scheme(Product $product, Scheme $scheme)
     {
         $datasheets = $product->datasheets()
-            ->where('type_id', 1)
             ->has('schemes')
             ->with('schemes')
             ->get();

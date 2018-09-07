@@ -10,15 +10,20 @@ use QuadStudio\Service\Site\Facades\Site;
 
 class Product extends Model implements Imageable
 {
-
+    /**
+     * @var bool
+     */
     public $incrementing = false;
     /**
      * @var string
      */
     protected $table;
-    protected $prefix;
+
+    /**
+     * @var array
+     */
     protected $fillable = [
-        'enabled', 'active', 'warranty', 'service', 'description', 'equipment_id'
+        'enabled', 'active', 'warranty', 'service', 'description', 'specification', 'equipment_id'
     ];
 
     /**
@@ -27,8 +32,7 @@ class Product extends Model implements Imageable
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->prefix = env('DB_PREFIX', '');
-        $this->table = $this->prefix . 'products';
+        $this->table = 'products';
     }
 
     /**
@@ -273,7 +277,7 @@ class Product extends Model implements Imageable
     {
         return $this->belongsToMany(
             Product::class,
-            $this->prefix . 'analogs',
+            'analogs',
             'product_id',
             'analog_id');
     }
@@ -330,7 +334,7 @@ class Product extends Model implements Imageable
     {
         return $this->belongsToMany(
             Product::class,
-            $this->prefix . 'relations',
+            'relations',
             'product_id',
             'relation_id');
     }
@@ -360,7 +364,7 @@ class Product extends Model implements Imageable
     {
         return $this->belongsToMany(
             Product::class,
-            $this->prefix . 'relations',
+            'relations',
             'relation_id',
             'product_id');
     }
@@ -406,7 +410,7 @@ class Product extends Model implements Imageable
     {
         return $this->belongsToMany(
             Product::class,
-            $this->prefix . 'analogs',
+            'analogs',
             'analog_id',
             'product_id');
     }

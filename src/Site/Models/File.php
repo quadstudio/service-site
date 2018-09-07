@@ -37,7 +37,11 @@ class File extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = env('DB_PREFIX', ''). 'files';
+        $this->table = 'files';
+    }
+
+    public function src(){
+        return $this->exists ? Storage::disk($this->storage)->url($this->path) : Storage::disk('products')->url('noimage.png');
     }
 
 

@@ -3,7 +3,6 @@
 namespace QuadStudio\Service\Site\Traits\Controllers\Auth;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 trait ResetPasswordControllerTrait
 {

@@ -18,7 +18,7 @@
                     <a class="nav-link" href="{{ route('catalogs.index') }}">@lang('site::catalog.catalogs')</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('datasheets') }}">@lang('site::datasheet.datasheets')</a>
+                    <a class="nav-link" href="{{ route('datasheets.index') }}">@lang('site::datasheet.datasheets')</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('services') }}">@lang('site::service.services')</a>
@@ -72,6 +72,10 @@
                         </a>
 
                         <div class="dropdown-divider"></div>
+
+                        <a class="dropdown-item" href="{{ route('admin.datasheets.index') }}">
+                            <i class="fa fa-@lang('site::datasheet.icon')"></i> @lang('site::datasheet.datasheets')
+                        </a>
 
                         <a class="dropdown-item" href="{{ route('admin.blocks.index') }}">
                             <i class="fa fa-@lang('site::block.icon')"></i> @lang('site::block.blocks')

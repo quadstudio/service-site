@@ -39,6 +39,9 @@ trait CatalogControllerTrait
 
     public function show(Catalog $catalog)
     {
+        if($catalog->enabled == 0){
+            abort(404);
+        }
         return view('site::catalog.show', compact('catalog'));
     }
 

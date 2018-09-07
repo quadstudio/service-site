@@ -39,12 +39,12 @@
                             <a class="carousel-control-prev" href="#carouselEquipmentIndicators" role="button"
                                data-slide="prev">
                                 <span class="carousel-control-prev-icon dark" aria-hidden="true"></span>
-                                <span class="sr-only">Previous</span>
+                                <span class="sr-only">@lang('site::messages.prev')</span>
                             </a>
                             <a class="carousel-control-next" href="#carouselEquipmentIndicators" role="button"
                                data-slide="next">
                                 <span class="carousel-control-next-icon dark" aria-hidden="true"></span>
-                                <span class="sr-only">Next</span>
+                                <span class="sr-only">@lang('site::messages.next')</span>
                             </a>
                         @endif
                     </div>
@@ -92,11 +92,12 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="description-tab" data-toggle="tab" href="#description" role="tab"
-                           aria-controls="description" aria-selected="true">Описание</a>
+                           aria-controls="description" aria-selected="true">@lang('site::equipment.description')</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="spec-tab" data-toggle="tab" href="#spec" role="tab" aria-controls="spec"
-                           aria-selected="false">Характеристики</a>
+                        <a class="nav-link" id="specification-tab" data-toggle="tab" href="#specification" role="tab"
+                           aria-controls="specification"
+                           aria-selected="false">@lang('site::equipment.specification')</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="products-tab" data-toggle="tab" href="#products" role="tab"
@@ -114,7 +115,7 @@
                          role="tabpanel"
                          aria-labelledby="equipments-tab">
                         @foreach($equipment->products()->where('enabled', 1)->orderBy('name')->get() as $product)
-                            <div class="row border-bottom py-1">
+                            <div class="row border-bottom py-2">
                                 <div class="col-12 col-md-6">
                                     <a class="d-block text-large"
                                        href="{{route('products.show', $product)}}">{{$product->name}}</a>
@@ -134,20 +135,14 @@
 
                         @endforeach
                     </div>
-                    <div class="tab-pane fade p-3"
-                         id="description"
-                         role="tabpanel"
+                    <div class="tab-pane fade p-3" id="description" role="tabpanel"
                          aria-labelledby="home-tab">{!!$equipment->description!!}</div>
-                    <div class="tab-pane fade p-3"
-                         id="spec"
-                         role="tabpanel"
-                         aria-labelledby="spec-tab">...
-                    </div>
+                    <div class="tab-pane fade p-3" id="specification" role="tabpanel"
+                         aria-labelledby="specification-tab">{!! $equipment->specification !!}</div>
                     <div class="tab-pane fade p-3"
                          id="products"
                          role="tabpanel"
                          aria-labelledby="products-tab">
-
                         @foreach($products as $product)
                             <div class="row py-1 border-bottom">
                                 <div class="col-sm-6">
@@ -161,13 +156,39 @@
                                 </div>
                             </div>
                         @endforeach
-
                     </div>
                     <div class="tab-pane fade p-3"
                          id="datasheet"
                          role="tabpanel"
-                         aria-labelledby="datasheet-tab">...
+                         aria-labelledby="datasheet-tab">
+                        <div class="row">
+                            @foreach($datasheets as $datasheet)
+                                <div class="col-xl-4 col-md-4 col-sm-6">
+                                    <div class="card">
 
+                                        <div class="card-body">
+                                            <h5 class="card-title"><a href="{{route('datasheets.show', $datasheet)}}">{{ $datasheet->file->type->name }}</a></h5>
+                                            <p class="card-text">{{$datasheet->name}}</p>
+                                            <p class="text-muted">@include('site::datasheet.date')</p>
+                                        </div>
+                                        <ul class="list-group list-group-flush">
+                                            @foreach(($products = $datasheet->products()->where('enabled', 1)->get()) as $key => $product)
+                                                @if($key < config('site.datasheet.products.count', 5))
+                                                    <li class="list-group-item"><a href="{{route('products.show', $product)}}">{!! $product->name !!}</a></li>
+                                                @else
+                                                    <li class="list-group-item text-muted">... подходит еще к {{$products->count() - config('site.datasheet.products.count', 5)}} {{numberof($products->count() - config('site.datasheet.products.count', 5), 'товар', ['у', 'ам', 'ам'])}} </li>
+                                                    <li class="list-group-item"><a href="{{route('datasheets.show', $datasheet)}}">Показать все товары</a></li>
+                                                    @break
+                                                @endif
+                                            @endforeach
+                                        </ul>
+                                        <div class="card-body">
+                                            @include('site::file.download', ['file' => $datasheet->file, 'block' => true])
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
 

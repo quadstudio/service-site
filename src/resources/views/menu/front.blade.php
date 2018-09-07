@@ -69,7 +69,7 @@
                 </li>
                 <li><a href="{{ route('products.index') }}" class="menuprinc">@lang('site::product.products')</a></li>
                 <li><a href="{{ route('catalogs.index') }}" class="menuprinc">@lang('site::catalog.catalogs')</a></li>
-                <li><a href="{{ route('datasheets') }}" class="menuprinc">@lang('site::datasheet.datasheets')</a></li>
+                <li><a href="{{ route('datasheets.index') }}" class="menuprinc">@lang('site::datasheet.datasheets')</a></li>
                 <li><a href="{{ route('services') }}">@lang('site::service.services')</a></li>
                 <li><a href="{{ route('feedback') }}">@lang('site::messages.feedback')</a></li>
             </ul>
@@ -89,8 +89,8 @@
                 <li class="neromenu has-dropdown @if(in_array(Request::route()->getName(), ['catalogs.index', 'catalogs.show', 'catalogs.list', 'equipments.show']) ) active @endif">
                     <a href="{{ route('catalogs.index') }}" class="menuprinc">@lang('site::catalog.catalogs')</a>
                 </li>
-                <li class="neromenu has-dropdown @if(Request::route()->getName() == 'datasheets') active @endif">
-                    <a href="{{ route('datasheets') }}" class="menuprinc">@lang('site::datasheet.datasheets')</a>
+                <li class="neromenu has-dropdown @if(Request::route()->getName() == 'datasheets.index') active @endif">
+                    <a href="{{ route('datasheets.index') }}" class="menuprinc">@lang('site::datasheet.datasheets')</a>
                 </li>
             </ul>
         </div>

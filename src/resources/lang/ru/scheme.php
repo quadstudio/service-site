@@ -2,7 +2,7 @@
 return [
     'scheme'       => 'взрывную схему',
     'schemes'      => 'Взрывные схемы',
-    'icon'         => 'object-group',
+    'icon'         => 'sitemap',
     //
     'block_id'     => 'Узел',
     'datasheet_id' => 'Каталог запчастей',

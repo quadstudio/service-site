@@ -36,6 +36,7 @@ class SiteServiceProvider extends ServiceProvider
         Models\Contragent::class => Policies\ContragentPolicy::class,
         Models\User::class       => Policies\UserPolicy::class,
         Models\Act::class        => Policies\ActPolicy::class,
+        Models\Datasheet::class  => Policies\DatasheetPolicy::class,
     ];
 
     /**

@@ -4,8 +4,9 @@ namespace QuadStudio\Service\Site\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use QuadStudio\Service\Site\Contracts\SingleFileable;
 
-class Datasheet extends Model
+class Datasheet extends Model implements SingleFileable
 {
     /**
      * @var string
@@ -13,7 +14,7 @@ class Datasheet extends Model
     protected $table;
 
     protected $fillable = [
-        'date_from', 'date_to', 'tags', 'type_id', 'active', 'file_id'
+        'date_from', 'date_to', 'name', 'tags', 'active', 'file_id'
     ];
 
     /**
@@ -22,7 +23,7 @@ class Datasheet extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = env('DB_PREFIX', '') . 'datasheets';
+        $this->table = 'datasheets';
     }
 
     /**
@@ -91,6 +92,22 @@ class Datasheet extends Model
         return !is_null($this->date_to) ? Carbon::instance(\DateTime::createFromFormat('Y-m-d', $this->date_to))->format('d.m.Y') : null;
     }
 
+    /**
+     * Добавить связь документация - оборудование
+     *
+     * @param mixed $product
+     */
+    public function attachProduct($product)
+    {
+        if (is_object($product)) {
+            $product = $product->getKey();
+        }
+        if (is_array($product)) {
+            $product = $product['id'];
+        }
+        $this->products()->attach($product);
+    }
+
     public function products()
     {
         return $this->belongsToMany(
@@ -99,6 +116,22 @@ class Datasheet extends Model
             'datasheet_id',
             'product_id'
         );
+    }
+
+    /**
+     * Удалить связь документация - оборудование
+     *
+     * @param mixed $product
+     */
+    public function detachProduct($product)
+    {
+        if (is_object($product)) {
+            $product = $product->getKey();
+        }
+        if (is_array($product)) {
+            $product = $product['id'];
+        }
+        $this->products()->detach($product);
     }
 
 }

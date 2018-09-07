@@ -28,6 +28,21 @@ if (!function_exists('w1251')) {
         return iconv('utf-8', "windows-1251//TRANSLIT", implode("\n", explode("\n", $txt)));
     }
 }
+if (!function_exists('mimeToExt')) {
+    /**
+     * @param $mime string
+     * @return string
+     */
+    function mimeToExt($mime)
+    {
+        switch ($mime) {
+            case 'application/pdf':
+                return 'PDF';
+            default:
+                return $mime;
+        }
+    }
+}
 if (!function_exists('num2str')) {
     /**
      * Возвращает сумму прописью
@@ -136,7 +151,7 @@ if (!function_exists('monthYear')) {
             12 => 'декабря'
         );
 
-        return $date->format("d") . ' ' . $months[$date->format("m") - 1] . ' ' . $date->format("Y");
+        return $date->format("j") . ' ' . $months[$date->format("n")] . ' ' . $date->format("Y");
 
     }
 }

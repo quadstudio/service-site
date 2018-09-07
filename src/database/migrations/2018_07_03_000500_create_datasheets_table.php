@@ -24,19 +24,12 @@ class CreateDatasheetsTable extends Migration
             $table->increments('id');
             $table->date('date_from')->nullable(true);
             $table->date('date_to')->nullable(true);
-            $table->text('tags')->nullable(true);
+            $table->text('name')->nullable(true);
             $table->boolean('active')->default(true);
-            $table->unsignedInteger('type_id');
             $table->unsignedInteger('file_id');
 
             $table->timestamps();
 
-            $table
-                ->foreign('type_id')
-                ->references('id')
-                ->on("{$this->prefix}datasheet_types")
-                ->onUpdate('cascade')
-                ->onDelete('restrict');
             $table
                 ->foreign('file_id')
                 ->references('id')

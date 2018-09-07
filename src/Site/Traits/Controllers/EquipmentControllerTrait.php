@@ -3,6 +3,7 @@
 namespace QuadStudio\Service\Site\Traits\Controllers;
 
 use QuadStudio\Service\Site\Filters\EnabledFilter;
+use QuadStudio\Service\Site\Models\Datasheet;
 use QuadStudio\Service\Site\Models\Equipment;
 use QuadStudio\Service\Site\Repositories\EquipmentRepository;
 
@@ -37,7 +38,13 @@ trait EquipmentControllerTrait
 
     public function show(Equipment $equipment)
     {
-        $products = $equipment->products()->whereEnabled(1)->orderBy('name')->get();
-        return view('site::equipment.show', compact('equipment', 'products'));
+        if($equipment->enabled == 0){
+            abort(404);
+        }
+        $products = $equipment->products()->where('enabled', 1)->orderBy('name')->get();
+        $datasheets = Datasheet::where('active', 1)->whereHas('products', function($query) use ($equipment){
+            $query->where('enabled', 1)->where('equipment_id', $equipment->id);
+        })->get();
+        return view('site::equipment.show', compact('equipment', 'products', 'datasheets'));
     }
 }

@@ -78,6 +78,7 @@ trait FileControllerTrait
         if (!is_null($file->fileable)) {
             $this->authorize('view', $file);
         }
+        $file->increment('downloads');
 
         return Storage::disk($file->storage)->download($file->path);
     }

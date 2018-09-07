@@ -73,13 +73,14 @@
 
                                 <dt class="col-sm-4">@lang('site::product.sku')</dt>
                                 <dd class="col-sm-8">{{$product->sku}}</dd>
-
-                                <dt class="col-sm-4">@lang('site::product.brand_id')</dt>
-                                <dd class="col-sm-8">{!! $product->brand->name !!}</dd>
-
-                                <dt class="col-sm-4">@lang('site::product.type_id')</dt>
-                                <dd class="col-sm-8">{{$product->type->name}}</dd>
-
+                                @if($product->brand_id)
+                                    <dt class="col-sm-4">@lang('site::product.brand_id')</dt>
+                                    <dd class="col-sm-8">{!! $product->brand->name !!}</dd>
+                                @endif
+                                @if($product->type_id)
+                                    <dt class="col-sm-4">@lang('site::product.type_id')</dt>
+                                    <dd class="col-sm-8">{{$product->type->name}}</dd>
+                                @endif
                                 <dt class="col-sm-4">@lang('site::product.quantity')</dt>
                                 <dd class="col-sm-8">
                                     @if($product->quantity > 0)
@@ -114,11 +115,21 @@
                 </div>
                 <ul class="nav nav-tabs mt-3" id="myTab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="description-tab" data-toggle="tab" href="#description" role="tab"
+                        <a class="nav-link active" id="description-tab" data-toggle="tab" href="#description"
+                           role="tab"
                            aria-controls="description" aria-selected="true">
                             @lang('site::product.description')
                         </a>
                     </li>
+                    @if($product->specification)
+                        <li class="nav-item">
+                            <a class="nav-link" id="specification-tab" data-toggle="tab" href="#specification"
+                               role="tab"
+                               aria-controls="specification" aria-selected="true">
+                                @lang('site::product.specification')
+                            </a>
+                        </li>
+                    @endif
                     @if($equipments->isNotEmpty())
                         <li class="nav-item">
                             <a class="nav-link" id="back-relation-tab" data-toggle="tab" href="#back-relation"
@@ -175,8 +186,13 @@
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active p-3" id="description" role="tabpanel"
-                         aria-labelledby="home-tab">{!! $product->description !!}
+                         aria-labelledby="description-tab">{!! $product->description !!}
                     </div>
+                    @if($product->specification)
+                        <div class="tab-pane fade p-3" id="specification" role="tabpanel"
+                             aria-labelledby="specification-tab">{!! $product->specification !!}
+                        </div>
+                    @endif
                     @if($equipments->isNotEmpty())
                         <div class="tab-pane fade p-3" id="back-relation" role="tabpanel"
                              aria-labelledby="back-relation-tab">
@@ -267,17 +283,44 @@
                         <div class="tab-pane fade p-3" id="datasheet" role="tabpanel" aria-labelledby="datasheet-tab">
 
                             @foreach($datasheets as $datasheet)
-                                <div class="row border-bottom p-1">
-                                    <div class="col-sm-4">
-                                        <h4>{{$datasheet->type->name}}</h4>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        @include('site::datasheet.date')
-                                    </div>
-                                    <div class="col-sm-4 text-left text-sm-right">
-                                        @include('site::file.download', ['file' => $datasheet->file])
+                                <div class="card item-hover mb-1">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-sm-9">
+
+                                                <a class="text-large mb-1"
+                                                   href="{{ route('datasheets.show', $datasheet) }}">{{ $datasheet->name ?: $datasheet->file->name }}</a>
+                                                {{--<span class="text-lighter d-block">{{ $datasheet->file->type->name }}</span>--}}
+
+                                                <span class="text-muted d-block">@include('site::datasheet.date')</span>
+                                                @if($datasheet->schemes()->count() > 0)
+                                                    <a class="d-block"
+                                                       href="{{route('products.scheme', [$product, $datasheet->schemes()->first()])}}">
+                                                        <i class="fa fa-@lang('site::scheme.icon')"></i>
+                                                        @lang('site::messages.open') @lang('site::scheme.scheme')
+                                                    </a>
+                                                @endif
+                                            </div>
+                                            <div class="col-sm-3 text-right">
+                                                @include('site::file.download', ['file' => $datasheet->file])
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                                {{--<div class="row border-bottom p-1">--}}
+                                {{--<div class="col-sm-4">--}}
+                                {{--<h4 class="mb-1">{{$datasheet->file->type->name}}</h4>--}}
+                                {{--<span class="text-muted">@include('site::datasheet.date')</span>--}}
+                                {{--</div>--}}
+                                {{--<div class="col-sm-4 text-left text-sm-right">--}}
+                                {{--@if($datasheet->schemes()->count() > 0)--}}
+                                {{--<a class="btn btn-ferroli" href="#"><i class="fa fa-@lang('site::scheme.icon')"></i> @lang('site::messages.open') @lang('site::scheme.scheme') <span class="badge badge-light">{{$datasheet->schemes()->count()}}</span></a>--}}
+                                {{--@endif--}}
+                                {{--</div>--}}
+                                {{--<div class="col-sm-4 text-left text-sm-right">--}}
+                                {{--@include('site::file.download', ['file' => $datasheet->file])--}}
+                                {{--</div>--}}
+                                {{--</div>--}}
                             @endforeach
                         </div>
                     @endif

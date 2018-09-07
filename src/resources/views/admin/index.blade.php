@@ -112,6 +112,10 @@
 
                         <hr/>
 
+                        <a class="dropdown-item" href="{{ route('admin.datasheets.index') }}">
+                            <i class="fa fa-@lang('site::datasheet.icon')"></i> @lang('site::datasheet.datasheets')
+                        </a>
+
                         <a class="list-group-item list-group-item-action" href="{{ route('admin.blocks.index') }}">
                             <i class="fa fa-@lang('site::block.icon')"></i> @lang('site::block.blocks')
                         </a>

@@ -35,7 +35,7 @@
                                 <option data-cost="{{$datasheet->cost}}"
                                         @if(old('datasheet_id') == $datasheet->id) selected
                                         @endif
-                                        value="{{ $datasheet->id }}">{{ $datasheet->tags }}</option>
+                                        value="{{ $datasheet->id }}">{{ $datasheet->name }}</option>
                             @endforeach
                         </select>
                         <span class="invalid-feedback">{{ $errors->first('datasheet_id') }}</span>

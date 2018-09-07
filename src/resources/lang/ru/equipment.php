@@ -1,23 +1,24 @@
 <?php
 return [
-    'equipment'   => 'модель',
-    'equipments'  => 'Модели',
-    'icon'        => 'cog',
+    'equipment'     => 'модель',
+    'equipments'    => 'Модели',
+    'icon'          => 'cog',
     //
-    'name'        => 'Наименование',
-    'annotation'  => 'Короткая аннотация',
-    'description' => 'Подробное описание',
-    'catalog_id'  => 'Каталог',
-    'enabled'     => 'Статус',
+    'name'          => 'Наименование',
+    'annotation'    => 'Короткая аннотация',
+    'description'   => 'Подробное описание',
+    'specification' => 'Технические характеристики',
+    'catalog_id'    => 'Каталог',
+    'enabled'       => 'Статус',
     //
-    'placeholder' => [
+    'placeholder'   => [
         'search'      => 'Поиск моделей',
         'name'        => 'Например, Diva',
         'annotation'  => '',
         'description' => '',
 
     ],
-    'default'     => [
+    'default'       => [
         'catalog_id' => '- Выбрать -',
     ],
 

@@ -10,25 +10,12 @@
 @endsection
 @section('content')
     <div class="container">
-        <div class="card mb-4">
-            <div class="card-body">
-                {{$datasheets->render()}}
-                @filter(['repository' => $repository])@endfilter
-                <table class="table table-hover table-sm">
-                    <thead>
-                    <tr>
-                        <th scope="col">@lang('site::datasheet.type_id')</th>
-                        {{--<th scope="col">@lang('site::equipment.equipments')</th>--}}
-                        <th scope="col"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @each('site::datasheet.index.row', $datasheets, 'datasheet')
-                    </tbody>
-                </table>
-                {{$datasheets->render()}}
-            </div>
+        @filter(['repository' => $repository])@endfilter
+        @pagination(['pagination' => $datasheets])@endpagination
+        {{$datasheets->render()}}
+        <div class="row items-row-view">
+            @each('site::datasheet.index.row', $datasheets, 'datasheet')
         </div>
-
+        {{$datasheets->render()}}
     </div>
 @endsection

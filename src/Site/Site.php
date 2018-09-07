@@ -64,12 +64,11 @@ class Site
                     $router->get('/services', 'ServiceController@index')->name('services');
                     $router->get('/products/list', 'ProductController@list')->name('products.list');
                     $router->resource('/products', 'ProductController')->only(['index', 'show']);
-                    $router->get('/products/{product}/schemes', 'ProductController@schemes')->name('products.schemes');
                     $router->get('/products/{product}/schemes/{scheme}', 'ProductController@scheme')->name('products.scheme');
                     $router->resource('/catalogs', 'CatalogController')->only(['index', 'show']);
                     $router->get('/catalogs/{catalog}/list', 'CatalogController@list')->name('catalogs.list');
                     $router->resource('/equipments', 'EquipmentController')->only(['index', 'show']);
-                    $router->get('/datasheets', 'DatasheetController@index')->name('datasheets');
+                    $router->resource('/datasheets', 'DatasheetController')->only(['index', 'show']);
                     $router->resource('/files', 'FileController')->only(['index', 'store', 'show', 'destroy']);
                     //$router->resource('/schemes', 'SchemeController')->only(['index','show']);
 
@@ -188,7 +187,11 @@ class Site
                                 $router->name('admin')->get('/refresh/currencies/', 'CurrencyController@refresh')->name('.currencies.refresh');
                                 $router->name('admin')->resource('/banks', 'BankController');
                                 $router->name('admin')->resource('/warehouses', 'WarehouseController');
+                                $router->name('admin')->post('/datasheets/file', 'DatasheetController@file')->name('.datasheets.file');
                                 $router->name('admin')->resource('/datasheets', 'DatasheetController');
+                                $router->name('admin')->get('/datasheets/{datasheet}/products', 'DatasheetController@products')->name('.datasheets.products');
+                                $router->name('admin')->post('/datasheets/{datasheet}/products', 'DatasheetController@products')->name('.datasheets.products.update');
+                                $router->name('admin')->delete('/datasheets/{datasheet}/products', 'DatasheetController@products')->name('.datasheets.products.delete');
                                 $router->name('admin')->resource('/contragents', 'ContragentController');
                                 $router->name('admin')->resource('/organizations', 'OrganizationController');
                                 $router->name('admin')->put('/difficulties/sort', 'DifficultyController@sort')->name('.difficulties.sort');

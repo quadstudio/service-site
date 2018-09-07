@@ -17,6 +17,7 @@ return [
     'weight'              => 'Вес',
     'unit'                => 'Ед.изм.',
     'description'         => 'Описание',
+    'specification'       => 'Технические характеристики',
     'equipment_id'        => 'Модель',
     'enabled'             => 'Включен',
     'active'              => 'Для продажи',
@@ -25,6 +26,7 @@ return [
     //
     'placeholder'         => [
         'description' => '',
+        'specification' => '',
     ],
     'search_placeholder'  => 'Поиск запчастей...',
     'sort'                => 'Сортировка',
