@@ -9,11 +9,24 @@
                     <span class="text-muted d-block">@include('site::datasheet.date')</span>
                 </div>
                 <div class="col-sm-3 text-xlarge text-right">
-                    {{$datasheet->products()->count()}}
+                    <div class="row">
+                        <div class="col">
+                            <span data-toggle="tooltip" data-placement="top" title="@lang('site::file.downloads')">
+                                <i class="fa fa-download"></i>
+                                {{$datasheet->file->downloads}}
+                            </span>
+                            &nbsp;&nbsp;
+                            <i class="fa fa-chain"></i>
+                            {{$datasheet->products()->count()}}
+                        </div>
+                    </div>
                 </div>
                 <div class="col-sm-4 text-right">
-
-                    @include('site::file.download', ['file' => $datasheet->file])
+                    @if($datasheet->file->exists())
+                        @include('site::file.download', ['file' => $datasheet->file])
+                    @else
+                        <span class="badge badge-danger text-big">@lang('site::file.error.not_found')</span>
+                    @endif
                 </div>
             </div>
         </div>

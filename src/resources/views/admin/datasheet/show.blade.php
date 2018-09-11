@@ -17,11 +17,13 @@
         <h1 class="header-title mb-4">{{ $datasheet->name ?: $datasheet->file->name }}</h1>
         @alert()@endalert
         <div class="justify-content-start border p-3 mb-2">
-            <a class="btn btn-success d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0"
-               href="{{route('files.show', $datasheet->file)}}">
-                <i class="fa fa-download"></i>
-                @lang('site::messages.download')
-            </a>
+            @if($datasheet->file->exists())
+                <a class="btn btn-success d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0"
+                   href="{{route('files.show', $datasheet->file)}}">
+                    <i class="fa fa-download"></i>
+                    @lang('site::messages.download')
+                </a>
+            @endif
             <a class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0"
                href="{{ route('admin.datasheets.edit', $datasheet) }}"
                role="button">
@@ -51,7 +53,6 @@
                     <dd class="col-sm-8">{{$datasheet->file->type->name}}</dd>
 
 
-
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::datasheet.date_from_to')</dt>
                     <dd class="col-sm-8">
                         @if(!is_null($datasheet->date_from))
@@ -76,16 +77,25 @@
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::file.storage')
                         / @lang('site::file.path')</dt>
-                    <dd class="col-sm-8">{{Storage::disk($datasheet->file->storage)->getAdapter()->getPathPrefix().$datasheet->file->path}}</dd>
+                    <dd class="col-sm-8">
+                        {{Storage::disk($datasheet->file->storage)->getAdapter()->getPathPrefix().$datasheet->file->path}}
+                        @if(!$datasheet->file->exists())
+                            <span class="badge badge-danger text-big">@lang('site::file.error.not_found')</span>
+                        @endif
+                    </dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::file.mime')</dt>
                     <dd class="col-sm-8">{{$datasheet->file->mime}}</dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::file.size')</dt>
-                    <dd class="col-sm-8">{{formatFileSize($datasheet->file->size)}} <span
-                                class="text-muted">(@lang('site::file.real_size')
-                            : {{formatFileSize(filesize(Storage::disk($datasheet->file->storage)->getAdapter()->getPathPrefix().$datasheet->file->path))}}
-                            )</span></dd>
+                    <dd class="col-sm-8">{{formatFileSize($datasheet->file->size)}}
+                        @if($datasheet->file->exists())
+                            <span class="text-muted">(@lang('site::file.real_size'):
+                                {{formatFileSize(filesize(Storage::disk($datasheet->file->storage)->getAdapter()->getPathPrefix().$datasheet->file->path))}}
+                                )
+                            </span>
+                        @endif
+                    </dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::datasheet.header.products')</dt>
                     <dd class="col-sm-8">

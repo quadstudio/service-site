@@ -11,7 +11,8 @@ return [
     'name'      => 'Оригинальное имя файла',
     'downloads' => 'Количество скачиваний',
     'error'     => [
-        'path' => 'Расширение файла должно быть: ' . config('site.files.mime', 'jpg,jpeg,png,pdf'),
-        'max'  => 'РМаксимальный размер загружаемого файла должен быть не более: ' . config('site.files.size', 8092),
+        'path'      => 'Расширение файла должно быть: ' . config('site.files.mime', 'jpg,jpeg,png,pdf'),
+        'max'       => 'Максимальный размер загружаемого файла должен быть не более: ' . config('site.files.size', 8092),
+        'not_found' => 'Файл не найден',
     ]
 ];

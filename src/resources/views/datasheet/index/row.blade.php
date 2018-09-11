@@ -13,7 +13,11 @@
                     @endif
                 </div>
                 <div class="col-sm-3 text-right">
-                    @include('site::file.download', ['file' => $datasheet->file])
+                    @if($datasheet->file->exists())
+                        @include('site::file.download', ['file' => $datasheet->file])
+                    @else
+                        <span class="badge badge-danger text-big">@lang('site::file.error.not_found')</span>
+                    @endif
                 </div>
             </div>
         </div>

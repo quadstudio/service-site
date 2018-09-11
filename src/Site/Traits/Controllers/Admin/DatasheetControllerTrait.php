@@ -3,6 +3,7 @@
 namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 
 use Illuminate\Support\Facades\Storage;
+use QuadStudio\Service\Site\Filters\Datasheet\SortFilter;
 use QuadStudio\Service\Site\Http\Requests\Admin\DatasheetProductRequest;
 use QuadStudio\Service\Site\Http\Requests\Admin\DatasheetRequest;
 use QuadStudio\Service\Site\Http\Requests\FileRequest;
@@ -40,7 +41,6 @@ trait DatasheetControllerTrait
     {
 
         $this->datasheets->trackFilter();
-
         return view('site::admin.datasheet.index', [
             'repository' => $this->datasheets,
             'datasheets' => $this->datasheets->paginate(config('site.per_page.datasheet', 10), ['datasheets.*'])
@@ -71,8 +71,12 @@ trait DatasheetControllerTrait
     {
         $datasheet = $this->datasheets->create($request->except(['_token', '_method', '_create', 'type_id']));
         $datasheet->file->setAttribute('type_id', $request->input('type_id'))->save();
-        $route = $request->input('_create') == 1 ? 'admin.datasheets.create' : 'admin.datasheets.index';
-        return redirect()->route($route)->with('success', trans('site::datasheet.created'));
+        if($request->input('_create') == 1){
+            $redirect = redirect()->route('admin.datasheets.create')->with('success', trans('site::datasheet.created'));
+        } else{
+            $redirect = redirect()->route('admin.datasheets.show', $datasheet)->with('success', trans('site::datasheet.created'));
+        }
+        return $redirect;
     }
 
     public function update(DatasheetRequest $request, Datasheet $datasheet)

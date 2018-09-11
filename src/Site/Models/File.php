@@ -44,6 +44,10 @@ class File extends Model
         return $this->exists ? Storage::disk($this->storage)->url($this->path) : Storage::disk('products')->url('noimage.png');
     }
 
+    public function exists(){
+        return Storage::disk($this->storage)->exists($this->path);
+    }
+
 
 
     /**

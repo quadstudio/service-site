@@ -16,7 +16,13 @@
                 <dl class="row">
 
                     <dt class="col-sm-4 text-left text-sm-right"></dt>
-                    <dd class="col-sm-8">@include('site::file.download', ['file' => $datasheet->file])</dd>
+                    <dd class="col-sm-8">
+                        @if($datasheet->file->exists())
+                            @include('site::file.download', ['file' => $datasheet->file])
+                        @else
+                            <span class="badge badge-danger text-big">@lang('site::file.error.not_found')</span>
+                        @endif
+                    </dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::datasheet.name')</dt>
                     <dd class="col-sm-8">{{$datasheet->name}}</dd>
