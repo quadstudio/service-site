@@ -5,11 +5,14 @@ namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 use Illuminate\Http\Request;
 use QuadStudio\Service\Site\Http\Requests\Admin\DistanceRequest;
 use QuadStudio\Service\Site\Models\Distance;
+use QuadStudio\Service\Site\Repositories\CurrencyRepository;
 use QuadStudio\Service\Site\Repositories\DistanceRepository;
 
 trait DistanceControllerTrait
 {
-
+    /**
+     * @var DistanceRepository
+     */
     protected $distances;
 
     /**
@@ -39,7 +42,8 @@ trait DistanceControllerTrait
 
     public function create()
     {
-        return view('site::admin.distance.create');
+        $sort_order = $this->distances->count();
+        return view('site::admin.distance.create', compact('sort_order'));
     }
 
     /**
@@ -104,6 +108,19 @@ trait DistanceControllerTrait
             $distance->setAttribute('sort_order', $sort_order);
             $distance->save();
         }
+    }
+
+    public function destroy(Request $request, Distance $distance)
+    {
+        $this->authorize('delete', $distance);
+
+        if ($distance->delete()) {
+            $json['remove'][] = '#distance-' . $distance->id;
+        } else {
+            $json['error'][] = 'error';
+        }
+
+        return response()->json($json);
     }
 
 

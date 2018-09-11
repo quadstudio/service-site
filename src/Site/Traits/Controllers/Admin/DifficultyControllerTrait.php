@@ -39,7 +39,8 @@ trait DifficultyControllerTrait
 
     public function create()
     {
-        return view('site::admin.difficulty.create');
+        $sort_order = $this->difficulties->count();
+        return view('site::admin.difficulty.create', compact('sort_order'));
     }
 
     /**
@@ -106,5 +107,17 @@ trait DifficultyControllerTrait
         }
     }
 
+    public function destroy(Request $request, Difficulty $difficulty)
+    {
+        $this->authorize('delete', $difficulty);
+
+        if ($difficulty->delete()) {
+            $json['remove'][] = '#difficulty-' . $difficulty->id;
+        } else {
+            $json['error'][] = 'error';
+        }
+
+        return response()->json($json);
+    }
 
 }

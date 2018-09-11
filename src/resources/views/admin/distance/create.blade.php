@@ -24,6 +24,8 @@
                 <form id="form-content" method="POST" action="{{ route('admin.distances.store') }}">
                     @csrf
 
+                    <input type="hidden" name="sort_order" value="{{$sort_order}}" />
+
                     <div class="form-row required">
                         <div class="col mb-3">
                             <label class="control-label" for="name">@lang('site::distance.name')</label>
@@ -36,6 +38,38 @@
                             <span class="invalid-feedback">{{ $errors->first('name') }}</span>
                         </div>
                     </div>
+
+                    <div class="form-row required">
+                        <div class="col mb-3">
+                            <label class="control-label d-block"
+                                   for="active">@lang('site::distance.active')</label>
+                            <div class="custom-control custom-radio  custom-control-inline">
+                                <input class="custom-control-input
+                                                    {{$errors->has('active') ? ' is-invalid' : ''}}"
+                                       type="radio"
+                                       name="active"
+                                       required
+                                       @if(old('active', 1) == 1) checked @endif
+                                       id="active_1"
+                                       value="1">
+                                <label class="custom-control-label"
+                                       for="active_1">@lang('site::messages.yes')</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input class="custom-control-input
+                                                    {{$errors->has('active') ? ' is-invalid' : ''}}"
+                                       type="radio"
+                                       name="active"
+                                       required
+                                       @if(old('active', 1) == 0) checked @endif
+                                       id="active_0"
+                                       value="0">
+                                <label class="custom-control-label"
+                                       for="active_0">@lang('site::messages.no')</label>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="form-row required">
                         <div class="col mb-3">
                             <label class="control-label"
@@ -52,7 +86,6 @@
                         </div>
 
                     </div>
-
                 </form>
                 <hr/>
                 <div class="form-row">

@@ -318,11 +318,13 @@
                                                 id="difficulty_id">
                                             <option value="">@lang('site::messages.select_from_list')</option>
                                             @foreach($difficulties as $difficulty)
-                                                <option data-cost="{{$difficulty->cost}}"
-                                                        @if(old('difficulty_id', $repair->difficulty_id) == $difficulty->id) selected
-                                                        @endif
-                                                        value="{{ $difficulty->id }}">{{ $difficulty->name }}@if($difficulty->cost > 0)
-                                                        - {{ Site::format($difficulty->cost) }}@endif</option>
+                                                @if($difficulty->active == 1 || $repair->difficulty_id == $difficulty->id)
+                                                    <option data-cost="{{$difficulty->cost}}"
+                                                            @if(old('difficulty_id', $repair->difficulty_id) == $difficulty->id) selected
+                                                            @endif
+                                                            value="{{ $difficulty->id }}">{{ $difficulty->name }}@if($difficulty->cost > 0)
+                                                            - {{ Site::format($difficulty->cost) }}@endif</option>
+                                                @endif
                                             @endforeach
 
                                         </select>
@@ -343,11 +345,13 @@
                                                 id="distance_id">
                                             <option value="">@lang('site::messages.select_from_list')</option>
                                             @foreach($distances as $distance)
+                                                @if($distance->active == 1 || $repair->distance_id == $distance->id)
                                                 <option data-cost="{{$distance->cost}}"
                                                         @if(old('distance_id', $repair->distance_id) == $distance->id) selected
                                                         @endif
                                                         value="{{ $distance->id }}">{{ $distance->name }}@if($distance->cost > 0)
                                                         - {{ Site::format($distance->cost) }}@endif</option>
+                                                @endif
                                             @endforeach
                                         </select>
                                         <span class="invalid-feedback">{{ $errors->first('distance_id') }}</span>
@@ -473,7 +477,7 @@
                                                 @foreach($files as $file)
                                                     @if($file->type_id == $type->id)
                                                         @include('site::repair.field.file')
-                                                        @endif
+                                                    @endif
                                                 @endforeach
                                             @endif
                                         </ul>

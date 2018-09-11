@@ -42,6 +42,37 @@
 
                             <div class="form-row required">
                                 <div class="col mb-3">
+                                    <label class="control-label d-block"
+                                           for="active">@lang('site::distance.active')</label>
+                                    <div class="custom-control custom-radio  custom-control-inline">
+                                        <input class="custom-control-input
+                                                    {{$errors->has('active') ? ' is-invalid' : ''}}"
+                                               type="radio"
+                                               name="active"
+                                               required
+                                               @if(old('active', $distance->active) == 1) checked @endif
+                                               id="active_1"
+                                               value="1">
+                                        <label class="custom-control-label"
+                                               for="active_1">@lang('site::messages.yes')</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input class="custom-control-input
+                                                    {{$errors->has('active') ? ' is-invalid' : ''}}"
+                                               type="radio"
+                                               name="active"
+                                               required
+                                               @if(old('active', $distance->active) == 0) checked @endif
+                                               id="active_0"
+                                               value="0">
+                                        <label class="custom-control-label"
+                                               for="active_0">@lang('site::messages.no')</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-row required">
+                                <div class="col mb-3">
                                     <label class="control-label"
                                            for="contragent_inn">@lang('site::distance.cost')</label>
                                     <input type="number"

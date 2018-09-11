@@ -37,6 +37,8 @@ class SiteServiceProvider extends ServiceProvider
         Models\User::class       => Policies\UserPolicy::class,
         Models\Act::class        => Policies\ActPolicy::class,
         Models\Datasheet::class  => Policies\DatasheetPolicy::class,
+        Models\Distance::class   => Policies\DistancePolicy::class,
+        Models\Difficulty::class => Policies\DifficultyPolicy::class,
     ];
 
     /**

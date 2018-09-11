@@ -11,7 +11,7 @@ class Distance extends Model
      */
     protected $table;
 
-    protected $fillable = ['name', 'cost'];
+    protected $fillable = ['name', 'cost', 'active', 'sort_order'];
 
     /**
      * @param array $attributes
@@ -23,13 +23,23 @@ class Distance extends Model
     }
 
     /**
-     * Currency
+     * Валюта
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function currency()
     {
         return $this->belongsTo(Currency::class);
+    }
+
+    /**
+     * Отчеты по ремонту
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function repairs()
+    {
+        return $this->hasMany(Repair::class);
     }
 
 }
