@@ -1,10 +1,10 @@
 <?php
 
-namespace QuadStudio\Service\Site\Http\Resources;
+namespace QuadStudio\Service\Site\Http\Resources\Address;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ServiceResource extends JsonResource
+class YandexMapResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,17 +19,17 @@ class ServiceResource extends JsonResource
             'id'         => $this->id,
             'geometry'   => [
                 'type'        => 'Point',
-                'coordinates' =>$this->address()->geo
+                'coordinates' => [$this->lat(), $this->lon()]
             ],
             'properties' => [
                 'balloonContentBody' => view('site::service.balloon', [
-                    'sc'      => $this->sc()->name ? $this->sc()->name : $this->name,
-                    'asc'      => $this->hasRole('asc'),
-                    'dealer'      => $this->hasRole('dealer'),
-                    'web'      => $this->sc()->web ? $this->sc()->web : $this->web,
-                    'phones'     => $this->sc()->phones()->exists() ? $this->sc()->phones : $this->phones,
-                    'email'   => $this->email,
-                    'address' => $this->address(),
+                    'name'      => $this->name,
+                    'asc'      => $this->addressable->hasRole('asc'),
+                    'dealer'      =>  $this->addressable->hasRole('dealer'),
+                    'web'      => $this->addressable->web,
+                    'phones'     => $this->phones,
+                    'email'   => $this->addressable->email,
+                    'address' => $this->full,
                     //'phones'  => $this->sc_phones()
                 ])->render(),
                 'balloonMaxWidth'    => 700

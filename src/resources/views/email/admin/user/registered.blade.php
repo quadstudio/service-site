@@ -1,11 +1,11 @@
 @extends('layouts.email')
 
 @section('title')
-    Зарегистрировался новый @lang('site::user.user')
+    Регистрация нового @lang('site::user.user')
 @endsection
 
 @section('h1')
-    Зарегистрировался новый @lang('site::user.user')
+    Регистрация нового @lang('site::user.user')
 @endsection
 
 @section('body')

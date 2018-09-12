@@ -9,7 +9,7 @@ class Address extends Model
     protected $fillable = [
         'type_id', 'country_id', 'region_id',
         'locality', 'street', 'building',
-        'apartment', 'postal',
+        'apartment', 'postal', 'name'
     ];
 
     /**
@@ -46,14 +46,17 @@ class Address extends Model
             $result[] = $address->street;
             $result[] = $address->building;
             $result[] = $address->apartment;
-            $name = implode(', ', $result);
-            $result = $geocoder->geocodeQuery(\Geocoder\Query\GeocodeQuery::create($name));
+            $full = preg_replace('/,\s+$/', '', implode(', ', $result));
+            $address->full = $full;
+            $result = $geocoder->geocodeQuery(\Geocoder\Query\GeocodeQuery::create($full));
             if (!$result->isEmpty()) {
                 $geocode = $result->first();
-                $address->geo = implode(',', $geocode->getCoordinates()->toArray());
-                $formatter = new \Geocoder\Formatter\StringFormatter();
-                $address->name = preg_replace(['/\s,/', '/\s+/'], ' ', $formatter->format($geocode, '%A1, %A2, %A3, %L, %D %S, %n'));
+                $address->geo = implode(',', array_reverse($geocode->getCoordinates()->toArray()));
+                //$formatter = new \Geocoder\Formatter\StringFormatter();
+                //$name = $formatter->format($geocode, '%A1, %A2, %A3, %L, %D %S, %n');
+                //$address->full = preg_replace(['/\s,/', '/\s+/'], ' ', $full);
             }
+
         });
     }
 
@@ -65,6 +68,20 @@ class Address extends Model
     public function type()
     {
         return $this->belongsTo(AddressType::class);
+    }
+
+    public function lat()
+    {
+        list($lat, $lon) = explode(',', $this->geo);
+
+        return (float)$lat;
+    }
+
+    public function lon()
+    {
+        list($lat, $lon) = explode(',', $this->geo);
+
+        return (float)$lon;
     }
 
     /**
@@ -86,13 +103,23 @@ class Address extends Model
     }
 
     /**
+     * Телефоны
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\morphMany
+     */
+    public function phones()
+    {
+        return $this->morphMany(Phone::class, 'phoneable');
+    }
+
+    /**
      * Пользователи
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function users()
     {
-        return $this->hasMany(User::class, 'id','addressable_id')->where('addressable_type', 'users');
+        return $this->hasMany(User::class, 'id', 'addressable_id')->where('addressable_type', 'users');
     }
 
 

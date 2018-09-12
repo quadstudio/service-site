@@ -156,7 +156,9 @@ class Contragent extends Model
      */
     public function organization()
     {
-        return $this->belongsTo(Organization::class);
+        return $this->belongsTo(Organization::class)->withDefault([
+            'name' => trans('site::messages.not_indicated_f'),
+        ]);
     }
 
 }

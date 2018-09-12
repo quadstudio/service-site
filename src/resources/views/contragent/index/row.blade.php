@@ -48,7 +48,7 @@
                     <hr class="border-light">
                     @php $address = $contragent->addresses()->whereTypeId(1)->first() @endphp
                     <div>
-                        <div class="text-muted">{{$address->type->name}}: {{$address->name}}</div>
+                        <div class="text-muted">{{$address->type->name}}: {{$address->full}}</div>
                         <div class="text-muted mr-3">@lang('site::contragent.organization_id')
                             : {{$contragent->organization->name}}</div>
                     </div>

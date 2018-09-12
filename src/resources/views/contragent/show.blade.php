@@ -10,7 +10,7 @@
                 <a href="{{ route('home') }}">@lang('site::messages.home')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('contragents.index') }}">@lang('site::contragent.contragents')</a>
+                <a href="{{ route('contragents.index') }}">@lang('site::contragent.contragents_user')</a>
             </li>
             <li class="breadcrumb-item active">{{ $contragent->name }}</li>
         </ol>
@@ -21,7 +21,7 @@
                href="{{ route('contragents.edit', $contragent) }}"
                role="button">
                 <i class="fa fa-pencil"></i>
-                <span>@lang('site::messages.edit') @lang('site::contragent.contragent')</span>
+                <span>@lang('site::messages.edit') @lang('site::contragent.contragent_user')</span>
             </a>
             <a href="{{ route('contragents.index') }}" class="d-block d-sm-inline btn btn-secondary">
                 <i class="fa fa-reply"></i>
@@ -128,7 +128,7 @@
                     <div class="item-content-about">
                         <h5 class="item-content-name mb-1">
                             <a href="{{route('addresses.show', $address)}}"
-                               class="text-dark">{{$address->name}}</a>
+                               class="text-dark">{{$address->full}}</a>
                         </h5>
                         <hr class="border-light">
                         <div>
@@ -180,7 +180,7 @@
                     <h6 class="card-title">{{$address->type->name}}</h6>
                     <div class="item-content-about">
                         <h5 class="item-content-name mb-1">
-                            <a href="javascript:void(0)" class="text-dark">{{$address->name}}</a>
+                            <a href="javascript:void(0)" class="text-dark">{{$address->full}}</a>
                         </h5>
                         <hr class="border-light">
                         <div>

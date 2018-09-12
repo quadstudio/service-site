@@ -16,7 +16,7 @@
 
         @alert()@endalert
         <div class="border p-3 mb-2">
-            <a class="disabled btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0"
+            <a class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0"
                href="{{ route('addresses.create') }}"
                role="button">
                 <i class="fa fa-plus"></i>

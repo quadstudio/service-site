@@ -35,13 +35,30 @@ class Phone extends Model
     }
 
     /**
-     * Контакт
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * Отформатированный номер телефона
+     * @return string
      */
-    public function contact()
+    public function format()
     {
-        return $this->belongsTo(Contact::class);
+        $result = [$this->country->getAttribute('phone')];
+        if (preg_match('/^(\d{3})(\d{3})(\d{2})(\d{2})$/', $this->getAttribute('number'), $matches)) {
+            $result[] = '(' . $matches[1] . ') ' . $matches[2] . '-' . $matches[3] . '-' . $matches[4];
+        } else {
+            $result[] = $this->getAttribute('number');
+        }
+        if (mb_strlen($this->getAttribute('extra'), 'UTF-8') > 0) {
+            $result[] = "(" . trans('site::phone.extra_short') . " {$this->getAttribute('extra')})";
+        }
+
+        return implode(' ', $result);
+    }
+
+    /**
+     * Get all of the owning contactable models.
+     */
+    public function phoneable()
+    {
+        return $this->morphTo();
     }
 
 }

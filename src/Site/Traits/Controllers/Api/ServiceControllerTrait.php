@@ -3,59 +3,44 @@
 namespace QuadStudio\Service\Site\Traits\Controllers\Api;
 
 use Illuminate\Http\Request;
-use QuadStudio\Service\Site\Filters\User\ActiveFilter;
-use QuadStudio\Service\Site\Filters\User\DisplayFilter;
-use QuadStudio\Service\Site\Filters\Service\RegionFilter;
-use QuadStudio\Service\Site\Filters\User\ShowAscDealerFilter;
-use QuadStudio\Service\Site\Http\Resources\ServiceCollection;
-use QuadStudio\Service\Site\Http\Resources\ServiceResource;
+use QuadStudio\Service\Site\Filters\Address\RegionFilter;
+use QuadStudio\Service\Site\Filters\Address\TypeFilter;
+use QuadStudio\Service\Site\Http\Resources\Address\YandexMapCollection;
+use QuadStudio\Service\Site\Http\Resources\Address\YandexMapResource;
 use QuadStudio\Service\Site\Models\Region;
 use QuadStudio\Service\Site\Models\User;
-use QuadStudio\Service\Site\Repositories\UserRepository;
+use QuadStudio\Service\Site\Repositories\AddressRepository;
 
 trait ServiceControllerTrait
 {
-    protected $services;
+    protected $addresses;
 
     /**
      * Create a new controller instance.
      *
-     * @param UserRepository $services
+     * @param AddressRepository $addresses
      */
-    public function __construct(UserRepository $services)
+    public function __construct(AddressRepository $addresses)
     {
-        $this->services = $services;
+        $this->addresses = $addresses;
     }
 
     /**
      * Show the country profile
      *
      * @param Region $region
-     * @return ServiceCollection
+     * @return YandexMapCollection
      */
     public function index(Request $request, Region $region)
     {
-
-        //dd($request->all());
-//        $this
-//            ->services
-//            ->trackFilter()
-//            ->applyFilter(new ActiveFilter())
-//            ->applyFilter(new DisplayFilter())
-//            ->pushTrackFilter(IsAscSelectFilter::class)
-//            ->pushTrackFilter(IsDealerSelectFilter::class)
-//            ->applyFilter((new RegionFilter())->setRegion($region))
-//            ->all();
-//        dump($this->services->getBindings());
-//        dd($this->services->toSql());
-        return new ServiceCollection(
+        return new YandexMapCollection(
             $this
-                ->services
+                ->addresses
                 ->trackFilter()
-                ->applyFilter(new ActiveFilter())
-                ->applyFilter(new DisplayFilter())
-                ->pushTrackFilter(ShowAscDealerFilter::class)
-                ->applyFilter((new RegionFilter())->setRegion($region))
+                ->applyFilter((new TypeFilter())->setTypeId(2))
+                ->applyFilter((new RegionFilter())->setRegionId($region->id))
+                //->applyFilter(new DisplayFilter())
+                //->pushTrackFilter(ShowAscDealerFilter::class)
                 ->all()
         );
     }
@@ -64,10 +49,10 @@ trait ServiceControllerTrait
      * Display the specified resource.
      *
      * @param User $service
-     * @return ServiceResource
+     * @return YandexMapResource
      */
     public function show(User $service)
     {
-        return new ServiceResource($service);
+        return new YandexMapResource($service);
     }
 }

@@ -25,6 +25,30 @@
                             class="badge badge-light">{{$user->orders()->count()}}</span></span>
             </a>
             @endpermission()
+            @permission('contragents')
+            <a href="{{ route('contragents.index') }}"
+               class="d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-ferroli">
+                <i class="fa fa-@lang('site::contragent.icon')"></i>
+                <span>@lang('site::contragent.contragents') <span
+                            class="badge badge-light">{{$user->contragents()->count()}}</span></span>
+            </a>
+            @endpermission()
+            @permission('contacts')
+            <a href="{{ route('contacts.index') }}"
+               class="d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-ferroli">
+                <i class="fa fa-@lang('site::contact.icon')"></i>
+                <span>@lang('site::contact.contacts') <span
+                            class="badge badge-light">{{$user->contacts()->count()}}</span></span>
+            </a>
+            @endpermission()
+            @permission('contacts')
+            <a href="{{ route('addresses.index') }}"
+               class="d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-ferroli">
+                <i class="fa fa-@lang('site::address.icon')"></i>
+                <span>@lang('site::address.addresses') <span
+                            class="badge badge-light">{{$user->addresses()->count()}}</span></span>
+            </a>
+            @endpermission()
         </div>
         <div class="row">
             <div class="col-xl-4">
@@ -77,49 +101,28 @@
                             <span class="text-muted">@lang('site::user.created_at')
                                 :</span>&nbsp;&nbsp;{{ $user->created_at() }}
                         </div>
+                        {{--<div class="mb-2">--}}
+                            {{--<span class="text-muted">@lang('site::address.country_id'):</span>&nbsp;--}}
+                            {{--<span class="text-dark">--}}
+                                {{--<img style="width: 30px;" class="img-fluid border"--}}
+                                     {{--src="{{ asset($user->address()->country->flag) }}"--}}
+                                     {{--alt=""> {{ $user->address()->country->name }}--}}
+                            {{--</span>--}}
+                        {{--</div>--}}
                         <div class="mb-2">
-                            <span class="text-muted">@lang('site::address.country_id'):</span>&nbsp;
-                            <span class="text-dark">
-                                <img style="width: 30px;" class="img-fluid border"
-                                     src="{{ asset($user->address()->country->flag) }}"
-                                     alt=""> {{ $user->address()->country->name }}
-                            </span>
+                            <span class="text-muted">@lang('site::user.email'):</span>&nbsp;
+                            <span class="text-dark">{{ $user->email }}</span>
                         </div>
-                        <div class="mb-2">
-                            <span class="text-muted">@lang('site::address.region_id'):</span>&nbsp;
-                            <span class="text-dark">{{ $user->address()->region->name }}</span>
-                        </div>
-                        <div class="mb-2">
-                            <span class="text-muted">@lang('site::address.locality'):</span>&nbsp;
-                            <span class="text-dark">{{ $user->address()->locality }}</span>
-                        </div>
+                        {{--<div class="mb-2">--}}
+                            {{--<span class="text-muted">@lang('site::address.locality'):</span>&nbsp;--}}
+                            {{--<span class="text-dark">{{ $user->address()->locality }}</span>--}}
+                        {{--</div>--}}
                     </div>
                 </div>
             </div>
             <div class="col">
                 <div class="row no-gutters text-center mb-4">
-                    @permission('contragents')
-                    <a href="{{route('contragents.index')}}"
-                       class="d-flex border border-right-0 col flex-column text-dark py-3">
-                        <div class="font-weight-bold">{{$user->contragents()->count()}}</div>
-                        <div class="text-muted ">@lang('site::contragent.contragents_user')
-                        </div>
-                    </a>
-                    @endpermission()
-                    @permission('contacts')
-                    <a href="{{route('contacts.index', $user)}}"
-                       class="d-flex border border-right-0 col flex-column text-dark py-3">
-                        <div class="font-weight-bold">{{$user->contacts()->count()}}</div>
-                        <div class="text-muted ">@lang('site::contact.contacts')</div>
-                    </a>
-                    @endpermission()
-                    @permission('addresses')
-                    <a href="{{route('addresses.index', $user)}}" class="d-flex border col flex-column text-dark py-3">
-                        <div class="font-weight-bold">{{$user->addresses()->count()}}</div>
-                        <div class="text-muted ">@lang('site::address.addresses')
-                        </div>
-                    </a>
-                    @endpermission()
+
                 </div>
             </div>
         </div>

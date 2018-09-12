@@ -128,8 +128,7 @@
                                                    type="radio"
                                                    name="user[display]"
                                                    required
-                                                   @if(old('user.display', $user->display) == 0 || $user->addresses()->where('type_id', 1)->count() == 0) checked
-                                                   @endif
+                                                   @if(old('user.display', $user->display) == 0) checked @endif
                                                    id="user_display_0"
                                                    value="0">
                                             <label class="custom-control-label"

@@ -5,11 +5,12 @@
                 <div class="col-12 col-md-4 col-xl-5">
                     @include('site::admin.user.component.link')
                     @include('site::admin.user.component.online')
-                    @if(!$user->addresses->isEmpty())
+                    @if(($addresses = $user->addresses()->where('type_id', 2)->get())->isNotEmpty())
                         <div class="mb-2 mb-md-0">
-                            <span class="d-block">{{ $user->addresses->where('type_id', 2)->first()->region->name }}
-                                &bull; {{ $user->addresses->where('type_id', 2)->first()->locality }}
+                            @foreach($addresses as $address)
+                                <span class="d-block">{{ $address->region->name }} &bull; {{ $address->locality }}
                             </span>
+                            @endforeach
                         </div>
                     @endif
                     <div>

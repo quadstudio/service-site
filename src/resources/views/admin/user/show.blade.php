@@ -189,9 +189,9 @@
 
                             <dt class="col-sm-4 text-left text-sm-right">@lang('site::phone.phones')</dt>
                             <dd class="col-sm-8">
-                                @if($contact->phones()->count() > 0)
+                                @if(($phones = $contact->phones)->isNotEmpty())
                                     <ul>
-                                        @foreach($contact->phones as $phone)
+                                        @foreach($phones as $phone)
                                             <li>{{$phone->country->phone}}{{$phone->number}}</li>
                                         @endforeach
                                     </ul>
@@ -202,48 +202,33 @@
 
                     </div>
                 </div>
-                <div class="card mb-2">
-                    <div class="card-body">
-                        <h5 class="card-title">@lang('site::user.header.address')</h5>
-                        <dl class="row">
+                @foreach($addresses as $address)
+                    <div class="card mb-2">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $address->type->name }}</h5>
+                            <dl class="row">
 
-                            <dt class="col-sm-4 text-left text-sm-right">@lang('site::user.header.sc')</dt>
-                            <dd class="col-sm-8">{{ $sc->name }}</dd>
+                                <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.name')</dt>
+                                <dd class="col-sm-8"><a href="{{route('admin.addresses.show', $address)}}">{{ $address->name }}</a></dd>
 
-                            <dt class="col-sm-4 text-left text-sm-right">@lang('site::phone.phones')</dt>
-                            <dd class="col-sm-8">
-                                @if($sc->phones()->count() > 0)
-                                    <ul>
-                                        @foreach($sc->phones as $phone)
-                                            <li>{{$phone->country->phone}}{{$phone->number}}</li>
-                                        @endforeach
-                                    </ul>
-                                @endif
-                            </dd>
+                                <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.full')</dt>
+                                <dd class="col-sm-8">{{ $address->full }}</dd>
 
-                            <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.country_id')</dt>
-                            <dd class="col-sm-8">
-                                <img style="width: 30px;" class="img-fluid border"
-                                     src="{{ asset($address->country->flag) }}"
-                                     alt=""> {{ $address->country->name }}
-                            </dd>
+                                <dt class="col-sm-4 text-left text-sm-right">@lang('site::phone.phones')</dt>
+                                <dd class="col-sm-8">
 
-                            <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.region_id')</dt>
-                            <dd class="col-sm-8">{{ $address->region->name }}</dd>
-
-                            <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.locality')</dt>
-                            <dd class="col-sm-8">{{ $address->locality }}</dd>
-
-                            <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.name')</dt>
-                            <dd class="col-sm-8">{{ $address->name }}</dd>
-
-                            <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.geo')</dt>
-                            <dd class="col-sm-8">{{ $address->geo }}</dd>
-
-                        </dl>
-
+                                    @if(($phones = $address->phones)->isNotEmpty())
+                                        <ul>
+                                            @foreach($phones as $phone)
+                                                <li>{{$phone->country->phone}}{{$phone->number}}</li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
+                                </dd>
+                            </dl>
+                        </div>
                     </div>
-                </div>
+                @endforeach
             </div>
         </div>
 

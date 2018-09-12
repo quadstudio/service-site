@@ -479,7 +479,8 @@
 
     let registerFormExists = document.getElementById("register-form");
     let contragentFormExists = document.getElementById("contragent-form");
-    if (registerFormExists !== null || contragentFormExists !== null) {
+    let addressFormExists = document.getElementById("address-form");
+    if (registerFormExists !== null || contragentFormExists !== null || addressFormExists !== null) {
         $('.country-select ').on('change', function () {
             let country = $(this),
                 country_id = country.find('option:selected').val(),

@@ -28,11 +28,11 @@ class Contact extends Model
     /**
      * Телефоны
      *
-     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     * @return \Illuminate\Database\Eloquent\Relations\morphMany
      */
     public function phones()
     {
-        return $this->hasMany(Phone::class);
+        return $this->morphMany(Phone::class, 'phoneable');
     }
 
     /**

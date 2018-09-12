@@ -10,32 +10,11 @@
     ])
 @endsection
 
-@push('scripts')
-<script type="text/javascript">
-    document.getElementById("dealer").addEventListener("click", checkDealer);
-    function checkDealer() {
-        document.getElementById("sc_name").disabled = !!this.checked;
-        let class_inputs = document.getElementsByClassName('class_required');
-        let attr_inputs = document.getElementsByClassName('attr_required');
-        for (let i = 0; i < class_inputs.length; i++) {
-            if (this.checked) {
-                class_inputs[i].classList.remove('required');
-                attr_inputs[i].required = false;
-                attr_inputs[i].value = '';
-            } else {
-                class_inputs[i].classList.add('required');
-                attr_inputs[i].required = true;
-            }
-        }
-    }
-</script>
-@endpush
-
 @section('content')
     <div class="container">
         <div class="row pt-5 pb-5">
             <div class="col">
-                {{--{{dump($errors ?: null)}}--}}
+                {{dump($errors ?: null)}}
 
                 <form id="register-form" method="POST" action="{{ route('register') }}">
                     @csrf
@@ -218,39 +197,39 @@
                                            for="dealer">@lang('site::user.help.dealer')</label>
                                 </div>
 
-                                <div class="form-row class_required required">
+                                <div class="form-row required">
                                     <div class="col mb-3">
-                                        <input type="hidden" name="sc[type_id]" value="2">
+
                                         <label class="control-label"
-                                               for="sc">@lang('site::contact.sc')</label>
+                                               for="address_sc_name">@lang('site::address.name')</label>
                                         <input type="text"
-                                               name="sc[name]"
-                                               id="sc_name"
+                                               name="address[sc][name]"
+                                               id="address_sc_name"
                                                required
-                                               class="attr_required form-control{{ $errors->has('sc.name') ? ' is-invalid' : '' }}"
-                                               placeholder="@lang('site::contact.placeholder.sc')"
-                                               value="{{ old('sc.name') }}">
+                                               class="form-control{{ $errors->has('address.sc.name') ? ' is-invalid' : '' }}"
+                                               placeholder="@lang('site::address.placeholder.name')"
+                                               value="{{ old('address.sc.name') }}">
                                         <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('sc.name') }}</strong>
+                                        <strong>{{ $errors->first('address.sc.name') }}</strong>
                                     </span>
                                     </div>
                                 </div>
 
                                 <div class="form-row">
                                     <div class="col mb-3">
-                                        <label class="control-label" for="web">@lang('site::contact.web')</label>
+                                        <label class="control-label" for="web">@lang('site::user.web')</label>
                                         <input type="text"
-                                               name="sc[web]"
-                                               id="sc_web"
-                                               class="form-control{{ $errors->has('sc.web') ? ' is-invalid' : '' }}"
-                                               pattern="https?://.+" title="@lang('site::contact.help.web')"
-                                               placeholder="@lang('site::contact.placeholder.web')"
-                                               value="{{ old('sc.web') }}">
+                                               name="web"
+                                               id="web"
+                                               class="form-control{{ $errors->has('web') ? ' is-invalid' : '' }}"
+                                               pattern="https?://.+" title="@lang('site::user.help.web')"
+                                               placeholder="@lang('site::user.placeholder.web')"
+                                               value="{{ old('web') }}">
                                         <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('sc.web') }}</strong>
+                                        <strong>{{ $errors->first('web') }}</strong>
                                     </span>
                                         <small id="webHelp" class="form-text text-success">
-                                            @lang('site::contact.help.web')
+                                            @lang('site::user.help.web')
                                         </small>
                                     </div>
                                 </div>
@@ -792,9 +771,9 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="row required">
+                            <div class="row">
                                 <div class="col-md-6">
-                                    <div class="form-row ">
+                                    <div class="form-row required">
                                         <div class="col mb-3">
                                             <label class="control-label"
                                                    for="address_legal_building">@lang('site::address.building')</label>

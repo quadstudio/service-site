@@ -1,4 +1,4 @@
-<div class="items-col col-12">
+<div class="items-col col-12" id="address-{{$address->id}}">
 
     <div class="card mb-4">
         <div class="card-body">
@@ -18,7 +18,10 @@
                        @else()
                        href="javascript:void(0);"
                        class="disabled dropdown-item"
-                       @endcan>@lang('site::messages.edit')</a>
+                            @endcan>@lang('site::messages.edit')</a>
+                    <a href="{{route('addresses.phone', $address)}}" class="dropdown-item">
+                        @lang('site::messages.add') @lang('site::phone.phone')
+                    </a>
                     <button @cannot('delete', $address) disabled @endcannot
                     class="dropdown-item btn-row-delete"
                             data-form="#address-delete-form-{{$address->id}}"
@@ -44,14 +47,19 @@
                 <div class="item-content-about">
                     <div class="item-content-user text-muted small mb-2">{{$address->type->name}}</div>
                     <h5 class="item-content-name mb-1">
-                        <a href="{{route('addresses.show', $address)}}"
-                           class="text-dark">{{$address->name}}</a>
+                        <a href="{{route('addresses.show', $address)}}">{{$address->name}}</a>
                     </h5>
+                    <div class="list-group">
+                        @foreach($address->phones as $phone)
+                            <a href="{{route('phones.edit', $phone)}}"
+                               class="list-group-item list-group-item-action">{{$phone->format()}}</a>
+                        @endforeach
+                    </div>
                     <hr class="border-light">
                     <div>
                         <img style="width: 30px;" class="img-fluid border" src="{{ asset($address->country->flag) }}"
                              alt="">
-                        {{$address->country->name}}
+                        {{$address->full}}
                     </div>
 
                 </div>

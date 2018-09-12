@@ -39,6 +39,7 @@ class SiteServiceProvider extends ServiceProvider
         Models\Datasheet::class  => Policies\DatasheetPolicy::class,
         Models\Distance::class   => Policies\DistancePolicy::class,
         Models\Difficulty::class => Policies\DifficultyPolicy::class,
+        Models\Phone::class      => Policies\PhonePolicy::class,
     ];
 
     /**
@@ -223,6 +224,8 @@ class SiteServiceProvider extends ServiceProvider
             'repairs'     => Models\Repair::class,
             'orders'      => Models\Order::class,
             'acts'        => Models\Act::class,
+            'contacts'    => Models\Contact::class,
+            'addresses'   => Models\Address::class,
         ]);
 
         return $this;

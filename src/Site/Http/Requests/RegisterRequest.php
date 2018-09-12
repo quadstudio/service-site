@@ -39,18 +39,17 @@ class RegisterRequest extends FormRequest
                     'email'                     => 'required|string|email|max:191|unique:' . $prefix . 'users',
                     'password'                  => 'required|string|min:6|confirmed',
                     'type_id'                   => 'required|exists:' . $prefix . 'contragent_types,id',
+                    'web'                       => 'max:255',
                     //
                     'contact.name'              => 'required|string|max:255',
                     'contact.position'          => 'max:255',
-                    //
-                    'sc.name'                   => 'required_if:dealer,on|string|max:255',
-                    'sc.web'                    => 'max:255',
                     //
                     'phone.contact.country_id'  => 'required|exists:' . $prefix . 'countries,id',
                     'phone.contact.number'      => 'required|numeric|digits:10',
                     'phone.contact.extra'       => 'max:20',
 
                     //
+                    'address.sc.name'           => 'required|string|max:255',
                     'address.sc.country_id'     => 'required|exists:' . $prefix . 'countries,id',
                     'address.sc.region_id'      => 'sometimes|exists:' . $prefix . 'regions,id',
                     'address.sc.locality'       => 'required|string|max:255',
@@ -88,28 +87,43 @@ class RegisterRequest extends FormRequest
                     'contragent.ogrn'           => array(
                         'required',
                         'numeric',
-                        'regex:/\d{13}|\d{15}/'
+                        function ($attribute, $value, $fail) {
+                            if ($this->input('contragent.type_id') == 1 && strlen($value) != 13) {
+                                return $fail(trans('site::contragent.placeholder.ogrn'));
+                            }
+                            if ($this->input('contragent.type_id') == 0 && strlen($value) != 15) {
+                                return $fail(trans('site::contragent.placeholder.ogrn'));
+                            }
+                        }
                     ),
                     'contragent.okpo'           => array(
                         'required',
                         'numeric',
-                        'regex:/\d{8}|\d{10}/'
+                        function ($attribute, $value, $fail) {
+                            if (!in_array(strlen($value), [8, 10])) {
+                                return $fail(trans('site::contragent.placeholder.okpo'));
+                            }
+                        }
                     ),
                     'contragent.kpp'            => array(
                         'sometimes',
                         'required_if:contragent.type_id,1',
                         function ($attribute, $value, $fail) {
                             if ($this->input('contragent.type_id') == 1 && strlen($value) != 9) {
-                                return $fail(trans('site::contragent.kpp') . ': ' . trans('site::contragent.placeholder.kpp'));
+                                return $fail(trans('site::contragent.placeholder.kpp'));
                             }
                         }
                         //'regex:/^([0-9]{9})?$/'
                     ),
-                    'contragent.ks'             => 'sometimes|digits:20',
+//                    'contragent.ks'             => 'sometimes|digits:20',
                     'contragent.rs'             => 'required|numeric|digits:20',
                     'contragent.bik'            => array(
                         'required',
-                        'regex:/\d{9}|\d{11}/'
+                        function ($attribute, $value, $fail) {
+                            if (!in_array(strlen($value), [9, 11])) {
+                                return $fail(trans('site::contragent.placeholder.bik'));
+                            }
+                        }
                     ),
                     'contragent.bank'           => 'required|string|max:255',
                     'contragent.nds'            => 'required|boolean',
@@ -154,12 +168,10 @@ class RegisterRequest extends FormRequest
             'email'                     => trans('site::user.email'),
             'password'                  => trans('site::user.password'),
             'type_id'                   => trans('site::user.type_id'),
+            'web'                       => trans('site::user.web'),
             //
             'contact.name'              => trans('site::contact.name'),
             'contact.position'          => trans('site::contact.position'),
-            //
-            'sc.name'                   => trans('site::contact.sc'),
-            'sc.web'                    => trans('site::contact.web'),
             //
             'phone.contact.country_id'  => trans('site::phone.country_id'),
             'phone.contact.number'      => trans('site::phone.number'),
@@ -182,6 +194,7 @@ class RegisterRequest extends FormRequest
             'contragent.bank'           => trans('site::contragent.bank'),
             'contragent.nds'            => trans('site::contragent.nds'),
             //
+            'address.sc.name'           => trans('site::address.name'),
             'address.sc.country_id'     => trans('site::address.country_id'),
             'address.sc.region_id'      => trans('site::address.region_id'),
             'address.sc.locality'       => trans('site::address.locality'),

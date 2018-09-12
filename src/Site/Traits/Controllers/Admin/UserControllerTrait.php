@@ -13,6 +13,7 @@ use QuadStudio\Service\Site\Filters\User\DisplaySelectFilter;
 use QuadStudio\Service\Site\Filters\User\IsAscSelectFilter;
 use QuadStudio\Service\Site\Filters\User\IsDealerSelectFilter;
 use QuadStudio\Service\Site\Filters\User\RegionFilter;
+use QuadStudio\Service\Site\Filters\User\SortByCreatedAtFilter;
 use QuadStudio\Service\Site\Filters\User\VerifiedFilter;
 use QuadStudio\Service\Site\Filters\UserFilter;
 use QuadStudio\Service\Site\Filters\User\IsServiceFilter;
@@ -89,6 +90,7 @@ trait UserControllerTrait
     public function index()
     {
         $this->users->trackFilter();
+        $this->users->applyFilter(new SortByCreatedAtFilter());
         $this->users->applyFilter(new IsServiceFilter);
         $this->users->pushTrackFilter(ContactSearchFilter::class);
         $this->users->pushTrackFilter(RegionFilter::class);
@@ -166,11 +168,11 @@ trait UserControllerTrait
     public function show(User $user)
     {
 
-        $address = $user->addresses()->where('type_id', 2)->firstOrNew([]);
+        $addresses = $user->addresses()->where('type_id', 2)->get();
         $contact = $user->contacts()->where('type_id', 1)->firstOrNew([]);
         $sc = $user->contacts()->where('type_id', 2)->firstOrNew([]);
 
-        return view('site::admin.user.show', compact('user', 'address', 'contact', 'sc'));
+        return view('site::admin.user.show', compact('user', 'addresses', 'contact', 'sc'));
     }
 
     /**
@@ -212,10 +214,11 @@ trait UserControllerTrait
     public function update(UserRequest $request, User $user)
     {
         $data = $request->input('user');
+
         if($request->input('user.verified') == 1){
             $data = array_merge($data, ['verify_token' => null]);
         }
-        $this->users->update($data, $user->id);
+        $user->update($data);
         $user->syncRoles($request->input('roles', []));
         if ($request->input('_stay') == 1) {
             $redirect = redirect()->route('admin.users.edit', $user)->with('success', trans('site::user.updated'));

@@ -43,8 +43,8 @@
                                     <label class="control-label"
                                            for="contragent_type_id">@lang('site::contragent.type_id')</label>
                                     @foreach($types as $key => $type)
-                                        <div class="form-check">
-                                            <input class="form-check-input
+                                        <div class="custom-control custom-radio">
+                                            <input class="custom-control-input
                                             {{$errors->has('contragent.type_id') ? ' is-invalid' : ''}}"
                                                    type="radio"
                                                    required
@@ -52,7 +52,7 @@
                                                    @if(old('contragent.type_id') == $type->id) checked @endif
                                                    id="contragent_type_id_{{ $type->id }}"
                                                    value="{{ $type->id }}">
-                                            <label class="form-check-label"
+                                            <label class="custom-control-label"
                                                    for="contragent_type_id_{{ $type->id }}">
                                                 {{ $type->name }}
                                             </label>
@@ -67,37 +67,67 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-row required">
-                                <div class="col mb-3">
-                                    <label class="control-label"
-                                           for="contragent_nds">@lang('site::contragent.nds')</label>
-
-                                    <div class="form-check">
-                                        <input class="form-check-input
-                                            {{$errors->has('contragent.nds') ? ' is-invalid' : ''}}"
-                                               type="radio"
-                                               name="contragent[nds]"
-                                               required
-                                               @if(old('contragent.nds') == 1) checked @endif
-                                               id="contragent_nds_1"
-                                               value="1">
-                                        <label class="form-check-label"
-                                               for="contragent_nds_1">@lang('site::messages.yes')</label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-row required">
+                                        <div class="col mb-3">
+                                            <label class="control-label"
+                                                   for="contragent_nds">@lang('site::contragent.nds')</label>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio"
+                                                       id="contragent_nds_1"
+                                                       name="contragent[nds]"
+                                                       required
+                                                       @if(old('contragent.nds') == 1) checked @endif
+                                                       value="1"
+                                                       class="custom-control-input {{$errors->has('contragent.nds') ? ' is-invalid' : ''}}">
+                                                <label class="custom-control-label"
+                                                       for="contragent_nds_1">@lang('site::messages.yes')</label>
+                                            </div>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio"
+                                                       id="contragent_nds_0"
+                                                       name="contragent[nds]"
+                                                       required
+                                                       @if(old('contragent.nds') == 0) checked @endif
+                                                       value="0"
+                                                       class="custom-control-input {{$errors->has('contragent.nds') ? ' is-invalid' : ''}}">
+                                                <label class="custom-control-label"
+                                                       for="contragent_nds_0">@lang('site::messages.no')</label>
+                                            </div>
+                                            <span class="invalid-feedback">{{ $errors->first('contragent.nds') }}</span>
+                                        </div>
                                     </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input
-                                            {{$errors->has('contragent.nds') ? ' is-invalid' : ''}}"
-                                               type="radio"
-                                               name="contragent[nds]"
-
-                                               @if(old('contragent.nds') == 0) checked @endif
-                                               id="contragent_nds_0"
-                                               value="0">
-                                        <label class="form-check-label"
-                                               for="contragent_nds_0">@lang('site::messages.no')</label>
-                                        <span class="invalid-feedback">
-                                            <strong>{{ $errors->first('contragent.nds') }}</strong>
-                                        </span>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-row required">
+                                        <div class="col mb-3">
+                                            <label class="control-label"
+                                                   for="contragent_nds_act">@lang('site::contragent.nds_act')</label>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio"
+                                                       id="contragent_nds_act_1"
+                                                       name="contragent[nds_act]"
+                                                       required
+                                                       @if(old('contragent.nds_act') == 1) checked @endif
+                                                       value="1"
+                                                       class="custom-control-input {{$errors->has('contragent.nds_act') ? ' is-invalid' : ''}}">
+                                                <label class="custom-control-label"
+                                                       for="contragent_nds_act_1">@lang('site::messages.yes')</label>
+                                            </div>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio"
+                                                       id="contragent_nds_act_0"
+                                                       name="contragent[nds_act]"
+                                                       required
+                                                       @if(old('contragent.nds_act') == 0) checked @endif
+                                                       value="0"
+                                                       class="custom-control-input {{$errors->has('contragent.nds_act') ? ' is-invalid' : ''}}">
+                                                <label class="custom-control-label"
+                                                       for="contragent_nds_act_0">@lang('site::messages.no')</label>
+                                            </div>
+                                            <span class="invalid-feedback">{{ $errors->first('contragent.nds_act') }}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -517,7 +547,6 @@
                         </div>
                     </div>
                 </form>
-
 
 
             </div>

@@ -73,12 +73,15 @@ trait RegisterControllerTrait
         /** @var $contact Contact */
         $user->contacts()->save($contact = Contact::create($request->input('contact')));
         $contact->phones()->save(Phone::create($request->input('phone.contact')));
-        if ($request->filled('sc')) {
-            /** @var $sc Contact */
-            $user->contacts()->save($sc = Contact::create($request->input('sc')));
-            $sc->phones()->save(Phone::create($request->input('phone.sc')));
-        }
-        $user->addresses()->save(Address::create($request->input('address.sc')));
+//        if ($request->filled('sc')) {
+//            /** @var $sc Contact */
+//            $user->contacts()->save($sc = Contact::create($request->input('sc')));
+//            $sc->phones()->save(Phone::create($request->input('phone.sc')));
+//        }
+        /** @var $address Address */
+        $user->addresses()->save($address = Address::create($request->input('address.sc')));
+        $address->phones()->save(Phone::create($request->input('phone.sc')));
+
         /** @var $contragent Contragent */
         $user->contragents()->save($contragent = Contragent::create($request->input('contragent')));
         $contragent->addresses()->saveMany([

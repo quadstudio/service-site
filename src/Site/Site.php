@@ -80,25 +80,58 @@ class Site
                     $router->group(['middleware' => ['auth']],
                         function () use ($router) {
                             $router->get('/home', 'HomeController@index')->name('home');
+
                             $router->post('/home/logo', 'HomeController@logo')->name('home.logo');
-                            $router->resource('/acts', 'ActController')->middleware('permission:acts');
+
+                            $router->resource('/acts', 'ActController')
+                                ->middleware('permission:acts');
+
                             $router->get('/acts/{act}/pdf', function (Act $act) {
                                 return (new ActPdf())->setModel($act)->render();
                             })->middleware('can:pdf,act')->name('acts.pdf');
-                            $router->resource('/orders', 'OrderController')->except(['edit', 'update', 'destroy'])->middleware('permission:orders');
-                            $router->resource('/repairs', 'RepairController')->middleware('permission:repairs');
+
+                            $router->resource('/orders', 'OrderController')->except(['edit', 'update', 'destroy'])
+                                ->middleware('permission:orders');
+
+                            $router->resource('/repairs', 'RepairController')
+                                ->middleware('permission:repairs');
+
                             $router->get('/repairs/{repair}/pdf', function (Repair $repair) {
                                 return (new RepairPdf())->setModel($repair)->render();
                             })->middleware('can:pdf,repair')->name('repairs.pdf');
-                            $router->resource('/engineers', 'EngineerController')->middleware('permission:engineers');
-                            $router->resource('/trades', 'TradeController')->middleware('permission:trades');
 
-                            $router->resource('/launches', 'LaunchController')->middleware('permission:launches');
-                            $router->resource('/costs', 'CostController')->middleware('permission:costs');
-                            $router->resource('/contragents', 'ContragentController')->middleware('permission:contragents');
-                            $router->resource('/contacts', 'ContactController')->middleware('permission:contacts');
-                            $router->resource('/addresses', 'AddressController')->middleware('permission:addresses');
-                            $router->resource('/messages', 'MessageController')->middleware('permission:messages');
+                            $router->resource('/engineers', 'EngineerController')
+                                ->middleware('permission:engineers');
+
+                            $router->resource('/trades', 'TradeController')
+                                ->middleware('permission:trades');
+
+                            $router->resource('/phones', 'PhoneController')
+                                ->middleware('permission:phones')->except(['index', 'show']);
+
+                            $router->resource('/launches', 'LaunchController')
+                                ->middleware('permission:launches');
+
+                            $router->resource('/costs', 'CostController')
+                                ->middleware('permission:costs');
+
+                            $router->resource('/contragents', 'ContragentController')
+                                ->middleware('permission:contragents');
+
+                            $router->resource('/contacts', 'ContactController')
+                                ->middleware('permission:contacts');
+
+                            $router->resource('/addresses', 'AddressController')
+                                ->middleware('permission:addresses');
+
+                            $router->get('/addresses/{address}/phone', 'AddressController@phone')
+                                ->middleware('permission:addresses')->name('addresses.phone');
+
+                            $router->post('/addresses/{address}/phone', 'AddressController@phone')
+                                ->middleware('permission:addresses')->name('addresses.phone.store');
+
+                            $router->resource('/messages', 'MessageController')
+                                ->middleware('permission:messages');
                             // Cart
                             $router->get('/cart', 'CartController@index')->name('cart');
                             $router->post('/cart/{product}/add', 'CartController@add')->name('buy');
@@ -135,6 +168,7 @@ class Site
                                 $router->name('admin')->get('/users/{user}/contacts', 'UserController@contacts')->name('.users.contacts');
                                 $router->name('admin')->get('/users/{user}/repairs', 'UserController@repairs')->name('.users.repairs');
                                 $router->name('admin')->get('/users/{user}/schedule', 'UserController@schedule')->name('.users.schedule');
+                                $router->name('admin')->resource('/addresses', 'AddressController')->only(['show']);
                                 $router->name('admin')->resource('/banks', 'BankController');
                                 $router->name('admin')->resource('/orders', 'OrderController')->only(['index', 'show']);
                                 $router->name('admin')->get('/orders/{order}/schedule', 'OrderController@schedule')->name('.orders.schedule');

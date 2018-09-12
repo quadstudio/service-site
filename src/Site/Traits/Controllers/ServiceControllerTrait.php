@@ -4,7 +4,6 @@ namespace QuadStudio\Service\Site\Traits\Controllers;
 
 use QuadStudio\Service\Site\Filters\Region\OnlyEnabledUserFilter;
 use QuadStudio\Service\Site\Filters\Region\SelectFilter;
-use QuadStudio\Service\Site\Models\Region;
 use QuadStudio\Service\Site\Models\Service;
 use QuadStudio\Service\Site\Repositories\RegionRepository;
 use QuadStudio\Service\Site\Repositories\ServiceRepository;
@@ -35,15 +34,12 @@ trait ServiceControllerTrait
     public function index()
     {
 
-        //return view('site::service.index');
         $this->regions->trackFilter();
         $this->regions->applyFilter(new SelectFilter());
         $this->regions->applyFilter(new OnlyEnabledUserFilter());
+        $regions = $this->regions->all(['regions.*']);
 
-        return view('site::service.index', [
-            //'repository' => $this->services,
-            'regions' => $this->regions->all([env('DB_PREFIX', '') . 'regions.*'])
-        ]);
+        return view('site::service.index', compact('regions'));
     }
 
     public function show(Service $service)

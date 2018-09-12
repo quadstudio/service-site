@@ -1,26 +1,23 @@
 <div class="card mb-2">
     <div class="card-body">
-        <h4 class="card-title">{{$sc}}</h4>
-        <div class="row">
-            <div class="col">
+        <h4 class="card-title">{{$name}}</h4>
+
+        <dl class="row">
+
+            <dd class="col-12">{{$address}}</dd>
+            <dd class="col-12">
                 @if($asc)
                     <span class="badge text-normal badge-success">@lang('site::service.header.asc')</span>
                 @endif
                 @if($dealer)
                     <span class="badge text-normal badge-success">@lang('site::service.header.dealer')</span>
                 @endif
-            </div>
-        </div>
-        <dl class="row">
-
-            <dt class="col-sm-4">@lang('site::register.sc_address')</dt>
-            <dd class="col-sm-8">{{$address->name}}</dd>
+            </dd>
 
             <dt class="col-sm-4">@lang('site::phone.phones')</dt>
             <dd class="col-sm-8">
                 @foreach($phones as $phone)
-                    <span>{{$phone->country->phone}}{{$phone->number}}</span>
-                    @if(!is_null($phone->extra))<span> (@lang('site::phone.extra'): {{$phone->extra}})</span> @endif
+                    <div>{{$phone->format()}}</div>
                 @endforeach
             </dd>
 

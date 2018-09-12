@@ -66,6 +66,7 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
         'AddressController.stub'             => 'AddressController',
         'ContragentController.stub'          => 'ContragentController',
         'SchemeController.stub'              => 'SchemeController',
+        'PhoneController.stub'               => 'PhoneController',
         //
         'api/FileController.stub'            => 'Api/FileController',
         'api/RepairController.stub'          => 'Api/RepairController',

@@ -24,7 +24,7 @@ class ContragentRequest extends FormRequest
      */
     public function rules()
     {
-        $prefix = env('DB_PREFIX', '');
+
         switch ($this->method()) {
             case 'GET':
             case 'DELETE': {
@@ -33,19 +33,19 @@ class ContragentRequest extends FormRequest
             case 'POST': {
                 return [
                     //
-                    'contragent.type_id'        => 'required|exists:' . $prefix . 'contragent_types,id',
+                    'contragent.type_id'        => 'required|exists:contragent_types,id',
                     'contragent.name'           => 'required|string|max:255',
                     'contragent.inn'            => array(
                         'required',
                         'numeric',
-                        'unique:' . $prefix . 'contragents,inn',
+                        'unique:contragents,inn',
                         'regex:/\d{10}|\d{12}/',
                         function ($attribute, $value, $fail) {
                             if ($this->input('contragent.type_id') == 1 && strlen($value) != 10) {
-                                return $fail(trans('site::contragent.inn') . ': ' . trans('site::contragent.placeholder.inn'));
+                                return $fail(trans('site::contragent.placeholder.inn'));
                             }
                             if ($this->input('contragent.type_id') == 2 && strlen($value) != 12) {
-                                return $fail(trans('site::contragent.inn') . ': ' . trans('site::contragent.placeholder.inn'));
+                                return $fail(trans('site::contragent.placeholder.inn'));
                             }
                         }
                     ),
@@ -64,7 +64,7 @@ class ContragentRequest extends FormRequest
                         'required_if:contragent.type_id,1',
                         function ($attribute, $value, $fail) {
                             if ($this->input('contragent.type_id') == 1 && strlen($value) != 9) {
-                                return $fail(trans('site::contragent.kpp') . ': ' . trans('site::contragent.placeholder.kpp'));
+                                return $fail(trans('site::contragent.placeholder.kpp'));
                             }
                         }
                         //'regex:/^([0-9]{9})?$/'
@@ -78,15 +78,15 @@ class ContragentRequest extends FormRequest
                     'contragent.bank'           => 'required|string|max:255',
                     'contragent.nds'            => 'required|boolean',
                     //
-                    'address.legal.country_id'  => 'required|exists:' . $prefix . 'countries,id',
-                    'address.legal.region_id'   => 'sometimes|exists:' . $prefix . 'regions,id',
+                    'address.legal.country_id'  => 'required|exists:countries,id',
+                    'address.legal.region_id'   => 'sometimes|exists:regions,id',
                     'address.legal.locality'    => 'required|string|max:255',
                     'address.legal.street'      => 'sometimes|max:255',
                     'address.legal.building'    => 'required|string|max:255',
                     'address.legal.apartment'   => 'sometimes|max:255',
                     //
-                    'address.postal.country_id' => 'required|exists:' . $prefix . 'countries,id',
-                    'address.postal.region_id'  => 'sometimes|exists:' . $prefix . 'regions,id',
+                    'address.postal.country_id' => 'required|exists:countries,id',
+                    'address.postal.region_id'  => 'sometimes|exists:regions,id',
                     'address.postal.locality'   => 'required|string|max:255',
                     'address.postal.street'     => 'sometimes|max:255',
                     'address.postal.building'   => 'required|string|max:255',
@@ -97,19 +97,19 @@ class ContragentRequest extends FormRequest
             case 'PATCH': {
 
                 return [
-                    'contragent.type_id' => 'required|exists:' . $prefix . 'contragent_types,id',
+                    'contragent.type_id' => 'required|exists:contragent_types,id',
                     'contragent.name'    => 'required|string|max:255',
                     'contragent.inn'     => array(
-                        'unique:' . env('DB_PREFIX', '') . 'contragents,inn,' . $this->route()->parameter('contragent')->id,
+                        'unique:' . 'contragents,inn,' . $this->route()->parameter('contragent')->id,
                         'required',
                         'numeric',
                         'regex:/\d{10}|\d{12}/',
                         function ($attribute, $value, $fail) {
                             if ($this->input('contragent.type_id') == 1 && strlen($value) != 10) {
-                                return $fail(trans('site::contragent.inn') . ': ' . trans('site::contragent.placeholder.inn'));
+                                return $fail(trans('site::contragent.placeholder.inn'));
                             }
                             if ($this->input('contragent.type_id') == 2 && strlen($value) != 12) {
-                                return $fail(trans('site::contragent.inn') . ': ' . trans('site::contragent.placeholder.inn'));
+                                return $fail(trans('site::contragent.placeholder.inn'));
                             }
                         }
                     ),
