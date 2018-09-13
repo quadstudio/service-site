@@ -57,7 +57,7 @@ class PhonePolicy
      */
     public function delete(User $user, Phone $phone)
     {
-        return $user->hasPermission('phones') && $phone->phoneable->phones()->count() > 1;
+        return ($user->getAttribute('admin') == 1 || $user->hasPermission('phones')) && $phone->phoneable->phones()->count() > 1;
     }
 
 

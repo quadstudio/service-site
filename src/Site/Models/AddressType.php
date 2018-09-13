@@ -25,4 +25,14 @@ class AddressType extends Model
         $this->table = env('DB_PREFIX', '') . 'address_types';
     }
 
+    /**
+     * Адреса
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function addresses()
+    {
+        return $this->hasMany(Address::class, 'type_id');
+    }
+
 }

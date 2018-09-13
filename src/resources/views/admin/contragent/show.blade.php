@@ -10,7 +10,13 @@
                 <a href="{{ route('admin') }}">@lang('site::messages.admin')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.contragents.index') }}">@lang('site::contragent.contragents')</a>
+                <a href="{{ route('admin.users.index') }}">@lang('site::user.users')</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ route('admin.users.show', $contragent->user) }}">{{$contragent->user->name}}</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ route('admin.users.contragents', $contragent->user) }}">@lang('site::contragent.contragents')</a>
             </li>
             <li class="breadcrumb-item active">{{ $contragent->name }}</li>
         </ol>
@@ -23,9 +29,17 @@
                 <i class="fa fa-pencil"></i>
                 <span>@lang('site::messages.edit') @lang('site::contragent.contragent')</span>
             </a>
-            <a href="{{ route('admin.contragents.index') }}" class="d-block d-sm-inline btn btn-secondary">
+            <a class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0"
+               href="{{ route('admin.contragents.addresses.index', $contragent) }}"
+               role="button">
+                <i class="fa fa-@lang('site::address.icon')"></i>
+                <span>@lang('site::address.addresses')</span>
+                <span class="badge badge-light">{{$contragent->addresses()->count()}}</span>
+            </a>
+            <a href="{{ route('admin.users.contragents', $contragent->user) }}"
+               class="d-block d-sm-inline btn btn-secondary">
                 <i class="fa fa-reply"></i>
-                <span>@lang('site::contragent.help.back_list')</span>
+                <span>@lang('site::messages.back')</span>
             </a>
         </div>
         <div class="card mb-2">
@@ -72,7 +86,7 @@
                 </dl>
             </div>
         </div>
-        <div class="card-group">
+        <div class="card-group mb-2">
             <div class="card">
                 <div class="card-body">
                     <h6 class="card-title">@lang('site::contragent.header.legal')</h6>
@@ -113,45 +127,5 @@
                 </div>
             </div>
         </div>
-        <div class="card-group mt-2 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    @php $address = $contragent->addresses()->whereTypeId(1)->first() @endphp
-                    <h6 class="card-title">{{$address->type->name}}</h6>
-                    <div class="item-content-about">
-                        <h5 class="item-content-name mb-1">
-                            <a href="{{route('addresses.show', $address)}}"
-                               class="text-dark">{{$address->name}}</a>
-                        </h5>
-                        <hr class="border-light">
-                        <div>
-                            <img style="width: 30px;" class="img-fluid border"
-                                 src="{{ asset($address->country->flag) }}"
-                                 alt="">
-                            {{$address->country->name}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    @php $address = $contragent->addresses()->whereTypeId(3)->first() @endphp
-                    <h6 class="card-title">{{$address->type->name}}</h6>
-                    <div class="item-content-about">
-                        <h5 class="item-content-name mb-1">
-                            <a href="javascript:void(0)" class="text-dark">{{$address->name}}</a>
-                        </h5>
-                        <hr class="border-light">
-                        <div>
-                            <img style="width: 30px;" class="img-fluid border"
-                                 src="{{ asset($address->country->flag) }}"
-                                 alt="">
-                            {{$address->country->name}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 @endsection

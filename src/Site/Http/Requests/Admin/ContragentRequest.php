@@ -24,7 +24,6 @@ class ContragentRequest extends FormRequest
      */
     public function rules()
     {
-        $prefix = env('DB_PREFIX', '');
         switch ($this->method()) {
             case 'GET':
             case 'DELETE':
@@ -34,7 +33,7 @@ class ContragentRequest extends FormRequest
             case 'PUT':
             case 'PATCH': {
                 return [
-                    'contragent.type_id'         => 'required|exists:' . $prefix . 'contragent_types,id',
+                    'contragent.type_id'         => 'required|exists:contragent_types,id',
                     'contragent.name'            => 'required|string|max:255',
                     'contragent.inn'             => array(
                         'unique:' . env('DB_PREFIX', '') . 'contragents,inn,' . $this->route()->parameter('contragent')->id,
@@ -73,7 +72,7 @@ class ContragentRequest extends FormRequest
                     'contragent.bank'            => 'required|string|max:255',
                     'contragent.nds'             => 'required|boolean',
                     'contragent.nds_act'         => 'required|boolean',
-                    'contragent.organization_id' => 'required|exists:' . $prefix . 'organizations,id',
+                    'contragent.organization_id' => 'required|exists:organizations,id',
                 ];
             }
             default:

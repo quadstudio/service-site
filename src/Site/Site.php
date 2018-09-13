@@ -112,9 +112,6 @@ class Site
                             $router->resource('/launches', 'LaunchController')
                                 ->middleware('permission:launches');
 
-                            $router->resource('/costs', 'CostController')
-                                ->middleware('permission:costs');
-
                             $router->resource('/contragents', 'ContragentController')
                                 ->middleware('permission:contragents');
 
@@ -140,7 +137,15 @@ class Site
                             $router->get('/cart/clear', 'CartController@clear')->name('clearCart');
 
                         });
-
+//                    $router
+//                        ->group([
+//                            'middleware' => ['auth', 'admin'],
+//                            'namespace'  => 'Admin\User',
+//                            'prefix'     => 'admin/users/{user}',
+//                        ],
+//                            function () use ($router) {
+//                                $router->name('admin.users')->resource('/addresses', 'AddressController');
+//                            });
                     $router
                         ->group([
                             'middleware' => ['auth', 'admin'],
@@ -163,12 +168,34 @@ class Site
                                 $router->name('admin')->resource('/elements', 'ElementController');
                                 $router->name('admin')->resource('/users', 'UserController');
                                 $router->name('admin')->get('/users/{user}/orders', 'UserController@orders')->name('.users.orders');
-                                $router->name('admin')->get('/users/{user}/addresses', 'UserController@addresses')->name('.users.addresses');
+
+
                                 $router->name('admin')->get('/users/{user}/contragents', 'UserController@contragents')->name('.users.contragents');
                                 $router->name('admin')->get('/users/{user}/contacts', 'UserController@contacts')->name('.users.contacts');
                                 $router->name('admin')->get('/users/{user}/repairs', 'UserController@repairs')->name('.users.repairs');
                                 $router->name('admin')->get('/users/{user}/schedule', 'UserController@schedule')->name('.users.schedule');
-                                $router->name('admin')->resource('/addresses', 'AddressController')->only(['show']);
+                                $router->name('admin')->get('/users/{user}/prices', 'UserController@prices')->name('.users.prices');
+                                $router->name('admin')->post('/users/{user}/prices', 'UserController@prices')->name('.users.prices.store');
+
+                                // Адреса
+                                $router->name('admin')->resource('/addresses', 'AddressController')->except(['create', 'store']);
+
+                                $router->group(['namespace' => 'User', 'prefix' => 'users/{user}'],
+                                    function () use ($router) {
+                                        $router->name('admin.users')->resource('/addresses', 'AddressController')->only(['index', 'create', 'store']);
+                                    });
+                                $router->group(['namespace' => 'Contragent', 'prefix' => 'contragents/{contragent}'],
+                                    function () use ($router) {
+                                        $router->name('admin.contragents')->resource('/addresses', 'AddressController')->only(['index', 'create', 'store']);
+                                    });
+
+                                $router->name('admin')->resource('/contacts', 'ContactController');
+                                $router->name('admin')->resource('/phones', 'PhoneController')->except(['show']);
+
+                                $router->group(['namespace' => 'Address', 'prefix' => 'addresses/{address}'],
+                                    function () use ($router) {
+                                        $router->name('admin.addresses')->resource('/phones', 'PhoneController');//->only(['create', 'store'])
+                                    });
                                 $router->name('admin')->resource('/banks', 'BankController');
                                 $router->name('admin')->resource('/orders', 'OrderController')->only(['index', 'show']);
                                 $router->name('admin')->get('/orders/{order}/schedule', 'OrderController@schedule')->name('.orders.schedule');
@@ -176,7 +203,7 @@ class Site
                                 $router->name('admin')->resource('/messages', 'MessageController');
                                 $router->name('admin')->post('/repairs/{repair}/status', 'RepairController@status')->name('.repairs.status');
                                 $router->name('admin')->resource('/serials', 'SerialController');
-                                $router->name('admin')->resource('/explodes', 'ExplodeController');
+                                //$router->name('admin')->resource('/explodes', 'ExplodeController');
                                 $router->name('admin')->put('/catalogs/sort', function (Request $request) {
                                     Catalog::sort($request);
                                 })->name('.catalogs.sort');

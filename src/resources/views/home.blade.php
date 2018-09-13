@@ -29,7 +29,7 @@
             <a href="{{ route('contragents.index') }}"
                class="d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-ferroli">
                 <i class="fa fa-@lang('site::contragent.icon')"></i>
-                <span>@lang('site::contragent.contragents') <span
+                <span>@lang('site::contragent.contragents_user') <span
                             class="badge badge-light">{{$user->contragents()->count()}}</span></span>
             </a>
             @endpermission()

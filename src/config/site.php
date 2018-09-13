@@ -168,8 +168,8 @@ return [
             'role_id'       => 1,
         ],
         'user'     => [
-            'warehouse_id'    => '6f87e83f-722c-11df-b336-0011955cba6b',
-            'organization_id' => '0d667f0c-c180-11e4-a7a9-000d884fd00d',
+            'warehouse_id'    => '19c8a7e7-8b9a-11e8-80c9-c659bc5ae479',
+            'organization_id' => '728fcfa4-8b85-11e8-80c8-cd0a94fa06dd',
             'price_type_id'   => '7fb003f2-aca8-11e8-80cc-85ebbdeccdc7',
             'currency_id'     => 643,
             'role_id'         => 2,

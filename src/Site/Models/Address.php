@@ -9,7 +9,7 @@ class Address extends Model
     protected $fillable = [
         'type_id', 'country_id', 'region_id',
         'locality', 'street', 'building',
-        'apartment', 'postal', 'name'
+        'apartment', 'postal', 'name', 'active'
     ];
 
     /**
@@ -95,7 +95,7 @@ class Address extends Model
     }
 
     /**
-     * Get all of the owning contactable models.
+     * Get all of the owning addressable models.
      */
     public function addressable()
     {
@@ -120,6 +120,16 @@ class Address extends Model
     public function users()
     {
         return $this->hasMany(User::class, 'id', 'addressable_id')->where('addressable_type', 'users');
+    }
+
+    /**
+     * Контрагнеты
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function contragents()
+    {
+        return $this->hasMany(Contragent::class, 'id', 'addressable_id')->where('addressable_type', 'contragents');
     }
 
 

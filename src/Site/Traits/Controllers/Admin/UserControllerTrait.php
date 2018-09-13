@@ -2,21 +2,22 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\Request;
 use QuadStudio\Rbac\Repositories\RoleRepository;
 use QuadStudio\Service\Site\Events\UserScheduleEvent;
-use QuadStudio\Service\Site\Filters\AddressableFilter;
+
+use QuadStudio\Service\Site\Filters\PriceType\EnabledFilter;
 use QuadStudio\Service\Site\Filters\User\ActiveSelectFilter;
 use QuadStudio\Service\Site\Filters\User\AddressSearchFilter;
 use QuadStudio\Service\Site\Filters\User\ContactSearchFilter;
 use QuadStudio\Service\Site\Filters\User\DisplaySelectFilter;
 use QuadStudio\Service\Site\Filters\User\IsAscSelectFilter;
 use QuadStudio\Service\Site\Filters\User\IsDealerSelectFilter;
+use QuadStudio\Service\Site\Filters\User\IsServiceFilter;
 use QuadStudio\Service\Site\Filters\User\RegionFilter;
 use QuadStudio\Service\Site\Filters\User\SortByCreatedAtFilter;
 use QuadStudio\Service\Site\Filters\User\VerifiedFilter;
 use QuadStudio\Service\Site\Filters\UserFilter;
-use QuadStudio\Service\Site\Filters\User\IsServiceFilter;
 use QuadStudio\Service\Site\Http\Requests\Admin\UserRequest;
 use QuadStudio\Service\Site\Models\Address;
 use QuadStudio\Service\Site\Models\Contact;
@@ -25,26 +26,59 @@ use QuadStudio\Service\Site\Models\Country;
 use QuadStudio\Service\Site\Models\Phone;
 use QuadStudio\Service\Site\Models\Region;
 use QuadStudio\Service\Site\Models\User;
-use QuadStudio\Service\Site\Repositories\AddressRepository;
 use QuadStudio\Service\Site\Repositories\ContactRepository;
 use QuadStudio\Service\Site\Repositories\ContragentRepository;
 use QuadStudio\Service\Site\Repositories\OrderRepository;
 use QuadStudio\Service\Site\Repositories\PriceTypeRepository;
+use QuadStudio\Service\Site\Repositories\ProductTypeRepository;
 use QuadStudio\Service\Site\Repositories\RepairRepository;
+use QuadStudio\Service\Site\Repositories\UserPriceRepository;
 use QuadStudio\Service\Site\Repositories\UserRepository;
 use QuadStudio\Service\Site\Repositories\WarehouseRepository;
 
 trait UserControllerTrait
 {
+    /**
+     * @var UserRepository
+     */
     protected $users;
-    protected $types;
+    /**
+     * @var PriceTypeRepository
+     */
+    protected $price_types;
+    /**
+     * @var RoleRepository
+     */
     protected $roles;
+    /**
+     * @var OrderRepository
+     */
     protected $orders;
+    /**
+     * @var WarehouseRepository
+     */
     protected $warehouses;
+    /**
+     * @var ContragentRepository
+     */
     protected $contragents;
+    /**
+     * @var ContactRepository
+     */
     protected $contacts;
-    protected $addresses;
+
+    /**
+     * @var RepairRepository
+     */
     protected $repairs;
+    /**
+     * @var UserPriceRepository
+     */
+    private $user_prices;
+    /**
+     * @var ProductTypeRepository
+     */
+    private $product_types;
 
     /**
      * Create a new controller instance.
@@ -56,8 +90,9 @@ trait UserControllerTrait
      * @param OrderRepository $orders
      * @param ContragentRepository $contragents
      * @param ContactRepository $contacts
-     * @param AddressRepository $addresses
      * @param RepairRepository $repairs
+     * @param UserPriceRepository $user_prices
+     * @param ProductTypeRepository $product_types
      */
     public function __construct(
         UserRepository $users,
@@ -67,19 +102,21 @@ trait UserControllerTrait
         OrderRepository $orders,
         ContragentRepository $contragents,
         ContactRepository $contacts,
-        AddressRepository $addresses,
-        RepairRepository $repairs
+        RepairRepository $repairs,
+        UserPriceRepository $user_prices,
+        ProductTypeRepository $product_types
     )
     {
         $this->users = $users;
-        $this->types = $types;
+        $this->price_types = $types;
         $this->roles = $roles;
         $this->warehouses = $warehouses;
         $this->orders = $orders;
         $this->contragents = $contragents;
         $this->contacts = $contacts;
-        $this->addresses = $addresses;
         $this->repairs = $repairs;
+        $this->user_prices = $user_prices;
+        $this->product_types = $product_types;
     }
 
     /**
@@ -103,17 +140,19 @@ trait UserControllerTrait
 
         return view('site::admin.user.index', [
             'repository' => $this->users,
-            'users'      => $this->users->paginate(config('site.per_page.user', 10), [env('DB_PREFIX', '') . 'users.*'])
+            'users'      => $this->users->paginate(config('site.per_page.user', 10), ['users.*'])
         ]);
     }
 
-    public function create(){
+    public function create()
+    {
         $countries = Country::enabled()->orderBy('sort_order')->get();
         $address_sc_regions = collect([]);
         if (old('address.sc.country_id', false)) {
             $address_sc_regions = Region::where('country_id', old('address.sc.country_id'))->orderBy('name')->get();
         }
         $types = ContragentType::all();
+
         return view('site::admin.user.create', compact('countries', 'address_sc_regions', 'types'));
     }
 
@@ -136,6 +175,7 @@ trait UserControllerTrait
         }
         $user->addresses()->save(Address::create($request->input('address.sc')));
         $user->attachRole(4);
+
         return redirect()->route('admin.users.show', $user)->with('success', trans('site::user.created'));
     }
 
@@ -149,13 +189,13 @@ trait UserControllerTrait
     {
         return User::create([
 
-            'dealer'        => $data['dealer'],
-            'active'        => $data['active'],
-            'display'        => $data['display'],
-            'verified'        => $data['verified'],
-            'name'          => $data['name'],
-            'type_id'       => $data['type_id'],
-            'email'         => $data['email'],
+            'dealer'   => $data['dealer'],
+            'active'   => $data['active'],
+            'display'  => $data['display'],
+            'verified' => $data['verified'],
+            'name'     => $data['name'],
+            'type_id'  => $data['type_id'],
+            'email'    => $data['email'],
         ]);
     }
 
@@ -183,7 +223,7 @@ trait UserControllerTrait
      */
     public function edit(User $user)
     {
-        $types = $this->types->all();
+        $types = $this->price_types->all();
         $roles = $this->roles->all();
         $warehouses = $this->warehouses->all();
 
@@ -215,7 +255,7 @@ trait UserControllerTrait
     {
         $data = $request->input('user');
 
-        if($request->input('user.verified') == 1){
+        if ($request->input('user.verified') == 1) {
             $data = array_merge($data, ['verify_token' => null]);
         }
         $user->update($data);
@@ -244,8 +284,50 @@ trait UserControllerTrait
         return view('site::admin.user.repair', [
             'user'       => $user,
             'repository' => $this->repairs,
-            'repairs'    => $this->repairs->paginate(config('site.per_page.repair', 10), [env('DB_PREFIX', '') . 'repairs.*'])
+            'repairs'    => $this->repairs->paginate(config('site.per_page.repair', 10), ['repairs.*'])
         ]);
+    }
+
+    /**
+     * Ценообразование пользователя
+     *
+     * @param Request $request
+     * @param User $user
+     * @return \Illuminate\Http\Response
+     */
+    public function prices(Request $request, User $user)
+    {
+        if ($request->isMethod('post')) {
+            $user->prices()->delete();
+            $data = [];
+            foreach ($request->input('user_price') as $product_type_id => $price_type_id) {
+                $data[] = [
+                    'product_type_id' => $product_type_id,
+                    'price_type_id'   => $price_type_id,
+                ];
+            }
+            $user->prices()->createMany($data);
+            if ($request->input('_stay') == 1) {
+                $redirect = redirect()->route('admin.users.prices', $user)->with('success', trans('site::user_price.updated'));
+            } else {
+                $redirect = redirect()->route('admin.users.show', $user)->with('success', trans('site::user_price.updated'));
+            }
+
+            return $redirect;
+        } else {
+            $user_prices = $this->user_prices->all();
+            $product_types = $this->product_types->all();
+            $price_types = $this->price_types->applyFilter(new EnabledFilter())->all();
+            $default_price_type = config('site.defaults.user.price_type_id');
+            return view('site::admin.user.price', compact(
+                'user',
+                'user_prices',
+                'product_types',
+                'price_types',
+                'default_price_type'
+            ));
+        }
+
     }
 
     /**
@@ -262,7 +344,7 @@ trait UserControllerTrait
         return view('site::admin.user.order', [
             'user'       => $user,
             'repository' => $this->orders,
-            'orders'     => $this->orders->paginate(config('site.per_page.order', 10), [env('DB_PREFIX', '') . 'orders.*'])
+            'orders'     => $this->orders->paginate(config('site.per_page.order', 10), ['orders.*'])
         ]);
     }
 
@@ -278,10 +360,10 @@ trait UserControllerTrait
         $this->contragents->trackFilter();
         $this->contragents->applyFilter((new UserFilter())->setUser($user));
 
-        return view('site::admin.user.contragent', [
+        return view('site::admin.user.contragent.index', [
             'user'        => $user,
             'repository'  => $this->contragents,
-            'contragents' => $this->contragents->paginate(config('site.per_page.contragent', 10), [env('DB_PREFIX', '') . 'contragents.*'])
+            'contragents' => $this->contragents->paginate(config('site.per_page.contragent', 10), ['contragents.*'])
         ]);
     }
 
@@ -300,26 +382,8 @@ trait UserControllerTrait
         return view('site::admin.user.contact', [
             'user'       => $user,
             'repository' => $this->contacts,
-            'contacts'   => $this->contacts->paginate(config('site.per_page.contact', 10), [env('DB_PREFIX', '') . 'contacts.*'])
+            'contacts'   => $this->contacts->paginate(config('site.per_page.contact', 10), ['contacts.*'])
         ]);
     }
 
-    /**
-     * Показать список адресов сервисного центра
-     *
-     * @param User $user
-     * @return \Illuminate\Http\Response
-     */
-    public function addresses(User $user)
-    {
-
-        $this->addresses->trackFilter();
-        $this->addresses->applyFilter((new AddressableFilter())->setId($user->id)->setMorph('users'));
-
-        return view('site::admin.user.address', [
-            'user'       => $user,
-            'repository' => $this->addresses,
-            'addresses'  => $this->addresses->paginate(config('site.per_page.address', 10), [env('DB_PREFIX', '') . 'addresses.*'])
-        ]);
-    }
 }

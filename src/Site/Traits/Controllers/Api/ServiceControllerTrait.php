@@ -3,8 +3,12 @@
 namespace QuadStudio\Service\Site\Traits\Controllers\Api;
 
 use Illuminate\Http\Request;
+use QuadStudio\Service\Site\Filters\Address\ActiveFilter;
 use QuadStudio\Service\Site\Filters\Address\RegionFilter;
 use QuadStudio\Service\Site\Filters\Address\TypeFilter;
+use QuadStudio\Service\Site\Filters\Address\UserActiveFilter;
+use QuadStudio\Service\Site\Filters\Address\UserDisplayFilter;
+use QuadStudio\Service\Site\Filters\Address\ShowAscDealerFilter;
 use QuadStudio\Service\Site\Http\Resources\Address\YandexMapCollection;
 use QuadStudio\Service\Site\Http\Resources\Address\YandexMapResource;
 use QuadStudio\Service\Site\Models\Region;
@@ -39,8 +43,10 @@ trait ServiceControllerTrait
                 ->trackFilter()
                 ->applyFilter((new TypeFilter())->setTypeId(2))
                 ->applyFilter((new RegionFilter())->setRegionId($region->id))
-                //->applyFilter(new DisplayFilter())
-                //->pushTrackFilter(ShowAscDealerFilter::class)
+                ->applyFilter(new UserDisplayFilter())
+                ->applyFilter(new UserActiveFilter())
+                ->applyFilter(new ActiveFilter())
+                ->pushTrackFilter(ShowAscDealerFilter::class)
                 ->all()
         );
     }

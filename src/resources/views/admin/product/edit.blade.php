@@ -29,6 +29,24 @@
                             @csrf
 
                             @method('PUT')
+
+                            <div class="form-group required">
+                                <label class="control-label"
+                                       for="type_id">@lang('site::product.type_id')</label>
+                                <select class="form-control{{  $errors->has('type_id') ? ' is-invalid' : '' }}"
+                                        required
+                                        name="type_id"
+                                        id="type_id">
+                                    <option value="">@lang('site::messages.select_from_list')</option>
+                                    @foreach($product_types as $type)
+                                        <option @if(old('type_id', $product->type_id) == $type->id) selected
+                                                @endif
+                                                value="{{ $type->id }}">{{ $type->name }}</option>
+                                    @endforeach
+                                </select>
+                                <span class="invalid-feedback">{{ $errors->first('type_id') }}</span>
+                            </div>
+
                             <div class="form-row required">
                                 <div class="col mb-3">
                                     <label class="control-label d-block"
@@ -184,11 +202,12 @@
                             <div class="form-row">
                                 <div class="col mb-3">
                                     <label for="specification">@lang('site::product.specification')</label>
-                                    <textarea class="form-control{{ $errors->has('specification') ? ' is-invalid' : '' }}"
-                                              placeholder="@lang('site::product.placeholder.specification')"
-                                              name="specification"
-                                              rows="5"
-                                              id="specification">{!! old('specification', $product->specification) !!}</textarea>
+                                    <textarea
+                                            class="form-control{{ $errors->has('specification') ? ' is-invalid' : '' }}"
+                                            placeholder="@lang('site::product.placeholder.specification')"
+                                            name="specification"
+                                            rows="5"
+                                            id="specification">{!! old('specification', $product->specification) !!}</textarea>
                                     <span class="invalid-feedback">{{ $errors->first('specification') }}</span>
                                 </div>
                             </div>
@@ -198,7 +217,7 @@
 
             </div>
         </div>
-        <div class=" border p-3 mt-2 mb-4">
+        <div class=" border p-3 mt-2 mb-4 text-right">
             <button name="_stay" form="form-content" value="1" type="submit" class="btn btn-ferroli">
                 <i class="fa fa-check"></i>
                 <span>@lang('site::messages.save_stay')</span>

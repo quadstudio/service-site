@@ -1,9 +1,9 @@
 <?php
 return [
-    'contragent'       => 'контрагента',
+    'contragent'       => 'юридическое лицо',
     'contragent_user'  => 'юридическое лицо',
-    'contragents'      => 'Контрагенты',
-    'contragents_user' => 'Мои юридические лица',
+    'contragents'      => 'Юридические лица',
+    'contragents_user' => 'Юридические лица',
     'icon'             => 'users',
     //
     'name'             => 'Наименование',

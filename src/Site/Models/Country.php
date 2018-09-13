@@ -45,4 +45,14 @@ class Country extends Model
         return $this->hasMany(Region::class);
     }
 
+    /**
+     * Адреса
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function addresses()
+    {
+        return $this->hasMany(Address::class, 'country_id');
+    }
+
 }

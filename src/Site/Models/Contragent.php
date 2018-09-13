@@ -4,8 +4,9 @@ namespace QuadStudio\Service\Site\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use QuadStudio\Service\Site\Contracts\Addressable;
 
-class Contragent extends Model
+class Contragent extends Model implements Addressable
 {
     protected $fillable = [
         'type_id', 'name', 'nds', 'inn', 'ogrn',
@@ -161,4 +162,13 @@ class Contragent extends Model
         ]);
     }
 
+    function path()
+    {
+        return 'contragents';
+    }
+
+    function lang()
+    {
+        return 'contragent';
+    }
 }

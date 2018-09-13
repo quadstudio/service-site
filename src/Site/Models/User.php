@@ -9,9 +9,10 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use QuadStudio\Online\OnlineChecker;
 use QuadStudio\Rbac\Traits\Models\RbacUserTrait;
+use QuadStudio\Service\Site\Contracts\Addressable;
 use QuadStudio\Service\Site\Traits\Models\ScheduleTrait;
 
-class User extends Authenticatable
+class User extends Authenticatable implements Addressable
 {
     use Notifiable, RbacUserTrait, OnlineChecker, ScheduleTrait;
 
@@ -207,6 +208,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Типы цен пользователя
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function prices()
+    {
+        return $this->hasMany(UserPrice::class);
+    }
+
+    /**
      * Заказы
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -303,5 +314,15 @@ class User extends Authenticatable
         $this->verified = true;
         $this->verify_token = null;
         $this->save();
+    }
+
+    function path()
+    {
+        return 'users';
+    }
+
+    function lang()
+    {
+        return 'user';
     }
 }

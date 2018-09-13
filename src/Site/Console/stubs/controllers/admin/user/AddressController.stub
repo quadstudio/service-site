@@ -1,0 +1,11 @@
+<?php
+
+namespace {{namespace}}Http\Controllers\Admin\User;
+
+use QuadStudio\Service\Site\Traits\Controllers\Admin\User\AddressControllerTrait;
+use {{namespace}}Http\Controllers\Controller;
+
+class AddressController extends Controller
+{
+    use AddressControllerTrait;
+}

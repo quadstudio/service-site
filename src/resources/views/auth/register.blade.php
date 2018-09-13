@@ -14,8 +14,6 @@
     <div class="container">
         <div class="row pt-5 pb-5">
             <div class="col">
-                {{dump($errors ?: null)}}
-
                 <form id="register-form" method="POST" action="{{ route('register') }}">
                     @csrf
 

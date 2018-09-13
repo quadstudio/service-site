@@ -10,6 +10,7 @@ use QuadStudio\Service\Site\Http\Requests\Admin\ProductRequest;
 use QuadStudio\Service\Site\Models\Product;
 use QuadStudio\Service\Site\Repositories\EquipmentRepository;
 use QuadStudio\Service\Site\Repositories\ProductRepository;
+use QuadStudio\Service\Site\Repositories\ProductTypeRepository;
 use QuadStudio\Service\Site\Traits\Support\ImageLoaderTrait;
 
 trait ProductControllerTrait
@@ -23,17 +24,27 @@ trait ProductControllerTrait
      * @var EquipmentRepository
      */
     private $equipments;
+    /**
+     * @var ProductTypeRepository
+     */
+    private $product_types;
 
     /**
      * Create a new controller instance.
      *
      * @param ProductRepository $products
      * @param EquipmentRepository $equipments
+     * @param ProductTypeRepository $product_types
      */
-    public function __construct(ProductRepository $products, EquipmentRepository $equipments)
+    public function __construct(
+        ProductRepository $products,
+        EquipmentRepository $equipments,
+        ProductTypeRepository $product_types
+    )
     {
         $this->products = $products;
         $this->equipments = $equipments;
+        $this->product_types = $product_types;
     }
 
     /**
@@ -67,8 +78,30 @@ trait ProductControllerTrait
     public function edit(Product $product)
     {
         $equipments = $this->equipments->applyFilter(new SortByNameFilter())->all();
+        $product_types = $this->product_types->trackFilter()->all();
 
-        return view('site::admin.product.edit', compact('product', 'equipments'));
+        return view('site::admin.product.edit', compact('product', 'equipments', 'product_types'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  ProductRequest $request
+     * @param  Product $product
+     * @return \Illuminate\Http\Response
+     */
+    public function update(ProductRequest $request, Product $product)
+    {
+        $this->authorize('update', $product);
+        $this->products->update($request->except(['_method', '_token', '_stay']), $product->id);
+
+        if ($request->input('_stay') == 1) {
+            $redirect = redirect()->route('admin.products.edit', $product)->with('success', trans('site::product.updated'));
+        } else {
+            $redirect = redirect()->route('admin.products.show', $product)->with('success', trans('site::product.updated'));
+        }
+
+        return $redirect;
     }
 
     public function images(ProductRequest $request, Product $product)
@@ -210,25 +243,5 @@ trait ProductControllerTrait
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  ProductRequest $request
-     * @param  Product $product
-     * @return \Illuminate\Http\Response
-     */
-    public function update(ProductRequest $request, Product $product)
-    {
-        $this->authorize('update', $product);
-        $this->products->update($request->except(['_method', '_token', '_stay']), $product->id);
-
-        if ($request->input('_stay') == 1) {
-            $redirect = redirect()->route('admin.products.edit', $product)->with('success', trans('site::product.updated'));
-        } else {
-            $redirect = redirect()->route('admin.products.show', $product)->with('success', trans('site::product.updated'));
-        }
-
-        return $redirect;
-    }
 
 }

@@ -149,6 +149,18 @@
 
                         <div class="dropdown-divider"></div>
 
+                        <a class="dropdown-item" href="{{ route('admin.addresses.index') }}">
+                            <i class="fa fa-@lang('site::address.icon')"></i> @lang('site::address.addresses')
+                        </a>
+                        <a class="dropdown-item" href="{{ route('admin.contacts.index') }}">
+                            <i class="fa fa-@lang('site::contact.icon')"></i> @lang('site::contact.contacts')
+                        </a>
+                        {{--<a class="dropdown-item" href="{{ route('admin.phones.index') }}">--}}
+                            {{--<i class="fa fa-@lang('site::phone.icon')"></i> @lang('site::phone.phones')--}}
+                        {{--</a>--}}
+
+                        <div class="dropdown-divider"></div>
+
                         <a class="dropdown-item" href="{{ route('admin.roles.index') }}">
                             <i class="fa fa-graduation-cap"></i> @lang('rbac::role.roles')
                         </a>

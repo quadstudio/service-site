@@ -2,6 +2,7 @@
 return [
     'phone'       => 'телефон',
     'phones'      => 'Телефоны',
+    'icon'        => 'phone',
     //
     'country_id'  => 'Международный код',
     'contact_id'  => 'Контакт',

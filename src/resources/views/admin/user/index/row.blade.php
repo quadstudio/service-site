@@ -6,7 +6,7 @@
                     @include('site::admin.user.component.link')
                     @include('site::admin.user.component.online')
                     @if(($addresses = $user->addresses()->where('type_id', 2)->get())->isNotEmpty())
-                        <div class="mb-2 mb-md-0">
+                        <div class="my-2 mb-md-0">
                             @foreach($addresses as $address)
                                 <span class="d-block">{{ $address->region->name }} &bull; {{ $address->locality }}
                             </span>
@@ -26,9 +26,16 @@
                 <div class="col-12 col-md-4 col-xl-4">
                     <div class="mb-2 mb-md-0 text-muted">
                         <span class="d-block">@lang('site::user.created_at'):
-                            {{$user->created_at(true)}}</span>
+                            {{$user->created_at(true)}}
+                        </span>
                         <span class="d-block" class="text-muted">@lang('site::user.logged_at'):
-                            {{ $user->logged_at() }}</span>
+                            {{ $user->logged_at() }}
+                        </span>
+                        <span class="d-block" class="text-muted">@lang('site::order.help.last'):
+                            @if($order = $user->orders()->latest()->first())
+                                {{\Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $order->created_at)->format('d.m.Y H:i')}}
+                            @endif
+                        </span>
                     </div>
                 </div>
                 <div class="col-12 col-md-4 col-xl-3">

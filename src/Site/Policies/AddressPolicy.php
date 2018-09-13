@@ -61,7 +61,7 @@ class AddressPolicy
      */
     public function delete(User $user, Address $address)
     {
-        return $user->hasPermission('addresses') && $address->addressable->addresses()->count() > 1;
+        return ($user->getAttribute('admin') == 1 || $user->hasPermission('addresses')) && $address->addressable->addresses()->whereTypeId($address->type_id)->count() > 1;
     }
 
 
