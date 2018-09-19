@@ -183,6 +183,11 @@
                                     class="fa fa-@lang('site::repair.icon')"></i> @lang('site::repair.repairs')
                         </a>
                         @endpermission
+                        @permission('acts')
+                        <a class="dropdown-item" href="{{ route('acts.index') }}"><i
+                                    class="fa fa-@lang('site::act.icon')"></i> @lang('site::act.acts')
+                        </a>
+                        @endpermission
                         @permission('messages')
                         <a class="dropdown-item" href="{{ route('messages.index') }}"><i
                                     class="fa fa-@lang('site::message.icon')"></i> @lang('site::message.messages')

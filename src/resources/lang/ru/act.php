@@ -48,6 +48,7 @@ return [
             'service'  => 'Услуга',
             'quantity' => 'Кол-во',
             'unit'     => 'Ед.',
+            'unit_row' => 'шт.',
             'price'    => 'Цена',
             'cost'     => 'Сумма',
             'total'    => 'Итого:',

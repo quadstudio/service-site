@@ -477,6 +477,30 @@
 
     }
 
+    let schemeFormExists = document.getElementById("scheme-form");
+    if (schemeFormExists !== null) {
+        let datasheet = $('#datasheet_id');
+        datasheet.on('change', function () {
+            let datasheet_id = datasheet.find('option:selected').val();
+            if (datasheet_id.length > 0) {
+                axios
+                    .get("/api/datasheets/" + datasheet_id + "/products")
+                    .then((response) => {
+                        let html = '';
+                        $.each(response.data.data, function (index, region) {
+                            html += '<option value="' + region.label + '">' + region.value + '</option>';
+                        });
+                        regions.html(html);
+                    })
+                    .catch((error) => {
+                        this.status = 'Error:' + error;
+                    });
+            } else {
+                regions.html('<option value="">' + empty + '</option>');
+            }
+            console.log(country_id);
+        });
+    }
     let registerFormExists = document.getElementById("register-form");
     let contragentFormExists = document.getElementById("contragent-form");
     let addressFormExists = document.getElementById("address-form");

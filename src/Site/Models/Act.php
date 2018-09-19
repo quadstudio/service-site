@@ -15,7 +15,7 @@ class Act extends Model
      */
     protected $table;
 
-    protected $fillable = ['number'];
+    protected $fillable = ['number', 'contragent_id'];
 
     /**
      * @param array $attributes

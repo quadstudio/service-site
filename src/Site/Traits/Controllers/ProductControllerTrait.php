@@ -87,7 +87,7 @@ trait ProductControllerTrait
      */
     public function show(Product $product)
     {
-        if($product->enabled == 0){
+        if ($product->enabled == 0) {
             abort(404);
         }
         $equipments = $this
@@ -120,13 +120,24 @@ trait ProductControllerTrait
             ->has('schemes')
             ->with('schemes')
             ->get();
+        $url = ['name' => $product->name];
+        if ($product->canBuy) {
+            $url['url'] = route('products.show', $product);
+        }
         $elements = $scheme->elements()
             ->with('product')
             ->with('pointers')
             ->with('shapes')
             ->orderBy('sort_order')
             ->get();
-        return view('site::product.scheme', compact('product', 'datasheets', 'scheme', 'elements'));
+
+        return view('site::product.scheme', compact(
+            'product',
+            'datasheets',
+            'scheme',
+            'elements',
+            'url'
+        ));
     }
 
 }

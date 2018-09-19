@@ -10,7 +10,7 @@ class ProductPolicy
 {
 
     /**
-     * Determine whether the user can view the post.
+     * Determine whether the user can view the product.
      *
      * @param User $user
      * @param Product $product
@@ -38,7 +38,7 @@ class ProductPolicy
     }
 
     /**
-     * Determine whether the user can create posts.
+     * Determine whether the user can create product.
      *
      * @param  User $user
      * @return bool
@@ -49,7 +49,7 @@ class ProductPolicy
     }
 
     /**
-     * Determine whether the user can update the post.
+     * Determine whether the user can update the product.
      *
      * @param  User $user
      * @param  Product $product
@@ -61,7 +61,7 @@ class ProductPolicy
     }
 
     /**
-     * Determine whether the user can delete the post.
+     * Determine whether the user can delete the product.
      *
      * @param  User $user
      * @param  Product $product

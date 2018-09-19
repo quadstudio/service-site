@@ -28,7 +28,6 @@ class ActResource extends JsonResource
             ],
             'contragent' => new ContragentResource($this->contragent),
             'repairs'         => RepairResource::collection($this->repairs),
-            //'contragent' => new ContragentResource($this->contragent),
         ];
 
     }

@@ -5,8 +5,7 @@
         'h1' => $scheme->block->name. ' '.$product->name,
         'breadcrumbs' => [
             ['url' => route('index'), 'name' => __('site::messages.index')],
-            ['url' => route('products.show', $product), 'name' => $product->name],
-            //['url' => route('products.schemes', [$product, $scheme]), 'name' => __('site::scheme.schemes')],
+            $url,
             ['name' => $scheme->block->name],
         ]
     ])
@@ -15,7 +14,6 @@
 @section('content')
     <div class="container">
         @alert()@endalert
-
         @foreach($datasheets as $datasheet)
             <ul class="nav nav-pills nav-fill">
                 @foreach($datasheet->schemes as $datasheet_scheme)
@@ -26,8 +24,6 @@
                 @endforeach
             </ul>
         @endforeach
-
-
         <div class="card mb-2 mt-4">
             <div class="card-body d-flex align-items-start">
                 <nav class="nav nav-fill flex-column" style="width:300px!important;">
@@ -49,15 +45,17 @@
                             <tbody>
                             @foreach($elements as $element)
                                 <tr class="pointer table-pointer"
-                                    {{--onmouseleave="pointerLeave()"--}}
-                                    {{--onmouseover="pointerOver(this.dataset.number)"--}}
                                     data-number="{{$element->number}}">
                                     <td class="number">{{$element->number}}</td>
                                     <td class="">{{$element->product->sku}}</td>
                                     <td>
-                                        <a href="{{route('products.show', $element->product)}}">
-                                            {{str_limit($element->product->name, 22)}}
-                                        </a>
+                                        @if($element->product->canBuy)
+                                            <a href="{{route('products.show', $element->product)}}">
+                                                {{str_limit($element->product->name, 22)}}
+                                            </a>
+                                        @else
+                                            <span class="text-muted">{{str_limit($element->product->name, 22)}}</span>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
@@ -76,8 +74,6 @@
                             @foreach($element->shapes as $shape)
                                 <area data-number="{{$element->number}}"
                                       class="shape-pointer"
-                                      {{--onmouseleave="pointerLeave()"--}}
-                                      {{--onmouseover="pointerOver(this.dataset.number)"--}}
                                       shape="{{$shape->shape}}"
                                       coords="{{$shape->coords}}"
                                       data-maphilight='{"strokeColor":"428bca","strokeWidth":2,"fillColor":"428bca","fillOpacity":0.3}'/>
@@ -88,16 +84,11 @@
                         @foreach($element->pointers as $pointer)
                             <a class="pointer img-pointer"
                                data-number="{{$element->number}}"
-                               {{--onmouseleave="pointerLeave()"--}}
-                               {{--onmouseover="pointerOver(this.dataset.number)"--}}
                                style="top:{{$pointer->y}}px;left:{{$pointer->x}}px"
-                               href="#">{{$pointer->element->number}}</a>
+                               href="@if($element->product->canBuy) {{route('products.show', $element->product)}} @else javascript:void(0); @endif">{{$pointer->element->number}}</a>
                         @endforeach
                     @endforeach
-
                 </div>
-                `
-
             </div>
         </div>
     </div>

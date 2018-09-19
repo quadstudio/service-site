@@ -4,6 +4,7 @@ namespace QuadStudio\Service\Site\Traits\Controllers\Api;
 
 use QuadStudio\Service\Site\Facades\Site;
 use QuadStudio\Service\Site\Filters\Product\BoilerSearchFilter;
+use QuadStudio\Service\Site\Filters\Product\DatasheetFilter;
 use QuadStudio\Service\Site\Filters\Product\LimitFilter;
 use QuadStudio\Service\Site\Filters\Product\ProductSearchFilter;
 use QuadStudio\Service\Site\Filters\Product\SearchFilter;
@@ -77,6 +78,16 @@ trait ProductControllerTrait
     public function product()
     {
         $this->products->applyFilter(new BoilerSearchFilter());
+
+        return new ProductCollection($this->products->all());
+    }
+
+    /**
+     * @return ProductCollection
+     */
+    public function datasheet()
+    {
+        $this->products->applyFilter(new DatasheetFilter());
 
         return new ProductCollection($this->products->all());
     }

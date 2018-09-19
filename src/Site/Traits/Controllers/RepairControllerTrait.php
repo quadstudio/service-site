@@ -4,6 +4,7 @@ namespace QuadStudio\Service\Site\Traits\Controllers;
 
 use QuadStudio\Service\Site\Events\RepairCreateEvent;
 use QuadStudio\Service\Site\Events\RepairEditEvent;
+use QuadStudio\Service\Site\Facades\Site;
 use QuadStudio\Service\Site\Filters\BelongsUserFilter;
 use QuadStudio\Service\Site\Filters\ByNameSortFilter;
 use QuadStudio\Service\Site\Filters\CountryEnabledFilter;
@@ -224,24 +225,26 @@ trait RepairControllerTrait
                 $parts->put($product->id, collect([
                     'product_id' => $product->id,
                     'sku'        => $product->sku,
-                    'cost'       => $product->price()->exists ? $product->price()->price() : '',
-                    'format'     => $product->price()->exists ? $product->price()->format() : '',
+                    'cost'       => $product->hasPrice ? $product->price->value : 0,
+                    'format'     => $product->hasPrice ? Site::format($product->price->value) : '',
                     'name'       => $product->name,
                     'count'      => $values['count'],
                 ]));
             }
         } elseif (!is_null($repair)) {
             foreach ($repair->parts as $part) {
+                //dd($part->product->price->getAttribute('value'));
                 $parts->put($part->product_id, collect([
                     'product_id' => $part->product_id,
                     'sku'        => $part->product->sku,
-                    'cost'       => $part->product->price()->exists ? $part->product->price()->price() : '',
-                    'format'     => $part->product->price()->exists ? $part->product->price()->format() : '',
+                    'cost'       => $part->product->hasPrice ? $part->product->price->value : 0,
+                    'format'     => $part->product->hasPrice ? Site::format($part->product->price->value) : '',
                     'name'       => $part->product->name,
                     'count'      => $part->count,
                 ]));
             }
         }
+        //dd($parts);
 
         return $parts;
     }

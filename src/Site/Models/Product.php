@@ -140,7 +140,14 @@ class Product extends Model implements Imageable
 
     public function getPriceTypeAttribute()
     {
-        return Auth::guest() ? config('site.defaults.guest.price_type_id') : Auth::user()->price_type_id;
+        return Auth::guest()
+            ? config('site.defaults.guest.price_type_id')
+            : (
+            (
+            $user_price = Auth::user()->prices()->where('product_type_id', $this->type_id))->exists()
+                ? $user_price->first()->price_type_id
+                : config('site.defaults.user.price_type_id')
+            );
     }
 
 
@@ -166,6 +173,7 @@ class Product extends Model implements Imageable
      */
     private function getPrice()
     {
+        //dd($this->priceType);
         return $this
             ->prices()
             ->where('type_id', '=', $this->priceType)

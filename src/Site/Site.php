@@ -284,6 +284,7 @@ class Site
                 $router->name('api')->get('/products/repair', 'ProductController@repair');
                 $router->name('api')->get('/products/analog', 'ProductController@analog');
                 $router->name('api')->get('/products/product', 'ProductController@product');
+                $router->name('api')->get('/products/datasheet', 'ProductController@datasheet');
                 $router->name('api')->get('/products/fast', 'ProductController@fast');
                 $router->name('api')->get('/products/{product}/part', 'ProductController@part');
                 $router->name('api')->get('/products/{product}', 'ProductController@show');

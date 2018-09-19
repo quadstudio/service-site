@@ -306,6 +306,7 @@ trait UserControllerTrait
                     'price_type_id'   => $price_type_id,
                 ];
             }
+            //dd($data);
             $user->prices()->createMany($data);
             if ($request->input('_stay') == 1) {
                 $redirect = redirect()->route('admin.users.prices', $user)->with('success', trans('site::user_price.updated'));

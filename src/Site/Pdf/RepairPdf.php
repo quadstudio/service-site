@@ -130,35 +130,35 @@ class RepairPdf extends Pdf
         //Детали
         $this->SetFont('Verdana', '', $font_size_small);
         $this->Cell(10, $line_height, w1251('№'), 1, 0, 'C');
-        $this->Cell(100, $line_height, w1251(trans('site::repair.pdf.table.part')), 1, 0, 'C');
+        $this->Cell(80, $line_height, w1251(trans('site::repair.pdf.table.part')), 1, 0, 'C');
         $this->Cell(30, $line_height, w1251(trans('site::repair.pdf.table.difficulty')), 1, 0, 'C');
-        $this->Cell(50, $line_height, w1251(trans('site::repair.pdf.table.distance')), 1, 1, 'C');
+        $this->Cell(70, $line_height, w1251(trans('site::repair.pdf.table.distance')), 1, 1, 'C');
         //
         $this->Cell(10, $line_height, w1251(trans('site::repair.pdf.table.pp')), 1, 0, 'C');
-        $this->Cell(70, $line_height, w1251(trans('site::repair.pdf.table.sku')), 1, 0, 'C');
+        $this->Cell(50, $line_height, w1251(trans('site::repair.pdf.table.sku')), 1, 0, 'C');
         $this->Cell(30, $line_height, w1251(trans('site::repair.pdf.table.cost')), 1, 0, 'C');
         $this->Cell(30, $line_height, w1251(trans('site::repair.pdf.table.cost')), 1, 0, 'C');
-        $this->Cell(20, $line_height, w1251(trans('site::repair.pdf.table.category')), 1, 0, 'C');
-        $this->Cell(30, $line_height, w1251(trans('site::repair.pdf.table.cost')), 1, 1, 'C');
+        $this->Cell(50, $line_height, w1251(trans('site::repair.pdf.table.category')), 1, 0, 'C');
+        $this->Cell(20, $line_height, w1251(trans('site::repair.pdf.table.cost')), 1, 1, 'C');
         $y = $this->getY();
         $key = 0;
         if (($parts = $this->model->parts)->count() > 0) {
             foreach ($parts as $key => $part) {
                 $this->Cell(10, $line_height, $key + 1, 1, 0, 'C');
-                $this->Cell(70, $line_height, w1251($part->product->sku), 1, 0, 'C');
+                $this->Cell(50, $line_height, w1251($part->product->sku), 1, 0, 'C');
                 $this->Cell(30, $line_height, number_format($part->total, 2, '.', ' '), 1, 1, 'R');
             }
         } else {
             $this->Cell(10, $line_height, '', 1, 0, 'C');
-            $this->Cell(70, $line_height, '-', 1, 0, 'C');
+            $this->Cell(50, $line_height, '-', 1, 0, 'C');
             $this->Cell(30, $line_height, '-', 1, 1, 'R');
         }
 
         $bottom = $this->getY();
-        $this->setXY(120, $y);
+        $this->setXY(100, $y);
         $this->Cell(30, $line_height * ($key + 1), number_format($this->model->cost_difficulty, 2, '.', ' '), 1, 0, 'R');
-        $this->Cell(20, $line_height * ($key + 1), w1251($this->model->difficulty->name), 1, 0, 'C');
-        $this->Cell(30, $line_height * ($key + 1), number_format($this->model->cost_distance, 2, '.', ' '), 1, 0, 'R');
+        $this->Cell(50, $line_height * ($key + 1), w1251($this->model->distance->name), 1, 0, 'C');
+        $this->Cell(20, $line_height * ($key + 1), number_format($this->model->cost_distance, 2, '.', ' '), 1, 0, 'R');
         $this->setXY(10, $bottom + 2);
         $this->SetFont('Verdana', 'B', $font_size);
         $this->Cell(140, $line_height, w1251(trans('site::repair.pdf.table.total')), 0, 0, 'R');

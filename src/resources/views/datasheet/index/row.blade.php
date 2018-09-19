@@ -12,7 +12,8 @@
                         @include('site::datasheet.index.row.products')
                     @endif
                 </div>
-                <div class="col-sm-3 text-right">
+                <div class="col-sm-3 text-left text-xl-right">
+
                     @if($datasheet->file->exists())
                         @include('site::file.download', ['file' => $datasheet->file])
                     @else

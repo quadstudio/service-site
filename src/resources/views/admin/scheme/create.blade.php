@@ -20,7 +20,7 @@
 
         <div class="card mb-5">
             <div class="card-body">
-                <form id="form-content" method="POST" action="{{ route('admin.schemes.store') }}">
+                <form id="scheme-form" method="POST" action="{{ route('admin.schemes.store') }}">
                     @csrf
 
                     <div class="form-group required">
@@ -35,7 +35,7 @@
                                 <option data-cost="{{$datasheet->cost}}"
                                         @if(old('datasheet_id') == $datasheet->id) selected
                                         @endif
-                                        value="{{ $datasheet->id }}">{{ $datasheet->name }}</option>
+                                        value="{{ $datasheet->id }}">{{ $datasheet->file->name }}</option>
                             @endforeach
                         </select>
                         <span class="invalid-feedback">{{ $errors->first('datasheet_id') }}</span>
@@ -82,42 +82,42 @@
 
                     </div>
 
-                    <div class="form-group required">
-                        <label class="control-label"
-                               for="block_id">@lang('site::scheme.equipments')</label>
+                    {{--<div class="form-group required">--}}
+                        {{--<label class="control-label"--}}
+                               {{--for="block_id">@lang('site::scheme.equipments')</label>--}}
 
-                        @foreach($equipments as $key => $equipment)
-                            <hr/>
-                            <b class="d-block">{{$equipment->name}}</b>
-                            @foreach($equipment->products as $product)
-                                <div class="custom-control custom-checkbox">
-                                    <input name="products[]" value="{{ $product->id }}" type="checkbox"
-                                           @if(in_array($product->id, old('products', [])))
-                                           checked
-                                           @endif
-                                           class="custom-control-input{{ $errors->has('products') ? ' is-invalid' : '' }}"
-                                           id="equipment-{{ $product->id }}">
-                                    <label class="custom-control-label"
-                                           for="equipment-{{ $product->id }}">{{ $product->name }} {{ $product->id }}</label>
-                                    @if($key + 1 == $product->count())
-                                        <span class="invalid-feedback">{{ $errors->first('products') }}</span>
-                                    @endif
-                                </div>
-                            @endforeach
-                        @endforeach
+                        {{--@foreach($equipments as $key => $equipment)--}}
+                            {{--<hr/>--}}
+                            {{--<b class="d-block">{{$equipment->name}}</b>--}}
+                            {{--@foreach($equipment->products as $product)--}}
+                                {{--<div class="custom-control custom-checkbox">--}}
+                                    {{--<input name="products[]" value="{{ $product->id }}" type="checkbox"--}}
+                                           {{--@if(in_array($product->id, old('products', [])))--}}
+                                           {{--checked--}}
+                                           {{--@endif--}}
+                                           {{--class="custom-control-input{{ $errors->has('products') ? ' is-invalid' : '' }}"--}}
+                                           {{--id="equipment-{{ $product->id }}">--}}
+                                    {{--<label class="custom-control-label"--}}
+                                           {{--for="equipment-{{ $product->id }}">{{ $product->name }} {{ $product->id }}</label>--}}
+                                    {{--@if($key + 1 == $product->count())--}}
+                                        {{--<span class="invalid-feedback">{{ $errors->first('products') }}</span>--}}
+                                    {{--@endif--}}
+                                {{--</div>--}}
+                            {{--@endforeach--}}
+                        {{--@endforeach--}}
 
-                    </div>
+                    {{--</div>--}}
 
                 </form>
 
                 <hr/>
                 <div class="form-row">
                     <div class="col text-right">
-                        <button name="_create" form="form-content" value="1" type="submit" class="btn btn-ferroli mb-1">
+                        <button name="_create" form="scheme-form" value="1" type="submit" class="btn btn-ferroli mb-1">
                             <i class="fa fa-check"></i>
                             <span>@lang('site::messages.save_add')</span>
                         </button>
-                        <button name="_create" form="form-content" value="0" type="submit" class="btn btn-ferroli mb-1">
+                        <button name="_create" form="scheme-form" value="0" type="submit" class="btn btn-ferroli mb-1">
                             <i class="fa fa-check"></i>
                             <span>@lang('site::messages.save')</span>
                         </button>

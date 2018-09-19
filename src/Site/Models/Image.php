@@ -37,8 +37,13 @@ class Image extends Model
         });
     }
 
-    public function src(){
-        return $this->exists ? Storage::disk($this->storage)->url($this->path) : Storage::disk('products')->url('noimage.png');
+    public function src()
+    {
+        if (!$this->exists || !Storage::disk($this->storage)->has($this->path)) {
+            return Storage::disk('products')->url('noimage.png');
+        } else {
+            return Storage::disk($this->storage)->url($this->path);
+        }
     }
 
     /**

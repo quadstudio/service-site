@@ -29,7 +29,7 @@
                             @foreach($equipment->images as $key => $image)
                                 <div class="carousel-item @if($key == 0) active @endif">
                                     <img class="d-block w-100"
-                                         src="{{ Storage::disk($image->storage)->url($image->path) }}"
+                                         src="{{ $image->src() }}"
                                          alt="{{$equipment->name}}">
                                 </div>
                             @endforeach

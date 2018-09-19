@@ -31,7 +31,7 @@
                                 @foreach($images as $key => $image)
                                     <div class="carousel-item @if($key == 0) active @endif">
                                         <img class="d-block w-100"
-                                             src="{{ Storage::disk($image->storage)->url($image->path) }}"
+                                             src="{{ $image->src() }}"
                                              alt="{{$product->name}}">
                                     </div>
                                 @endforeach
@@ -66,9 +66,12 @@
                             <dl class="row">
 
                                 @admin()
-                                <dd class="col-sm-12"><a href="{{route('admin.products.show', $product)}}"><i
-                                                class="fa fa-folder-open"></i> @lang('site::messages.open') @lang('site::messages.in_admin')
-                                    </a></dd>
+                                <dd class="col-sm-12"><a href="{{route('admin.products.show', $product)}}">
+                                        <i class="fa fa-folder-open"></i>
+                                        @lang('site::messages.open')
+                                        @lang('site::messages.in_admin')
+                                    </a>
+                                </dd>
                                 @endadmin()
 
                                 <dt class="col-sm-4">@lang('site::product.sku')</dt>

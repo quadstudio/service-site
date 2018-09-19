@@ -89,7 +89,7 @@ trait ActControllerTrait
             foreach ($contragents as $contragent_id => $repairs) {
                 $contragent = Contragent::find($contragent_id);
                 /** @var Act $act */
-                $user->acts()->save($act = Act::create([]));
+                $user->acts()->save($act = Act::create(['contragent_id' => $contragent_id]));
                 $act->details()->saveMany([
                     new ActDetail($contragent->organization->toArray()),
                     new ActDetail($contragent->toArray())

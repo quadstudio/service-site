@@ -4,6 +4,7 @@ namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use QuadStudio\Service\Site\Filters\Datasheet\TypeFilter;
 use QuadStudio\Service\Site\Filters\Equipment\HasProductsFilter;
 use QuadStudio\Service\Site\Filters\Equipment\SortByNameFilter;
 use QuadStudio\Service\Site\Filters\Equipment\WithProductsFilter;
@@ -69,21 +70,19 @@ trait SchemeControllerTrait
 
         return view('site::admin.scheme.index', [
             'repository' => $this->schemes,
-            'schemes'    => $this->schemes->paginate(config('site.per_page.scheme', 10), [env('DB_PREFIX', '') . 'schemes.*'])
+            'schemes'    => $this->schemes->paginate(config('site.per_page.scheme', 10), ['schemes.*'])
         ]);
     }
 
     public function create()
     {
         $blocks = $this->blocks->trackFilter()->all();
-        $datasheets = $this->datasheets->trackFilter()->all();
-        $equipments = $this->equipments
+        $datasheets = $this->datasheets
             ->trackFilter()
-            ->pushTrackFilter(SortByNameFilter::class)
-            ->pushTrackFilter(HasProductsFilter::class)
-            ->pushTrackFilter(WithProductsFilter::class)
+            ->applyFilter((new TypeFilter())->setTypeId(4))
             ->all();
-        return view('site::admin.scheme.create', compact('blocks', 'datasheets', 'equipments'));
+
+        return view('site::admin.scheme.create', compact('blocks', 'datasheets'));
     }
 
     /**

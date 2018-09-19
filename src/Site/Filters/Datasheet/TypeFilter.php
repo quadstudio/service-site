@@ -3,62 +3,35 @@
 namespace QuadStudio\Service\Site\Filters\Datasheet;
 
 use QuadStudio\Repo\Contracts\RepositoryInterface;
-use QuadStudio\Repo\Filters\BootstrapSelect;
-use QuadStudio\Repo\Filters\WhereFilter;
-use QuadStudio\Service\Site\Models\FileType;
+use QuadStudio\Repo\Filter;
 
-class TypeFilter extends WhereFilter
+class TypeFilter extends Filter
 {
-    use BootstrapSelect;
-
-    protected $render = true;
+    /**
+     * @var null|int
+     */
+    private $type_id;
 
     function apply($builder, RepositoryInterface $repository)
     {
-        if ($this->canTrack() && !is_null($type_id = $this->get($this->name()))) {
-            $builder = $builder->whereHas('file', function ($query) use ($type_id) {
-                $query->where($this->column(), $type_id);
+        if (!is_null($this->type_id)) {
+            return $builder->whereHas('file', function ($query) {
+                $query->where('type_id', $this->type_id);
             });
+        } else {
+            return $builder->whereRaw('false');
         }
 
-        return $builder;
     }
 
     /**
-     * @return string
+     * @param int $type_id
+     * @return $this
      */
-    public function name(): string
+    public function setTypeId($type_id)
     {
-        return 'type_id';
-    }
+        $this->type_id = $type_id;
 
-    /**
-     * @return string
-     */
-    public function column(): string
-    {
-
-        return 'type_id';
-
-    }
-
-    /**
-     * Get the evaluated contents of the object.
-     *
-     * @return array
-     */
-    public function options(): array
-    {
-        return ['' => trans('site::datasheet.type_defaults')] + FileType::where('group_id', 2)->orderBy('sort_order')->pluck('name', 'id')->toArray();
-    }
-
-    public function defaults(): array
-    {
-        return [''];
-    }
-
-    public function label()
-    {
-        return trans('site::datasheet.type_id');
+        return $this;
     }
 }

@@ -122,7 +122,7 @@ class Contragent extends Model implements Addressable
             'ks'        => $this->getAttribute('ks'),
             'bik'       => $this->getAttribute('bik'),
             'bank'      => $this->getAttribute('bank'),
-            'address'   => $this->addresses()->whereTypeId(1)->first()->name,
+            'address'   => $this->addresses()->whereTypeId(1)->first()->full,
             'contract'  => $this->getAttribute('contract'),
             'nds_value' => config('site.nds', 18),
             'nds'       => $this->getAttribute('nds'),

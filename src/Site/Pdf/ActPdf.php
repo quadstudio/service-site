@@ -10,6 +10,8 @@ class ActPdf extends Pdf
 
     function build()
     {
+        $contragent = $this->model->details()->where('our', 0)->firstOrFail();
+        $organization = $this->model->details()->where('our', 1)->firstOrFail();
         $font_size = $this->defaults['font_size'];
         $font_size_small = $this->defaults['font_size_small'];
         $line_height = $this->defaults['line_height'];
@@ -20,7 +22,7 @@ class ActPdf extends Pdf
             'date'   => \Carbon\Carbon::instance($this->model->created_at)->format('d.m.Y')
         ])), 0, 1, 'C');
         $this->SetFont('Verdana', 'B', $font_size);
-        $this->Cell(0, $line_height, w1251(trans('site::act.pdf.contract') . ' ' . $this->model->contragent->contract), 0, 1, 'C');
+        $this->Cell(0, $line_height, w1251(trans('site::act.pdf.contract') . ' ' . $contragent->contract), 0, 1, 'C');
         $this->ln(5);
         $this->Line(10, $this->GetY(), 200, $this->GetY());
         $this->ln(5);
@@ -28,12 +30,12 @@ class ActPdf extends Pdf
         $this->Cell(30, $line_height, w1251(trans('site::act.pdf.customer')), 0, 0, 'L');
         $this->SetFont('Verdana', '', $font_size);
         $this->SetX(40);
-        $this->MultiCell(150, $line_height, w1251($this->model->contragent->name . ', ' . $this->model->contragent->addresses()->where('type_id', 1)->first()->name), 0, 'L');
+        $this->MultiCell(150, $line_height, w1251($contragent->name . ', ' . $contragent->address), 0, 'L');
         $this->SetFont('Verdana', 'B', $font_size);
         $this->Cell(30, $line_height, w1251(trans('site::act.pdf.executor')), 0, 0, 'L');
         $this->SetFont('Verdana', '', $font_size);
         $this->SetX(40);
-        $this->MultiCell(150, $line_height, w1251($this->model->organization->name . ', ' . $this->model->organization->address), 0, 'L');
+        $this->MultiCell(150, $line_height, w1251($organization->name . ', ' . $organization->address), 0, 'L');
         $this->ln(5);
         $this->SetFont('Verdana', '', $font_size_small);
         $this->Cell(10, $line_height, w1251('№'), 1, 0, 'C');
@@ -49,7 +51,7 @@ class ActPdf extends Pdf
                 'repair_date' => \Carbon\Carbon::instance($this->model->created_at)->format('d.m.Y')
             ])), 1, 0, 'L');
             $this->Cell(20, $line_height, 1, 1, 0, 'C');
-            $this->Cell(10, $line_height, w1251(trans('site::act.pdf.table.unit')), 1, 0, 'R');
+            $this->Cell(10, $line_height, w1251(trans('site::act.pdf.table.unit_row')), 1, 0, 'C');
             $this->Cell(20, $line_height, number_format($repair->totalCost, 2, '.', ' '), 1, 0, 'R');
             $this->Cell(20, $line_height, number_format($repair->totalCost, 2, '.', ' '), 1, 1, 'R');
         }
