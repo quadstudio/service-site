@@ -13,7 +13,7 @@ class SortFilter extends OrderByFilter
     public function defaults(): array
     {
         return [
-            env('DB_PREFIX', '').'repairs.created_at' => 'DESC'
+            'repairs.created_at' => 'DESC'
         ];
     }
 }

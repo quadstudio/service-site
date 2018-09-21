@@ -21,7 +21,7 @@ class Phone extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = env('DB_PREFIX', '') . 'phones';
+        $this->table = 'phones';
     }
 
     /**

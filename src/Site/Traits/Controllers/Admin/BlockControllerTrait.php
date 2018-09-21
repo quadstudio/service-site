@@ -33,7 +33,7 @@ trait BlockControllerTrait
 
         return view('site::admin.block.index', [
             'repository' => $this->blocks,
-            'blocks'  => $this->blocks->paginate(config('site.per_page.block', 10), [env('DB_PREFIX', '') . 'blocks.*'])
+            'blocks'  => $this->blocks->paginate(config('site.per_page.block', 10), ['blocks.*'])
         ]);
     }
 

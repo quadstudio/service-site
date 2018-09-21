@@ -26,7 +26,7 @@ class Element extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = env('DB_PREFIX', '') . 'elements';
+        $this->table = 'elements';
     }
 
     /**

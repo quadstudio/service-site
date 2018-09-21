@@ -22,7 +22,7 @@ class ContragentType extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = env('DB_PREFIX', '') . 'contragent_types';
+        $this->table = 'contragent_types';
     }
 
 }

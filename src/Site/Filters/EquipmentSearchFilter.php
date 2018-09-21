@@ -21,8 +21,8 @@ class EquipmentSearchFilter extends SearchFilter
     protected function columns()
     {
         return [
-            env('DB_PREFIX', '') . 'equipments.name',
-            env('DB_PREFIX', '') . 'equipments.description',
+            'equipments.name',
+            'equipments.description',
         ];
     }
 

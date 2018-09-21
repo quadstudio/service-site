@@ -40,10 +40,10 @@ class ClientSearchFilter extends BaseFilter
     protected function columns()
     {
         return [
-            env('DB_PREFIX', '') . 'repairs.client',
-            env('DB_PREFIX', '') . 'repairs.phone_primary',
-            env('DB_PREFIX', '') . 'repairs.phone_secondary',
-            env('DB_PREFIX', '') . 'repairs.address',
+            'repairs.client',
+            'repairs.phone_primary',
+            'repairs.phone_secondary',
+            'repairs.address',
         ];
     }
 

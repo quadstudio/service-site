@@ -52,16 +52,16 @@ class ContactSearchFilter extends SearchFilter
     protected function columns()
     {
         return [
-            env('DB_PREFIX', '') . 'contacts.name',
-            env('DB_PREFIX', '') . 'contacts.position',
-            env('DB_PREFIX', '') . 'contacts.web',
+            'contacts.name',
+            'contacts.position',
+            'contacts.web',
         ];
     }
 
     protected function phone_columns()
     {
         return [
-            env('DB_PREFIX', '') . 'phones.number',
+            'phones.number',
         ];
     }
 

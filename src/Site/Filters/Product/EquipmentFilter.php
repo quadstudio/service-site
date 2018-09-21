@@ -49,7 +49,7 @@ class EquipmentFilter extends WhereFilter
     public function options(): array
     {
         $options = Equipment::whereHas('products', function ($query) {
-            $query->where(env('DB_PREFIX', '') . 'products.enabled', 1);
+            $query->where('products.enabled', 1);
             $query->whereHas('relations', function ($query) {
                 $query->where('enabled', 1)->where('active', 1)->whereNull('equipment_id');
             });
@@ -65,7 +65,7 @@ class EquipmentFilter extends WhereFilter
     public function column(): string
     {
 
-        return env('DB_PREFIX', '') . 'products.equipment_id';
+        return 'products.equipment_id';
 
     }
 

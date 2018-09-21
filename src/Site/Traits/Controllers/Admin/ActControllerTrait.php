@@ -59,7 +59,7 @@ trait ActControllerTrait
 
         return view('site::admin.act.index', [
             'repository' => $this->acts,
-            'acts'       => $this->acts->paginate(config('site.per_page.act', 10), [env('DB_PREFIX', '') . 'acts.*'])
+            'acts'       => $this->acts->paginate(config('site.per_page.act', 10), ['acts.*'])
         ]);
     }
 

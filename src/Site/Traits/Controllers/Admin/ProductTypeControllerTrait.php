@@ -32,7 +32,7 @@ trait ProductTypeControllerTrait
 
         return view('site::admin.product_type.index', [
             'repository' => $this->types,
-            'types'      => $this->types->paginate(config('site.per_page.product_type', 25), [env('DB_PREFIX', '') . 'product_types.*'])
+            'types'      => $this->types->paginate(config('site.per_page.product_type', 25), ['product_types.*'])
         ]);
     }
 

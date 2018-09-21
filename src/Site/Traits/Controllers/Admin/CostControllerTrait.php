@@ -31,7 +31,7 @@ trait CostControllerTrait
         $this->costs->trackFilter();
         return view('site::cost.index', [
             'repository' => $this->costs,
-            'items'      => $this->costs->paginate(config('site.per_page.cost', 10), [env('DB_PREFIX', '').'costs.*'])
+            'items'      => $this->costs->paginate(config('site.per_page.cost', 10), ['costs.*'])
         ]);
     }
 

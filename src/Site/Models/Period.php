@@ -17,7 +17,7 @@ class Period extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = env('DB_PREFIX', ''). 'periods';
+        $this->table = 'periods';
     }
 
 }

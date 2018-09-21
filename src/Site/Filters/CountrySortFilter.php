@@ -13,7 +13,7 @@ class CountrySortFilter extends OrderByFilter
     public function defaults(): array
     {
         return [
-            env('DB_PREFIX', '') . 'countries.sort_order' => 'ASC'
+            'countries.sort_order' => 'ASC'
         ];
     }
 

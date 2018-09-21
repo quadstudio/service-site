@@ -40,9 +40,9 @@ class SearchFilter extends BaseFilter
     protected function columns()
     {
         return [
-            env('DB_PREFIX', '') . 'repairs.serial_id',
-            env('DB_PREFIX', '') . 'repairs.number',
-            env('DB_PREFIX', '') . 'repairs.warranty_number',
+            'repairs.serial_id',
+            'repairs.number',
+            'repairs.warranty_number',
         ];
     }
 

@@ -31,7 +31,7 @@ trait CountryControllerTrait
         $this->countries->trackFilter();
         return view('site::admin.country.index', [
             'repository' => $this->countries,
-            'items'      => $this->countries->paginate(config('site.per_page.country', 10), [env('DB_PREFIX', '').'countries.*'])
+            'items'      => $this->countries->paginate(config('site.per_page.country', 10), ['countries.*'])
         ]);
     }
 

@@ -126,8 +126,8 @@ trait ProductControllerTrait
             'product_id' => $product->id,
             'sku'        => $product->sku,
             'image'      => $product->image()->src(),
-            'cost'       => $product->hasPrice ? $product->price->value : '',
-            'format'     => $product->hasPrice ? Site::format($product->price->value): '',
+            'cost'       => $product->hasPrice ? $product->repairPrice->value : '',
+            'format'     => $product->hasPrice ? Site::format($product->repairPrice->value): '',
             'name'       => $product->name,
             'count'      => 1,
         ]));

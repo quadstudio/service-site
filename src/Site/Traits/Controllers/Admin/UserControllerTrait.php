@@ -5,7 +5,6 @@ namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 use Illuminate\Http\Request;
 use QuadStudio\Rbac\Repositories\RoleRepository;
 use QuadStudio\Service\Site\Events\UserScheduleEvent;
-
 use QuadStudio\Service\Site\Filters\PriceType\EnabledFilter;
 use QuadStudio\Service\Site\Filters\User\ActiveSelectFilter;
 use QuadStudio\Service\Site\Filters\User\AddressSearchFilter;
@@ -223,11 +222,10 @@ trait UserControllerTrait
      */
     public function edit(User $user)
     {
-        $types = $this->price_types->all();
         $roles = $this->roles->all();
         $warehouses = $this->warehouses->all();
 
-        return view('site::admin.user.edit', compact('user', 'types', 'roles', 'warehouses'));
+        return view('site::admin.user.edit', compact('user', 'roles', 'warehouses'));
     }
 
 
@@ -306,7 +304,6 @@ trait UserControllerTrait
                     'price_type_id'   => $price_type_id,
                 ];
             }
-            //dd($data);
             $user->prices()->createMany($data);
             if ($request->input('_stay') == 1) {
                 $redirect = redirect()->route('admin.users.prices', $user)->with('success', trans('site::user_price.updated'));
@@ -316,7 +313,7 @@ trait UserControllerTrait
 
             return $redirect;
         } else {
-            $user_prices = $this->user_prices->all();
+            $user_prices = $user->prices;
             $product_types = $this->product_types->all();
             $price_types = $this->price_types->applyFilter(new EnabledFilter())->all();
             $default_price_type = config('site.defaults.user.price_type_id');
@@ -328,7 +325,6 @@ trait UserControllerTrait
                 'default_price_type'
             ));
         }
-
     }
 
     /**

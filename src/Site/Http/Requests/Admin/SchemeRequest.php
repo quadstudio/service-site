@@ -24,7 +24,6 @@ class SchemeRequest extends FormRequest
      */
     public function rules()
     {
-        $prefix = env('DB_PREFIX', '');
         switch ($this->method()) {
             case 'GET':
             case 'DELETE': {
@@ -34,9 +33,9 @@ class SchemeRequest extends FormRequest
             case 'PATCH':
             case 'POST': {
                 return [
-                    'block_id'     => 'required|exists:' . $prefix . 'blocks,id',
-                    'image_id'     => 'required|exists:' . $prefix . 'images,id',
-                    'datasheet_id' => 'required|exists:' . $prefix . 'datasheets,id',
+                    'block_id'     => 'required|exists:blocks,id',
+                    'image_id'     => 'required|exists:images,id',
+                    'datasheet_id' => 'required|exists:datasheets,id',
                     'equipments'   => 'required|array|min:1',
                 ];
             }

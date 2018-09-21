@@ -61,7 +61,7 @@ trait EquipmentControllerTrait
 
         return view('site::admin.equipment.index', [
             'repository' => $this->equipments,
-            'equipments' => $this->equipments->paginate(config('site.per_page.equipment', 10), [env('DB_PREFIX', '') . 'equipments.*'])
+            'equipments' => $this->equipments->paginate(config('site.per_page.equipment', 10), ['equipments.*'])
         ]);
     }
 

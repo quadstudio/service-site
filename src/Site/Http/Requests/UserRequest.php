@@ -24,7 +24,6 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
-        $prefix = env('DB_PREFIX', '');
         switch ($this->method()) {
             case 'GET':
             case 'DELETE':
@@ -34,10 +33,10 @@ class UserRequest extends FormRequest
             case 'PUT':
             case 'PATCH': {
                 return [
-                    'contragent.type_id'        => 'required|exists:' . $prefix . 'contragent_types,id',
+                    'contragent.type_id'        => 'required|exists:contragent_types,id',
                     'contragent.name'           => 'required|string|max:255',
                     'contragent.inn'            => array(
-                        'unique:' . env('DB_PREFIX', '') . 'contragents,inn,' . $this->route()->parameter('contragent')->id,
+                        'unique:contragents,inn,' . $this->route()->parameter('contragent')->id,
                         'required',
                         'numeric',
                         'regex:/\d{10}|\d{12}/'

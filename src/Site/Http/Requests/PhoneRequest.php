@@ -24,12 +24,11 @@ class PhoneRequest extends FormRequest
      */
     public function rules()
     {
-        $prefix = env('DB_PREFIX', '');
         switch ($this->method()) {
 
             case 'POST': {
                 return [
-                    'country_id'   => 'required|exists:' . $prefix . 'countries,id',
+                    'country_id'   => 'required|exists:countries,id',
                     'number'       => 'required|numeric|digits:10',
                     'extra'        => 'max:20',
                 ];

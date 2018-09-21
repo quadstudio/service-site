@@ -32,7 +32,7 @@ trait PriceTypeControllerTrait
 
         return view('site::admin.price_type.index', [
             'repository' => $this->types,
-            'types'      => $this->types->paginate(config('site.per_page.price_type', 12), [env('DB_PREFIX', '') . 'price_types.*'])
+            'types'      => $this->types->paginate(config('site.per_page.price_type', 12), ['price_types.*'])
         ]);
     }
 

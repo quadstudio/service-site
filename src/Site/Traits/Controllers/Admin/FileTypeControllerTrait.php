@@ -40,7 +40,7 @@ trait FileTypeControllerTrait
 
         return view('site::admin.file_type.index', [
             'repository' => $this->types,
-            'types'      => $this->types->paginate(config('site.per_page.file_type', 25), [env('DB_PREFIX', '') . 'file_types.*'])
+            'types'      => $this->types->paginate(config('site.per_page.file_type', 25), ['file_types.*'])
         ]);
     }
 

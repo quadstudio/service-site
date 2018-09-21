@@ -30,7 +30,7 @@ trait BankControllerTrait
         $this->banks->trackFilter();
         return view('site::admin.bank.index', [
             'repository' => $this->banks,
-            'banks'      => $this->banks->paginate(config('site.per_page.bank', 10), [env('DB_PREFIX', '').'banks.*'])
+            'banks'      => $this->banks->paginate(config('site.per_page.bank', 10), ['banks.*'])
         ]);
     }
 

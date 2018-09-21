@@ -13,7 +13,7 @@ class SortFilter extends OrderByFilter
     public function defaults(): array
     {
         return [
-            env('DB_PREFIX', '') . 'difficulties.sort_order' => 'ASC'
+            'difficulties.sort_order' => 'ASC'
         ];
     }
 

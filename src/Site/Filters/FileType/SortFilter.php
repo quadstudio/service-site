@@ -13,7 +13,7 @@ class SortFilter extends OrderByFilter
     public function defaults(): array
     {
         return [
-            env('DB_PREFIX', '') . 'file_types.sort_order' => 'ASC'
+            'file_types.sort_order' => 'ASC'
         ];
     }
 

@@ -36,7 +36,7 @@ trait DistanceControllerTrait
 
         return view('site::admin.distance.index', [
             'repository' => $this->distances,
-            'distances'  => $this->distances->paginate(config('site.per_page.distance', 10), [env('DB_PREFIX', '') . 'distances.*'])
+            'distances'  => $this->distances->paginate(config('site.per_page.distance', 10), ['distances.*'])
         ]);
     }
 

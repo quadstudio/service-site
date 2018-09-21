@@ -35,27 +35,6 @@
                             <div class="form-row required">
                                 <div class="col mb-3">
                                     <label class="control-label"
-                                           for="user_price_type_id">@lang('site::user.price_type_id')</label>
-                                    <select class="form-control
-                                            {{$errors->has('user.price_type_id') ? ' is-invalid' : ''}}"
-                                            required
-                                            name="user[price_type_id]"
-                                            id="user_price_type_id">
-                                        @foreach($types as $type)
-                                            <option
-                                                    @if(old('user.price_type_id') == $type->id || $user->price_type_id == $type->id) selected
-                                                    @endif
-                                                    value="{{ $type->id }}">{{ $type->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('user.price_type_id') }}</strong>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="form-row required">
-                                <div class="col mb-3">
-                                    <label class="control-label"
                                            for="user_warehouse_id">@lang('site::user.warehouse_id')</label>
                                     <select class="form-control
                                             {{$errors->has('user.warehouse_id') ? ' is-invalid' : ''}}"

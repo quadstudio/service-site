@@ -56,7 +56,7 @@ trait RepairControllerTrait
 
         return view('site::admin.repair.index', [
             'repository' => $this->repairs,
-            'repairs'    => $this->repairs->paginate(config('site.per_page.repair', 10), [env('DB_PREFIX', '') . 'repairs.*'])
+            'repairs'    => $this->repairs->paginate(config('site.per_page.repair', 10), ['repairs.*'])
         ]);
     }
 

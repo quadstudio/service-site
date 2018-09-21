@@ -13,7 +13,7 @@ class SortFilter extends OrderByFilter
     public function defaults(): array
     {
         return [
-            env('DB_PREFIX', '').'repair_statuses.sort_order' => 'ASC'
+            'repair_statuses.sort_order' => 'ASC'
         ];
     }
 }

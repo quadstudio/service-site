@@ -37,7 +37,7 @@ class Repair extends Model implements Messagable
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = env('DB_PREFIX', '') . 'repairs';
+        $this->table = 'repairs';
     }
 
 //    public static function boot()

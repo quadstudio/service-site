@@ -28,7 +28,7 @@ class Address extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = env('DB_PREFIX', '') . 'addresses';
+        $this->table = 'addresses';
     }
 
     public static function boot()

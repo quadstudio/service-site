@@ -21,10 +21,10 @@ class ContragentSearchFilter extends SearchFilter
     protected function columns()
     {
         return [
-            env('DB_PREFIX', '') . 'contragents.name',
-            env('DB_PREFIX', '') . 'contragents.inn',
-            env('DB_PREFIX', '') . 'contragents.ogrn',
-            env('DB_PREFIX', '') . 'contragents.rs',
+            'contragents.name',
+            'contragents.inn',
+            'contragents.ogrn',
+            'contragents.rs',
         ];
     }
 

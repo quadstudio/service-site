@@ -24,7 +24,6 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
-        $prefix = env('DB_PREFIX', '');
         switch ($this->method()) {
             case 'GET':
             case 'DELETE':
@@ -36,14 +35,14 @@ class UserRequest extends FormRequest
                     'verified'              => 'required|boolean',
                     //
                     'name'                  => 'required|string|max:255',
-                    'email'                 => 'required|string|email|max:255|unique:' . $prefix . 'users',
+                    'email'                 => 'required|string|email|max:255|unique:users',
                     'web'                   => 'max:255',
                     //
-                    'address.sc.country_id' => 'required|exists:' . $prefix . 'countries,id',
-                    'address.sc.region_id'  => 'required|exists:' . $prefix . 'regions,id',
+                    'address.sc.country_id' => 'required|exists:countries,id',
+                    'address.sc.region_id'  => 'required|exists:regions,id',
                     'address.sc.locality'   => 'required|string|max:255',
                     //
-                    'phone.sc.country_id'   => 'required|exists:' . $prefix . 'countries,id',
+                    'phone.sc.country_id'   => 'required|exists:countries,id',
                     'phone.sc.number'       => 'required|numeric|digits:10',
                     'phone.sc.extra'        => 'max:20',
                 ];
@@ -55,7 +54,6 @@ class UserRequest extends FormRequest
                     'user.active'        => 'required|boolean',
                     'user.dealer'        => 'required|boolean',
                     'user.verified'      => 'required|boolean',
-                    'user.price_type_id' => 'required|exists:' . $prefix . 'price_types,id',
                 ];
             }
             default:

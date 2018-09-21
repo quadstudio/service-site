@@ -20,7 +20,7 @@ class ProductType extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = env('DB_PREFIX', '') . 'product_types';
+        $this->table = 'product_types';
     }
 
     /**

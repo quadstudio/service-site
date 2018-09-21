@@ -2,6 +2,7 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers;
 
+use QuadStudio\Service\Site\Filters\BelongsUserFilter;
 use QuadStudio\Service\Site\Repositories\ActRepository;
 use QuadStudio\Service\Site\Models\Act;
 
@@ -29,14 +30,16 @@ trait ActControllerTrait
     {
 
         $this->acts->trackFilter();
+        $this->acts->applyFilter(new BelongsUserFilter());
         return view('site::act.index', [
             'repository' => $this->acts,
-            'items'      => $this->acts->paginate(config('site.per_page.act', 10), [env('DB_PREFIX', '').'acts.*'])
+            'acts'      => $this->acts->paginate(config('site.per_page.act', 10), ['acts.*'])
         ]);
     }
 
     public function show(Act $act)
     {
-        return view('site::act.show', ['act' => $act]);
+        $this->authorize('view', $act);
+        return view('site::act.show', compact('act'));
     }
 }

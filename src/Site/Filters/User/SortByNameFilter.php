@@ -13,7 +13,7 @@ class SortByNameFilter extends OrderByFilter
     public function defaults(): array
     {
         return [
-            env('DB_PREFIX', '') . 'users.name' => 'ASC'
+            'users.name' => 'ASC'
         ];
     }
 

@@ -34,7 +34,7 @@ trait DatasheetControllerTrait
 
         return view('site::datasheet.index', [
             'repository' => $this->datasheets,
-            'datasheets' => $this->datasheets->paginate(config('site.per_page.datasheet', 10), [env('DB_PREFIX', '') . 'datasheets.*'])
+            'datasheets' => $this->datasheets->paginate(config('site.per_page.datasheet', 10), ['datasheets.*'])
         ]);
     }
 

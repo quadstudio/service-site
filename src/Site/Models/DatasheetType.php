@@ -21,7 +21,7 @@ class DatasheetType extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = env('DB_PREFIX', '') . 'datasheet_types';
+        $this->table = 'datasheet_types';
     }
 
 }

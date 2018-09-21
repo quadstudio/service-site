@@ -24,7 +24,6 @@ class OrganizationRequest extends FormRequest
      */
     public function rules()
     {
-        $prefix = env('DB_PREFIX', '');
         switch ($this->method()) {
             case 'GET':
             case 'DELETE':
@@ -34,7 +33,7 @@ class OrganizationRequest extends FormRequest
             case 'PUT':
             case 'PATCH': {
                 return [
-                    'account_id' => 'required|exists:' . $prefix . 'accounts,id',
+                    'account_id' => 'required|exists:accounts,id',
                 ];
             }
             default:

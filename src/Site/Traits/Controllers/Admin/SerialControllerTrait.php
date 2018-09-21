@@ -33,7 +33,7 @@ trait SerialControllerTrait
 
         return view('site::admin.serial.index', [
             'repository' => $this->serials,
-            'serials'    => $this->serials->paginate(config('site.per_page.serial', 10), [env('DB_PREFIX', '') . 'serials.*'])
+            'serials'    => $this->serials->paginate(config('site.per_page.serial', 10), ['serials.*'])
         ]);
     }
 

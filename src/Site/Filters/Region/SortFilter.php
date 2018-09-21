@@ -13,7 +13,7 @@ class SortFilter extends OrderByFilter
     public function defaults(): array
     {
         return [
-            env('DB_PREFIX', '').'regions.name' => 'ASC'
+            'regions.name' => 'ASC'
         ];
     }
 }

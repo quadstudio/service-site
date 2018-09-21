@@ -24,7 +24,7 @@ class OrderItem extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = env('DB_PREFIX', '') . 'order_items';
+        $this->table = 'order_items';
     }
 
     /**

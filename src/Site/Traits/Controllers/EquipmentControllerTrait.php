@@ -32,7 +32,7 @@ trait EquipmentControllerTrait
         $this->equipments->applyFilter(new EnabledFilter());
 
         return view('site::equipment.index', [
-            'equipments' => $this->equipments->all([env('DB_PREFIX', '') . 'equipments.*'])
+            'equipments' => $this->equipments->all(['equipments.*'])
         ]);
     }
 

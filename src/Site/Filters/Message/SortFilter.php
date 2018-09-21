@@ -13,7 +13,7 @@ class SortFilter extends OrderByFilter
     public function defaults(): array
     {
         return [
-            env('DB_PREFIX', '').'messages.created_at' => 'DESC'
+            'messages.created_at' => 'DESC'
         ];
     }
 }

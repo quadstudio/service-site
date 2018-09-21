@@ -138,6 +138,53 @@ class Product extends Model implements Imageable
         return $this->morphMany(Image::class, 'imageable');
     }
 
+    /**
+     * Получить тип цены для отчета по ремонту
+     *
+     * @return \Illuminate\Config\Repository|mixed
+     */
+    public function getRepairPriceTypeAttribute()
+    {
+        return Auth::guest()
+            ? config('site.defaults.guest.price_type_id')
+            : config('site.defaults.part.price_type_id', config('site.defaults.user.price_type_id'));
+    }
+
+    /**
+     * @return Model
+     */
+    public function getRepairPriceAttribute()
+    {
+        return $this
+            ->getRepairPrice()
+            ->firstOrNew([]);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    private function getRepairPrice()
+    {
+        //dd($this->priceType);
+        return $this
+            ->prices()
+            ->where('type_id', '=', $this->repairPriceType)
+            ->where('price', '<>', 0.00);
+    }
+
+    /**
+     * Цены
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function prices()
+    {
+        return $this->hasMany(Price::class);
+    }
+
+    /**
+     * @return \Illuminate\Config\Repository|mixed
+     */
     public function getPriceTypeAttribute()
     {
         return Auth::guest()
@@ -150,17 +197,9 @@ class Product extends Model implements Imageable
             );
     }
 
-
-
-//    public function price()
-//    {
-//        return $this
-//            ->prices()
-//            ->where('prices.type_id', '=', Auth::guest() ? config('site.defaults.guest.price_type_id') : Auth::user()->price_type_id)
-//            ->where('prices.price', '<>', 0.00)
-//            ->firstOrNew([]);
-//    }
-
+    /**
+     * @return Model
+     */
     public function getPriceAttribute()
     {
         return $this
@@ -181,20 +220,16 @@ class Product extends Model implements Imageable
     }
 
     /**
-     * Цены
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return bool
      */
-    public function prices()
-    {
-        return $this->hasMany(Price::class);
-    }
-
     public function getHasPriceAttribute()
     {
         return $this->getPrice()->exists();
     }
 
+    /**
+     * @return bool
+     */
     public function getCanBuyAttribute()
     {
         return $this->hasPrice && $this->getAttribute('active') == 1;
@@ -219,7 +254,7 @@ class Product extends Model implements Imageable
     {
         return $this->belongsToMany(
             Datasheet::class,
-            env('DB_PREFIX', '') . 'datasheet_product',
+            'datasheet_product',
             'product_id',
             'datasheet_id'
         );
@@ -234,7 +269,7 @@ class Product extends Model implements Imageable
     {
         return $this->belongsToMany(
             Scheme::class,
-            env('DB_PREFIX', '') . 'product_scheme',
+            'product_scheme',
             'product_id',
             'scheme_id'
         );

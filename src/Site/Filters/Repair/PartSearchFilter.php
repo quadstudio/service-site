@@ -40,8 +40,8 @@ class PartSearchFilter extends SearchFilter
     protected function columns()
     {
         return [
-            env('DB_PREFIX', '') . 'products.sku',
-            env('DB_PREFIX', '') . 'products.name',
+            'products.sku',
+            'products.name',
         ];
     }
 

@@ -23,7 +23,7 @@ class FileType extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = env('DB_PREFIX', '') . 'file_types';
+        $this->table = 'file_types';
     }
 
     /**

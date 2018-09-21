@@ -33,7 +33,7 @@ trait DifficultyControllerTrait
 
         return view('site::admin.difficulty.index', [
             'repository' => $this->difficulties,
-            'difficulties'  => $this->difficulties->paginate(config('site.per_page.difficulty', 10), [env('DB_PREFIX', '') . 'difficulties.*'])
+            'difficulties'  => $this->difficulties->paginate(config('site.per_page.difficulty', 10), ['difficulties.*'])
         ]);
     }
 

@@ -32,7 +32,7 @@ trait MessageControllerTrait
         $this->messages->pushTrackFilter(BelongsScFilter::class);
         return view('site::message.index', [
             'repository' => $this->messages,
-            'messages'      => $this->messages->paginate(config('site.per_page.message', 10), [env('DB_PREFIX', '').'messages.*'])
+            'messages'      => $this->messages->paginate(config('site.per_page.message', 10), ['messages.*'])
         ]);
     }
 

@@ -76,6 +76,9 @@
                         <a class="list-group-item list-group-item-action" href="{{ route('admin.currencies.index') }}">
                             <i class="fa fa-@lang('site::currency.icon')"></i> @lang('site::currency.currencies')
                         </a>
+                        <a class="dropdown-item" href="{{ route('admin.currency_archives.index') }}">
+                            <i class="fa fa-@lang('site::archive.icon')"></i> @lang('site::archive.archives')
+                        </a>
                         <a class="list-group-item list-group-item-action" href="{{ route('admin.warehouses.index') }}">
                             <i class="fa fa-@lang('site::warehouse.icon')"></i> @lang('site::warehouse.warehouses')
                         </a>

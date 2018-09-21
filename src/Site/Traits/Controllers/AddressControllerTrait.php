@@ -41,7 +41,7 @@ trait AddressControllerTrait
 
         return view('site::address.index', [
             'repository' => $this->addresses,
-            'addresses'  => $this->addresses->paginate(config('site.per_page.address', 10), [env('DB_PREFIX', '') . 'addresses.*'])
+            'addresses'  => $this->addresses->paginate(config('site.per_page.address', 10), ['addresses.*'])
         ]);
     }
 

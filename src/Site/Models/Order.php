@@ -26,7 +26,7 @@ class Order extends Model implements Messagable
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = env('DB_PREFIX', '') . 'orders';
+        $this->table = 'orders';
     }
 
     public function created_at($time = false)

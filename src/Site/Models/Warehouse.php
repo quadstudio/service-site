@@ -19,7 +19,7 @@ class Warehouse extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = env('DB_PREFIX', '') . 'warehouses';
+        $this->table = 'warehouses';
     }
 
 }

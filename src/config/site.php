@@ -59,6 +59,7 @@ return [
         'period'       => 10,
         'order'        => 10,
         'product'      => 16,
+        'archive'      => 21,
         'product_list' => 100,
         'product_type' => 25,
         'message'      => 30,
@@ -173,6 +174,9 @@ return [
             'price_type_id'   => '7fb003f2-aca8-11e8-80cc-85ebbdeccdc7',
             'currency_id'     => 643,
             'role_id'         => 2,
+        ],
+        'part'     => [
+            'price_type_id'   => '7fb003f7-aca8-11e8-80cc-85ebbdeccdc7',
         ],
 
     ],

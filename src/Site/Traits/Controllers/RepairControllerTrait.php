@@ -132,7 +132,7 @@ trait RepairControllerTrait
 
         return view('site::repair.index', [
             'repository' => $this->repairs,
-            'repairs'    => $this->repairs->paginate(config('site.per_page.repair', 10), [env('DB_PREFIX', '') . 'repairs.*'])
+            'repairs'    => $this->repairs->paginate(config('site.per_page.repair', 10), ['repairs.*'])
         ]);
     }
 
@@ -145,6 +145,7 @@ trait RepairControllerTrait
      */
     public function show(Repair $repair)
     {
+        $this->authorize('view', $repair);
         $statuses = $repair->statuses()->get();
         $fails = $repair->fails;
         $this->types->applyFilter((new ModelHasFilesFilter())->setId($repair->id)->setMorph('repairs'));

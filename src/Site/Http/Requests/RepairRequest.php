@@ -26,7 +26,6 @@ class RepairRequest extends FormRequest
      */
     public function rules()
     {
-        $prefix = env('DB_PREFIX', '');
         $types = FileType::enabled()->required()->get();
         switch ($this->method()) {
             case 'GET':
@@ -37,37 +36,37 @@ class RepairRequest extends FormRequest
                 $rules = [
                     'contragent_id' => [
                         'required',
-                        'exists:' . $prefix . 'contragents,id',
-                        Rule::exists($prefix . 'contragents', 'id')->where(function ($query) use ($prefix) {
-                            $query->where($prefix . 'contragents.user_id', $this->user()->id);
+                        'exists:contragents,id',
+                        Rule::exists('contragents', 'id')->where(function ($query) {
+                            $query->where('contragents.user_id', $this->user()->id);
                         }),
                     ],
-                    'product_id'    => 'required|exists:' . $prefix . 'products,id',
+                    'product_id'    => 'required|exists:products,id',
                     'client'        => 'required|string|max:255',
-                    'country_id'    => 'required|exists:' . $prefix . 'countries,id',
+                    'country_id'    => 'required|exists:countries,id',
                     'address'       => 'required|string|max:255',
                     'phone_primary' => 'required|numeric|digits:10',
                     'trade_id'      => [
                         'required',
-                        'exists:' . $prefix . 'trades,id',
-                        Rule::exists($prefix . 'trades', 'id')->where(function ($query) use ($prefix) {
-                            $query->where($prefix . 'trades.user_id', $this->user()->id);
+                        'exists:trades,id',
+                        Rule::exists('trades', 'id')->where(function ($query) {
+                            $query->where('trades.user_id', $this->user()->id);
                         }),
                     ],
                     'date_trade'    => 'required|date_format:"Y-m-d"',
                     'launch_id'     => [
                         'required',
-                        'exists:' . $prefix . 'launches,id',
-                        Rule::exists($prefix . 'launches', 'id')->where(function ($query) use ($prefix) {
-                            $query->where($prefix . 'launches.user_id', $this->user()->id);
+                        'exists:launches,id',
+                        Rule::exists('launches', 'id')->where(function ($query) {
+                            $query->where('launches.user_id', $this->user()->id);
                         }),
                     ],
                     'date_launch'   => 'required|date_format:"Y-m-d"',
                     'engineer_id'   => [
                         'required',
-                        'exists:' . $prefix . 'engineers,id',
-                        Rule::exists($prefix . 'engineers', 'id')->where(function ($query) use ($prefix) {
-                            $query->where($prefix . 'engineers.user_id', $this->user()->id);
+                        'exists:engineers,id',
+                        Rule::exists('engineers', 'id')->where(function ($query) {
+                            $query->where('engineers.user_id', $this->user()->id);
                         }),
                     ],
                     'date_call'     => 'required|date_format:"Y-m-d"',
@@ -75,8 +74,8 @@ class RepairRequest extends FormRequest
                     'diagnostics'   => 'required|string',
                     'works'         => 'required|string',
                     'date_repair'   => 'required|date_format:"Y-m-d"',
-                    'distance_id'   => 'required|exists:' . $prefix . 'distances,id',
-                    'difficulty_id' => 'required|exists:' . $prefix . 'difficulties,id',
+                    'distance_id'   => 'required|exists:distances,id',
+                    'difficulty_id' => 'required|exists:difficulties,id',
 
                 ];
                 foreach ($types as $type) {
@@ -92,14 +91,14 @@ class RepairRequest extends FormRequest
                 if ($fails->contains('field', 'contragent_id')) {
                     $rules->put('contragent_id', [
                         'required',
-                        'exists:' . $prefix . 'contragents,id',
-                        Rule::exists($prefix . 'contragents', 'id')->where(function ($query) use ($prefix) {
-                            $query->where($prefix . 'contragents.user_id', $this->user()->id);
+                        'exists:contragents,id',
+                        Rule::exists('contragents', 'id')->where(function ($query) {
+                            $query->where('contragents.user_id', $this->user()->id);
                         }),
                     ]);
                 }
                 if ($fails->contains('field', 'country_id')) {
-                    $rules->put('country_id', 'required|exists:' . $prefix . 'countries,id');
+                    $rules->put('country_id', 'required|exists:countries,id');
                 }
                 if ($fails->contains('field', 'address')) {
                     $rules->put('address', 'required|string|max:255');
@@ -110,9 +109,9 @@ class RepairRequest extends FormRequest
                 if ($fails->contains('field', 'trade_id')) {
                     $rules->put('trade_id', [
                         'required',
-                        'exists:' . $prefix . 'trades,id',
-                        Rule::exists($prefix . 'trades', 'id')->where(function ($query) use ($prefix) {
-                            $query->where($prefix . 'trades.user_id', $this->user()->id);
+                        'exists:trades,id',
+                        Rule::exists('trades', 'id')->where(function ($query) {
+                            $query->where('trades.user_id', $this->user()->id);
                         }),
                     ]);
                 }
@@ -122,9 +121,9 @@ class RepairRequest extends FormRequest
                 if ($fails->contains('field', 'launch_id')) {
                     $rules->put('launch_id', [
                         'required',
-                        'exists:' . $prefix . 'launches,id',
-                        Rule::exists($prefix . 'launches', 'id')->where(function ($query) use ($prefix) {
-                            $query->where($prefix . 'launches.user_id', $this->user()->id);
+                        'exists:launches,id',
+                        Rule::exists('launches', 'id')->where(function ($query) {
+                            $query->where('launches.user_id', $this->user()->id);
                         }),
                     ]);
                 }
@@ -147,10 +146,10 @@ class RepairRequest extends FormRequest
                     $rules->put('date_repair', 'required|date_format:"Y-m-d"');
                 }
                 if ($fails->contains('field', 'distance_id')) {
-                    $rules->put('distance_id', 'required|exists:' . $prefix . 'distances,id');
+                    $rules->put('distance_id', 'required|exists:distances,id');
                 }
                 if ($fails->contains('field', 'difficulty_id')) {
-                    $rules->put('difficulty_id', 'required|exists:' . $prefix . 'difficulties,id');
+                    $rules->put('difficulty_id', 'required|exists:difficulties,id');
                 }
                 foreach ($types as $type) {
                     if ($fails->contains('field', 'file_' . $type->id)) {

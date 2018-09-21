@@ -35,7 +35,7 @@ trait FileGroupControllerTrait
 
         return view('site::admin.file_group.index', [
             'repository' => $this->groups,
-            'groups'      => $this->groups->paginate(config('site.per_page.file_group', 25), [env('DB_PREFIX', '') . 'file_groups.*'])
+            'groups'      => $this->groups->paginate(config('site.per_page.file_group', 25), ['file_groups.*'])
         ]);
     }
 

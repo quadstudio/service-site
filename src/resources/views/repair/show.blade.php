@@ -102,7 +102,7 @@
                     <dd class="col-sm-8">
                         @foreach($repair->parts as $part)
                             <div class="row">
-                                <div class="col-8">{{$part->product->name()}}
+                                <div class="col-8">{!! $part->product->name()!!}
                                     x {{$part->count}} {{$part->product->unit}}</div>
                                 <div class="col-4 text-right text-danger">{{Site::format($part->total)}}</div>
                             </div>
@@ -192,7 +192,7 @@
         </div>
         <div class="card mb-4">
             <div class="card-body">
-                <h5 class="card-title">@lang('site::file.files')</h5>
+                <h5 class="card-title">@lang('site::image.images')</h5>
                 <dl class="row">
                     <dd class="col">@include('site::repair.files')</dd>
                 </dl>

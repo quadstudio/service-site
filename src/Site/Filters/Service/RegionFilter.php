@@ -17,7 +17,7 @@ class RegionFilter extends Filter
     {
         if (!is_null($this->region)) {
             $builder = $builder->whereHas('addresses', function ($query) {
-                $query->where(env('DB_PREFIX', '') . 'addresses.region_id', $this->region->id);
+                $query->where('addresses.region_id', $this->region->id);
             });
         } else {
             $builder->whereRaw('false');

@@ -44,7 +44,7 @@ trait LaunchControllerTrait
 
         return view('site::admin.launch.index', [
             'repository' => $this->launches,
-            'launches'   => $this->launches->paginate(config('site.per_page.launch', 10), [env('DB_PREFIX', '') . 'launches.*'])
+            'launches'   => $this->launches->paginate(config('site.per_page.launch', 10), ['launches.*'])
         ]);
     }
 

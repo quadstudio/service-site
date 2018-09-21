@@ -21,7 +21,7 @@ class RepairFail extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = env('DB_PREFIX', ''). 'repair_fails';
+        $this->table = 'repair_fails';
     }
 
 }

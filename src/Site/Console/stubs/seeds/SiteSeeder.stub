@@ -6,12 +6,6 @@ use Illuminate\Support\Facades\Lang;
 
 class SiteSeeder extends Seeder
 {
-    private $prefix;
-
-    public function __construct()
-    {
-        $this->prefix = env('DB_PREFIX', '');
-    }
 
     /**
      * Run the database seeds.
@@ -22,7 +16,7 @@ class SiteSeeder extends Seeder
     {
         foreach (config('site.seeders', []) as $seeder) {
             if (Lang::has('site::seeder.'.$seeder, config('app.locale')) === true) {
-                DB::table("{$this->prefix}{$seeder}")->insert(trans('site::seeder.' . $seeder));
+                DB::table("{$seeder}")->insert(trans('site::seeder.' . $seeder));
             }
         }
     }

@@ -27,7 +27,6 @@ class RegisterRequest extends FormRequest
      */
     public function rules()
     {
-        $prefix = env('DB_PREFIX', '');
         switch ($this->method()) {
             case 'GET':
             case 'DELETE': {
@@ -36,43 +35,43 @@ class RegisterRequest extends FormRequest
             case 'POST': {
                 return [
                     'name'                      => 'required|string|max:255',
-                    'email'                     => 'required|string|email|max:191|unique:' . $prefix . 'users',
+                    'email'                     => 'required|string|email|max:191|unique:users',
                     'password'                  => 'required|string|min:6|confirmed',
-                    'type_id'                   => 'required|exists:' . $prefix . 'contragent_types,id',
+                    'type_id'                   => 'required|exists:contragent_types,id',
                     'web'                       => 'max:255',
                     //
                     'contact.name'              => 'required|string|max:255',
                     'contact.position'          => 'max:255',
                     //
-                    'phone.contact.country_id'  => 'required|exists:' . $prefix . 'countries,id',
+                    'phone.contact.country_id'  => 'required|exists:countries,id',
                     'phone.contact.number'      => 'required|numeric|digits:10',
                     'phone.contact.extra'       => 'max:20',
 
                     //
                     'address.sc.name'           => 'required|string|max:255',
-                    'address.sc.country_id'     => 'required|exists:' . $prefix . 'countries,id',
-                    'address.sc.region_id'      => 'sometimes|exists:' . $prefix . 'regions,id',
+                    'address.sc.country_id'     => 'required|exists:countries,id',
+                    'address.sc.region_id'      => 'sometimes|exists:regions,id',
                     'address.sc.locality'       => 'required|string|max:255',
                     'address.sc.street'         => 'sometimes|max:255',
                     'address.sc.building'       => 'required|string|max:255',
                     'address.sc.apartment'      => 'sometimes|max:255',
                     //
-                    'phone.sc.country_id'       => 'required|exists:' . $prefix . 'countries,id',
+                    'phone.sc.country_id'       => 'required|exists:countries,id',
                     'phone.sc.number'           => 'required|numeric|digits:10',
                     'phone.sc.extra'            => 'max:20',
                     //
-                    'contragent.type_id'        => 'required|exists:' . $prefix . 'contragent_types,id',
+                    'contragent.type_id'        => 'required|exists:contragent_types,id',
                     'contragent.name'           => 'required|string|max:255',
                     //
-                    'address.legal.country_id'  => 'required|exists:' . $prefix . 'countries,id',
-                    'address.legal.region_id'   => 'sometimes|exists:' . $prefix . 'regions,id',
+                    'address.legal.country_id'  => 'required|exists:countries,id',
+                    'address.legal.region_id'   => 'sometimes|exists:regions,id',
                     'address.legal.locality'    => 'required|string|max:255',
                     'address.legal.street'      => 'sometimes|max:255',
                     'address.legal.building'    => 'required|string|max:255',
                     'address.legal.apartment'   => 'sometimes|max:255',
                     //
-                    'address.postal.country_id' => 'required|exists:' . $prefix . 'countries,id',
-                    'address.postal.region_id'  => 'sometimes|exists:' . $prefix . 'regions,id',
+                    'address.postal.country_id' => 'required|exists:countries,id',
+                    'address.postal.region_id'  => 'sometimes|exists:regions,id',
                     'address.postal.locality'   => 'required|string|max:255',
                     'address.postal.street'     => 'sometimes|max:255',
                     'address.postal.building'   => 'required|string|max:255',
@@ -81,7 +80,7 @@ class RegisterRequest extends FormRequest
                     'contragent.inn'            => array(
                         'required',
                         'numeric',
-                        'unique:' . $prefix . 'contragents,inn',
+                        'unique:contragents,inn',
                         'regex:/\d{10}|\d{12}/'
                     ),
                     'contragent.ogrn'           => array(

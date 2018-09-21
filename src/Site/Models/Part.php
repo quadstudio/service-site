@@ -22,7 +22,7 @@ class Part extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = env('DB_PREFIX', '') . 'parts';
+        $this->table = 'parts';
     }
 
     /**
@@ -72,6 +72,7 @@ class Part extends Model
             case 6:
                 return $this->cost;
             default:
+
                 return $this->price * $this->rates;
         }
     }
@@ -83,7 +84,8 @@ class Part extends Model
      */
     public function getRatesAttribute()
     {
-        return Site::currencyRates($this->repair->user->price_type->currency, $this->repair->user->currency);
+        return Site::currencyRates($this->product->repairPrice->currency, $this->repair->user->currency, $this->repair->getAttribute('date_repair'));
+        //return Site::currencyRates($this->repair->user->price_type->currency, $this->repair->user->currency);
     }
 
     /**
@@ -93,7 +95,7 @@ class Part extends Model
      */
     public function getPriceAttribute()
     {
-        return $this->product->prices()->where('type_id', $this->repair->user->price_type_id)->sum('price');
+        return $this->product->prices()->where('type_id', config('site.defaults.part.price_type_id', config('site.defaults.user.price_type_id', 'site.defaults.guest.price_type_id')))->sum('price');
     }
 
     /**

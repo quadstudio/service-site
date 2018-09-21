@@ -13,7 +13,7 @@ class SortByCreatedAtFilter extends OrderByFilter
     public function defaults(): array
     {
         return [
-            env('DB_PREFIX', '') . 'users.created_at' => 'DESC'
+            'users.created_at' => 'DESC'
         ];
     }
 

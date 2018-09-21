@@ -47,7 +47,7 @@ trait EngineerControllerTrait
 
         return view('site::engineer.index', [
             'repository' => $this->engineers,
-            'engineers'  => $this->engineers->paginate(config('site.per_page.engineer', 10), [env('DB_PREFIX', '') . 'engineers.*'])
+            'engineers'  => $this->engineers->paginate(config('site.per_page.engineer', 10), ['engineers.*'])
         ]);
     }
 

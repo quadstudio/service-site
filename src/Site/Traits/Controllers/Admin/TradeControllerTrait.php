@@ -43,7 +43,7 @@ trait TradeControllerTrait
 
         return view('site::admin.trade.index', [
             'repository' => $this->trades,
-            'trades'      => $this->trades->paginate(config('site.per_page.trade', 10), [env('DB_PREFIX', '') . 'trades.*'])
+            'trades'      => $this->trades->paginate(config('site.per_page.trade', 10), ['trades.*'])
         ]);
     }
 

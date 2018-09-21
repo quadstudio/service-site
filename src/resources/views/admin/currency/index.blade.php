@@ -17,15 +17,13 @@
         @alert()@endalert
 
         <div  class="justify-content-start border p-3 mb-2">
-            <a class="disabled btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0" href="{{ route('admin.currencies.create') }}"
-               role="button">
-                <i class="fa fa-plus"></i>
-                <span>@lang('site::messages.add') @lang('site::currency.currency')</span>
+            <a href="{{ route('admin.currency_archives.index') }}" class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0">
+                <i class="fa fa-@lang('site::archive.icon')"></i>
+                <span>@lang('site::archive.archives')</span>
             </a>
-
-            <a href="{{ route('admin.currencies.refresh') }}" class="d-block d-sm-inline btn btn-secondary">
-                <i class="fa fa-refresh"></i>
-                <span>@lang('site::messages.refresh')</span>
+            <a href="{{ route('admin') }}" class="d-block d-sm-inline btn btn-secondary">
+                <i class="fa fa-reply"></i>
+                <span>@lang('site::messages.back_admin')</span>
             </a>
         </div>
         @pagination(['pagination' => $currencies])@endpagination

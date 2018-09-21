@@ -36,7 +36,7 @@ trait MessageControllerTrait
         $this->messages->pushTrackFilter( ScSearchFilter::class);
         return view('site::admin.message.index', [
             'repository' => $this->messages,
-            'messages'      => $this->messages->paginate(config('site.per_page.message', 30), [env('DB_PREFIX', '').'messages.*'])
+            'messages'      => $this->messages->paginate(config('site.per_page.message', 30), ['messages.*'])
         ]);
     }
 

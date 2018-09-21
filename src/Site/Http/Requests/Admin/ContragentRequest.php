@@ -36,7 +36,7 @@ class ContragentRequest extends FormRequest
                     'contragent.type_id'         => 'required|exists:contragent_types,id',
                     'contragent.name'            => 'required|string|max:255',
                     'contragent.inn'             => array(
-                        'unique:' . env('DB_PREFIX', '') . 'contragents,inn,' . $this->route()->parameter('contragent')->id,
+                        'unique:contragents,inn,' . $this->route()->parameter('contragent')->id,
                         'required',
                         'numeric',
                         'regex:/\d{10}|\d{12}/',

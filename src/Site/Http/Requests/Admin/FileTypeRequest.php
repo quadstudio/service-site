@@ -24,14 +24,13 @@ class FileTypeRequest extends FormRequest
      */
     public function rules()
     {
-        $prefix = env('DB_PREFIX', '');
         switch ($this->method()) {
             case 'POST':
             case 'PUT':
             case 'PATCH': {
                 return [
                     'name'     => 'required|string|max:255',
-                    'group_id' => 'required|exists:' . $prefix . 'file_groups,id',
+                    'group_id' => 'required|exists:file_groups,id',
                 ];
             }
             default:

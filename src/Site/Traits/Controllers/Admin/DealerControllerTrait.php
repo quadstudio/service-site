@@ -95,7 +95,7 @@ trait DealerControllerTrait
 
         return view('site::admin.dealer.index', [
             'repository' => $this->users,
-            'users'      => $this->users->paginate(config('site.per_page.user', 10), [env('DB_PREFIX', '') . 'users.*'])
+            'users'      => $this->users->paginate(config('site.per_page.user', 10), ['users.*'])
         ]);
     }
 
@@ -183,7 +183,7 @@ trait DealerControllerTrait
         return view('site::admin.user.repair', [
             'user'       => $user,
             'repository' => $this->repairs,
-            'repairs'    => $this->repairs->paginate(config('site.per_page.repair', 10), [env('DB_PREFIX', '') . 'repairs.*'])
+            'repairs'    => $this->repairs->paginate(config('site.per_page.repair', 10), ['repairs.*'])
         ]);
     }
 
@@ -201,7 +201,7 @@ trait DealerControllerTrait
         return view('site::admin.user.order', [
             'user'       => $user,
             'repository' => $this->orders,
-            'orders'     => $this->orders->paginate(config('site.per_page.order', 10), [env('DB_PREFIX', '') . 'orders.*'])
+            'orders'     => $this->orders->paginate(config('site.per_page.order', 10), ['orders.*'])
         ]);
     }
 
@@ -220,7 +220,7 @@ trait DealerControllerTrait
         return view('site::admin.user.contragent', [
             'user'        => $user,
             'repository'  => $this->contragents,
-            'contragents' => $this->contragents->paginate(config('site.per_page.contragent', 10), [env('DB_PREFIX', '') . 'contragents.*'])
+            'contragents' => $this->contragents->paginate(config('site.per_page.contragent', 10), ['contragents.*'])
         ]);
     }
 
@@ -239,7 +239,7 @@ trait DealerControllerTrait
         return view('site::admin.user.contact', [
             'user'       => $user,
             'repository' => $this->contacts,
-            'contacts'   => $this->contacts->paginate(config('site.per_page.contact', 10), [env('DB_PREFIX', '') . 'contacts.*'])
+            'contacts'   => $this->contacts->paginate(config('site.per_page.contact', 10), ['contacts.*'])
         ]);
     }
 
@@ -258,7 +258,7 @@ trait DealerControllerTrait
         return view('site::admin.user.address', [
             'user'       => $user,
             'repository' => $this->addresses,
-            'addresses'  => $this->addresses->paginate(config('site.per_page.address', 10), [env('DB_PREFIX', '') . 'addresses.*'])
+            'addresses'  => $this->addresses->paginate(config('site.per_page.address', 10), ['addresses.*'])
         ]);
     }
 }

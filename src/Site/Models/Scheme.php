@@ -23,7 +23,7 @@ class Scheme extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = env('DB_PREFIX', '') . 'schemes';
+        $this->table = 'schemes';
     }
 
     /**
@@ -110,7 +110,7 @@ class Scheme extends Model
     {
         return $this->belongsToMany(
             Product::class,
-            env('DB_PREFIX', '') . 'product_scheme',
+            'product_scheme',
             'scheme_id',
             'product_id'
         );

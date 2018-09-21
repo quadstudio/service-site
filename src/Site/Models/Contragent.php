@@ -25,7 +25,7 @@ class Contragent extends Model implements Addressable
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = env('DB_PREFIX', '') . 'contragents';
+        $this->table = 'contragents';
     }
 
     public static function boot()

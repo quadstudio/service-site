@@ -39,15 +39,26 @@ class Site
      * @param Models\Currency $user_currency
      * @return float
      */
-    public static function currencyRates(Models\Currency $cost_currency, Models\Currency $user_currency)
+    public static function currencyRates(Models\Currency $cost_currency, Models\Currency $user_currency, $date = null)
     {
         if ($cost_currency->getKey() == $user_currency->getKey()) {
             return 1;
         }
-        if ($user_currency->getAttribute('rates') == 1) {
-            return $cost_currency->getAttribute('rates');
-        } else {
-            return $user_currency->getAttribute('rates');
+        $currency = ($user_currency->getAttribute('rates') == 1) ? $cost_currency : $user_currency;
+
+//        if ($user_currency->getAttribute('rates') == 1) {
+//            return $cost_currency->getAttribute('rates');
+//        } else {
+//            return $user_currency->getAttribute('rates');
+//        }
+        if(is_null($date)){
+            return $currency->getAttribute('rates');
+        } else{
+          if(($result = $currency->archives()->where('date', $date))->exists()){
+              return $result->first()->getAttribute('rates');
+          } else{
+              return 0.00;
+          }
         }
     }
 
@@ -70,6 +81,7 @@ class Site
                     $router->resource('/equipments', 'EquipmentController')->only(['index', 'show']);
                     $router->resource('/datasheets', 'DatasheetController')->only(['index', 'show']);
                     $router->resource('/files', 'FileController')->only(['index', 'store', 'show', 'destroy']);
+                    $router->get('/currencies/refresh/', 'CurrencyController@refresh')->name('currencies.refresh');
                     //$router->resource('/schemes', 'SchemeController')->only(['index','show']);
 
                     // Static pages
@@ -245,8 +257,8 @@ class Site
                                 $router->name('admin')->resource('/trades', 'TradeController');
                                 $router->name('admin')->resource('/launches', 'LaunchController');
                                 $router->name('admin')->resource('/currencies', 'CurrencyController');
-                                $router->name('admin')->get('/refresh/currencies/', 'CurrencyController@refresh')->name('.currencies.refresh');
                                 $router->name('admin')->resource('/banks', 'BankController');
+                                $router->name('admin')->resource('/currency_archives', 'CurrencyArchiveController')->only(['index']);
                                 $router->name('admin')->resource('/warehouses', 'WarehouseController');
                                 $router->name('admin')->post('/datasheets/file', 'DatasheetController@file')->name('.datasheets.file');
                                 $router->name('admin')->resource('/datasheets', 'DatasheetController');

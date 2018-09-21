@@ -112,7 +112,7 @@ class Datasheet extends Model implements SingleFileable
     {
         return $this->belongsToMany(
             Product::class,
-            env('DB_PREFIX', '') . 'datasheet_product',
+            'datasheet_product',
             'datasheet_id',
             'product_id'
         );

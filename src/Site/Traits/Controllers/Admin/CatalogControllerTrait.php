@@ -40,7 +40,7 @@ trait CatalogControllerTrait
 
         return view('site::admin.catalog.index', [
             'repository' => $this->catalogs,
-            'catalogs'   => $this->catalogs->paginate(config('site.per_page.catalog', 10), [env('DB_PREFIX', '') . 'catalogs.*'])
+            'catalogs'   => $this->catalogs->paginate(config('site.per_page.catalog', 10), ['catalogs.*'])
         ]);
     }
 

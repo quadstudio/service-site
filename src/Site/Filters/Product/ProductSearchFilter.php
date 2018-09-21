@@ -41,7 +41,7 @@ class ProductSearchFilter extends SearchFilter
     protected function columns()
     {
         return [
-            env('DB_PREFIX', '') . 'serials.id',
+            'serials.id',
         ];
     }
 

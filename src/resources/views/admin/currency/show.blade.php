@@ -25,6 +25,12 @@
                 <i class="fa fa-pencil"></i>
                 <span>@lang('site::messages.edit')</span>
             </a>
+            <a class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0"
+               href="{{ route('admin.currency_archives.index', ['filter[currency_id]' => $currency->id]) }}"
+               role="button">
+                <i class="fa fa-@lang('site::archive.icon')"></i>
+                <span>@lang('site::messages.show') @lang('site::archive.archive')</span>
+            </a>
             <a href="{{ route('admin.currencies.index') }}" class="d-block d-sm-inline btn btn-secondary">
                 <i class="fa fa-reply"></i>
                 <span>@lang('site::messages.back')</span>
@@ -52,6 +58,21 @@
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::currency.symbol_right')</dt>
                     <dd class="col-sm-8">{{ $currency->symbol_right }}</dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::messages.created_at')</dt>
+                    <dd class="col-sm-8">
+                        @if($currency->created_at)
+                            {{ \Carbon\Carbon::instance($currency->created_at)->format('d.m.Y H:i') }}
+                        @endif
+                    </dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::messages.updated_at')</dt>
+                    <dd class="col-sm-8">
+                        @if($currency->updated_at)
+                            {{ \Carbon\Carbon::instance($currency->updated_at)->format('d.m.Y H:i') }}
+                        @endif
+
+                    </dd>
 
                 </dl>
             </div>

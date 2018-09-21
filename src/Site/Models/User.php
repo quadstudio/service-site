@@ -24,7 +24,7 @@ class User extends Authenticatable implements Addressable
     protected $fillable = [
         'name', 'email', 'password', 'dealer',
         'display', 'type_id', 'active', 'image_id',
-        'warehouse_id', 'price_type_id', 'currency_id',
+        'warehouse_id', 'currency_id',
     ];
 
     /**
@@ -175,16 +175,6 @@ class User extends Authenticatable implements Addressable
     public function currency()
     {
         return $this->belongsTo(Currency::class);
-    }
-
-    /**
-     * Тип цены
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function price_type()
-    {
-        return $this->belongsTo(PriceType::class);
     }
 
     /**

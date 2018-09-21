@@ -62,7 +62,7 @@ class BoilerFilter extends WhereFilter
     public function column(): string
     {
 
-        return env('DB_PREFIX', '') . 'products.id';
+        return 'products.id';
 
     }
 

@@ -21,8 +21,8 @@ class SearchFilter extends BaseFilter
     protected function columns()
     {
         return [
-            env('DB_PREFIX', '') . 'serials.id',
-            env('DB_PREFIX', '') . 'serials.product_id',
+            'serials.id',
+            'serials.product_id',
         ];
     }
 

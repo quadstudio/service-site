@@ -31,7 +31,7 @@ trait WarehouseControllerTrait
         $this->warehouses->trackFilter();
         return view('site::admin.warehouse.index', [
             'repository' => $this->warehouses,
-            'warehouses'      => $this->warehouses->paginate(config('site.per_page.warehouse', 10), [env('DB_PREFIX', '').'warehouses.*'])
+            'warehouses'      => $this->warehouses->paginate(config('site.per_page.warehouse', 10), ['warehouses.*'])
         ]);
     }
 

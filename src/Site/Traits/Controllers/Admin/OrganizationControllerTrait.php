@@ -33,7 +33,7 @@ trait OrganizationControllerTrait
 
         return view('site::admin.organization.index', [
             'repository'    => $this->organizations,
-            'organizations' => $this->organizations->paginate(config('site.per_page.organization', 10), [env('DB_PREFIX', '') . 'organizations.*'])
+            'organizations' => $this->organizations->paginate(config('site.per_page.organization', 10), ['organizations.*'])
         ]);
     }
 

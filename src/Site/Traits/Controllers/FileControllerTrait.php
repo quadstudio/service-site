@@ -38,7 +38,7 @@ trait FileControllerTrait
 
         return view('site::repair.index', [
             'repository' => $this->files,
-            'items'      => $this->files->paginate(config('site.per_page.file', 10), [env('DB_PREFIX', '') . 'files.*'])
+            'items'      => $this->files->paginate(config('site.per_page.file', 10), ['files.*'])
         ]);
     }
 

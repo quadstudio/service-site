@@ -18,7 +18,7 @@ class OrderStatus extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = env('DB_PREFIX', '') . 'order_statuses';
+        $this->table = 'order_statuses';
     }
 
 

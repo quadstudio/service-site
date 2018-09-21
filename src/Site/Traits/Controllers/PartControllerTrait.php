@@ -31,7 +31,7 @@ trait PartControllerTrait
         $this->parts->trackFilter();
         return view('site::part.index', [
             'repository' => $this->parts,
-            'items'      => $this->parts->paginate(config('site.per_page.part', 10), [env('DB_PREFIX', '').'parts.*'])
+            'items'      => $this->parts->paginate(config('site.per_page.part', 10), ['parts.*'])
         ]);
     }
 

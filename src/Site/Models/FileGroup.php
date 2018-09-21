@@ -25,7 +25,7 @@ class FileGroup extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = env('DB_PREFIX', '') . 'file_groups';
+        $this->table = 'file_groups';
     }
 
     /**

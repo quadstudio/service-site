@@ -23,7 +23,7 @@ class PriceType extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = env('DB_PREFIX', '') . 'price_types';
+        $this->table = 'price_types';
     }
 
     /**

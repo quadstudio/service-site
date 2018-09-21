@@ -25,7 +25,7 @@ class Image extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = env('DB_PREFIX', '') . 'images';
+        $this->table = 'images';
     }
 
     public static function boot()

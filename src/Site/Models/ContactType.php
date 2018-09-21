@@ -22,7 +22,7 @@ class ContactType extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = env('DB_PREFIX', '') . 'contact_types';
+        $this->table = 'contact_types';
     }
 
 }

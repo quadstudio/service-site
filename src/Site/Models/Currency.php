@@ -22,8 +22,17 @@ class Currency extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = env('DB_PREFIX', '') . 'currencies';
+        $this->table = 'currencies';
     }
 
+    /**
+     * История курсов
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function archives()
+    {
+        return $this->hasMany(CurrencyArchive::class);
+    }
 
 }

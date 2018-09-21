@@ -60,7 +60,7 @@ trait ProductControllerTrait
 
         return view('site::admin.product.index', [
             'repository' => $this->products,
-            'products'   => $this->products->paginate(config('site.per_page.product', 12), [env('DB_PREFIX', '') . 'products.*'])
+            'products'   => $this->products->paginate(config('site.per_page.product', 12), ['products.*'])
         ]);
     }
 

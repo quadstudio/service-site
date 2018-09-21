@@ -35,7 +35,7 @@ trait PhoneControllerTrait
 //
 //        return view('site::phone.index', [
 //            'repository' => $this->phones,
-//            'phones'  => $this->phones->paginate(config('site.per_page.phone', 10), [env('DB_PREFIX', '') . 'phones.*'])
+//            'phones'  => $this->phones->paginate(config('site.per_page.phone', 10), ['phones.*'])
 //        ]);
 //    }
 

@@ -21,7 +21,7 @@ class AddressSearchFilter extends SearchFilter
                 $words = $this->split($this->get($this->search));
                 if (!empty($words)) {
                     $builder->whereHas('addresses', function ($query) use ($words) {
-                        $query->where( env('DB_PREFIX', '') . 'addresses.type_id', 2);
+                        $query->where( 'addresses.type_id', 2);
                         foreach ($words as $word) {
                             $query->where(function ($query) use ($word) {
                                 foreach ($this->columns() as $column) {
@@ -40,7 +40,7 @@ class AddressSearchFilter extends SearchFilter
     protected function columns()
     {
         return [
-            env('DB_PREFIX', '') . 'addresses.name',
+            'addresses.name',
         ];
     }
 

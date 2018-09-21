@@ -36,7 +36,7 @@ trait ImageControllerTrait
 
         return view('admin.image.index', [
             'repository' => $this->images,
-            'items'      => $this->images->paginate(config('site.per_page.image', 10), [env('DB_PREFIX', '') . 'images.*'])
+            'items'      => $this->images->paginate(config('site.per_page.image', 10), ['images.*'])
         ]);
     }
 

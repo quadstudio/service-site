@@ -16,7 +16,7 @@ class SearchFilter extends BaseFilter
     protected function columns()
     {
         return [
-            env('DB_PREFIX', '') . 'messages.text',
+            'messages.text',
         ];
     }
 

@@ -70,6 +70,7 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
         'ContragentController.stub'               => 'ContragentController',
         'SchemeController.stub'                   => 'SchemeController',
         'PhoneController.stub'                    => 'PhoneController',
+        'CurrencyController.stub'                 => 'CurrencyController',
         //
         'api/FileController.stub'                 => 'Api/FileController',
         'api/RepairController.stub'               => 'Api/RepairController',
@@ -124,6 +125,7 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
         'admin/user/AddressController.stub'       => 'Admin/User/AddressController',
         'admin/contragent/AddressController.stub' => 'Admin/Contragent/AddressController',
         'admin/address/PhoneController.stub'      => 'Admin/Address/PhoneController',
+        'admin/CurrencyArchiveController.stub'    => 'Admin/CurrencyArchiveController',
     ];
 
     /**

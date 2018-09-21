@@ -18,19 +18,6 @@ class File extends Model
         'name', 'path', 'type_id', 'size', 'mime', 'storage'
     ];
 
-    public static function boot()
-    {
-        parent::boot();
-
-        self::creating(function($model){
-            $model->user_id = Auth::user()->getAuthIdentifier();
-        });
-        self::deleting(function ($file) {
-            Storage::disk($file->storage)->delete($file->path);
-        });
-    }
-
-
     /**
      * @param array $attributes
      */
@@ -40,15 +27,47 @@ class File extends Model
         $this->table = 'files';
     }
 
-    public function src(){
+    public static function boot()
+    {
+        parent::boot();
+
+        self::creating(function ($model) {
+            $model->user_id = Auth::user()->getAuthIdentifier();
+        });
+        self::deleting(function ($file) {
+            Storage::disk($file->storage)->delete($file->path);
+        });
+    }
+
+    /**
+     * @return string
+     */
+    public function src()
+    {
         return $this->exists ? Storage::disk($this->storage)->url($this->path) : Storage::disk('products')->url('noimage.png');
     }
 
-    public function exists(){
+    /**
+     * @return bool
+     */
+    public function exists()
+    {
         return Storage::disk($this->storage)->exists($this->path);
     }
 
-
+    /**
+     * @return bool
+     */
+    public function getIsImageAttribute()
+    {
+        switch ($this->getAttribute('mime')) {
+            case 'image/jpeg':
+            case 'image/png':
+                return true;
+            default:
+                return false;
+        }
+    }
 
     /**
      * Тип файла
@@ -67,6 +86,7 @@ class File extends Model
     {
         return $this->morphTo();
     }
+
     /**
      * Пользователь
      *
@@ -77,7 +97,8 @@ class File extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function canDelete(){
+    public function canDelete()
+    {
         return true;
     }
 

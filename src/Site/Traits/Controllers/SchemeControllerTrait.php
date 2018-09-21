@@ -33,7 +33,7 @@ trait SchemeControllerTrait
 //
 //        return view('site::launch.index', [
 //            'repository' => $this->schemes,
-//            'schemes'   => $this->schemes->paginate(config('site.per_page.launch', 10), [env('DB_PREFIX', '') . 'schemes.*'])
+//            'schemes'   => $this->schemes->paginate(config('site.per_page.launch', 10), ['schemes.*'])
 //        ]);
 //    }
 

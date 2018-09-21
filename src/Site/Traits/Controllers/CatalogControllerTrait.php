@@ -33,7 +33,7 @@ trait CatalogControllerTrait
         $this->catalogs->applyFilter(new EnabledFilter());
 
         return view('site::catalog.index', [
-            'catalogs' => $this->catalogs->all([env('DB_PREFIX', '') . 'catalogs.*'])
+            'catalogs' => $this->catalogs->all(['catalogs.*'])
         ]);
     }
 

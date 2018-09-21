@@ -38,9 +38,9 @@ class ProductSearchFilter extends SearchFilter
     protected function columns()
     {
         return [
-            env('DB_PREFIX', '') . 'products.id',
-            env('DB_PREFIX', '') . 'products.sku',
-            env('DB_PREFIX', '') . 'products.name',
+            'products.id',
+            'products.sku',
+            'products.name',
         ];
     }
 

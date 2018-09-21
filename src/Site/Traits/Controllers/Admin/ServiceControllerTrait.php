@@ -31,7 +31,7 @@ trait ServiceControllerTrait
         $this->services->trackFilter();
         return view('site::admin.service.index', [
             'repository' => $this->services,
-            'items'      => $this->services->paginate(config('site.per_page.service', 10), [env('DB_PREFIX', '').'services.*'])
+            'items'      => $this->services->paginate(config('site.per_page.service', 10), ['services.*'])
         ]);
     }
 

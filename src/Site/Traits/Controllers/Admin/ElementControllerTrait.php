@@ -33,7 +33,7 @@ trait ElementControllerTrait
 
         return view('site::admin.element.index', [
             'repository' => $this->elements,
-            'elements'  => $this->elements->paginate(config('site.per_page.element', 10), [env('DB_PREFIX', '') . 'elements.*'])
+            'elements'  => $this->elements->paginate(config('site.per_page.element', 10), ['elements.*'])
         ]);
     }
 

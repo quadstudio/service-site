@@ -47,8 +47,8 @@ class BoilerSearchFilter extends BaseFilter
     protected function columns()
     {
         return [
-            env('DB_PREFIX', '') . 'products.name',
-            env('DB_PREFIX', '') . 'products.sku',
+            'products.name',
+            'products.sku',
         ];
     }
 

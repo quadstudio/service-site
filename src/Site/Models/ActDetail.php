@@ -24,7 +24,7 @@ class ActDetail extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = env('DB_PREFIX', '') . 'act_details';
+        $this->table = 'act_details';
     }
 
     /**

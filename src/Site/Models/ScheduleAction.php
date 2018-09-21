@@ -21,7 +21,7 @@ class ScheduleAction extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = env('DB_PREFIX', '') . 'schedule_actions';
+        $this->table = 'schedule_actions';
     }
 
 }

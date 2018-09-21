@@ -54,8 +54,8 @@ class ScSearchFilter extends SearchFilter
     protected function columns()
     {
         return [
-            env('DB_PREFIX', '') . 'users.name',
-            env('DB_PREFIX', '') . 'users.email',
+            'users.name',
+            'users.email',
         ];
     }
 
