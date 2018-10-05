@@ -289,19 +289,17 @@
                                 <div class="card item-hover mb-1">
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-sm-9">
-
+                                            <div class="col-sm-6">
                                                 <a class="text-large mb-1"
                                                    href="{{ route('datasheets.show', $datasheet) }}">{{ $datasheet->name ?: $datasheet->file->name }}</a>
                                                 {{--<span class="text-lighter d-block">{{ $datasheet->file->type->name }}</span>--}}
-
                                                 <span class="text-muted d-block">@include('site::datasheet.date')</span>
+                                            </div>
+
+                                            <div class="col-sm-3 text-right">
                                                 @if($datasheet->schemes()->count() > 0)
-                                                    <a class="d-block"
-                                                       href="{{route('products.scheme', [$product, $datasheet->schemes()->first()])}}">
-                                                        <i class="fa fa-@lang('site::scheme.icon')"></i>
-                                                        @lang('site::messages.open') @lang('site::scheme.scheme')
-                                                    </a>
+                                                <a class="btn btn-ferroli"
+                                                   href="{{route('products.scheme', [$product, $datasheet->schemes()->first()])}}">@lang('site::messages.open') @lang('site::scheme.scheme')</a>
                                                 @endif
                                             </div>
                                             <div class="col-sm-3 text-right">

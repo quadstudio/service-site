@@ -48,7 +48,7 @@
                                     data-number="{{$element->number}}">
                                     <td class="number">{{$element->number}}</td>
                                     <td class="">{{$element->product->sku}}</td>
-                                    <td>
+                                    <td class="text-left">
                                         @if($element->product->canBuy)
                                             <a href="{{route('products.show', $element->product)}}">
                                                 {{str_limit($element->product->name, 22)}}

@@ -96,13 +96,28 @@
                             </span>
                         @endif
                     </dd>
-
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::datasheet.header.schemes')</dt>
+                    <dd class="col-sm-8">
+                        <div class="list-group">
+                            @foreach($datasheet->schemes as $scheme)
+                                <a href="{{route('admin.schemes.show', $scheme)}}"
+                                   class="p-1 list-group-item list-group-item-action">
+                                    {{$scheme->block->name}}
+                                </a>
+                            @endforeach
+                            <a href="{{route('admin.schemes.create', ['datasheet_id' => $datasheet->id])}}"
+                               class="p-1 list-group-item">
+                                <i class="fa fa-plus"></i>&nbsp;@lang('site::messages.add')
+                                &nbsp;@lang('site::scheme.scheme')
+                            </a>
+                        </div>
+                    </dd>
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::datasheet.header.products')</dt>
                     <dd class="col-sm-8">
                         <div class="list-group">
                             @foreach($datasheet->products as $product)
                                 <a href="{{route('admin.products.show', $product)}}"
-                                   class="list-group-item list-group-item-action">
+                                   class="p-1 list-group-item list-group-item-action">
                                     {{$product->name}} ({{$product->type->name}})
                                 </a>
                             @endforeach

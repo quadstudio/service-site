@@ -167,22 +167,49 @@
                                     <div class="card">
 
                                         <div class="card-body">
-                                            <h5 class="card-title"><a href="{{route('datasheets.show', $datasheet)}}">{{ $datasheet->file->type->name }}</a></h5>
+                                            <h5 class="card-title"><a
+                                                        href="{{route('datasheets.show', $datasheet)}}">{{ $datasheet->file->type->name }}</a>
+                                            </h5>
                                             <p class="card-text">{{$datasheet->name}}</p>
                                             <p class="text-muted">@include('site::datasheet.date')</p>
                                         </div>
                                         <ul class="list-group list-group-flush">
                                             @foreach(($products = $datasheet->products()->where('enabled', 1)->get()) as $key => $product)
                                                 @if($key < config('site.datasheet.products.count', 5))
-                                                    <li class="list-group-item"><a href="{{route('products.show', $product)}}">{!! $product->name !!}</a></li>
+                                                    <li class="list-group-item"><a
+                                                                href="{{route('products.show', $product)}}">{!! $product->name !!}</a>
+                                                    </li>
                                                 @else
-                                                    <li class="list-group-item text-muted">... подходит еще к {{$products->count() - config('site.datasheet.products.count', 5)}} {{numberof($products->count() - config('site.datasheet.products.count', 5), 'товар', ['у', 'ам', 'ам'])}} </li>
-                                                    <li class="list-group-item"><a href="{{route('datasheets.show', $datasheet)}}">Показать все товары</a></li>
+                                                    <li class="list-group-item text-muted">... подходит еще
+                                                        к {{$products->count() - config('site.datasheet.products.count', 5)}} {{numberof($products->count() - config('site.datasheet.products.count', 5), 'товар', ['у', 'ам', 'ам'])}} </li>
+                                                    <li class="list-group-item"><a
+                                                                href="{{route('datasheets.show', $datasheet)}}">Показать
+                                                            все товары</a></li>
                                                     @break
                                                 @endif
                                             @endforeach
                                         </ul>
-                                        <div class="card-body">
+                                        @if($datasheet->schemes()->count() > 0)
+                                            @if($products->isNotEmpty())
+                                                <div class="card-body py-2">
+                                                    <div class="dropdown">
+                                                        <a class="btn btn-ferroli btn-block dropdown-toggle" href="#"
+                                                           role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                                                           aria-haspopup="true" aria-expanded="false">
+                                                            @lang('site::scheme.schemes')
+                                                        </a>
+
+                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                            @foreach($products as $product)
+                                                                <a class="dropdown-item"
+                                                                   href="{{route('products.scheme', [$product, $datasheet->schemes()->first()])}}">{!! $product->name !!}</a>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @endif
+                                        <div class="card-body py-2">
                                             @include('site::file.download', ['file' => $datasheet->file, 'block' => true])
                                         </div>
                                     </div>

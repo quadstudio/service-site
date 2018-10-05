@@ -33,7 +33,7 @@
                             <option value="">@lang('site::messages.select_from_list')</option>
                             @foreach($datasheets as $datasheet)
                                 <option data-cost="{{$datasheet->cost}}"
-                                        @if(old('datasheet_id') == $datasheet->id) selected
+                                        @if(old('datasheet_id', request('datasheet_id')) == $datasheet->id) selected
                                         @endif
                                         value="{{ $datasheet->id }}">{{ $datasheet->file->name }}</option>
                             @endforeach

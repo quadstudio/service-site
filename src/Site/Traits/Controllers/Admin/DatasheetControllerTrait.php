@@ -49,6 +49,7 @@ trait DatasheetControllerTrait
 
     public function show(Datasheet $datasheet)
     {
+        $datasheet->with('products.type')->with('schemes');
         return view('site::admin.datasheet.show', compact('datasheet'));
     }
 
