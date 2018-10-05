@@ -4,7 +4,7 @@ namespace QuadStudio\Service\Site\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SchemeRequest extends FormRequest
+class PointerRequest extends FormRequest
 {
 
     /**
@@ -25,17 +25,11 @@ class SchemeRequest extends FormRequest
     public function rules()
     {
         switch ($this->method()) {
-            case 'GET':
-            case 'DELETE': {
-                return [];
-            }
-            case 'PUT':
-            case 'PATCH':
             case 'POST': {
                 return [
-                    'block_id'     => 'required|exists:blocks,id',
-                    'image_id'     => 'required|exists:images,id',
-                    'datasheet_id' => 'required|exists:datasheets,id',
+                    'element_id' => 'required|exists:elements,id',
+                    'x'          => 'required|numeric',
+                    'y'          => 'required|numeric',
                 ];
             }
             default:
@@ -50,9 +44,7 @@ class SchemeRequest extends FormRequest
      */
     public function messages()
     {
-        return [
-            'image_id.required' => trans('site::scheme.error.image_id.required'),
-        ];
+        return [];
     }
 
     /**
@@ -63,9 +55,9 @@ class SchemeRequest extends FormRequest
     public function attributes()
     {
         return [
-            'block_id'     => trans('site::scheme.block_id'),
-            'image_id'     => trans('site::scheme.image_id'),
-            'datasheet_id' => trans('site::scheme.datasheet_id'),
+            'element_id' => trans('site::pointer.element_id'),
+            'x'          => trans('site::pointer.x'),
+            'y'          => trans('site::pointer.y'),
         ];
     }
 }

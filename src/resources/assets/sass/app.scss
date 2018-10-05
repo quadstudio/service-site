@@ -3805,3 +3805,29 @@ html:not([dir=rtl]) .card-hover[class]:not(:hover), html[dir=rtl] .card-hover[cl
   border: 1px solid #fefefe;
   background-color: #fcf3d8;
 }
+
+#crosshair{
+  position: absolute;
+  display: none;
+  z-index: 99;
+  zoom: 1;
+  width: 36px;
+  height: 23px;
+  background: #eeeeee;
+  text-align: center;
+  padding-top: 2px;
+  font-weight: bold;
+  color: #000000;
+  border: 1px solid #1a1a1a;
+  -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
+  filter: alpha(opacity=75);
+  -moz-opacity:0.75;
+  -khtml-opacity: 0.75;
+  opacity: 0.75;
+  font-size: 18px;
+}
+
+#crosshair.empty{
+  color: #dc3545;
+}
+

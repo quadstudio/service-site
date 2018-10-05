@@ -17,7 +17,7 @@ class Element extends Model
      * @var array
      */
     protected $fillable = [
-        'product_id', 'scheme_id', 'number', 'sort_order'
+        'product_id', 'number', 'sort_order'
     ];
 
     /**

@@ -76,7 +76,7 @@
                                       class="shape-pointer"
                                       shape="{{$shape->shape}}"
                                       coords="{{$shape->coords}}"
-                                      data-maphilight='{"strokeColor":"428bca","strokeWidth":2,"fillColor":"428bca","fillOpacity":0.3}'/>
+                                      data-maphilight='{"strokeColor":"ed9068","strokeWidth":2,"fillColor":"ed9068","fillOpacity":0.3}'/>
                             @endforeach
                         @endforeach
                     </map>

@@ -13,7 +13,7 @@ class Shape extends Model
     /**
      * @var array
      */
-    protected $fillable = ['shape', 'coords'];
+    protected $fillable = ['element_id', 'shape', 'coords'];
 
     /**
      * @param array $attributes

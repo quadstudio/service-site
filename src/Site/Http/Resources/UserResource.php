@@ -14,20 +14,16 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
-        $this->load('addresses')->load('contacts');
+        $this->load('addresses')->load('contacts')->load('contragents');
 
         return [
             'id'            => $this->id,
             'guid'          => $this->guid,
             'name'          => $this->name,
-//            'type'          => $this->type->name,
             'email'         => $this->email,
-//            'currency_id'   => $this->currency_id,
-//            'warehouse_id'  => $this->warehouse_id,
-//            'price_type_id' => $this->price_type_id,
             'address'       => new AddressResource($this->address()),
             'contacts'      => ContactResource::collection($this->whenLoaded('contacts')),
-
+            'contragents'      => ContragentResource::collection($this->whenLoaded('contragents')),
         ];
 
     }

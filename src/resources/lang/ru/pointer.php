@@ -1,13 +1,14 @@
 <?php
 return [
-    'pointer'     => 'контур',
-    'pointers'    => 'Контуры',
-    'icon'        => 'object-ungroup',
+    'pointer'    => 'указатель',
+    'pointers'   => 'Указатели',
+    'icon'       => 'mouse-pointer',
     //
-    'element_id'  => 'Деталь',
-    'shape'       => 'Тип контура',
-    'coords'      => 'Координаты контура',
+    'element_id' => 'Деталь',
+    'x'          => 'Координата X',
+    'y'          => 'Координата Y',
     //
-    'placeholder' => [
+    'error'      => [
+        'element_id' => 'Не выбрана деталь'
     ],
 ];

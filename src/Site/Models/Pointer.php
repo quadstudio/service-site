@@ -13,7 +13,7 @@ class Pointer extends Model
     /**
      * @var array
      */
-    protected $fillable = ['x', 'y'];
+    protected $fillable = ['element_id', 'x', 'y'];
 
     /**
      * @param array $attributes

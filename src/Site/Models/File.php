@@ -70,6 +70,16 @@ class File extends Model
     }
 
     /**
+     * Техдокументация
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function datasheets()
+    {
+        return $this->hasMany(Datasheet::class);
+    }
+
+    /**
      * Тип файла
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

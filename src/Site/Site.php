@@ -173,11 +173,18 @@ class Site
                                 })->name('.blocks.sort');
                                 $router->name('admin')->resource('/blocks', 'BlockController');
                                 $router->name('admin')->post('/schemes/image', 'SchemeController@image')->name('.schemes.image');
+                                $router->name('admin')->get('/schemes/{scheme}/pointers', 'SchemeController@pointers')->name('.schemes.pointers');
+                                $router->name('admin')->get('/schemes/{scheme}/shapes', 'SchemeController@shapes')->name('.schemes.shapes');
+                                $router->name('admin')->get('/schemes/{scheme}/elements', 'SchemeController@elements')->name('.schemes.elements');
+                                $router->name('admin')->post('/schemes/{scheme}/elements', 'SchemeController@elements')->name('.schemes.elements.update');
+                                $router->name('admin')->delete('/schemes/{scheme}/elements', 'SchemeController@elements')->name('.schemes.elements.delete');
                                 $router->name('admin')->resource('/schemes', 'SchemeController');
                                 $router->name('admin')->put('/elements/sort', function (Request $request) {
                                     Element::sort($request);
                                 })->name('.elements.sort');
                                 $router->name('admin')->resource('/elements', 'ElementController');
+                                $router->name('admin')->resource('/pointers', 'PointerController');
+                                $router->name('admin')->resource('/shapes', 'ShapeController');
                                 $router->name('admin')->resource('/users', 'UserController');
                                 $router->name('admin')->get('/users/{user}/orders', 'UserController@orders')->name('.users.orders');
 

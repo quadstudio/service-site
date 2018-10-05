@@ -384,7 +384,7 @@
             <div class="card mb-4">
                 <div class="card-body">
                     <h5 class="card-title">@lang('site::file.files')</h5>
-                    @include('site::admin.repair.files')
+                    @include('site::repair.files')
                 </div>
             </div>
             @if($statuses->isNotEmpty())

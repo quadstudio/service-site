@@ -29,6 +29,72 @@
             }
         );
     }
+
+
+    let pointerCreateForm = document.getElementById("pointer-create-form");
+    if (pointerCreateForm !== null) {
+        let moveLeft = -48,
+            moveDown = -50,
+            ofs = 39,
+            crosshair = $("#crosshair");
+        $('img.map.pointers')
+            .hover(function (e) {
+                $('#crosshair').show()
+                    .css('top', e.pageY + moveDown)
+                    .css('left', e.pageX + moveLeft)
+                    .appendTo('body');
+            }, function () {
+                $('#crosshair').hide();
+            })
+            .mousemove(function (e) {
+                crosshair.css('top', e.pageY).css('left', e.pageX - ofs);
+                if ($('[name="element_id"]').is(':checked')) {
+                    crosshair.removeClass('empty').html($('[name="element_id"]:checked').parent().parent().parent().find('.number').html());
+                } else {
+                    crosshair.addClass('empty').html('╳ ' + $('#block-elements').data('empty'));
+                }
+            })
+            .click(function (event) {
+                if ($('[name="element_id"]:checked').val() !== 'undefined') {
+                    $('[name="x"]').val(Math.round(event.pageX - $(this).offset().left - 39, 0));
+                    $('[name="y"]').val(Math.round(event.pageY - $(this).offset().top, 0));
+                    submitForm($('#pointer-create-form'));
+                }
+            });
+    }
+
+    let shapeCreateForm = document.getElementById("shape-create-form");
+    if (shapeCreateForm !== null) {
+        $('a.save-shape-button')
+            .click(function (event) {
+                if ($('[name="element_id"]:checked').val() !== 'undefined') {
+                    let count = $('[name="coords"]').val().split(",").length - 1, shape;
+                    switch (count) {
+                        case 0:
+                        case 1:
+                            shape = false;
+                            break;
+                        case 2:
+                            shape = 'circle';
+                            break;
+                        case 3:
+                            shape = 'rect';
+                            break;
+                        default:
+                            shape = 'poly';
+                    }
+                    if (shape !== false) {
+                        $('[name="shape"]').val(shape);
+                        submitForm($('#shape-create-form'));
+                    } else{
+                        alert('Неверный контур')
+                    }
+                } else{
+                    alert('Не выбрана деталь')
+                }
+            });
+    }
+
     let servicesRegionList = document.getElementById("services-region-list");
     if (servicesRegionList !== null) {
 
@@ -477,30 +543,30 @@
 
     }
 
-    let schemeFormExists = document.getElementById("scheme-form");
-    if (schemeFormExists !== null) {
-        let datasheet = $('#datasheet_id');
-        datasheet.on('change', function () {
-            let datasheet_id = datasheet.find('option:selected').val();
-            if (datasheet_id.length > 0) {
-                axios
-                    .get("/api/datasheets/" + datasheet_id + "/products")
-                    .then((response) => {
-                        let html = '';
-                        $.each(response.data.data, function (index, region) {
-                            html += '<option value="' + region.label + '">' + region.value + '</option>';
-                        });
-                        regions.html(html);
-                    })
-                    .catch((error) => {
-                        this.status = 'Error:' + error;
-                    });
-            } else {
-                regions.html('<option value="">' + empty + '</option>');
-            }
-            console.log(country_id);
-        });
-    }
+    // let schemeFormExists = document.getElementById("scheme-form");
+    // if (schemeFormExists !== null) {
+    //     let datasheet = $('#datasheet_id');
+    //     datasheet.on('change', function () {
+    //         let datasheet_id = datasheet.find('option:selected').val();
+    //         if (datasheet_id.length > 0) {
+    //             axios
+    //                 .get("/api/datasheets/" + datasheet_id + "/products")
+    //                 .then((response) => {
+    //                     let html = '';
+    //                     $.each(response.data.data, function (index, region) {
+    //                         html += '<option value="' + region.label + '">' + region.value + '</option>';
+    //                     });
+    //                     regions.html(html);
+    //                 })
+    //                 .catch((error) => {
+    //                     this.status = 'Error:' + error;
+    //                 });
+    //         } else {
+    //             regions.html('<option value="">' + empty + '</option>');
+    //         }
+    //         console.log(country_id);
+    //     });
+    // }
     let registerFormExists = document.getElementById("register-form");
     let contragentFormExists = document.getElementById("contragent-form");
     let addressFormExists = document.getElementById("address-form");

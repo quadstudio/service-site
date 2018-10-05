@@ -17,17 +17,6 @@
         <h1 class="header-title mb-4"><i class="fa fa-magic"></i> @lang('site::messages.create') @lang('site::act.act')
         </h1>
         @alert()@endalert()
-        {{--<div class=" border p-3 mb-4">--}}
-        {{--<a class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0" href="{{ route('admin.acts.create') }}"--}}
-        {{--role="button">--}}
-        {{--<i class="fa fa-plus"></i>--}}
-        {{--<span>@lang('site::messages.add') @lang('site::act.act')</span>--}}
-        {{--</a>--}}
-        {{--<a href="{{ route('admin') }}" class="d-block d-sm-inline btn btn-secondary">--}}
-        {{--<i class="fa fa-reply"></i>--}}
-        {{--<span>@lang('site::messages.back_admin')</span>--}}
-        {{--</a>--}}
-        {{--</div>--}}
         @if($errors->has('repair'))
             <div class="alert alert-danger" role="alert">
                 <h4 class="alert-heading">@lang('site::messages.error')</h4>

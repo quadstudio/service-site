@@ -31,9 +31,24 @@
         @filter(['repository' => $repository])@endfilter
         @pagination(['pagination' => $schemes])@endpagination
         {{$schemes->render()}}
-        <div class="row items-row-view">
-            @each('site::admin.scheme.index.row', $schemes, 'scheme')
+        <div class="card">
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>@lang('site::scheme.block_id')</th>
+                        <th>@lang('site::scheme.datasheet_id')</th>
+                        <th class="text-center">@lang('site::element.elements')</th>
+                        <th class="text-center">@lang('site::datasheet.help.products')</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @each('site::admin.scheme.index.row', $schemes, 'scheme')
+                    </tbody>
+                </table>
+            </div>
         </div>
+
         {{$schemes->render()}}
     </div>
 @endsection

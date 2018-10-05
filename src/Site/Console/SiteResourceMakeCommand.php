@@ -126,6 +126,8 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
         'admin/contragent/AddressController.stub' => 'Admin/Contragent/AddressController',
         'admin/address/PhoneController.stub'      => 'Admin/Address/PhoneController',
         'admin/CurrencyArchiveController.stub'    => 'Admin/CurrencyArchiveController',
+        'admin/PointerController.stub'            => 'Admin/PointerController',
+        'admin/ShapeController.stub'              => 'Admin/ShapeController',
     ];
 
     /**

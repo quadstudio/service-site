@@ -1,4 +1,4 @@
-@if($image)
+@if(isset($image))
     <div class="custom-control border d-inline-block" id="image-{{$image->id}}">
         {{--@if($image->canDelete())--}}
             {{--<a class="text-danger btn-row-delete"--}}

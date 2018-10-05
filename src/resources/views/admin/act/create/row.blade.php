@@ -18,7 +18,7 @@
                                 <a target="_blank" href="{{route('admin.contragents.show', $contragent)}}">{{$contragent->name}}</a>
                             </div>
                             <div class="col-12">
-                                @foreach($contragent->repairs()->whereStatusId(5)->get() as $repair)
+                                @foreach($contragent->repairs()->whereStatusId(5)->whereNull('act_id')->get() as $repair)
                                     <div class="row border-top border-sm-top-0" id="act-repair-{{$repair->id}}">
                                         <div class="col-sm-3">
                                             <div class="custom-control custom-checkbox d-inline-block">
