@@ -3,6 +3,8 @@
 namespace QuadStudio\Service\Site\Repositories;
 
 use QuadStudio\Repo\Eloquent\Repository;
+use QuadStudio\Service\Site\Filters\Engineer\SearchFilter;
+use QuadStudio\Service\Site\Filters\Engineer\SortFilter;
 use QuadStudio\Service\Site\Models\Engineer;
 
 class EngineerRepository extends Repository
@@ -23,7 +25,8 @@ class EngineerRepository extends Repository
     public function track(): array
     {
         return [
-
+            SortFilter::class,
+            SearchFilter::class
         ];
     }
 }

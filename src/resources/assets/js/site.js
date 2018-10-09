@@ -86,10 +86,10 @@
                     if (shape !== false) {
                         $('[name="shape"]').val(shape);
                         submitForm($('#shape-create-form'));
-                    } else{
+                    } else {
                         alert('Неверный контур')
                     }
-                } else{
+                } else {
                     alert('Не выбрана деталь')
                 }
             });
@@ -179,6 +179,18 @@
                 dt.removeClass('bg-danger');
                 dt.removeClass('text-white');
             }
+        });
+        $('.part-cost-edit').on('click', function(){
+            let part_id = $(this).data('part');
+            axios
+                .get("/api/boilers/" + boiler_id)
+                .then((response) => {
+
+                    calc_parts();
+                })
+                .catch((error) => {
+                    this.status = 'Error:' + error;
+                });
         });
     }
 
@@ -291,8 +303,8 @@
 
     }
 
-    let orderCreateForm = document.getElementById("order-create-form");
-    if (orderCreateForm !== null) {
+    let fastProduct = document.getElementById("fast_product_id");
+    if (fastProduct !== null) {
         let fast_product_id = $('#fast_product_id');
         fast_product_id.select2({
             theme: "bootstrap4",
@@ -330,23 +342,58 @@
             }
         });
 
-        // fast_product_id.on('select2:select', function (e) {
-        //     let product_id = $(this).find('option:selected').val();
-        //
-        //     axios
-        //         .get("/api/products/" + product_id)
-        //         .then((response) => {
-        //             parts.append(response.data);
-        //             $('[name="parts[' + product_id + '][count]"]').focus();
-        //             calc_parts();
-        //             parts_search.val(null)
-        //         })
-        //         .catch((error) => {
-        //             this.status = 'Error:' + error;
-        //         });
-        // });
-    }
+        fast_product_id.on('select2:select', function (e) {
+            let product_id = $(this).find('option:selected').val();
 
+            axios
+                .post("/cart/" + product_id + '/add', {quantity: 1})
+                .then((response) => {
+                    parseData(response.data);
+                })
+                .catch((error) => {
+                    this.status = 'Error:' + error;
+                });
+        });
+    }
+    let adminPartsFieldset = document.getElementById("admin-parts-fieldset");
+    if (adminPartsFieldset !== null) {
+        let boiler_search = $('#product_id'),
+            parts_search = $('#parts_search');
+        parts_search.select2({
+            theme: "bootstrap4",
+            ajax: {
+                url: '/api/products/repair',
+                dataType: 'json',
+                // delay: 200,
+                data: function (params) {
+                    return {
+                        'filter[search_part]': params.term,
+                        'filter[search_product]': boiler_search.val(),
+                    };
+                },
+                processResults: function (data, params) {
+                    return {
+                        results: data.data,
+                    };
+                }
+            },
+            minimumInputLength: 3,
+            templateResult: function (product) {
+                if (product.loading) return "...";
+                //return product.name;
+                //if(product.enabled) return product.name;
+                //let markup = product.name + ' (' + product.sku + ')';
+                let markup = product.name + ' (' + product.sku + ')';
+                return markup;
+            },
+            templateSelection: function (product) {
+                return product.name;
+            },
+            escapeMarkup: function (markup) {
+                return markup;
+            }
+        });
+    }
     let repairFormExists = document.getElementById("repair-form");
     if (repairFormExists !== null) {
         let part_delete = $('.part-delete'),
@@ -475,8 +522,8 @@
                 axios
                     .get("/api/boilers/" + boiler_id)
                     .then((response) => {
-
-                        calc_parts();
+                        $('#parts').html('');
+                        selected = [];
                     })
                     .catch((error) => {
                         this.status = 'Error:' + error;

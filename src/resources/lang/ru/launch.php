@@ -22,6 +22,7 @@ return [
         'document_number' => 'Например, FA10126',
         'document_who'    => 'Например, Gruppo Ferroli',
         'document_date'   => 'Например, 26.03.2014',
+        'search'  => 'Поиск',
     ],
     'header'          => [
         'document' => 'Разрешающий документ',

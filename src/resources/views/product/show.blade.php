@@ -96,6 +96,9 @@
                                 @if($product->hasPrice)
                                     <dt class="col-sm-4">{{ $product->price->type->display_name ?: __('site::price.price')}}</dt>
                                     <dd class="col-sm-8 h2">{{ Site::format($product->price->value) }}</dd>
+                                @else
+                                    <dt class="col-sm-4">@lang('site::price.price')</dt>
+                                    <dd class="col-sm-8">@lang('site::price.help.price')</dd>
                                 @endif
                                 <dt class="col-sm-4"></dt>
                                 <dd class="col-sm-8">

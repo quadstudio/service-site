@@ -8,11 +8,18 @@
             <dd class="col-12 col-md-6">{{$format}}</dd>
             <dt class="col-12 col-md-6 text-left text-md-right">@lang('site::part.count')</dt>
             <dd class="col-12 col-md-6">
-                <input name="parts[{{$product_id}}][count]"
-                       placeholder="@lang('site::part.count')"
-                       class="form-control parts_count"
-                       type="number" min="1" max="3" maxlength="1" title=""
-                       value="{{$count}}">
+                <select name="parts[{{$product_id}}][count]"
+                        required title="@lang('site::part.count')"
+                        class="form-control parts_count">
+                    @foreach([1,2,3,4] as $count)
+                        <option @if(old('count') == $count) selected @endif value="{{ $count }}">{{ $count }}</option>
+                    @endforeach
+                </select>
+                {{--<input name="parts[{{$product_id}}][count]"--}}
+                       {{--placeholder="@lang('site::part.count')"--}}
+                       {{--class="form-control parts_count"--}}
+                       {{--type="number" min="1" max="4" maxlength="1" title=""--}}
+                       {{--value="{{$count}}">--}}
                 <input type="hidden" name="parts[{{$product_id}}][product_id]"
                        value="{{$product_id}}">
                 <input type="hidden" class="parts_cost" name="parts[{{$product_id}}][cost]"

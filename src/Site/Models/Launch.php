@@ -29,6 +29,17 @@ class Launch extends Model
         $this->table = 'launches';
     }
 
+    protected static function boot()
+    {
+        static::creating(function ($model) {
+
+            $model->address = empty($model->address) ? "" : $model->address ;
+        });
+
+        static::updating(function ($model) {
+            $model->address = empty($model->address) ? "" : $model->address ;
+        });
+    }
 
     /**
      * Страна местонахождения
@@ -38,6 +49,16 @@ class Launch extends Model
     public function country()
     {
         return $this->belongsTo(Country::class);
+    }
+
+    /**
+     * Пользователь
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -61,6 +82,23 @@ class Launch extends Model
     public function canDelete()
     {
         return $this->repairs()->count() == 0;
+    }
+
+    /**
+     * Отформатированный номер телефона
+     * @return string
+     */
+    public function format()
+    {
+        $result = [$this->country->getAttribute('phone')];
+        if (preg_match('/^(\d{3})(\d{3})(\d{2})(\d{2})$/', $this->getAttribute('phone'), $matches)) {
+            $result[] = '(' . $matches[1] . ') ' . $matches[2] . '-' . $matches[3] . '-' . $matches[4];
+        } else {
+            $result[] = $this->getAttribute('phone');
+        }
+
+
+        return implode(' ', $result);
     }
 
 }

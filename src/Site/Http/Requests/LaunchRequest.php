@@ -25,25 +25,11 @@ class LaunchRequest extends FormRequest
     public function rules()
     {
         switch ($this->method()) {
-            case 'GET':
-            case 'DELETE': {
-                return [];
-            }
-            case 'POST': {
-                return [
-                    'name'            => 'required|string|max:255',
-                    'country_id'      => 'required|exists:countries,id',
-                    'phone'           => 'required|numeric|digits:10',
-                    'address'         => 'required|string|max:255',
-                    'document_name'   => 'required|string|max:255',
-                    'document_number' => 'required|string|max:255',
-                    'document_who'    => 'required|string|max:255',
-                    'document_date'   => 'required|date_format:"Y-m-d"',
-                ];
-            }
+            case 'POST':
             case 'PUT':
             case 'PATCH': {
                 return [
+                    'name'       => 'required|string|max:255',
                     'country_id' => 'required|exists:countries,id',
                     'phone'      => 'required|numeric|digits:10',
                 ];
@@ -72,13 +58,8 @@ class LaunchRequest extends FormRequest
     {
         return [
             'name'            => trans('site::launch.name'),
-            'address'         => trans('site::launch.address'),
             'country_id'      => trans('site::launch.country_id'),
             'phone'           => trans('site::launch.phone'),
-            'document_name'   => trans('site::launch.document_name'),
-            'document_number' => trans('site::launch.document_number'),
-            'document_who'    => trans('site::launch.document_who'),
-            'document_date'   => trans('site::launch.document_date'),
         ];
     }
 }

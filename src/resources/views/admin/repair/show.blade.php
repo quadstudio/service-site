@@ -143,29 +143,40 @@
 
                         <dt class="col-sm-4  text-left text-sm-right">@lang('site::repair.cost_parts')</dt>
                         <dd class="col-sm-8 text-right">{{ Site::format($repair->cost_parts())}}</dd>
-                        @if(count($parts = $repair->parts) > 0)
-                            <dt class="col-sm-4 text-left text-sm-right @if($fails->contains('field', 'parts')) bg-danger text-white @endif">
-                                <label for="parts"
-                                       class="pointer control-label"><i
-                                            class="fa text-danger fa-hand-pointer-o"></i> @lang('site::part.parts')
-                                </label>
-                                <input id="parts"
-                                       value="parts"
-                                       @if($fails->contains('field', 'parts')) checked @endif
-                                       type="checkbox" name="fail[][field]" class="d-none repair-error-check">
-                            </dt>
-                            <dd class="col-sm-8">
-                                @foreach($parts as $part)
-                                    <div class="row">
-                                        <div class="col-8">{!! $part->product->name !!}
-                                            x {{$part->count}} {{$part->product->unit}}</div>
-                                        <div class="col-4 text-right text-danger">{{Site::format($part->total)}}</div>
-                                    </div>
-                                @endforeach
-                            </dd>
-                        @endif
+
+                        <dt class="col-sm-4 text-left text-sm-right @if($fails->contains('field', 'parts')) bg-danger text-white @endif">
+                            <label for="parts"
+                                   class="pointer control-label"><i
+                                        class="fa text-danger fa-hand-pointer-o"></i> @lang('site::part.parts')
+                            </label>
+                            <input id="parts"
+                                   value="parts"
+                                   @if($fails->contains('field', 'parts')) checked @endif
+                                   type="checkbox" name="fail[][field]" class="d-none repair-error-check">
+                        </dt>
+                        <dd class="col-sm-8">
+                            <fieldset id="admin-parts-fieldset">
+                                @if(count($parts = $repair->parts) > 0)
+                                    @foreach($parts as $part)
+                                        <div class="row">
+                                            <div class="col-8">{!! $part->product->name !!}
+                                                ( ={{Site::format($part->cost)}} x {{$part->count}} {{$part->product->unit}} )
+                                            </div>
+                                            <div class="col-4 text-right text-info">
+                                                <a href="{{route('admin.parts.edit', $part)}}"
+                                                   class="mr-3">@lang('site::messages.edit')</a>
+                                                <span id="part-{{$part->id}}">{{Site::format($part->total)}}</span>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    @lang('site::messages.not_found')
+                                @endif
+                            </fieldset>
+                        </dd>
                         <dt class="col-sm-4 text-right border-top">Итого к оплате</dt>
-                        <dd class="col-sm-8 text-right border-sm-top border-top-0">{{ Site::format($repair->totalCost)}}</dd>
+                        <dd class="col-sm-8 text-right border-sm-top border-top-0"
+                            id="parts-total">{{ Site::format($repair->totalCost)}}</dd>
 
                     </dl>
                 </div>

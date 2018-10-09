@@ -51,10 +51,11 @@ class Item implements Buyable
      */
     public function toArray()
     {
+
         return [
             'product_id'  => $this->product_id,
             'quantity'    => $this->quantity,
-            'price'       => $this->price,
+            'price'       => is_null($this->price) ? 0 : $this->price,
             'currency_id' => $this->currency_id,
         ];
 

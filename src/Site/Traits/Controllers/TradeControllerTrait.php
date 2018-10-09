@@ -70,7 +70,7 @@ trait TradeControllerTrait
     public function store(TradeRequest $request)
     {
         $this->authorize('create', Trade::class);
-        $request->user()->trades()->save(new Trade($request->except(['_token', '_method', '_create'])));
+        $request->user()->trades()->save($trade = new Trade($request->except(['_token', '_method', '_create'])));
 
         if ($request->ajax()) {
             $trades = $this->trades
@@ -81,7 +81,9 @@ trait TradeControllerTrait
             return response()->json([
                 'replace' => [
                     '#form-group-trade_id' => view('site::repair.create.trade_id')
-                        ->with('trades', $trades)->render(),
+                        ->with('trades', $trades)
+                        ->with('selected', $trade->getKey())
+                        ->render(),
                 ],
             ]);
         }

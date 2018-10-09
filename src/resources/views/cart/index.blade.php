@@ -38,7 +38,7 @@
                         </tr>
                         </thead>
                         <tbody class="table-hover">
-                        @each('site::cart.item.row', Cart::items(), 'item')
+                        @include('site::cart.item.rows')
                         </tbody>
                     </table>
                     @include('site::cart.modal.delete')

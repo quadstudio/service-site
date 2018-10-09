@@ -2,9 +2,6 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 
-use Illuminate\Support\Facades\Session;
-use QuadStudio\Service\Site\Filters\BelongsUserFilter;
-use QuadStudio\Service\Site\Filters\ByNameSortFilter;
 use QuadStudio\Service\Site\Filters\CountryEnabledFilter;
 use QuadStudio\Service\Site\Http\Requests\EngineerRequest;
 use QuadStudio\Service\Site\Models\Engineer;
@@ -48,56 +45,6 @@ trait EngineerControllerTrait
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @param EngineerRequest $request
-     * @return \Illuminate\Http\Response
-     */
-    public function create(EngineerRequest $request)
-    {
-        $this->authorize('create', Engineer::class);
-        $countries = $this->countries->all();
-        $view = $request->ajax() ? 'site::engineer.form' : 'engineer.create';
-
-        return view($view, ['countries' => $countries]);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  EngineerRequest $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(EngineerRequest $request)
-    {
-        $this->authorize('create', Engineer::class);
-        $request->user()->engineers()->save(new Engineer($request->except(['_token', '_method', '_create'])));
-
-        if ($request->ajax()) {
-            $engineers = $this->engineers
-                ->applyFilter(new BelongsUserFilter())
-                ->applyFilter(new ByNameSortFilter())
-                ->all();
-            Session::flash('success', trans('site::engineer.created'));
-
-            return response()->json([
-                'replace' => [
-                    '#form-group-engineer_id' => view('site::site.field.engineer_id')
-                        ->with('engineers', $engineers)->render(),
-                ],
-            ]);
-        }
-
-        if ($request->input('_create') == 1) {
-            $redirect = redirect()->route('engineers.create')->with('success', trans('site::engineer.created'));
-        } else {
-            $redirect = redirect()->route('engineers.index')->with('success', trans('site::engineer.created'));
-        }
-
-        return $redirect;
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  Engineer $engineer
@@ -105,10 +52,9 @@ trait EngineerControllerTrait
      */
     public function edit(Engineer $engineer)
     {
-        $this->authorize('update', $engineer);
         $countries = $this->countries->all();
 
-        return view('site::engineer.edit', [
+        return view('site::admin.engineer.edit', [
             'countries' => $countries,
             'engineer'  => $engineer
         ]);
@@ -123,13 +69,12 @@ trait EngineerControllerTrait
      */
     public function update(EngineerRequest $request, Engineer $engineer)
     {
-        $this->authorize('update', $engineer);
-        $this->engineers->update($request->only(['country_id', 'phone']), $engineer->id);
+        $this->engineers->update($request->only(['country_id', 'phone', 'address']), $engineer->id);
 
         if ($request->input('_stay') == 1) {
-            $redirect = redirect()->route('engineers.edit', $engineer)->with('success', trans('site::engineer.updated'));
+            $redirect = redirect()->route('admin.engineers.edit', $engineer)->with('success', trans('site::engineer.updated'));
         } else {
-            $redirect = redirect()->route('engineers.show', $engineer)->with('success', trans('site::engineer.updated'));
+            $redirect = redirect()->route('admin.engineers.show', $engineer)->with('success', trans('site::engineer.updated'));
         }
 
         return $redirect;
@@ -137,28 +82,8 @@ trait EngineerControllerTrait
 
     public function show(Engineer $engineer)
     {
-        $this->authorize('view', $engineer);
 
-        return view('site::engineer.show', ['engineer' => $engineer]);
+        return view('site::admin.engineer.show', compact('engineer'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  Engineer $engineer
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Engineer $engineer)
-    {
-        $this->authorize('delete', $engineer);
-
-        if ($this->engineers->delete($engineer->id) > 0) {
-            $redirect = redirect()->route('engineers.index')->with('success', trans('site::engineer.deleted'));
-        } else {
-            $redirect = redirect()->route('engineers.show', $engineer)->with('warning', trans('site::engineer.deleted'));
-        }
-
-        return $redirect;
-
-    }
 }

@@ -18,23 +18,13 @@ trait PartControllerTrait
     /**
      * Create a new controller instance.
      *
-     * @param PartRepository $products
+     * @param PartRepository $parts
      */
     public function __construct(PartRepository $parts)
     {
         $this->parts = $parts;
     }
 
-    /**
-     * @return PartCollection
-     */
-    public function serial()
-    {
-        $this->parts->applyFilter(new SearchFilter());
-        $this->parts->applyFilter(new SerialSearchFilter());
-
-        return new PartCollection($this->parts->all());
-    }
 
     /**
      * Display the specified resource.

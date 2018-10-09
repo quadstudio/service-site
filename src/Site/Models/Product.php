@@ -212,6 +212,7 @@ class Product extends Model implements Imageable
      */
     private function getPrice()
     {
+
         //dd($this->priceType);
         return $this
             ->prices()
@@ -232,7 +233,10 @@ class Product extends Model implements Imageable
      */
     public function getCanBuyAttribute()
     {
-        return $this->hasPrice && $this->getAttribute('active') == 1;
+        return $this->getAttribute('active') == 1
+            && $this->getAttribute('enabled') == 1
+            && $this->getAttribute('service') == 0;
+        //return $this->hasPrice && $this->getAttribute('active') == 1;
     }
 
     public function created_at($time = false)

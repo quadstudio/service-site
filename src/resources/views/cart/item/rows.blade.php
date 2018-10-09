@@ -1,0 +1,1 @@
+@each('site::cart.item.row', Cart::items(), 'item')

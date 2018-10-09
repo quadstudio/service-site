@@ -5,11 +5,13 @@
             data-btn-ok="@lang('site::messages.save')"
             data-btn-cancel="@lang('site::messages.cancel')"
             data-label="@lang('site::messages.add') @lang('site::engineer.engineer')"
-            class="dynamic-modal-form form-control{{  $errors->has('name') ? ' is-invalid' : '' }}"
-            name="engineer_id" id="engineer_id">
+            class="dynamic-modal-form form-control{{  $errors->has('engineer_id') ? ' is-invalid' : '' }}"
+            required
+            name="engineer_id"
+            id="engineer_id">
         <option value="">@lang('site::repair.default.engineer_id')</option>
         @foreach($engineers as $engineer)
-            <option @if(old('engineer_id') == $engineer->id) selected @endif
+            <option @if(old('engineer_id', isset($selected) ? $selected : null) == $engineer->id) selected @endif
             value="{{ $engineer->id }}">{{ $engineer->name }}</option>
         @endforeach
         <option disabled value="">@lang('site::repair.help.engineer_id')</option>

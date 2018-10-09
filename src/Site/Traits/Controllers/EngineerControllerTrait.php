@@ -76,7 +76,7 @@ trait EngineerControllerTrait
     {
         $this->authorize('create', Engineer::class);
 
-        $request->user()->engineers()->save(new Engineer($request->except(['_token', '_method', '_create'])));
+        $request->user()->engineers()->save($engineer = new Engineer($request->except(['_token', '_method', '_create'])));
 
         if ($request->ajax()) {
             $engineers = $this->engineers
@@ -88,7 +88,9 @@ trait EngineerControllerTrait
             return response()->json([
                 'replace' => [
                     '#form-group-engineer_id' => view('site::repair.create.engineer_id')
-                        ->with('engineers', $engineers)->render(),
+                        ->with('engineers', $engineers)
+                        ->with('selected', $engineer->getKey())
+                        ->render(),
                 ],
             ]);
         }

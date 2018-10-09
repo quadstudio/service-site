@@ -55,13 +55,13 @@ class Repair extends Model implements Messagable
 
         if ($status_id == 5 && $this->getOriginal('status_id') != 5) {
 
-            $this->parts->each(/**
-             * @param Part $part
-             * @param int $key
-             */
-                function ($part) {
-                    $part->update(['cost' => Site::round($part->cost())]);
-                });
+//            $this->parts->each(/**
+//             * @param Part $part
+//             * @param int $key
+//             */
+//                function ($part) {
+//                    $part->update(['cost' => Site::round($part->cost())]);
+//                });
             $this->update([
                 'status_id'       => $status_id,
                 'cost_difficulty' => $this->getAttribute('difficultyCost'),

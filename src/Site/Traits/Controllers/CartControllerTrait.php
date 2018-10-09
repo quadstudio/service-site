@@ -49,7 +49,8 @@ trait CartControllerTrait
 
         return response()->json([
             'replace' => [
-                '.cart-nav' => view('site::cart.nav')->render()
+                '.cart-nav' => view('site::cart.nav')->render(),
+                '#cart-table' => view('site::cart.item.rows')->render()
             ],
             'update'  => [
                 '#confirm-add-to-cart .modal-body' => $request->input('name')

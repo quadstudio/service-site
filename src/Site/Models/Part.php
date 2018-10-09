@@ -67,14 +67,14 @@ class Part extends Model
      */
     public function cost()
     {
-        switch ($this->repair->getAttribute('status_id')) {
-            case 5:
-            case 6:
-                return $this->cost;
-            default:
-
-                return $this->price * $this->rates;
-        }
+        return $this->cost;
+//        switch ($this->repair->getAttribute('status_id')) {
+//            case 5:
+//            case 6:
+//                return $this->cost;
+//            default:
+//                return $this->price * $this->rates;
+//        }
     }
 
     /**
@@ -84,6 +84,9 @@ class Part extends Model
      */
     public function getRatesAttribute()
     {
+        if(!$this->product->repairPrice->exists){
+            return 1;
+        }
         return Site::currencyRates($this->product->repairPrice->currency, $this->repair->user->currency, $this->repair->getAttribute('date_repair'));
         //return Site::currencyRates($this->repair->user->price_type->currency, $this->repair->user->currency);
     }

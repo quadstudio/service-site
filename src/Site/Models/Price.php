@@ -77,16 +77,14 @@ class Price extends Model
 
     /**
      * Получит цену товара в валюте текущего пользователя
-     * @param bool $round
      * @return float|mixed
      */
     public function getValueAttribute()
     {
-        $price = $this->getAttribute('price') * Site::currencyRates(
-                $this->currency,
-                Site::currency()
-            );
-
+        if(!$this->exists){
+            return 0;
+        }
+        $price = $this->getAttribute('price') * Site::currencyRates($this->type->currency, Site::currency());
 
         if (($round_value = config('site.round', false)) !== false) {
             $price = round($price, $round_value);

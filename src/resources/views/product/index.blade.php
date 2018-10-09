@@ -174,7 +174,7 @@
                             </a>
                         </div>
 
-                        <div class="product-content pl-2 pl-sm-0 pt-sm-2">
+                        <div class="product-content pl-2 pl-sm-0 pt-sm-2" style="position: relative;height: 150px;">
                             <div class="product-name">
                                 <a class="text-dark"
                                    href="{{route('products.show', $product)}}">{!! str_limit($product->name, 60) !!}</a>
@@ -187,11 +187,12 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="product-cart">
+                            <div class="product-cart" style="position: absolute;bottom:0;width: 100%;">
                                 @if($product->hasPrice)
-
                                     <div class="product-price font-weight-bold text-xlarge mt-3">{{ Site::format($product->price->value) }}</div>
                                     <span class="d-block text-muted mb-3">{{ $product->price->type->display_name ?: __('site::price.price')}}</span>
+                                @else
+                                    <div style="height: 36px!important">@lang('site::price.price') @lang('site::price.help.price')</div>
                                 @endif
                                 @include('site::cart.buy.large')
                             </div>

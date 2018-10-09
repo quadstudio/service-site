@@ -11,36 +11,33 @@
                 <div class="items-dropdown-menu dropdown-menu dropdown-menu-right"
                      x-placement="bottom-end"
                      style="position: absolute; will-change: top, left; top: 26px; left: -134px;">
-                    <a @can('edit', $contragent)
-                       href="{{route('contragents.edit', $contragent)}}"
-                       class="dropdown-item"
-                       @else()
-                       href="javascript:void(0);"
-                       class="disabled dropdown-item"
-                            @endcan>@lang('site::messages.edit')</a>
-                    <button @cannot('delete', $contragent) disabled @endcannot class="dropdown-item btn-row-delete"
-                            data-form="#contragent-delete-form-{{$contragent->id}}"
-                            data-btn-delete="@lang('site::messages.delete')"
-                            data-btn-cancel="@lang('site::messages.cancel')"
-                            data-label="@lang('site::messages.delete_confirm')"
-                            data-message="@lang('site::messages.delete_sure') @lang('site::contragent.contragent')? "
-                            data-toggle="modal" data-target="#form-modal"
-                            href="javascript:void(0);" title="@lang('site::messages.delete')">
-                        @lang('site::messages.delete')
-                    </button>
-                    <form id="contragent-delete-form-{{$contragent->id}}"
-                          action="{{route('contragents.destroy', $contragent)}}"
-                          method="POST">
-                        @csrf
-                        @method('DELETE')
-                    </form>
+                    <a href="{{route('admin.contragents.edit', $contragent)}}" class="dropdown-item">
+                        @lang('site::messages.edit')
+                    </a>
+                    {{--<button @cannot('delete', $contragent) disabled @endcannot class="dropdown-item btn-row-delete"--}}
+                            {{--data-form="#contragent-delete-form-{{$contragent->id}}"--}}
+                            {{--data-btn-delete="@lang('site::messages.delete')"--}}
+                            {{--data-btn-cancel="@lang('site::messages.cancel')"--}}
+                            {{--data-label="@lang('site::messages.delete_confirm')"--}}
+                            {{--data-message="@lang('site::messages.delete_sure') @lang('site::contragent.contragent')? "--}}
+                            {{--data-toggle="modal" data-target="#form-modal"--}}
+                            {{--href="javascript:void(0);" title="@lang('site::messages.delete')">--}}
+                        {{--@lang('site::messages.delete')--}}
+                    {{--</button>--}}
+                    {{--<form id="contragent-delete-form-{{$contragent->id}}"--}}
+                          {{--action="{{route('contragents.destroy', $contragent)}}"--}}
+                          {{--method="POST">--}}
+                        {{--@csrf--}}
+                        {{--@method('DELETE')--}}
+                    {{--</form>--}}
                 </div>
             </div>
             <div class="item-content">
                 <div class="item-content-about">
                     <div class="item-content-user text-muted small mb-2">{{$contragent->type->name}}</div>
                     <h4 class="item-content-name mb-2">
-                        <a href="{{route('admin.contragents.show', $contragent)}}" class="text-big">{{$contragent->name}}</a>
+                        <a href="{{route('admin.contragents.show', $contragent)}}"
+                           class="text-big">{{$contragent->name}}</a>
                     </h4>
                     <p>@lang('site::contragent.inn'): {{ $contragent->inn }}</p>
                     <hr class="border-light">

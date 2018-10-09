@@ -74,7 +74,7 @@
                                 {{ $item->quantity }} {{ $item->product->unit }} x {{ Site::format($item->price) }}
                             </div>
                         </div>
-                        <div class="col-sm-3 mb-4 mb-sm-0 text-large text-left text-sm-right">{{ Site::format($item->subtotal()) }}</div>
+                        <div class="col-sm-3 mb-4 mb-sm-0 text-large text-left text-sm-right">{{ Cart::price_format($item->subtotal()) }}</div>
                     </div>
 
                 @endforeach

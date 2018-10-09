@@ -3,7 +3,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-6 col-md-3 col-xl-2">
-                    <a href="{{ route('orders.show', $order) }}" class="text-large text-dark">{{$order->id()}}</a>
+                    <a href="{{ route('orders.show', $order) }}" class="text-large text-dark">{{$order->id}}</a>
                     <div class="p-1" style="font-weight:normal;color: {{ $order->status->color }}"><i
                                 class="fa fa-{{ $order->status->icon }}"></i> {{ $order->status->name }}</div>
                 </div>

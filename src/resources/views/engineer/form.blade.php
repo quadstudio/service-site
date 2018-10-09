@@ -42,9 +42,9 @@
             </small>
         </div>
     </div>
-    <div class="form-row required">
+    <div class="form-row">
         <div class="col mb-3">
-            <label for="address">@lang('site::engineer.address')</label>
+            <label class="control-label" for="address">@lang('site::engineer.address')</label>
             <input type="text"
                    name="address"
                    id="address"

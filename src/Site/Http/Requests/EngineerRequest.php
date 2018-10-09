@@ -25,21 +25,11 @@ class EngineerRequest extends FormRequest
     public function rules()
     {
         switch ($this->method()) {
-            case 'GET':
-            case 'DELETE': {
-                return [];
-            }
-            case 'POST': {
-                return [
-                    'name'       => 'required|string|max:255',
-                    'country_id' => 'required|exists:countries,id',
-                    'phone'      => 'required|numeric|digits:10',
-                    'address'    => 'required|string|max:255',
-                ];
-            }
+            case 'POST':
             case 'PUT':
             case 'PATCH': {
                 return [
+                    'name'       => 'required|string|max:255',
                     'country_id' => 'required|exists:countries,id',
                     'phone'      => 'required|numeric|digits:10',
                 ];
@@ -68,7 +58,6 @@ class EngineerRequest extends FormRequest
     {
         return [
             'name'       => trans('site::engineer.name'),
-            'address'    => trans('site::engineer.address'),
             'country_id' => trans('site::engineer.country_id'),
             'phone'      => trans('site::engineer.phone'),
         ];

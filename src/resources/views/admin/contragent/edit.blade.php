@@ -7,7 +7,16 @@
                 <a href="{{ route('index') }}">@lang('site::messages.index')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.contragents.index') }}">@lang('site::contragent.contragents')</a>
+                <a href="{{ route('admin') }}">@lang('site::messages.admin')</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ route('admin.users.index') }}">@lang('site::user.users')</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ route('admin.users.show', $contragent->user) }}">{{$contragent->user->name}}</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ route('admin.users.contragents', $contragent->user) }}">@lang('site::contragent.contragents')</a>
             </li>
             <li class="breadcrumb-item">
                 <a href="{{ route('admin.contragents.show', $contragent) }}">{{ $contragent->name }}</a>

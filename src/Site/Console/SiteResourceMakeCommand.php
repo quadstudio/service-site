@@ -128,6 +128,7 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
         'admin/CurrencyArchiveController.stub'    => 'Admin/CurrencyArchiveController',
         'admin/PointerController.stub'            => 'Admin/PointerController',
         'admin/ShapeController.stub'              => 'Admin/ShapeController',
+        'admin/PartController.stub'               => 'Admin/PartController',
     ];
 
     /**

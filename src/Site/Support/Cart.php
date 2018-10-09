@@ -214,6 +214,9 @@ class Cart implements BaseCart
     }
 
     public function price_format($price){
+        if($price == 0){
+            return trans('site::price.help.price');
+        }
         return trim(config('cart.symbol_left') . ' '. number_format($price, config('cart.decimals'), config('cart.decimalPoint'), config('cart.thousandSeparator')) .' '. config('cart.symbol_right'));
     }
 

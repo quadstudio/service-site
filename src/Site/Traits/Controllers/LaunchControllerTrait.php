@@ -73,7 +73,7 @@ trait LaunchControllerTrait
     public function store(LaunchRequest $request)
     {
         $this->authorize('create', Launch::class);
-        $request->user()->launches()->save(new Launch($request->except(['_token', '_method', '_create'])));
+        $request->user()->launches()->save($launch = new Launch($request->except(['_token', '_method', '_create'])));
 
         if ($request->ajax()) {
             $launches = $this->launches
@@ -85,7 +85,9 @@ trait LaunchControllerTrait
             return response()->json([
                 'replace' => [
                     '#form-group-launch_id' => view('site::repair.create.launch_id')
-                        ->with('launches', $launches)->render(),
+                        ->with('launches', $launches)
+                        ->with('selected', $launch->getKey())
+                        ->render(),
                 ],
             ]);
         }

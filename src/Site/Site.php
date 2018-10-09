@@ -265,6 +265,7 @@ class Site
                                 $router->name('admin')->resource('/launches', 'LaunchController');
                                 $router->name('admin')->resource('/currencies', 'CurrencyController');
                                 $router->name('admin')->resource('/banks', 'BankController');
+                                $router->name('admin')->resource('/parts', 'PartController')->only(['edit', 'update', 'destroy']);
                                 $router->name('admin')->resource('/currency_archives', 'CurrencyArchiveController')->only(['index']);
                                 $router->name('admin')->resource('/warehouses', 'WarehouseController');
                                 $router->name('admin')->post('/datasheets/file', 'DatasheetController@file')->name('.datasheets.file');

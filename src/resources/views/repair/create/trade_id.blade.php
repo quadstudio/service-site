@@ -4,11 +4,13 @@
             data-btn-ok="@lang('site::messages.save')"
             data-btn-cancel="@lang('site::messages.cancel')"
             data-label="@lang('site::messages.add') @lang('site::trade.trade')"
-            class="dynamic-modal-form form-control{{  $errors->has('name') ? ' is-invalid' : '' }}"
-            name="trade_id" id="trade_id">
+            class="dynamic-modal-form form-control{{  $errors->has('trade_id') ? ' is-invalid' : '' }}"
+            required
+            name="trade_id"
+            id="trade_id">
         <option value="">@lang('site::repair.default.trade_id')</option>
         @foreach($trades as $trade)
-            <option @if(old('trade_id') == $trade->id) selected @endif
+            <option @if(old('trade_id', isset($selected) ? $selected : null) == $trade->id) selected @endif
             value="{{ $trade->id }}">{{ $trade->name }}</option>
         @endforeach
         <option disabled value="">@lang('site::repair.help.trade_id')</option>
