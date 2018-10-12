@@ -23,7 +23,9 @@ class Product extends Model implements Imageable
      * @var array
      */
     protected $fillable = [
-        'enabled', 'active', 'warranty', 'service', 'description', 'specification', 'equipment_id', 'type_id'
+        'name', 'sku', 'enabled', 'active',
+        'warranty', 'service', 'description',
+        'specification', 'equipment_id', 'type_id'
     ];
 
     /**

@@ -4,6 +4,7 @@
         <span class="bg-danger text-white d-block d-sm-inline-block py-1 px-3 mb-1 mb-sm-0">@lang('site::messages.with_error')</span>
         <select data-form-action="{{ route('launches.create') }}"
                 data-btn-ok="@lang('site::messages.save')"
+                required
                 data-btn-cancel="@lang('site::messages.cancel')"
                 data-label="@lang('site::messages.add') @lang('site::launch.launch')"
                 class="dynamic-modal-form form-control{{  $errors->has('name') ? ' is-invalid' : '' }}"

@@ -17,7 +17,7 @@
         @alert()@endalert
 
         <div class="card mt-2 mb-2">
-            <div class="card-body">
+            <div class="card-body" id="summernote">
 
                 <form id="form-content" method="POST" action="{{ route('admin.catalogs.store') }}">
                     @csrf
@@ -64,7 +64,7 @@
                     <div class="form-row">
                         <div class="col mb-3">
                             <label class="control-label" for="description">@lang('site::catalog.description')</label>
-                            <textarea class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }}"
+                            <textarea class="summernote form-control{{ $errors->has('description') ? ' is-invalid' : '' }}"
                                       placeholder="@lang('site::catalog.placeholder.description')"
                                       name="description" id="description">{{ old('description') }}</textarea>
                             <span class="invalid-feedback">{{ $errors->first('description') }}</span>

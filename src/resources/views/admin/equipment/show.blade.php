@@ -26,11 +26,17 @@
                 <i class="fa fa-pencil"></i>
                 <span>@lang('site::messages.edit') @lang('site::equipment.equipment')</span>
             </a>
+            <a href="{{ route('admin.equipments.images.edit', $equipment) }}"
+               class="d-block mr-0 mr-sm-1 mb-1 mb-sm-0 d-sm-inline btn btn-ferroli">
+                <i class="fa fa-image"></i>
+                <span>@lang('site::image.images')</span>
+            </a>
             <a href="{{ route('admin.equipments.index') }}"
                class="d-block mr-0 mr-sm-1 mb-1 mb-sm-0 d-sm-inline btn btn-secondary">
                 <i class="fa fa-reply"></i>
                 <span>@lang('site::messages.back')</span>
             </a>
+
             @can('delete', $equipment)
                 <a class="d-block d-sm-inline text-white btn btn-danger btn-row-delete"
                    data-form="#equipment-delete-form-{{$equipment->id}}"
@@ -75,15 +81,22 @@
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::equipment.description')</dt>
                     <dd class="col-sm-8">{!! $equipment->description !!}</dd>
 
-                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::image.images')</dt>
-                    <dd class="col-sm-8">@include('site::admin.equipment.images')</dd>
-
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::product.header.boiler')</dt>
                     <dd class="col-sm-8">
                         @foreach($equipment->products as $product)
                             <a class="d-block mr-2"
                                href="{{route('admin.products.show', $product)}}">{{$product->name}}</a>
                         @endforeach
+                    </dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::image.images')</dt>
+                    <dd class="col-sm-8">
+                        <div class="row no-gutters" data-target="{{route('admin.equipments.images.sort', $equipment)}}"
+                             id="sort-list">
+                            @foreach($equipment->images()->orderBy('sort_order')->get() as $image)
+                                @include('site::admin.image.show')
+                            @endforeach
+                        </div>
                     </dd>
 
                 </dl>

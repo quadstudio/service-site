@@ -130,6 +130,7 @@
     }
 </style>
 @endpush
+@section('title')@lang('site::product.products')@lang('site::messages.title_separator')@endsection
 @section('header')
     @include('site::header.front',[
         'h1' => __('site::product.products'),
@@ -152,16 +153,16 @@
         @pagination(['pagination' => $products])@endpagination
         {{$products->render()}}
         {{--<div class="btn-group btn-group-toggle" data-toggle="buttons">--}}
-            {{--<label class="btn btn-ferroli active" onclick="gridView()">--}}
-                {{--<input type="radio"--}}
-                       {{--name="options" id="option2" autocomplete="off" checked>--}}
-                {{--<i class="fa fa-th-large"></i> Таблица--}}
-            {{--</label>--}}
-            {{--<label class="btn btn-ferroli" onclick="listView()">--}}
-                {{--<input type="radio"--}}
-                       {{--name="options" id="option1" autocomplete="off">--}}
-                {{--<i class="fa fa-bars"></i> Список--}}
-            {{--</label>--}}
+        {{--<label class="btn btn-ferroli active" onclick="gridView()">--}}
+        {{--<input type="radio"--}}
+        {{--name="options" id="option2" autocomplete="off" checked>--}}
+        {{--<i class="fa fa-th-large"></i> Таблица--}}
+        {{--</label>--}}
+        {{--<label class="btn btn-ferroli" onclick="listView()">--}}
+        {{--<input type="radio"--}}
+        {{--name="options" id="option1" autocomplete="off">--}}
+        {{--<i class="fa fa-bars"></i> Список--}}
+        {{--</label>--}}
         {{--</div>--}}
         <div id="product-row" class="row grid mb-2">
             @foreach($products as $key => $product)
@@ -208,19 +209,19 @@
 @push('scripts')
 {{--<script type="text/javascript">--}}
 
-    {{--let product_row = document.getElementById("product-row");--}}
+{{--let product_row = document.getElementById("product-row");--}}
 
-    {{--// List View--}}
-    {{--function listView() {--}}
+{{--// List View--}}
+{{--function listView() {--}}
 
-        {{--product_row.classList.remove("grid");--}}
-        {{--product_row.classList.add("list");--}}
-    {{--}--}}
+{{--product_row.classList.remove("grid");--}}
+{{--product_row.classList.add("list");--}}
+{{--}--}}
 
-    {{--// Grid View--}}
-    {{--function gridView() {--}}
-        {{--product_row.classList.remove("list");--}}
-        {{--product_row.classList.add("grid");--}}
-    {{--}--}}
+{{--// Grid View--}}
+{{--function gridView() {--}}
+{{--product_row.classList.remove("list");--}}
+{{--product_row.classList.add("grid");--}}
+{{--}--}}
 {{--</script>--}}
 @endpush

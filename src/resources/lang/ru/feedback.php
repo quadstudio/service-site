@@ -1,6 +1,7 @@
 <?php
 return [
     'feedback'    => 'Написать письмо',
+    'contacts'    => 'Контакты',
     //
     'name'        => 'Имя',
     'email'       => 'E-mail',

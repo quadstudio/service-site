@@ -33,6 +33,8 @@ class ProductRequest extends FormRequest
             case 'PUT':
             case 'PATCH': {
                 return [
+                    'name'     => 'required|string|max:255',
+                    'sku'      => 'max:255',
                     'type_id'  => 'required|exists:product_types,id',
                     'enabled'  => 'required|boolean',
                     'active'   => 'required|boolean',
@@ -63,6 +65,8 @@ class ProductRequest extends FormRequest
     public function attributes()
     {
         return [
+            'name'     => trans('site::product.name'),
+            'sku'      => trans('site::product.sku'),
             'type_id'  => trans('site::product.type_id'),
             'enabled'  => trans('site::product.enabled'),
             'active'   => trans('site::product.active'),

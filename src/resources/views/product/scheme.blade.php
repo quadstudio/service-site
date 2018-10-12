@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title'){!! $scheme->block->name !!}@lang('site::messages.title_separator')@endsection
 @section('header')
     @include('site::header.front',[
         'h1' => $scheme->block->name. ' '.$product->name,

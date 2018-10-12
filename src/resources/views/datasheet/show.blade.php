@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title'){!! $datasheet->name ?: $datasheet->file->name !!}@lang('site::messages.title_separator')@endsection
 @section('header')
     @include('site::header.front',[
         'h1' => $datasheet->name ?: $datasheet->file->name,

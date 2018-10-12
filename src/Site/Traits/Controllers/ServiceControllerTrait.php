@@ -38,12 +38,12 @@ trait ServiceControllerTrait
         $this->regions->applyFilter(new SelectFilter());
         $this->regions->applyFilter(new OnlyEnabledUserFilter());
         $regions = $this->regions->all(['regions.*']);
-
-        return view('site::service.index', compact('regions'));
+        return view('site::service.index', compact('regions', 'ip'));
     }
 
     public function show(Service $service)
     {
-        return view('site::service.show', ['service' => $service]);
+        return view('site::service.show', compact('service'));
     }
+
 }

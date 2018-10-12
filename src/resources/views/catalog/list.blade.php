@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title'){!! $catalog->name_plural !!}@lang('site::messages.title_separator')@endsection
 @push('styles')
 <style type="text/css">
     #product-row .product-col {

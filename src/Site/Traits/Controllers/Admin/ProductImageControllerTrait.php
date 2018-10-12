@@ -18,6 +18,7 @@ trait ProductImageControllerTrait
      * Store a newly created resource in storage.
      *
      * @param  ImageRequest $request
+     * @param Product $product
      * @return \Illuminate\Http\Response
      */
     public function store(ImageRequest $request, Product $product)

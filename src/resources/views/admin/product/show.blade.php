@@ -102,18 +102,6 @@
                             <div>{{$product->serials()->count()}}</div>
                         </li>
 
-                    </ul>
-                </div>
-                <div class="card mb-2">
-                    <h6 class="card-header with-elements">
-                        <span class="card-header-title">@lang('site::product.settings')</span>
-                        <div class="card-header-elements ml-auto">
-                            <a href="{{route('admin.products.edit', $product)}}" class="btn btn-sm btn-light">
-                                <i class="fa fa-pencil"></i>
-                            </a>
-                        </div>
-                    </h6>
-                    <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <div class="text-muted">@lang('site::product.enabled')</div>
                             <div>@bool(['bool' => $product->enabled == 1])@endbool</div>

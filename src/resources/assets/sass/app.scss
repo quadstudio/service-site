@@ -7,6 +7,7 @@
 // Select2
 @import '~select2/src/scss/core';
 @import '~select2-bootstrap4-theme/src/select2-bootstrap4';
+@import "~summernote/dist/summernote-bs4";
 
 body {
   font-size: 1rem;
@@ -1008,7 +1009,7 @@ nav.nav-centered.outOfSight .logo {
   width: 33.33%;
   height: 45px;
   line-height: 45px;
-  background-color: #000;
+  background-color: $dark;
   margin-right: 0px;
   color: #fff;
   text-align: center;

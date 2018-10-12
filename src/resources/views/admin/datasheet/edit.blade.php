@@ -22,7 +22,7 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body" id="summernote">
                         <form method="POST" id="form-content"
                               action="{{ route('admin.datasheets.update', $datasheet) }}">
 
@@ -122,7 +122,7 @@
                             <div class="form-row">
                                 <div class="col mb-3">
                                     <label class="control-label" for="tags">@lang('site::datasheet.tags')</label>
-                                    <textarea class="form-control{{ $errors->has('tags') ? ' is-invalid' : '' }}"
+                                    <textarea class="summernote form-control{{ $errors->has('tags') ? ' is-invalid' : '' }}"
                                               placeholder="@lang('site::datasheet.placeholder.tags')"
                                               name="tags"
                                               id="tags">{!! old('tags', $datasheet->tags) !!}</textarea>

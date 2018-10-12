@@ -73,6 +73,7 @@ class Site
                 function () use ($router) {
                     $router->get('/', 'IndexController@index')->name('index');
                     $router->get('/services', 'ServiceController@index')->name('services');
+
                     $router->get('/products/list', 'ProductController@list')->name('products.list');
                     $router->resource('/products', 'ProductController')->only(['index', 'show']);
                     $router->get('/products/{product}/schemes/{scheme}', 'ProductController@scheme')->name('products.scheme');
@@ -227,16 +228,24 @@ class Site
                                     Catalog::sort($request);
                                 })->name('.catalogs.sort');
                                 $router->name('admin')->resource('/catalogs', 'CatalogController');
-
+                                $router->name('admin')->resource('/images', 'ImageController');
                                 $router->name('admin')->get('/tree', 'CatalogController@tree')->name('.catalogs.tree');
                                 $router->name('admin')->get('/catalogs/create/{catalog?}', 'CatalogController@create')->name('.catalogs.create.parent');
+                                //
                                 $router->name('admin')->put('/equipments/sort', function (Request $request) {
+
                                     Equipment::sort($request);
                                 })->name('.equipments.sort');
                                 $router->name('admin')->resource('/equipments', 'EquipmentController');
+
                                 $router->name('admin')->get('/equipments/create/{catalog?}', 'EquipmentController@create')->name('.equipments.create.parent');
 
-                                $router->name('admin')->resource('/images', 'ImageController');
+                                $router->name('admin')->post('/equipment-images/{equipment}/store', 'EquipmentImageController@store')->name('.equipments.images.store');
+                                $router->name('admin')->get('/equipment-images/{equipment}/edit', 'EquipmentImageController@edit')->name('.equipments.images.edit');
+                                $router->name('admin')->put('/equipment-images/{equipment}/update', 'EquipmentImageController@update')->name('.equipments.images.update');
+                                $router->name('admin')->put('/equipment-images/{equipment}/sort', 'EquipmentImageController@sort')->name('.equipments.images.sort');
+                                $router->name('admin')->delete('/equipment-images/{equipment}/destroy', 'EquipmentImageController@destroy')->name('.equipments.images.destroy');
+                                //
                                 $router->name('admin')->resource('/products', 'ProductController');
                                 $router->name('admin')->get('/products/{product}/images', 'ProductController@images')->name('.products.images');
                                 $router->name('admin')->post('/products/{product}/images', 'ProductController@images')->name('.products.images.update');
@@ -248,6 +257,7 @@ class Site
                                 $router->name('admin')->post('/products/{product}/back_relations', 'ProductController@back_relations')->name('.products.back_relations.update');
                                 //$router->name('admin')->post('/product-images/{product}/store', 'ProductImageController@store')->name('.products.images.store');
                                 $router->name('admin')->put('/product-images/{product}/sort', 'ProductImageController@sort')->name('.products.images.sort');
+                                //
                                 $router->name('admin')->post('/analogs/store/{product}', 'AnalogController@store')->name('.analogs.store');
                                 $router->name('admin')->delete('/analogs/destroy/{product}/{analog}', 'AnalogController@destroy')->name('.analogs.destroy');
                                 $router->name('admin')->post('/relations/store/{product}', 'RelationController@store')->name('.relations.store');
@@ -292,7 +302,9 @@ class Site
         ],
             function () use ($router) {
                 $router->name('api')->get('/countries', 'CountryController@index')->name('.countries.index');
+                $router->name('api')->get('/services/location', 'ServiceController@location')->name('.services.location');
                 $router->name('api')->get('/services/{region?}', 'ServiceController@index')->name('.services.index');
+
                 $router->name('api')->resource('/users', 'UserController');
                 $router->name('api')->resource('/orders', 'OrderController');
                 $router->name('api')->resource('/acts', 'ActController');
@@ -311,10 +323,6 @@ class Site
                 //
                 $router->name('api')->get('/boilers', 'BoilerController@index')->name('.boilers.search');
                 $router->name('api')->get('/boilers/{product}', 'BoilerController@show')->name('.boilers.show');
-                //$router->name('api')->resource('/boilers', 'BoilerController')->only(['index', 'show']);
-                //$router->name('api')->get('/parts/{id}', 'PartController@show');
-                //$router->name('api')->get('/parts/{id}/repair', 'PartController@repair');
-
             });
 
 

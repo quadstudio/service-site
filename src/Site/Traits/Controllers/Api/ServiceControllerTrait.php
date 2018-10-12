@@ -11,9 +11,11 @@ use QuadStudio\Service\Site\Filters\Address\UserDisplayFilter;
 use QuadStudio\Service\Site\Filters\Address\ShowAscDealerFilter;
 use QuadStudio\Service\Site\Http\Resources\Address\YandexMapCollection;
 use QuadStudio\Service\Site\Http\Resources\Address\YandexMapResource;
+use QuadStudio\Service\Site\Http\Resources\LocationResource;
 use QuadStudio\Service\Site\Models\Region;
 use QuadStudio\Service\Site\Models\User;
 use QuadStudio\Service\Site\Repositories\AddressRepository;
+use Stevebauman\Location\Facades\Location;
 
 trait ServiceControllerTrait
 {
@@ -60,5 +62,11 @@ trait ServiceControllerTrait
     public function show(User $service)
     {
         return new YandexMapResource($service);
+    }
+
+    public function location(){
+        $ip = request()->ip();
+        //$ip = '77.246.239.18';
+        return new LocationResource(Location::get($ip));
     }
 }

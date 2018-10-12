@@ -19,7 +19,7 @@
         @alert()@endalert
 
         <div class="card mb-5">
-            <div class="card-body">
+            <div class="card-body" id="summernote">
 
                 <form id="form-content" method="POST" action="{{ route('admin.equipments.update', $equipment) }}">
                     @csrf
@@ -60,48 +60,59 @@
                     <div class="form-row">
                         <div class="col mb-3">
                             <label class="control-label" for="annotation">@lang('site::equipment.annotation')</label>
-                            <textarea class="form-control{{ $errors->has('annotation') ? ' is-invalid' : '' }}"
-                                      placeholder="@lang('site::equipment.placeholder.annotation')"
-                                      name="annotation"
-                                      id="annotation">{{ old('annotation', $equipment->annotation) }}</textarea>
+                            <input type="text" name="annotation"
+                                   id="annotation"
+                                   class="form-control{{ $errors->has('annotation') ? ' is-invalid' : '' }}"
+                                   placeholder="@lang('site::equipment.placeholder.annotation')"
+                                   value="{{ old('annotation', $equipment->annotation) }}">
                             <span class="invalid-feedback">{{ $errors->first('annotation') }}</span>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col mb-3">
                             <label class="control-label" for="description">@lang('site::equipment.description')</label>
-                            <textarea class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }}"
+                            <textarea class="summernote form-control{{ $errors->has('description') ? ' is-invalid' : '' }}"
                                       placeholder="@lang('site::equipment.placeholder.description')"
                                       name="description"
                                       id="description">{{ old('description', $equipment->description) }}</textarea>
                             <span class="invalid-feedback">{{ $errors->first('description') }}</span>
                         </div>
                     </div>
-                </form>
-                <div class="card mt-2 mb-2">
-                    <div class="card-body">
-                        <h5 class="card-title">@lang('site::image.images')</h5>
-                        <form method="POST" enctype="multipart/form-data"
-                              action="{{route('admin.images.store')}}">
-                            @csrf
-                            <div class="form-group form-control{{ $errors->has('path') ? ' is-invalid' : '' }}">
-                                <input type="file" name="path"/>
-                                <input type="hidden" name="storage" value="equipments"/>
-                                <input type="button" class="btn btn-ferroli image-upload"
-                                       value="@lang('site::messages.load')">
-
-                            </div>
-                            <span class="invalid-feedback">{{ $errors->first('path') }}</span>
-                        </form>
-                        <div class="d-flex flex-row bd-highlight">
-                            @if( !$images->isEmpty())
-                                @foreach($images as $image)
-                                    @include('site::admin.image.image')
-                                @endforeach
-                            @endif
+                    <div class="form-row">
+                        <div class="col mb-3">
+                            <label class="control-label" for="specification">@lang('site::equipment.specification')</label>
+                            <textarea class="summernote form-control{{ $errors->has('specification') ? ' is-invalid' : '' }}"
+                                      placeholder="@lang('site::equipment.placeholder.specification')"
+                                      name="specification"
+                                      id="specification">{{ old('specification', $equipment->specification) }}</textarea>
+                            <span class="invalid-feedback">{{ $errors->first('specification') }}</span>
                         </div>
                     </div>
-                </div>
+                </form>
+                {{--<div class="card mt-2 mb-2">--}}
+                    {{--<div class="card-body">--}}
+                        {{--<h5 class="card-title">@lang('site::image.images')</h5>--}}
+                        {{--<form method="POST" enctype="multipart/form-data"--}}
+                              {{--action="{{route('admin.images.store')}}">--}}
+                            {{--@csrf--}}
+                            {{--<div class="form-group form-control{{ $errors->has('path') ? ' is-invalid' : '' }}">--}}
+                                {{--<input type="file" name="path"/>--}}
+                                {{--<input type="hidden" name="storage" value="equipments"/>--}}
+                                {{--<input type="button" class="btn btn-ferroli image-upload"--}}
+                                       {{--value="@lang('site::messages.load')">--}}
+
+                            {{--</div>--}}
+                            {{--<span class="invalid-feedback">{{ $errors->first('path') }}</span>--}}
+                        {{--</form>--}}
+                        {{--<div class="d-flex flex-row bd-highlight">--}}
+                            {{--@if( !$images->isEmpty())--}}
+                                {{--@foreach($images as $image)--}}
+                                    {{--@include('site::admin.image.image')--}}
+                                {{--@endforeach--}}
+                            {{--@endif--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
                 <hr/>
                 <div class=" mb-2 text-right">
                     <button form="form-content" type="submit" name="_stay" value="1"

@@ -8,14 +8,14 @@
                 </div>
                 <div class="col-12 col-md-4 col-xl-4">
                     <div class="mb-2 mb-md-0 text-muted">
-                        <span class="d-block">{{ $serial->product->name() }}</span>
+                        <span class="d-block"><a href="{{route('admin.products.show', $serial->product)}}">{{ $serial->product->name }}</a></span>
                         {{--<span class="d-block">@lang('site::contragent.ogrn'):--}}
                         {{--{{ $contragent->ogrn }}</span>--}}
                     </div>
                 </div>
                 <div class="col-12 col-md-4 col-xl-4">
                     <div class="mb-2 mb-md-0 text-secondary text-left text-md-right">
-                         <span class="d-block">{{$serial->product->equipment->name }}</span>
+                        <span class="d-block"><a href="{{route('admin.equipments.show', $serial->product->equipment)}}">{{$serial->product->equipment->name }}</a></span>
                     </div>
                 </div>
             </div>

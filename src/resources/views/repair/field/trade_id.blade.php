@@ -3,6 +3,7 @@
     @if($fails->contains('field', 'trade_id'))
         <span class="bg-danger text-white d-block d-sm-inline-block py-1 px-3 mb-1 mb-sm-0">@lang('site::messages.with_error')</span>
         <select data-form-action="{{ route('trades.create') }}"
+                required
                 data-btn-ok="@lang('site::messages.save')"
                 data-btn-cancel="@lang('site::messages.cancel')"
                 data-label="@lang('site::messages.add') @lang('site::trade.trade')"

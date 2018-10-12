@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title')@lang('site::user.login')@lang('site::messages.title_separator')@endsection
 @section('header')
     @include('site::header.front',[
         'h1' => __('site::user.login'),

@@ -19,7 +19,7 @@
         @alert()@endalert
 
         <div class="card mb-5">
-            <div class="card-body">
+            <div class="card-body" id="summernote">
                 <form id="form-content" method="POST" action="{{ route('admin.datasheets.store') }}">
                     @csrf
 
@@ -115,7 +115,7 @@
                     <div class="form-row">
                         <div class="col mb-3">
                             <label class="control-label" for="tags">@lang('site::datasheet.tags')</label>
-                            <textarea class="form-control{{ $errors->has('tags') ? ' is-invalid' : '' }}"
+                            <textarea class="summernote form-control{{ $errors->has('tags') ? ' is-invalid' : '' }}"
                                       placeholder="@lang('site::datasheet.placeholder.tags')"
                                       name="tags"
                                       id="tags">{!! old('tags') !!}</textarea>

@@ -3,9 +3,10 @@
 namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use QuadStudio\Service\Site\Contracts\Imageable;
 use QuadStudio\Service\Site\Traits\Models\SortOrderTrait;
 
-class Equipment extends Model
+class Equipment extends Model implements Imageable
 {
 
     use SortOrderTrait;
@@ -15,7 +16,7 @@ class Equipment extends Model
     protected $table;
 
     protected $fillable = [
-        'name',  'annotation', 'description', 'enabled', 'catalog_id', 'sort_order'
+        'name',  'annotation', 'description', 'specification', 'enabled', 'catalog_id', 'sort_order'
     ];
 
     /**

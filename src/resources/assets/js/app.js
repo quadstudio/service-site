@@ -10,6 +10,8 @@ require('select2/dist/js/i18n/ru');
 window.Sortable = require('sortablejs');
 window.Maphilight = require('maphilight');
 window.Promise = require('promise-polyfill').default;
+window.Summernote = require('summernote/dist/summernote-bs4');
+require('summernote/lang/summernote-ru-RU');
 require('./site');
 
 

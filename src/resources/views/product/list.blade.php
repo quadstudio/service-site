@@ -11,6 +11,7 @@
     }
 </style>
 @endpush
+@section('title')@lang('site::product.products') @lang('site::product.view.list')@lang('site::messages.title_separator')@endsection
 @section('header')
     @include('site::header.front',[
         'h1' => __('site::product.products'). ' '. __('site::product.view.list'),

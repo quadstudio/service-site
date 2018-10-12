@@ -7,9 +7,11 @@ use QuadStudio\Service\Site\Http\Requests\EquipmentRequest;
 use QuadStudio\Service\Site\Models;
 use QuadStudio\Service\Site\Models\Equipment;
 use QuadStudio\Service\Site\Repositories;
+use QuadStudio\Service\Site\Traits\Support\ImageLoaderTrait;
 
 trait EquipmentControllerTrait
 {
+    use ImageLoaderTrait;
     /**
      * @var Repositories\EquipmentRepository
      */
@@ -90,22 +92,7 @@ trait EquipmentControllerTrait
         return view('site::admin.equipment.create', compact('images', 'currencies', 'parent_catalog_id', 'tree'));
     }
 
-    /**
-     * @param EquipmentRequest $request
-     * @return \Illuminate\Support\Collection
-     */
-    private function getImages(EquipmentRequest $request)
-    {
-        $images = collect([]);
-        $old = $request->old('image');
-        if (!is_null($old) && is_array($old)) {
-            foreach ($old as $image_id) {
-                $images->push(Image::findOrFail($image_id));
-            }
-        }
 
-        return $images;
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -133,23 +120,6 @@ trait EquipmentControllerTrait
         }
 
         return $redirect;
-    }
-
-    /**
-     * @param EquipmentRequest $request
-     * @param Models\Equipment $equipment
-     */
-    private function setImages(EquipmentRequest $request, Models\Equipment $equipment)
-    {
-        $equipment->detachImages();
-
-        if ($request->filled('image')) {
-            foreach ($request->input('image') as $image_id) {
-                $equipment->images()->save(Models\Image::find($image_id));
-            }
-
-        }
-        //$this->images->deleteLostImages();
     }
 
     /**
@@ -194,14 +164,6 @@ trait EquipmentControllerTrait
         }
 
         return $redirect;
-    }
-
-    /**
-     * @param Request $request
-     */
-    public function sort(Request $request)
-    {
-        Equipment::sort($request);
     }
 
     /**

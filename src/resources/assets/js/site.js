@@ -98,8 +98,9 @@
     let servicesRegionList = document.getElementById("services-region-list");
     if (servicesRegionList !== null) {
 
-        let myMap;
-        let objectManager;
+        let myMap,
+            objectManager,
+            servicesRegionList = $('#services-region-list');
 
         ymaps.ready(function () {
             myMap = new ymaps.Map('service-map', {
@@ -154,9 +155,13 @@
                     objectManager.removeAll();
                     objectManager.add(response.data.data);
                     myMap.geoObjects.add(objectManager);
+
                     myMap.container.fitToViewport();
-                    myMap.setBounds(myMap.geoObjects.getBounds(), {checkZoomRange: true});
+                    myMap.setBounds(myMap.geoObjects.getBounds(), {checkZoomRange: false});
+
                     renderServiceList(response.data.data);
+
+                    myMap.setZoom( 10 );
                 })
                 .catch((error) => {
 
@@ -164,6 +169,46 @@
             e.preventDefault();
         });
 
+        axios
+            .get("/api/services/location")
+            .then((response) => {
+
+                if (typeof response.data.data !== "undefined") {
+                    let location = response.data.data;
+                    if(location.countryCode !== null && location.regionCode !== null){
+                        let code = location.countryCode + '-' + location.regionCode;
+                        $('.services-region-select').each(function (i, region) {
+                            if (code === $(region).data('region')) {
+                                $(region).trigger('click');
+                                return true;
+                            }
+                        });
+                    }
+                }
+                $('[data-region="RU-MOW"]').trigger('click');
+
+            })
+            .catch((error) => {
+                this.status = 'Error:' + error;
+            });
+    }
+
+    let summernote = document.getElementById("summernote");
+    if (summernote !== null) {
+        $('.summernote').summernote({
+            height: 150,
+            lang: 'ru-RU',
+            toolbar: [
+                // [groupName, [list of button]]
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']],
+                ['misc', ['undo','redo','codeview']],
+            ]
+        });
     }
 
     let repairAdminEditForm = document.getElementById("repair-admin-edit-form");
@@ -180,7 +225,7 @@
                 dt.removeClass('text-white');
             }
         });
-        $('.part-cost-edit').on('click', function(){
+        $('.part-cost-edit').on('click', function () {
             let part_id = $(this).data('part');
             axios
                 .get("/api/boilers/" + boiler_id)
@@ -209,15 +254,13 @@
                 for (i = 0; i < elements.length; i++) {
                     result.push(elements[i].getAttribute('data-id'));
                 }
+                //console.log(action);
                 axios
                     .put(action, {sort: result})
-                    .then((response) => {
-
-                    })
                     .catch((error) => {
                         console.log(error);
                     });
-                console.log(result);
+
             },
 
         });

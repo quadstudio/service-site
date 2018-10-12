@@ -203,18 +203,25 @@
                                 <div class="form-group required">
                                     <label class="control-label"
                                            for="product_id">@lang('site::repair.product_id')</label>
-                                    @if(old('product_id'))
-                                        <select style="width:100%" title=""
-                                                class="form-control{{ $errors->has('product_id') ? ' is-invalid' : '' }}">
+                                    {{--@if(old('product_id'))--}}
+                                    {{--<select style="width:100%" title=""--}}
+                                    {{--class="form-control{{ $errors->has('product_id') ? ' is-invalid' : '' }}">--}}
+                                    {{--<option value="{{old('product_id')}}">{{$product}}</option>--}}
+                                    {{--</select>--}}
+                                    {{--<input type="hidden" id="product_id" name="product_id" value="{{old('product_id')}}"/>--}}
+                                    {{--@else--}}
+                                    <select id="product_id" name="product_id" style="width:100%"
+                                            class="form-control">
+                                        @if(old('product_id'))
                                             <option value="{{old('product_id')}}">{{$product}}</option>
-                                        </select>
-                                        <input type="hidden" name="product_id" value="{{old('product_id')}}"/>
-                                    @else
-                                        <select id="product_id" name="product_id" style="width:100%"
-                                                class="form-control">
-                                            <option value=""></option>
-                                        </select>
+                                        @else
+                                            <option value="{{old('product_id')}}"></option>
+                                        @endif
+                                    </select>
+                                    @if(old('product_id'))
+                                        <div>{{$product}}</div>
                                     @endif
+                                    {{--@endif--}}
                                     <small id="product_idHelp" class="d-block form-text text-success">
                                         @lang('site::repair.placeholder.product_id')
                                     </small>

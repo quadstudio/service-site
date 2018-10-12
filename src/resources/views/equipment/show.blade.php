@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title'){!! $equipment->catalog->parentRoot()->name. ' '.$equipment->name !!}@lang('site::messages.title_separator')@endsection
 @section('header')
     @include('site::header.front',[
         'h1' => $equipment->catalog->parentRoot()->name. ' '.$equipment->name,

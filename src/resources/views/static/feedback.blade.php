@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title')@lang('site::feedback.contacts')@lang('site::messages.title_separator')@endsection
 @push('scripts')
 <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
 @endpush
@@ -45,7 +45,7 @@
         'h1' => 'Контакты',
         'breadcrumbs' => [
             ['url' => route('index'), 'name' => __('site::messages.index')],
-            ['name' => 'Контакты']
+            ['name' => __('site::feedback.contacts')]
         ]
     ])
 @endsection

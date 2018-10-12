@@ -12,10 +12,11 @@ return [
     'enabled'       => 'Статус',
     //
     'placeholder'   => [
-        'search'      => 'Поиск моделей',
-        'name'        => 'Например, Diva',
-        'annotation'  => '',
-        'description' => '',
+        'search'        => 'Поиск моделей',
+        'name'          => 'Например, Diva',
+        'annotation'    => '',
+        'description'   => '',
+        'specification' => '',
 
     ],
     'default'       => [

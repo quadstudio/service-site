@@ -29,7 +29,7 @@ class AddressResource extends JsonResource
             'country' => $this->country->name,
             'region' => $this->region->name,
             'locality' => $this->locality,
-            'name' => $this->name,
+            'name' => $this->full. ' '.$this->name,
             'geo' => $this->geo,
         ];
     }

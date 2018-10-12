@@ -3,10 +3,10 @@ return [
     'index'            => 'Главная',
     'about'            => 'О компании',
     //
-    'title'            => 'Сервис Ferroli',
-    'description'      => 'Сервис Ferroli',
-    'keyword'          => 'Сервис, Ferroli',
-    //
+    'title'            => 'Ferroli',
+    'description'      => 'Ferroli',
+    'keyword'          => 'Ferroli',
+    'title_separator'  => ' - ',
     'abouts'           => 'О компании',
     'feedback'         => 'Контакты',
     //

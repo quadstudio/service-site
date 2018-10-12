@@ -2,7 +2,7 @@
 <html lang="{{ app()->getLocale() }}">
 <head>
 
-    <title>@lang('site::messages.title')</title>
+    <title>@yield('title')@lang('site::messages.title')</title>
 
     <meta name="description" content="@lang('site::messages.description')">
     <meta name="keyword" content="@lang('site::messages.keyword')">

@@ -22,13 +22,41 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body" id="summernote">
                         <form method="POST" id="form-content"
                               action="{{ route('admin.products.update', $product) }}">
 
                             @csrf
 
                             @method('PUT')
+
+                            <div class="form-row required">
+                                <div class="col mb-3">
+                                    <label class="control-label" for="name">@lang('site::product.name')</label>
+                                    <input type="text"
+                                           name="name"
+                                           id="name"
+                                           required
+                                           class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}"
+                                           placeholder="@lang('site::product.placeholder.name')"
+                                           value="{{ old('name', $product->name) }}">
+                                    <span class="invalid-feedback">{{ $errors->first('name') }}</span>
+                                </div>
+                            </div>
+
+                            <div class="form-row required">
+                                <div class="col mb-3">
+                                    <label class="control-label" for="sku">@lang('site::product.sku')</label>
+                                    <input type="text"
+                                           name="sku"
+                                           id="sku"
+                                           required
+                                           class="form-control{{ $errors->has('sku') ? ' is-invalid' : '' }}"
+                                           placeholder="@lang('site::product.placeholder.sku')"
+                                           value="{{ old('sku', $product->sku) }}">
+                                    <span class="invalid-feedback">{{ $errors->first('sku') }}</span>
+                                </div>
+                            </div>
 
                             <div class="form-group required">
                                 <label class="control-label"
@@ -191,7 +219,7 @@
                             <div class="form-row">
                                 <div class="col mb-3">
                                     <label for="description">@lang('site::product.description')</label>
-                                    <textarea class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }}"
+                                    <textarea class="summernote form-control{{ $errors->has('description') ? ' is-invalid' : '' }}"
                                               placeholder="@lang('site::product.placeholder.description')"
                                               name="description"
                                               rows="5"
@@ -203,7 +231,7 @@
                                 <div class="col mb-3">
                                     <label for="specification">@lang('site::product.specification')</label>
                                     <textarea
-                                            class="form-control{{ $errors->has('specification') ? ' is-invalid' : '' }}"
+                                            class="summernote form-control{{ $errors->has('specification') ? ' is-invalid' : '' }}"
                                             placeholder="@lang('site::product.placeholder.specification')"
                                             name="specification"
                                             rows="5"

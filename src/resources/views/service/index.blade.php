@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title')@lang('site::service.services')@lang('site::messages.title_separator')@endsection
 @push('scripts')
 <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
 @endpush
@@ -55,9 +55,6 @@
                            class="services-region-select list-group-item list-group-item-action p-2">{{$region->name}}</a>
                     @endforeach
                 </div>
-                {{--<div class="control-group form-group">--}}
-                {{--<button id="search-service" type="submit">Поиск</button>--}}
-                {{--</div>--}}
             </div>
             <div class="col-md-6 col-lg-9 mt-5">
                 <div class="row">
