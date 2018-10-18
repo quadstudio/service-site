@@ -4,11 +4,12 @@ namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 
 use Illuminate\Support\Facades\Auth;
 use QuadStudio\Service\Site\Filters\Address\CountrySelectFilter;
+use QuadStudio\Service\Site\Filters\Address\IsServiceSelectFilter;
 use QuadStudio\Service\Site\Filters\Address\RegionSelectFilter;
 use QuadStudio\Service\Site\Filters\Address\SearchFilter;
 use QuadStudio\Service\Site\Filters\Address\TypeSelectFilter;
 use QuadStudio\Service\Site\Filters\Address\UserFilter;
-use QuadStudio\Service\Site\Filters\Address\ViewSelectFilter;
+use QuadStudio\Service\Site\Filters\Address\IsShopSelectFilter;
 use QuadStudio\Service\Site\Filters\AddressableFilter;
 use QuadStudio\Service\Site\Http\Requests\AddressRequest;
 use QuadStudio\Service\Site\Http\Requests\PhoneRequest;
@@ -48,8 +49,9 @@ trait AddressControllerTrait
         $this->addresses->pushTrackFilter(CountrySelectFilter::class);
         $this->addresses->pushTrackFilter(RegionSelectFilter::class);
         $this->addresses->pushTrackFilter(TypeSelectFilter::class);
-        $this->addresses->pushTrackFilter(ViewSelectFilter::class);
         $this->addresses->pushTrackFilter(SearchFilter::class);
+        $this->addresses->pushTrackFilter(IsShopSelectFilter::class);
+        $this->addresses->pushTrackFilter(IsServiceSelectFilter::class);
         $this->addresses->pushTrackFilter(UserFilter::class);
         return view('site::admin.address.index', [
             'repository' => $this->addresses,

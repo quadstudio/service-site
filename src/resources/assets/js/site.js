@@ -105,7 +105,7 @@
         ymaps.ready(function () {
             myMap = new ymaps.Map('service-map', {
                 center: [55.76, 37.64],
-                zoom: 10,
+                zoom: 9,
                 controls: ['zoomControl', 'typeSelector', 'fullscreenControl']
             }, {
                 searchControlProvider: 'yandex#search'
@@ -131,8 +131,8 @@
             }
         };
 
-        $('.services-region-select').on('click', function (e) {
-            let _this = $(this),
+        let drawServices = function(element){
+            let _this = element,
                 region = _this.data('region'),
                 data = {
                     'filter[show]': []
@@ -151,21 +151,49 @@
                 .get(action + '/' + region, {params: data})
                 .then((response) => {
                     $('#row-count').html(response.data.data.features.length);
+                    renderServiceList(response.data.data);
                     myMap.geoObjects.remove(objectManager);
                     objectManager.removeAll();
                     objectManager.add(response.data.data);
                     myMap.geoObjects.add(objectManager);
 
                     myMap.container.fitToViewport();
-                    myMap.setBounds(myMap.geoObjects.getBounds(), {checkZoomRange: false});
 
-                    renderServiceList(response.data.data);
+                    let bounds = myMap.geoObjects.getBounds();
+                    //(х1+х3)/2,  (у1+у3)/2
+                    console.log(bounds);
+                    // this.map.setBounds(bounds)
+                    //     .then(function () {
+                    //         let center = self.map.getCenter();
+                    //         self.map.zoomRange.get(center)
+                    //             .then(function(range) {
+                    //                 self.map.setZoom(range[1]);
+                    //             });
+                    //     });
 
-                    myMap.setZoom( 10 );
+                    myMap.setBounds(bounds, {checkZoomRange: true});
+                    //let state = myMap.action.getCurrentState();
+                    //myMap.setCenter(state.globalPixelCenter, 15);
+//                    console.log(state.zoom);
+
+
+
+                    // console.log(bounds);
+                    // myMap.zoomRange.get(bounds).then(function (range) {
+                    //     console.log(range);
+                    //     //
+                    //     //myMap.setCenter(coords, range[1]);
+                    // });
+                    //myMap.setZoom(myMap.getZoom() + 1);
+                    //myMap.setZoom( 9 );
                 })
                 .catch((error) => {
 
                 });
+        };
+
+        $('.services-region-select').on('click', function (e) {
+            drawServices($(this));
             e.preventDefault();
         });
 
@@ -179,13 +207,14 @@
                         let code = location.countryCode + '-' + location.regionCode;
                         $('.services-region-select').each(function (i, region) {
                             if (code === $(region).data('region')) {
-                                $(region).trigger('click');
+                                drawServices($(region));
+                                //$(region).trigger('click');
                                 return true;
                             }
                         });
                     }
                 }
-                $('[data-region="RU-MOW"]').trigger('click');
+                drawServices($('[data-region="RU-MOW"]'));
 
             })
             .catch((error) => {

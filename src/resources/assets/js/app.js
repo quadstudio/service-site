@@ -13,5 +13,5 @@ window.Promise = require('promise-polyfill').default;
 window.Summernote = require('summernote/dist/summernote-bs4');
 require('summernote/lang/summernote-ru-RU');
 require('./site');
-
+require('./yul');
 

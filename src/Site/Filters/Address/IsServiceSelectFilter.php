@@ -7,7 +7,7 @@ use QuadStudio\Repo\Contracts\RepositoryInterface;
 use QuadStudio\Repo\Filters\BootstrapSelect;
 use QuadStudio\Repo\Filters\WhereFilter;
 
-class ViewSelectFilter extends WhereFilter
+class IsServiceSelectFilter extends WhereFilter
 {
     use BootstrapSelect;
 
@@ -15,8 +15,8 @@ class ViewSelectFilter extends WhereFilter
 
     function apply($builder, RepositoryInterface $repository)
     {
-        if ($this->canTrack() && !is_null($country_id = $this->get($this->name()))) {
-            $builder = $builder->where(DB::raw($this->column()), $this->operator(), $country_id);
+        if ($this->canTrack() && !is_null($is_service = $this->get($this->name()))) {
+            $builder = $builder->where(DB::raw($this->column()), $this->operator(), $is_service);
         }
 
         return $builder;
@@ -27,7 +27,7 @@ class ViewSelectFilter extends WhereFilter
      */
     public function name(): string
     {
-        return 'is_shop';
+        return 'is_service';
     }
 
     /**
@@ -36,7 +36,7 @@ class ViewSelectFilter extends WhereFilter
     public function column(): string
     {
 
-        return 'is_shop';
+        return 'is_service';
 
     }
 
@@ -49,8 +49,7 @@ class ViewSelectFilter extends WhereFilter
     {
         return [
             '' => trans('site::messages.select_from_list'),
-            '0' => trans('site::address.is_shop_0'),
-            '1' => trans('site::address.is_shop_1')
+            '1' => trans('site::messages.yes')
         ];
     }
 
@@ -61,6 +60,6 @@ class ViewSelectFilter extends WhereFilter
 
     public function label()
     {
-        return trans('site::address.is_shop');
+        return trans('site::address.is_service');
     }
 }

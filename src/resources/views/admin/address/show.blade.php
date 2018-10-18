@@ -86,8 +86,11 @@
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.active')</dt>
                     <dd class="col-sm-8">@bool(['bool' => $address->active])@endbool</dd>
 
-                    <dt class="col-sm-4 text-left text-sm-right"></dt>
-                    <dd class="col-sm-8">@lang('site::address.is_shop_'.$address->is_shop)</dd>
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.is_shop')</dt>
+                    <dd class="col-sm-8">@bool(['bool' => $address->is_shop])@endbool</dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.is_service')</dt>
+                    <dd class="col-sm-8">@bool(['bool' => $address->is_service])@endbool</dd>
 
                     @if($address->name)
                         <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.name')</dt>

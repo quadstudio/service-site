@@ -34,67 +34,109 @@
 
                     @csrf
                     @method('PUT')
-
-                    <div class="form-row required">
-                        <div class="col mb-3">
-                            <label class="control-label d-block"
-                                   for="active">@lang('site::address.active')</label>
-                            <div class="custom-control custom-radio  custom-control-inline">
-                                <input class="custom-control-input
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-row required">
+                                <div class="col mb-3">
+                                    <label class="control-label d-block"
+                                           for="active">@lang('site::address.active')</label>
+                                    <div class="custom-control custom-radio  custom-control-inline">
+                                        <input class="custom-control-input
                                                     {{$errors->has('address.active') ? ' is-invalid' : ''}}"
-                                       type="radio"
-                                       name="address[active]"
-                                       required
-                                       @if(old('address.active', $address->active) == 1) checked @endif
-                                       id="active_1"
-                                       value="1">
-                                <label class="custom-control-label"
-                                       for="active_1">@lang('site::messages.yes')</label>
+                                               type="radio"
+                                               name="address[active]"
+                                               required
+                                               @if(old('address.active', $address->active) == 1) checked @endif
+                                               id="active_1"
+                                               value="1">
+                                        <label class="custom-control-label"
+                                               for="active_1">@lang('site::messages.yes')</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input class="custom-control-input
+                                                    {{$errors->has('address.active') ? ' is-invalid' : ''}}"
+                                               type="radio"
+                                               name="address[active]"
+                                               required
+                                               @if(old('address.active', $address->active) == 0) checked @endif
+                                               id="active_0"
+                                               value="0">
+                                        <label class="custom-control-label"
+                                               for="active_0">@lang('site::messages.no')</label>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input class="custom-control-input
-                                                    {{$errors->has('address.active') ? ' is-invalid' : ''}}"
-                                       type="radio"
-                                       name="address[active]"
-                                       required
-                                       @if(old('address.active', $address->active) == 0) checked @endif
-                                       id="active_0"
-                                       value="0">
-                                <label class="custom-control-label"
-                                       for="active_0">@lang('site::messages.no')</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-row">
+                                <div class="col mb-3">
+                                    <label class="control-label d-block"
+                                           for="active">@lang('site::address.is_shop')</label>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input class="custom-control-input
+                                                    {{$errors->has('address.is_shop') ? ' is-invalid' : ''}}"
+                                               type="radio"
+                                               name="address[is_shop]"
+                                               @if(old('address.is_shop', $address->is_shop) == 0) checked @endif
+                                               id="is_shop_0"
+                                               value="0">
+                                        <label class="custom-control-label"
+                                               for="is_shop_0">@lang('site::messages.no')</label>
+                                    </div>
+                                    <div class="custom-control custom-radio  custom-control-inline">
+                                        <input class="custom-control-input
+                                                    {{$errors->has('address.is_shop') ? ' is-invalid' : ''}}"
+                                               type="radio"
+                                               name="address[is_shop]"
+                                               required
+                                               @if(old('address.is_shop', $address->is_shop) == 1) checked @endif
+                                               id="is_shop_1"
+                                               value="1">
+                                        <label class="custom-control-label"
+                                               for="is_shop_1">@lang('site::messages.yes')</label>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-row">
+                                <div class="col mb-3">
+                                    <label class="control-label d-block"
+                                           for="active">@lang('site::address.is_service')</label>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input class="custom-control-input
+                                                    {{$errors->has('address.is_service') ? ' is-invalid' : ''}}"
+                                               type="radio"
+                                               name="address[is_service]"
+                                               @if(old('address.is_service', $address->is_service) == 0) checked @endif
+                                               id="is_service_0"
+                                               value="0">
+                                        <label class="custom-control-label"
+                                               for="is_service_0">@lang('site::messages.no')</label>
+                                    </div>
+                                    <div class="custom-control custom-radio  custom-control-inline">
+                                        <input class="custom-control-input
+                                                    {{$errors->has('address.is_service') ? ' is-invalid' : ''}}"
+                                               type="radio"
+                                               name="address[is_service]"
+                                               required
+                                               @if(old('address.is_service', $address->is_service) == 1) checked @endif
+                                               id="is_service_1"
+                                               value="1">
+                                        <label class="custom-control-label"
+                                               for="is_service_1">@lang('site::messages.yes')</label>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-row required">
-                        <div class="col mb-3">
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input class="custom-control-input
-                                                    {{$errors->has('address.is_shop') ? ' is-invalid' : ''}}"
-                                       type="radio"
-                                       name="address[is_shop]"
-                                       required
-                                       @if(old('address.is_shop', $address->is_shop) == 0) checked @endif
-                                       id="is_shop_0"
-                                       value="0">
-                                <label class="custom-control-label"
-                                       for="is_shop_0">@lang('site::address.is_shop_0')</label>
-                            </div>
-                            <div class="custom-control custom-radio  custom-control-inline">
-                                <input class="custom-control-input
-                                                    {{$errors->has('address.is_shop') ? ' is-invalid' : ''}}"
-                                       type="radio"
-                                       name="address[is_shop]"
-                                       required
-                                       @if(old('address.is_shop', $address->is_shop) == 1) checked @endif
-                                       id="is_shop_1"
-                                       value="1">
-                                <label class="custom-control-label"
-                                       for="is_shop_1">@lang('site::address.is_shop_1')</label>
-                            </div>
 
-                        </div>
-                    </div>
+
+
+
 
                     <div class="form-row @if($address->addressable_type == 'users') required @endif">
                         <div class="col mb-3">
