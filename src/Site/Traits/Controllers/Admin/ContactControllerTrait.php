@@ -29,9 +29,9 @@ trait ContactControllerTrait
     {
 
         $this->contacts->trackFilter();
-        return view('site::contact.index', [
+        return view('site::admin.contact.index', [
             'repository' => $this->contacts,
-            'items'      => $this->contacts->paginate(config('site.per_page.contact', 10), ['contacts.*'])
+            'contacts'      => $this->contacts->paginate(config('site.per_page.contact', 10), ['contacts.*'])
         ]);
     }
 

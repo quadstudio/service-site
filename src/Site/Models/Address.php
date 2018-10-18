@@ -9,7 +9,7 @@ class Address extends Model
     protected $fillable = [
         'type_id', 'country_id', 'region_id',
         'locality', 'street', 'building',
-        'apartment', 'postal', 'name', 'active'
+        'apartment', 'postal', 'name', 'active', 'is_shop'
     ];
 
     /**

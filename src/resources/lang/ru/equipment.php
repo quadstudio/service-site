@@ -10,6 +10,9 @@ return [
     'specification' => 'Технические характеристики',
     'catalog_id'    => 'Каталог',
     'enabled'       => 'Статус',
+    'metadescription'     => 'Тег Meta Description',
+    'title'               => 'Тег Title',
+    'h1'                  => 'Тег H1',
     //
     'placeholder'   => [
         'search'        => 'Поиск моделей',
@@ -17,6 +20,9 @@ return [
         'annotation'    => '',
         'description'   => '',
         'specification' => '',
+        'metadescription' => '',
+        'title'           => 'Название закладки в браузере',
+        'h1'              => 'Заголовок страницы',
 
     ],
     'default'       => [

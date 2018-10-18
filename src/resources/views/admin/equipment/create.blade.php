@@ -58,6 +58,41 @@
                     </div>
                     <div class="form-row">
                         <div class="col mb-3">
+                            <label class="control-label" for="h1">@lang('site::equipment.h1')</label>
+                            <input type="text" name="h1"
+                                   id="h1"
+                                   class="form-control{{ $errors->has('h1') ? ' is-invalid' : '' }}"
+                                   placeholder="@lang('site::equipment.placeholder.h1')"
+                                   value="{{ old('h1') }}">
+                            <span class="invalid-feedback">{{ $errors->first('h1') }}</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col mb-3">
+                            <label class="control-label" for="title">@lang('site::equipment.title')</label>
+                            <input type="text" name="title"
+                                   id="title"
+                                   class="form-control{{ $errors->has('title') ? ' is-invalid' : '' }}"
+                                   placeholder="@lang('site::equipment.placeholder.title')"
+                                   value="{{ old('title') }}">
+                            <span class="invalid-feedback">{{ $errors->first('title') }}</span>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col mb-3">
+                            <label for="metadescription">@lang('site::equipment.metadescription')</label>
+                            <textarea
+                                    class="form-control{{ $errors->has('metadescription') ? ' is-invalid' : '' }}"
+                                    placeholder="@lang('site::equipment.placeholder.metadescription')"
+                                    name="metadescription"
+                                    rows="5"
+                                    id="metadescription">{!! old('metadescription') !!}</textarea>
+                            <span class="invalid-feedback">{{ $errors->first('metadescription') }}</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col mb-3">
                             <label class="control-label" for="annotation">@lang('site::equipment.annotation')</label>
                             <input type="text" name="annotation"
                                    id="annotation"

@@ -24,6 +24,7 @@ class Product extends Model implements Imageable
      */
     protected $fillable = [
         'name', 'sku', 'enabled', 'active',
+        'h1', 'title', 'metadescription',
         'warranty', 'service', 'description',
         'specification', 'equipment_id', 'type_id'
     ];

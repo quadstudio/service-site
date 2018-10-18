@@ -1,8 +1,9 @@
 @extends('layouts.app')
-@section('title'){!! $equipment->catalog->parentRoot()->name. ' '.$equipment->name !!}@lang('site::messages.title_separator')@endsection
+@section('title'){!! $equipment->title ?: $equipment->catalog->parentRoot()->name. ' '.$equipment->name !!} @lang('site::messages.title_separator')@endsection
+@section('description'){!! $equipment->metadescription ?: $equipment->catalog->parentRoot()->name. ' '.$equipment->name !!}@endsection
 @section('header')
     @include('site::header.front',[
-        'h1' => $equipment->catalog->parentRoot()->name. ' '.$equipment->name,
+        'h1' => '',
         'breadcrumbs' => [
             ['url' => route('index'), 'name' => __('site::messages.index')],
             ['url' => route('catalogs.index'), 'name' => __('site::catalog.catalogs')],
@@ -51,7 +52,7 @@
                     </div>
                     <div class="media-body p-md-5 px-4 pt-5 pb-4 col-md-9 col-lg-8">
 
-                        <h3>{{$equipment->catalog->parentTreeName()}} {{$equipment->name}}</h3>
+                        <h1>{!! $equipment->h1 ?: $equipment->catalog->parentRoot()->name. ' '.$equipment->name !!}</h1>
                         @admin()
                         <p>
                             <a href="{{route('admin.equipments.show', $equipment)}}">

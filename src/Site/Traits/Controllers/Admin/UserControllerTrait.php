@@ -138,6 +138,7 @@ trait UserControllerTrait
         $this->users->pushTrackFilter(DisplaySelectFilter::class);
 
         return view('site::admin.user.index', [
+            'roles'      => $this->roles->all(),
             'repository' => $this->users,
             'users'      => $this->users->paginate(config('site.per_page.user', 10), ['users.*'])
         ]);
@@ -207,11 +208,11 @@ trait UserControllerTrait
     public function show(User $user)
     {
 
-        $addresses = $user->addresses()->where('type_id', 2)->get();
-        $contact = $user->contacts()->where('type_id', 1)->firstOrNew([]);
-        $sc = $user->contacts()->where('type_id', 2)->firstOrNew([]);
+        $addresses = $user->addresses;
+        $contacts = $user->contacts;
+        $roles = $this->roles->all();
 
-        return view('site::admin.user.show', compact('user', 'addresses', 'contact', 'sc'));
+        return view('site::admin.user.show', compact('user', 'addresses', 'contacts', 'roles'));
     }
 
     /**
@@ -317,6 +318,7 @@ trait UserControllerTrait
             $product_types = $this->product_types->all();
             $price_types = $this->price_types->applyFilter(new EnabledFilter())->all();
             $default_price_type = config('site.defaults.user.price_type_id');
+
             return view('site::admin.user.price', compact(
                 'user',
                 'user_prices',

@@ -130,6 +130,18 @@
                                 @endif
                             </div>
                         </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="text-muted">@lang('site::product.h1')</div>
+                            <div>{!! $product->h1 !!}</div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="text-muted">@lang('site::product.title')</div>
+                            <div>{!! $product->title !!}</div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="text-muted">@lang('site::product.metadescription')</div>
+                            <div>{!! $product->metadescription !!}</div>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -137,14 +149,14 @@
                 <div class="card mb-2">
                     <h6 class="card-header with-elements">
                         <span class="card-header-title">
-                            <span class="badge badge-warning text-big">{{$product->prices()->count()}}</span>
+                            <span class="badge badge-warning text-big">{{$prices->count()}}</span>
                             @lang('site::price.prices')
                         </span>
                     </h6>
                     <div class="card-body">
                         <table class="table table-sm ">
                             <tbody>
-                            @foreach($product->prices as $price)
+                            @foreach($prices as $price)
                                 <tr>
                                     <td>{{$price->type->name}}</td>
                                     <td>{{$price->price}}</td>

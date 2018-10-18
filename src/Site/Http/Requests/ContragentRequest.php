@@ -69,7 +69,7 @@ class ContragentRequest extends FormRequest
                         }
                         //'regex:/^([0-9]{9})?$/'
                     ),
-//                    'contragent.ks'             => 'sometimes|digits:20',
+                    'contragent.ks'             => 'required|numeric|digits:20',
                     'contragent.rs'             => 'required|numeric|digits:20',
                     'contragent.bik'            => array(
                         'required',
@@ -127,7 +127,7 @@ class ContragentRequest extends FormRequest
                         'required_if:contragent.type_id,1',
                         'regex:/^(([0-9]){9})?$/'
                     ),
-                    'contragent.ks'      => 'sometimes|digits:20',
+                    'contragent.ks'      => 'required|numeric|digits:20',
                     'contragent.rs'      => 'required|numeric|digits:20',
                     'contragent.bik'     => array(
                         'required',

@@ -2,9 +2,9 @@
 <html lang="{{ app()->getLocale() }}">
 <head>
 
-    <title>@yield('title')@lang('site::messages.title')</title>
+    <title>@if($page_title) {{$page_title}} - @else @yield('title') @endif @lang('site::messages.title')</title>
 
-    <meta name="description" content="@lang('site::messages.description')">
+    <meta name="description" content="@if($page_description) {{$page_description}} @else @yield('description') @endif">
     <meta name="keyword" content="@lang('site::messages.keyword')">
 
     <meta charset="utf-8">

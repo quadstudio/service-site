@@ -2,7 +2,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12 col-lg-6">
-                <h1 class="uppercase mb-0">{!! $h1 !!}</h1>
+                @if($page_h1)
+                    <h1 class="uppercase mb-0">{{$page_h1}}</h1>
+                @elseif($h1)
+                    <h1 class="uppercase mb-0">{!! $h1 !!}</h1>
+                @endif
             </div>
             <div class="col-md-12 col-lg-6">
                 <ol class="breadcrumb">

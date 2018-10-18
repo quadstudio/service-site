@@ -130,6 +130,7 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
         'admin/ShapeController.stub'              => 'Admin/ShapeController',
         'admin/PartController.stub'               => 'Admin/PartController',
         'admin/EquipmentImageController.stub'     => 'Admin/EquipmentImageController',
+        'admin/PageController.stub'               => 'Admin/PageController',
     ];
 
     /**

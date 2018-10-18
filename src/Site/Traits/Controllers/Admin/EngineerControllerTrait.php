@@ -69,7 +69,7 @@ trait EngineerControllerTrait
      */
     public function update(EngineerRequest $request, Engineer $engineer)
     {
-        $this->engineers->update($request->only(['country_id', 'phone', 'address']), $engineer->id);
+        $engineer->update($request->except(['_method', '_token', '_stay']));
 
         if ($request->input('_stay') == 1) {
             $redirect = redirect()->route('admin.engineers.edit', $engineer)->with('success', trans('site::engineer.updated'));

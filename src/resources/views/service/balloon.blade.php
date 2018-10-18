@@ -6,12 +6,9 @@
 
             <dd class="col-12">{{$address}}</dd>
             <dd class="col-12">
-                @if($asc)
-                    <span class="badge text-normal badge-success">@lang('site::service.header.asc')</span>
-                @endif
-                @if($dealer)
-                    <span class="badge text-normal badge-success">@lang('site::service.header.dealer')</span>
-                @endif
+                @foreach($roles as $role)
+                    <span class="badge text-normal badge-success">{{$role}}</span>
+                @endforeach
             </dd>
 
             <dt class="col-sm-4">@lang('site::phone.phones')</dt>

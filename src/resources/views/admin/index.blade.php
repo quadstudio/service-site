@@ -12,60 +12,7 @@
         @alert()@endalert
         <div class="row mb-4">
 
-            <div class="col-md-6">
 
-                <!-- Tasks -->
-                <div class="card mb-4">
-                    <h6 class="card-header">Меню администратора</h6>
-                    <div class="list-group">
-
-                        <a class="list-group-item list-group-item-action" href="{{ route('admin.users.index') }}">
-                            <i class="fa fa-@lang('site::user.icon')"></i> @lang('site::user.users')
-                        </a>
-                        <a class="list-group-item list-group-item-action" href="{{ route('admin.repairs.index') }}"><i
-                                    class="fa fa-@lang('site::repair.icon')"></i> @lang('site::repair.repairs')</a>
-                        <a class="list-group-item list-group-item-action" href="{{ route('admin.acts.index') }}"><i
-                                    class="fa fa-@lang('site::act.icon')"></i> @lang('site::act.acts')</a>
-                        <a class="list-group-item list-group-item-action"
-                           href="{{ route('admin.messages.index') }}"><i
-                                    class="fa fa-@lang('site::message.icon')"></i> @lang('site::message.messages')
-                        </a>
-                        <a class="list-group-item list-group-item-action"
-                           href="{{ route('admin.orders.index') }}"><i
-                                    class="fa fa-@lang('site::order.icon')"></i> @lang('site::order.orders')</a>
-
-                        <hr/>
-
-                        <a class="list-group-item list-group-item-action"
-                           href="{{ route('admin.engineers.index') }}">
-                            <i class="fa fa-@lang('site::engineer.icon')"></i> @lang('site::engineer.engineers')
-                        </a>
-                        <a class="list-group-item list-group-item-action"
-                           href="{{ route('admin.launches.index') }}">
-                            <i class="fa fa-@lang('site::launch.icon')"></i> @lang('site::launch.launches')
-                        </a>
-                        <a class="list-group-item list-group-item-action" href="{{ route('admin.trades.index') }}">
-                            <i class="fa fa-@lang('site::trade.icon')"></i> @lang('site::trade.trades')
-                        </a>
-                        <a class="list-group-item list-group-item-action"
-                           href="{{ route('admin.contragents.index') }}">
-                            <i class="fa fa-@lang('site::contragent.icon')"></i> @lang('site::contragent.contragents')
-                        </a>
-
-                        <hr/>
-
-                        <a class="list-group-item list-group-item-action" href="{{ route('admin.roles.index') }}">
-                            <i class="fa fa-graduation-cap"></i> @lang('rbac::role.roles')
-                        </a>
-                        <a class="list-group-item list-group-item-action"
-                           href="{{ route('admin.permissions.index') }}">
-                            <i class="fa fa-unlock-alt"></i> @lang('rbac::permission.permissions')
-                        </a>
-                    </div>
-                </div>
-                <!-- / Tasks -->
-
-            </div>
             <div class="col-md-6">
 
                 <!-- Tasks -->
@@ -144,6 +91,73 @@
                         </a>
                         <a class="list-group-item list-group-item-action" href="{{ route('admin.file_types.index') }}">
                             <i class="fa fa-@lang('site::file_type.icon')"></i> @lang('site::file_type.file_types')
+                        </a>
+                        <hr/>
+
+                        <a class="list-group-item list-group-item-action" href="{{ route('admin.pages.index') }}">
+                            <i class="fa fa-@lang('site::page.icon')"></i> @lang('site::page.pages')
+                        </a>
+                    </div>
+                </div>
+                <!-- / Tasks -->
+
+            </div>
+
+            <div class="col-md-6">
+
+                <!-- Tasks -->
+                <div class="card mb-4">
+                    <h6 class="card-header">Меню администратора</h6>
+                    <div class="list-group">
+
+                        <a class="list-group-item list-group-item-action" href="{{ route('admin.users.index') }}">
+                            <i class="fa fa-@lang('site::user.icon')"></i> @lang('site::user.users')
+                        </a>
+                        <a class="list-group-item list-group-item-action" href="{{ route('admin.repairs.index') }}"><i
+                                    class="fa fa-@lang('site::repair.icon')"></i> @lang('site::repair.repairs')</a>
+                        <a class="list-group-item list-group-item-action" href="{{ route('admin.acts.index') }}"><i
+                                    class="fa fa-@lang('site::act.icon')"></i> @lang('site::act.acts')</a>
+                        <a class="list-group-item list-group-item-action"
+                           href="{{ route('admin.messages.index') }}"><i
+                                    class="fa fa-@lang('site::message.icon')"></i> @lang('site::message.messages')
+                        </a>
+                        <a class="list-group-item list-group-item-action"
+                           href="{{ route('admin.orders.index') }}"><i
+                                    class="fa fa-@lang('site::order.icon')"></i> @lang('site::order.orders')</a>
+
+                        <hr/>
+
+                        <a class="list-group-item list-group-item-action"
+                           href="{{ route('admin.engineers.index') }}">
+                            <i class="fa fa-@lang('site::engineer.icon')"></i> @lang('site::engineer.engineers')
+                        </a>
+                        <a class="list-group-item list-group-item-action"
+                           href="{{ route('admin.launches.index') }}">
+                            <i class="fa fa-@lang('site::launch.icon')"></i> @lang('site::launch.launches')
+                        </a>
+                        <a class="list-group-item list-group-item-action" href="{{ route('admin.trades.index') }}">
+                            <i class="fa fa-@lang('site::trade.icon')"></i> @lang('site::trade.trades')
+                        </a>
+                        <a class="list-group-item list-group-item-action"
+                           href="{{ route('admin.contragents.index') }}">
+                            <i class="fa fa-@lang('site::contragent.icon')"></i> @lang('site::contragent.contragents')
+                        </a>
+
+                        <hr/>
+
+                        <a class="list-group-item list-group-item-action"
+                           href="{{ route('admin.addresses.index') }}">
+                            <i class="fa fa-@lang('site::address.icon')"></i> @lang('site::address.addresses')
+                        </a>
+
+                        <hr/>
+
+                        <a class="list-group-item list-group-item-action" href="{{ route('admin.roles.index') }}">
+                            <i class="fa fa-graduation-cap"></i> @lang('rbac::role.roles')
+                        </a>
+                        <a class="list-group-item list-group-item-action"
+                           href="{{ route('admin.permissions.index') }}">
+                            <i class="fa fa-unlock-alt"></i> @lang('rbac::permission.permissions')
                         </a>
                     </div>
                 </div>

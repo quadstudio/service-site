@@ -274,6 +274,7 @@ class Site
                                 $router->name('admin')->resource('/trades', 'TradeController');
                                 $router->name('admin')->resource('/launches', 'LaunchController');
                                 $router->name('admin')->resource('/currencies', 'CurrencyController');
+                                $router->name('admin')->resource('/pages', 'PageController');
                                 $router->name('admin')->resource('/banks', 'BankController');
                                 $router->name('admin')->resource('/parts', 'PartController')->only(['edit', 'update', 'destroy']);
                                 $router->name('admin')->resource('/currency_archives', 'CurrencyArchiveController')->only(['index']);

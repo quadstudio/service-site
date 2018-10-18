@@ -218,12 +218,49 @@
                             </div>
                             <div class="form-row">
                                 <div class="col mb-3">
+                                    <label class="control-label" for="h1">@lang('site::product.h1')</label>
+                                    <input type="text" name="h1"
+                                           id="h1"
+                                           class="form-control{{ $errors->has('h1') ? ' is-invalid' : '' }}"
+                                           placeholder="@lang('site::product.placeholder.h1')"
+                                           value="{{ old('h1', $product->h1) }}">
+                                    <span class="invalid-feedback">{{ $errors->first('h1') }}</span>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col mb-3">
+                                    <label class="control-label" for="title">@lang('site::product.title')</label>
+                                    <input type="text" name="title"
+                                           id="title"
+                                           class="form-control{{ $errors->has('title') ? ' is-invalid' : '' }}"
+                                           placeholder="@lang('site::product.placeholder.title')"
+                                           value="{{ old('title', $product->title) }}">
+                                    <span class="invalid-feedback">{{ $errors->first('title') }}</span>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="col mb-3">
+                                    <label for="metadescription">@lang('site::product.metadescription')</label>
+                                    <textarea
+                                            class="form-control{{ $errors->has('metadescription') ? ' is-invalid' : '' }}"
+                                            placeholder="@lang('site::product.placeholder.metadescription')"
+                                            name="metadescription"
+                                            rows="5"
+                                            id="metadescription">{!! old('metadescription', $product->metadescription) !!}</textarea>
+                                    <span class="invalid-feedback">{{ $errors->first('metadescription') }}</span>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="col mb-3">
                                     <label for="description">@lang('site::product.description')</label>
-                                    <textarea class="summernote form-control{{ $errors->has('description') ? ' is-invalid' : '' }}"
-                                              placeholder="@lang('site::product.placeholder.description')"
-                                              name="description"
-                                              rows="5"
-                                              id="description">{!! old('description', $product->description) !!}</textarea>
+                                    <textarea
+                                            class="summernote form-control{{ $errors->has('description') ? ' is-invalid' : '' }}"
+                                            placeholder="@lang('site::product.placeholder.description')"
+                                            name="description"
+                                            rows="5"
+                                            id="description">{!! old('description', $product->description) !!}</textarea>
                                     <span class="invalid-feedback">{{ $errors->first('description') }}</span>
                                 </div>
                             </div>

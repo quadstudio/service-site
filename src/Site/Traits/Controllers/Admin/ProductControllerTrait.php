@@ -72,7 +72,10 @@ trait ProductControllerTrait
      */
     public function show(Product $product)
     {
-        return view('site::admin.product.show', compact('product'));
+        $prices = $product->prices()->whereHas('type', function($type){
+            $type->where('enabled', 1);
+        })->get();
+        return view('site::admin.product.show', compact('product', 'prices'));
     }
 
     public function edit(Product $product)
@@ -92,8 +95,8 @@ trait ProductControllerTrait
      */
     public function update(ProductRequest $request, Product $product)
     {
-        $this->authorize('update', $product);
-        $this->products->update($request->except(['_method', '_token', '_stay']), $product->id);
+        dd($request->all());
+        $product->update($request->except(['_method', '_token', '_stay', 'files']));
 
         if ($request->input('_stay') == 1) {
             $redirect = redirect()->route('admin.products.edit', $product)->with('success', trans('site::product.updated'));

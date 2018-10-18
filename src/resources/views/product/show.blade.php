@@ -1,5 +1,6 @@
 @extends('layouts.app')
-@section('title'){!! $product->name !!}@lang('site::messages.title_separator')@endsection
+@section('title'){{$product->title ?: $product->name }} @lang('site::messages.title_separator')@endsection
+@section('description'){{$product->metadescription ?: $product->name }}@endsection
 @section('header')
     @include('site::header.front',[
         'h1' => '',
@@ -62,7 +63,7 @@
 
                     <div class="row">
                         <div class="media-body col-sm-9 pl-md-5 px-4 pb-4">
-                            <h1>{!! $product->name!!}</h1>
+                            <h1>{{$product->h1 ?: $product->name }}</h1>
 
                             <dl class="row">
 

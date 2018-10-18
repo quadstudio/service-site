@@ -66,6 +66,36 @@
                         </div>
                     </div>
 
+                    <div class="form-row required">
+                        <div class="col mb-3">
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input class="custom-control-input
+                                                    {{$errors->has('address.is_shop') ? ' is-invalid' : ''}}"
+                                       type="radio"
+                                       name="address[is_shop]"
+                                       required
+                                       @if(old('address.is_shop', $address->is_shop) == 0) checked @endif
+                                       id="is_shop_0"
+                                       value="0">
+                                <label class="custom-control-label"
+                                       for="is_shop_0">@lang('site::address.is_shop_0')</label>
+                            </div>
+                            <div class="custom-control custom-radio  custom-control-inline">
+                                <input class="custom-control-input
+                                                    {{$errors->has('address.is_shop') ? ' is-invalid' : ''}}"
+                                       type="radio"
+                                       name="address[is_shop]"
+                                       required
+                                       @if(old('address.is_shop', $address->is_shop) == 1) checked @endif
+                                       id="is_shop_1"
+                                       value="1">
+                                <label class="custom-control-label"
+                                       for="is_shop_1">@lang('site::address.is_shop_1')</label>
+                            </div>
+
+                        </div>
+                    </div>
+
                     <div class="form-row @if($address->addressable_type == 'users') required @endif">
                         <div class="col mb-3">
                             <label class="control-label" for="name">@lang('site::address.name')</label>

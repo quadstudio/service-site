@@ -31,7 +31,9 @@
         {{$users->render()}}
         @filter(['repository' => $repository])@endfilter
         <div class="row items-row-view mt-2 mb-4">
-            @each('site::admin.user.index.row', $users, 'user')
+            @foreach($users as $user)
+                @include('site::admin.user.index.row')
+            @endforeach
         </div>
         {{$users->render()}}
     </div>

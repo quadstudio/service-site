@@ -69,7 +69,7 @@ trait TradeControllerTrait
      */
     public function update(TradeRequest $request, Trade $trade)
     {
-        $this->trades->update($request->only(['country_id', 'phone', 'address']), $trade->id);
+        $trade->update($request->except(['_token', '_method', '_stay']));
 
         if ($request->input('_stay') == 1) {
             $redirect = redirect()->route('admin.trades.edit', $trade)->with('success', trans('site::trade.updated'));

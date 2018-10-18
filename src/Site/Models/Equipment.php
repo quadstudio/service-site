@@ -16,7 +16,9 @@ class Equipment extends Model implements Imageable
     protected $table;
 
     protected $fillable = [
-        'name',  'annotation', 'description', 'specification', 'enabled', 'catalog_id', 'sort_order'
+        'name',  'annotation', 'description',
+        'h1', 'title','metadescription',
+        'specification', 'enabled', 'catalog_id', 'sort_order'
     ];
 
     /**

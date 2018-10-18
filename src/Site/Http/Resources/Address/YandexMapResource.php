@@ -3,6 +3,7 @@
 namespace QuadStudio\Service\Site\Http\Resources\Address;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use QuadStudio\Rbac\Models\Role;
 
 class YandexMapResource extends JsonResource
 {
@@ -14,6 +15,12 @@ class YandexMapResource extends JsonResource
      */
     public function toArray($request)
     {
+        $roles = [];
+        foreach (Role::query()->where('display', 1)->get() as $role){
+            if($this->addressable->hasRole($role->name)){
+                $roles[] = $role->title;
+            }
+        }
         return [
             'type'       => 'Feature',
             'id'         => $this->id,
@@ -24,8 +31,7 @@ class YandexMapResource extends JsonResource
             'properties' => [
                 'balloonContentBody' => view('site::service.balloon', [
                     'name'      => $this->name,
-                    'asc'      => $this->addressable->hasRole('asc'),
-                    'dealer'      =>  $this->addressable->hasRole('dealer'),
+                    'roles'      => $roles,
                     'web'      => $this->addressable->web,
                     'phones'     => $this->phones,
                     'email'   => $this->addressable->email,

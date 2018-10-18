@@ -132,22 +132,28 @@
                             <span class="text-muted">@lang('site::user.logged_at')
                                 :</span>&nbsp;&nbsp;{{ $user->logged_at() }}
                         </div>
-                        <div class="mb-2">
+
+                        <div class="my-2">
                             <span class="d-block text-normal @if($user->active) text-success @else text-danger @endif">
                                 @lang('site::user.active_'.($user->active))
                             </span>
                             <span class="d-block text-normal @if($user->verified) text-success @else text-danger @endif">
                                 @lang('site::user.verified_'.($user->verified))
                             </span>
-                            <span class="d-block text-normal @if($user->hasRole('asc')) text-success @else text-danger @endif">
-                                @lang('site::user.asc_'.($user->hasRole('asc') ? '1' : '0'))
-                            </span>
-                            <span class="d-block text-normal @if($user->hasRole('dealer')) text-success @else text-danger @endif">
-                                @lang('site::user.dealer_'.($user->hasRole('dealer') ? '1' : '0'))
-                            </span>
                             <span class="d-block text-normal @if($user->display) text-success @else text-danger @endif">
                                 @lang('site::user.display_'.($user->display))
                             </span>
+                        </div>
+                        <div class="my-4">
+
+
+                            <h4>@lang('rbac::role.roles')</h4>
+                            @foreach($roles as $role)
+                                <span class="d-block text-normal @if($user->hasRole($role->name)) text-success @else text-danger @endif">
+                                @if($user->hasRole($role->name)) ✔ @else ✖ @endif {{$role->title}}
+                            </span>
+                            @endforeach
+
                         </div>
                     </div>
                 </div>
@@ -183,6 +189,7 @@
                 </div>
             </div>
             <div class="col">
+                @foreach($contacts as $contact)
                 <div class="card mb-2">
                     <div class="card-body">
                         <h5 class="card-title">@lang('site::user.header.contact')</h5>
@@ -193,6 +200,9 @@
 
                             <dt class="col-sm-4 text-left text-sm-right">@lang('site::contact.position')</dt>
                             <dd class="col-sm-8">{{ $contact->position }}</dd>
+
+                            <dt class="col-sm-4 text-left text-sm-right">@lang('site::contact.type_id')</dt>
+                            <dd class="col-sm-8">{{ $contact->type->name }}</dd>
 
                             <dt class="col-sm-4 text-left text-sm-right">@lang('site::phone.phones')</dt>
                             <dd class="col-sm-8">
@@ -209,6 +219,7 @@
 
                     </div>
                 </div>
+                @endforeach
                 @foreach($addresses as $address)
                     <div class="card mb-2">
                         <div class="card-body">

@@ -61,7 +61,8 @@
                         @endforeach
                     </div>
                     <hr class="border-light">
-                    <div><a href="{{route('admin.'.$address->addressable_type.'.show', $address->addressable)}}">
+                    <div>
+                        <a href="{{route('admin.'.$address->addressable_type.'.show', $address->addressable)}}">
                             {{$address->addressable->name}}
                         </a>
                     </div>

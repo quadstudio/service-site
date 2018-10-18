@@ -269,7 +269,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-row">
+                            <div class="form-row required">
                                 <div class="col mb-3">
                                     <label class="control-label"
                                            for="contragent_ks">@lang('site::contragent.ks')</label>
@@ -278,6 +278,7 @@
                                            id="contragent_ks"
                                            maxlength="20"
                                            pattern="\d{20}"
+                                           required
                                            class="form-control{{ $errors->has('contragent.ks') ? ' is-invalid' : '' }}"
                                            placeholder="@lang('site::contragent.placeholder.ks')"
                                            value="{{ old('contragent.ks', $contragent->ks) }}">

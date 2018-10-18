@@ -85,53 +85,57 @@
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.active')</dt>
                     <dd class="col-sm-8">@bool(['bool' => $address->active])@endbool</dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right"></dt>
+                    <dd class="col-sm-8">@lang('site::address.is_shop_'.$address->is_shop)</dd>
+
                     @if($address->name)
                         <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.name')</dt>
                         <dd class="col-sm-8">{{ $address->name }}</dd>
                     @endif
                     {{--@if(($phones = $address->phones())->count() > 0)--}}
-                        <dt class="col-sm-4 text-left text-sm-right">@lang('site::phone.phones')</dt>
-                        <dd class="col-sm-8">
-                            @foreach($address->phones as $phone)
-                                <div class="card mb-1" id="phone-{{$phone->id}}">
-                                    <div class="card-body">
-                                        <div class="items-dropdown btn-group">
-                                            <button type="button"
-                                                    class="btn btn-sm btn-ferroli border btn-round md-btn-flat dropdown-toggle icon-btn hide-arrow"
-                                                    data-toggle="dropdown" aria-expanded="false">
-                                                <i class="fa fa-ellipsis-h"></i>
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::phone.phones')</dt>
+                    <dd class="col-sm-8">
+                        @foreach($address->phones as $phone)
+                            <div class="card mb-1" id="phone-{{$phone->id}}">
+                                <div class="card-body">
+                                    <div class="items-dropdown btn-group">
+                                        <button type="button"
+                                                class="btn btn-sm btn-ferroli border btn-round md-btn-flat dropdown-toggle icon-btn hide-arrow"
+                                                data-toggle="dropdown" aria-expanded="false">
+                                            <i class="fa fa-ellipsis-h"></i>
+                                        </button>
+                                        <div class="items-dropdown-menu dropdown-menu dropdown-menu-right"
+                                             x-placement="bottom-end"
+                                             style="position: absolute; will-change: top, left; top: 26px; left: -134px;">
+                                            <a href="{{route('admin.phones.edit', $phone)}}"
+                                               class="dropdown-item">@lang('site::messages.edit')</a>
+                                            <button @cannot('delete', $phone) disabled @endcannot
+                                            class="dropdown-item btn-row-delete"
+                                                    data-form="#phone-delete-form-{{$phone->id}}"
+                                                    data-btn-delete="@lang('site::messages.delete')"
+                                                    data-btn-cancel="@lang('site::messages.cancel')"
+                                                    data-label="@lang('site::messages.delete_confirm')"
+                                                    data-message="@lang('site::messages.delete_sure') @lang('site::phone.phone')? "
+                                                    data-toggle="modal" data-target="#form-modal"
+                                                    href="javascript:void(0);"
+                                                    title="@lang('site::messages.delete')">
+                                                @lang('site::messages.delete')
                                             </button>
-                                            <div class="items-dropdown-menu dropdown-menu dropdown-menu-right"
-                                                 x-placement="bottom-end"
-                                                 style="position: absolute; will-change: top, left; top: 26px; left: -134px;">
-                                                <a href="{{route('admin.phones.edit', $phone)}}"
-                                                   class="dropdown-item">@lang('site::messages.edit')</a>
-                                                <button @cannot('delete', $phone) disabled @endcannot
-                                                class="dropdown-item btn-row-delete"
-                                                        data-form="#phone-delete-form-{{$phone->id}}"
-                                                        data-btn-delete="@lang('site::messages.delete')"
-                                                        data-btn-cancel="@lang('site::messages.cancel')"
-                                                        data-label="@lang('site::messages.delete_confirm')"
-                                                        data-message="@lang('site::messages.delete_sure') @lang('site::phone.phone')? "
-                                                        data-toggle="modal" data-target="#form-modal"
-                                                        href="javascript:void(0);"
-                                                        title="@lang('site::messages.delete')">
-                                                    @lang('site::messages.delete')
-                                                </button>
-                                                <form id="phone-delete-form-{{$phone->id}}"
-                                                      action="{{route('admin.phones.destroy', $phone)}}"
-                                                      method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                </form>
-                                            </div>
+                                            <form id="phone-delete-form-{{$phone->id}}"
+                                                  action="{{route('admin.phones.destroy', $phone)}}"
+                                                  method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                            </form>
                                         </div>
-                                        {{$phone->format()}}
                                     </div>
+                                    {{$phone->format()}}
                                 </div>
+                            </div>
 
-                            @endforeach
-                        </dd>
+                        @endforeach
+                    </dd>
                     {{--@endif--}}
                     <dt class="col-sm-4 text-left text-sm-right"></dt>
                     <dd class="col-sm-8">

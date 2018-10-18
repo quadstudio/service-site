@@ -29,10 +29,11 @@
 
                     @method('PUT')
 
-                    <div class="form-row">
+                    <div class="form-row required">
                         <div class="col mb-3">
-                            <label for="name">@lang('site::trade.name')</label>
+                            <label class="control-label" for="name">@lang('site::trade.name')</label>
                             <input type="text"
+                                   required
                                    name="name"
                                    id="name"
                                    class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}"
@@ -44,12 +45,13 @@
                         </div>
                     </div>
 
-                    <div class="form-row">
+                    <div class="form-row required">
                         <div class="col mb-3">
 
-                            <label for="country_id">@lang('site::trade.country_id')</label>
+                            <label class="control-label" for="country_id">@lang('site::trade.country_id')</label>
                             <select class="form-control{{  $errors->has('country_id') ? ' is-invalid' : '' }}"
-                                    name="country_id" id="country_id">
+                                    required
+                                    name="country_id" id="country_id" >
                                 @foreach($countries as $country)
                                     <option @if($country->id == $trade->country_id) selected
                                             @endif value="{{ $country->id }}">{{ $country->name }} {{ $country->phone }}</option>
@@ -60,15 +62,18 @@
                             @endif
                         </div>
                     </div>
-                    <div class="form-row">
+                    <div class="form-row required">
                         <div class="col">
-                            <label for="contact">@lang('site::trade.phone')</label>
-                            <input type="tel" name="phone" id="phone"
+                            <label class="control-label" for="contact">@lang('site::trade.phone')</label>
+                            <input type="tel"
+                                   required
+                                   name="phone"
+                                   id="phone"
                                    title="@lang('site::trade.placeholder.phone')"
                                    pattern="^\d{10}$" maxlength="10"
                                    class="form-control{{ $errors->has('phone') ? ' is-invalid' : '' }}"
                                    placeholder="@lang('site::trade.placeholder.phone')"
-                                   value="{{ old('phone', $trade->phone) }}" required>
+                                   value="{{ old('phone', $trade->phone) }}" >
                             @if ($errors->has('phone'))
                                 <span class="invalid-feedback">
                                     <strong>{{ $errors->first('phone') }}</strong>
@@ -82,7 +87,7 @@
 
                     <div class="form-row">
                         <div class="col mb-3">
-                            <label for="address">@lang('site::trade.address')</label>
+                            <label class="control-label" for="address">@lang('site::trade.address')</label>
                             <input type="text"
                                    name="address"
                                    id="address"

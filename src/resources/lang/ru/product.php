@@ -7,9 +7,12 @@ return [
     'cards'               => 'Товары',
     'settings'            => 'Настройки',
     //
-    'updated'             => 'Настройки товара успешно обновлены',
+    'updated'             => 'Товар успешно обновлен',
     //
     'name'                => 'Наименование',
+    'metadescription'     => 'Тег Meta Description',
+    'title'               => 'Тег Title',
+    'h1'                  => 'Тег H1',
     'quantity'            => 'Остаток на складе',
     'sku'                 => 'Артикул',
     'brand_id'            => 'Бренд',
@@ -25,8 +28,11 @@ return [
     'service'             => 'Услуга',
     //
     'placeholder'         => [
-        'description' => '',
-        'specification' => '',
+        'description'     => '',
+        'specification'   => '',
+        'metadescription' => '',
+        'title'           => 'Название закладки в браузере',
+        'h1'              => 'Заголовок страницы',
     ],
     'search_placeholder'  => 'Поиск запчастей...',
     'sort'                => 'Сортировка',

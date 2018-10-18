@@ -75,6 +75,15 @@
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::equipment.name')</dt>
                     <dd class="col-sm-8">{{ $equipment->name }}</dd>
 
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::equipment.h1')</dt>
+                    <dd class="col-sm-8">{{ $equipment->h1 }}</dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::equipment.title')</dt>
+                    <dd class="col-sm-8">{{ $equipment->title }}</dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::equipment.metadescription')</dt>
+                    <dd class="col-sm-8">{{ $equipment->metadescription }}</dd>
+
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::equipment.annotation')</dt>
                     <dd class="col-sm-8">{!! $equipment->annotation !!}</dd>
 

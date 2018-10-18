@@ -106,6 +106,11 @@
                         <a class="dropdown-item" href="{{ route('admin.file_types.index') }}">
                             <i class="fa fa-@lang('site::file_type.icon')"></i> @lang('site::file_type.file_types')
                         </a>
+                        <div class="dropdown-divider"></div>
+
+                        <a class="dropdown-item" href="{{ route('admin.pages.index') }}">
+                            <i class="fa fa-@lang('site::page.icon')"></i> @lang('site::page.pages')
+                        </a>
                     </div>
                 </li>
                 @endadmin()
@@ -155,9 +160,9 @@
                         <a class="dropdown-item" href="{{ route('admin.addresses.index') }}">
                             <i class="fa fa-@lang('site::address.icon')"></i> @lang('site::address.addresses')
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.contacts.index') }}">
-                            <i class="fa fa-@lang('site::contact.icon')"></i> @lang('site::contact.contacts')
-                        </a>
+                        {{--<a class="dropdown-item" href="{{ route('admin.contacts.index') }}">--}}
+                            {{--<i class="fa fa-@lang('site::contact.icon')"></i> @lang('site::contact.contacts')--}}
+                        {{--</a>--}}
                         {{--<a class="dropdown-item" href="{{ route('admin.phones.index') }}">--}}
                             {{--<i class="fa fa-@lang('site::phone.icon')"></i> @lang('site::phone.phones')--}}
                         {{--</a>--}}

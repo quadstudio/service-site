@@ -14,12 +14,11 @@
                         </div>
                     @endif
                     <div>
-                         <span class="d-inline-block text-normal @if($user->hasRole('asc')) text-success @else text-danger @endif">
-                            @lang('site::user.asc_'.($user->hasRole('asc') ? '1' : '0'))
-                        </span>
-                        <span class="d-inline-block text-normal @if($user->hasRole('dealer')) text-success @else text-danger @endif">
-                            @lang('site::user.dealer_'.($user->hasRole('dealer') ? '1' : '0'))
-                        </span>
+                        @foreach($roles as $role)
+                            @if($user->hasRole($role->name))
+                                <span class="d-block text-normal  text-success ">✔ {{$role->title}}</span>
+                            @endif
+                        @endforeach
                     </div>
 
                 </div>
