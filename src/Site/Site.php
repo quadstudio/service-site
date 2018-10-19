@@ -72,7 +72,8 @@ class Site
             ->group(['middleware' => ['online']],
                 function () use ($router) {
                     $router->get('/', 'IndexController@index')->name('index');
-                    $router->get('/services', 'ServiceController@index')->name('services');
+                    $router->match(['get', 'post'],'/services', 'ServiceController@index')->name('services.index');
+                    $router->match(['get', 'post'], '/dealers', 'DealerController@index')->name('dealers.index');
 
                     $router->get('/products/list', 'ProductController@list')->name('products.list');
                     $router->resource('/products', 'ProductController')->only(['index', 'show']);
@@ -305,6 +306,7 @@ class Site
                 $router->name('api')->get('/countries', 'CountryController@index')->name('.countries.index');
                 $router->name('api')->get('/services/location', 'ServiceController@location')->name('.services.location');
                 $router->name('api')->get('/services/{region?}', 'ServiceController@index')->name('.services.index');
+                $router->name('api')->get('/dealers/{region?}', 'DealerController@index')->name('.dealers.index');
 
                 $router->name('api')->resource('/users', 'UserController');
                 $router->name('api')->resource('/orders', 'OrderController');

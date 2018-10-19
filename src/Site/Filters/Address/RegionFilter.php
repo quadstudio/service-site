@@ -16,8 +16,6 @@ class RegionFilter extends Filter
     {
         if (!is_null($this->region_id)) {
             $builder->where('region_id', $this->region_id);
-        } else {
-            $builder->whereRaw('false');
         }
 
         return $builder;

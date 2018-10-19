@@ -4,7 +4,7 @@ namespace QuadStudio\Service\Site\Traits\Controllers\Api;
 
 
 use QuadStudio\Service\Site\Filters\Address\ActiveFilter;
-use QuadStudio\Service\Site\Filters\Address\IsServiceFilter;
+use QuadStudio\Service\Site\Filters\Address\IsShopFilter;
 use QuadStudio\Service\Site\Filters\Address\RegionFilter;
 use QuadStudio\Service\Site\Filters\Address\SortByNameFilter;
 use QuadStudio\Service\Site\Filters\Address\SortByRegionFilter;
@@ -20,7 +20,7 @@ use QuadStudio\Service\Site\Models\User;
 use QuadStudio\Service\Site\Repositories\AddressRepository;
 use Stevebauman\Location\Facades\Location;
 
-trait ServiceControllerTrait
+trait DealerControllerTrait
 {
     protected $addresses;
 
@@ -46,7 +46,7 @@ trait ServiceControllerTrait
             $this->addresses
                 ->trackFilter()
                 ->applyFilter((new TypeFilter())->setTypeId(2))
-                ->applyFilter(new IsServiceFilter())
+                ->applyFilter(new IsShopFilter())
                 ->applyFilter(new ActiveFilter())
                 ->applyFilter(new UserDisplayFilter())
                 ->applyFilter(new UserActiveFilter())

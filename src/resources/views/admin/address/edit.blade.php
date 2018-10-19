@@ -134,8 +134,27 @@
                     </div>
 
 
+                    <div class="form-row required">
+                        <div class="col mb-3">
+                            <label class="control-label"
+                                   for="address_sort_order">@lang('site::address.sort_order')</label>
+                            <input type="number"
+                                   name="address[sort_order]"
+                                   id="sort_order"
+                                   min="0"
+                                   max="200"
+                                   step="1"
+                                   required
+                                   class="form-control{{$errors->has('address.sort_order') ? ' is-invalid' : ''}}"
+                                   placeholder="@lang('site::address.placeholder.sort_order')"
+                                   value="{{ old('address.sort_order', $address->sort_order) }}">
+                            <span class="invalid-feedback">{{ $errors->first('address.sort_order') }}</span>
+                            <span class="mb-4 form-text text-success">
+                                @lang('site::address.help.sort_order')
+                            </span>
+                        </div>
 
-
+                    </div>
 
 
                     <div class="form-row @if($address->addressable_type == 'users') required @endif">
@@ -150,9 +169,7 @@
                                    class="form-control{{ $errors->has('address.name') ? ' is-invalid' : '' }}"
                                    placeholder="@lang('site::address.placeholder.name')"
                                    value="{{ old('address.name',$address->name) }}">
-                            <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('address.name') }}</strong>
-                                    </span>
+                            <span class="invalid-feedback">{{ $errors->first('address.name') }}</span>
                         </div>
                     </div>
 
@@ -194,9 +211,7 @@
                                     </option>
                                 @endforeach
                             </select>
-                            <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('address.country_id') }}</strong>
-                                    </span>
+                            <span class="invalid-feedback">{{ $errors->first('address.country_id') }}</span>
                         </div>
                     </div>
                     <div class="form-row required">
@@ -216,9 +231,7 @@
                                     </option>
                                 @endforeach
                             </select>
-                            <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('address.region_id') }}</strong>
-                                    </span>
+                            <span class="invalid-feedback">{{ $errors->first('address.region_id') }}</span>
                         </div>
                     </div>
                     <div class="form-row required">
@@ -231,9 +244,7 @@
                                    class="form-control{{ $errors->has('address.locality') ? ' is-invalid' : '' }}"
                                    placeholder="@lang('site::address.placeholder.locality')"
                                    value="{{ old('address.locality',$address->locality) }}">
-                            <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('address.locality') }}</strong>
-                                    </span>
+                            <span class="invalid-feedback">{{ $errors->first('address.locality') }}</span>
                         </div>
                     </div>
                     <div class="form-row">
@@ -245,9 +256,7 @@
                                    class="form-control{{ $errors->has('address.street') ? ' is-invalid' : '' }}"
                                    placeholder="@lang('site::address.placeholder.street')"
                                    value="{{ old('address.street',$address->street) }}">
-                            <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('address.street') }}</strong>
-                                    </span>
+                            <span class="invalid-feedback">{{ $errors->first('address.street') }}</span>
                         </div>
                     </div>
                     <div class="row">
@@ -262,9 +271,7 @@
                                            class="form-control{{ $errors->has('address.building') ? ' is-invalid' : '' }}"
                                            placeholder="@lang('site::address.placeholder.building')"
                                            value="{{ old('address.building',$address->building) }}">
-                                    <span class="invalid-feedback">
-                                                <strong>{{ $errors->first('address.building') }}</strong>
-                                            </span>
+                                    <span class="invalid-feedback">{{ $errors->first('address.building') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -279,9 +286,7 @@
                                            class="form-control{{ $errors->has('address.apartment') ? ' is-invalid' : '' }}"
                                            placeholder="@lang('site::address.placeholder.apartment')"
                                            value="{{ old('address.apartment',$address->apartment) }}">
-                                    <span class="invalid-feedback">
-                                                <strong>{{ $errors->first('address.apartment') }}</strong>
-                                            </span>
+                                    <span class="invalid-feedback">{{ $errors->first('address.apartment') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -295,7 +300,8 @@
                         <i class="fa fa-check"></i>
                         <span>@lang('site::messages.save')</span>
                     </button>
-                    <a href="{{ route('admin.'.$address->addressable->path().'.addresses.index', $address->addressable) }}" class="btn btn-secondary mb-1">
+                    <a href="{{ route('admin.'.$address->addressable->path().'.addresses.index', $address->addressable) }}"
+                       class="btn btn-secondary mb-1">
                         <i class="fa fa-close"></i>
                         <span>@lang('site::messages.cancel')</span>
                     </a>

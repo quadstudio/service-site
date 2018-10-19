@@ -94,133 +94,103 @@
                 }
             });
     }
+    $(document).ready(function () {
+        let containerAddresses = document.getElementById("container-addresses");
+        if (containerAddresses !== null) {
 
-    let servicesRegionList = document.getElementById("services-region-list");
-    if (servicesRegionList !== null) {
-
-        let myMap,
-            objectManager,
-            servicesRegionList = $('#services-region-list');
-
-        ymaps.ready(function () {
-            myMap = new ymaps.Map('service-map', {
-                center: [55.76, 37.64],
-                zoom: 9,
-                controls: ['zoomControl', 'typeSelector', 'fullscreenControl']
-            }, {
-                searchControlProvider: 'yandex#search'
-            });
-
-            objectManager = new ymaps.ObjectManager({
-                clusterize: false,
-                gridSize: 64,
-                clusterIconLayout: "default#pieChart"
-            });
-            myMap.geoObjects.add(objectManager);
-
-        });
-
-        let renderServiceList = function (data) {
-            if (data.features !== undefined) {
-                let containerService = document.getElementById("container-service");
-
-                containerService.innerHTML = null;
-                for (let key in data.features) {
-                    containerService.innerHTML += data.features[key].properties.balloonContentBody;
-                }
-            }
-        };
-
-        let drawServices = function(element){
-            let _this = element,
-                region = _this.data('region'),
-                data = {
-                    'filter[show]': []
-                },
-                action = _this.parent().data('action');
-            if ($('#asc').is(':checked')) {
-                data['filter[show]'].push('asc');
-            }
-            if ($('#dealer').is(':checked')) {
-                data['filter[show]'].push('dealer');
-            }
-            _this.parent().children().removeClass('active');
-            _this.addClass('active');
-
-            axios
-                .get(action + '/' + region, {params: data})
-                .then((response) => {
-                    $('#row-count').html(response.data.data.features.length);
-                    renderServiceList(response.data.data);
-                    myMap.geoObjects.remove(objectManager);
-                    objectManager.removeAll();
-                    objectManager.add(response.data.data);
-                    myMap.geoObjects.add(objectManager);
-
-                    myMap.container.fitToViewport();
-
-                    let bounds = myMap.geoObjects.getBounds();
-                    //(х1+х3)/2,  (у1+у3)/2
-                    console.log(bounds);
-                    // this.map.setBounds(bounds)
-                    //     .then(function () {
-                    //         let center = self.map.getCenter();
-                    //         self.map.zoomRange.get(center)
-                    //             .then(function(range) {
-                    //                 self.map.setZoom(range[1]);
-                    //             });
-                    //     });
-
-                    myMap.setBounds(bounds, {checkZoomRange: true});
-                    //let state = myMap.action.getCurrentState();
-                    //myMap.setCenter(state.globalPixelCenter, 15);
-//                    console.log(state.zoom);
-
-
-
-                    // console.log(bounds);
-                    // myMap.zoomRange.get(bounds).then(function (range) {
-                    //     console.log(range);
-                    //     //
-                    //     //myMap.setCenter(coords, range[1]);
-                    // });
-                    //myMap.setZoom(myMap.getZoom() + 1);
-                    //myMap.setZoom( 9 );
-                })
-                .catch((error) => {
-
-                });
-        };
-
-        $('.services-region-select').on('click', function (e) {
-            drawServices($(this));
-            e.preventDefault();
-        });
-
-        axios
-            .get("/api/services/location")
-            .then((response) => {
-
-                if (typeof response.data.data !== "undefined") {
-                    let location = response.data.data;
-                    if(location.countryCode !== null && location.regionCode !== null){
-                        let code = location.countryCode + '-' + location.regionCode;
-                        $('.services-region-select').each(function (i, region) {
-                            if (code === $(region).data('region')) {
-                                drawServices($(region));
-                                //$(region).trigger('click');
-                                return true;
-                            }
-                        });
+            let renderAddressesList = function (data) {
+                if (data.features !== undefined) {
+                    containerAddresses.innerHTML = null;
+                    for (let key in data.features) {
+                        containerAddresses.innerHTML += data.features[key].properties.balloonContentBody;
                     }
                 }
-                drawServices($('[data-region="RU-MOW"]'));
+            };
 
-            })
-            .catch((error) => {
-                this.status = 'Error:' + error;
+            let drawAddresses = function () {
+
+                let el = $(containerAddresses),
+                    region = el.data('region'),
+                    action = el.data('action');
+
+                axios
+                    .get(action + '/' + region)
+
+                    .then((response) => {
+
+                        $('#row-count').html(response.data.data.found);
+                        renderAddressesList(response.data.data);
+                        $('#loading-data').remove();
+
+                        myMap.geoObjects.remove(objectManager);
+                        objectManager.removeAll();
+                        objectManager.add(response.data.data);
+                        myMap.geoObjects.add(objectManager);
+                        let bounds = myMap.geoObjects.getBounds();
+                        myMap.setBounds(bounds, {checkZoomRange: true}).then(function () {
+                            if (myMap.getZoom() > 10) myMap.setZoom(10);
+                        });
+
+
+                    })
+                    .catch((error) => {
+
+                    });
+            };
+
+            let myMap, objectManager;
+
+            ymaps.ready(function () {
+                myMap = new ymaps.Map('addresses-map', {
+                    center: [55.76, 37.64],
+                    zoom: 9,
+                    controls: ['zoomControl', 'typeSelector', 'fullscreenControl']
+                }, {
+                    searchControlProvider: 'yandex#search'
+                });
+
+                objectManager = new ymaps.ObjectManager({
+                    clusterize: false,
+                    gridSize: 64,
+                    clusterIconLayout: "default#pieChart"
+                });
+                myMap.geoObjects.add(objectManager);
+                drawAddresses();
+
             });
-    }
+
+
+            // $('.services-region-select').on('click', function (e) {
+            //     drawServices($(this));
+            //     e.preventDefault();
+            // });
+
+            // axios
+            //     .get("/api/services/location")
+            //     .then((response) => {
+            //
+            //         if (typeof response.data.data !== "undefined") {
+            //             let location = response.data.data;
+            //             if(location.countryCode !== null && location.regionCode !== null){
+            //                 let code = location.countryCode + '-' + location.regionCode;
+            //                 $('.services-region-select').each(function (i, region) {
+            //                     if (code === $(region).data('region')) {
+            //                         drawServices($(region));
+            //                         //$(region).trigger('click');
+            //                         return true;
+            //                     }
+            //                 });
+            //             }
+            //         }
+            //         drawServices($('[data-region="RU-MOW"]'));
+            //
+            //     })
+            //     .catch((error) => {
+            //         this.status = 'Error:' + error;
+            //     });
+        }
+    });
+
 
     let summernote = document.getElementById("summernote");
     if (summernote !== null) {
@@ -235,7 +205,7 @@
                 ['color', ['color']],
                 ['para', ['ul', 'ol', 'paragraph']],
                 ['height', ['height']],
-                ['misc', ['undo','redo','codeview']],
+                ['misc', ['undo', 'redo', 'codeview']],
             ]
         });
     }

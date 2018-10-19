@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use QuadStudio\Rbac\Repositories\RoleRepository;
 use QuadStudio\Service\Site\Filters\Address\ActiveFilter;
 use QuadStudio\Service\Site\Filters\Address\IsServiceFilter;
+use QuadStudio\Service\Site\Filters\Address\IsShopFilter;
 use QuadStudio\Service\Site\Filters\Address\TypeFilter;
 use QuadStudio\Service\Site\Filters\Address\UserActiveFilter;
 use QuadStudio\Service\Site\Filters\Address\UserDisplayFilter;
@@ -13,7 +14,7 @@ use QuadStudio\Service\Site\Filters\Region\RegionsSelectedFilter;
 use QuadStudio\Service\Site\Repositories\AddressRepository;
 use QuadStudio\Service\Site\Repositories\RegionRepository;
 
-trait ServiceControllerTrait
+trait DealerControllerTrait
 {
     /**
      * @var RegionRepository
@@ -58,7 +59,7 @@ trait ServiceControllerTrait
         $this->addresses
             ->trackFilter()
             ->applyFilter((new TypeFilter())->setTypeId(2))
-            ->applyFilter(new IsServiceFilter())
+            ->applyFilter(new IsShopFilter())
             ->applyFilter(new ActiveFilter())
             ->applyFilter(new UserDisplayFilter())
             ->applyFilter(new UserActiveFilter())
@@ -68,7 +69,7 @@ trait ServiceControllerTrait
             ->applyFilter((new RegionsSelectedFilter())->setRegions($this->addresses->all()->pluck('region_id')->unique()->toArray()))
             ->all();
         $region_id = $request->input('filter.region_id');
-        return view('site::service.index', compact('regions', 'region_id'));
+        return view('site::dealer.index', compact('regions', 'region_id'));
     }
 
 

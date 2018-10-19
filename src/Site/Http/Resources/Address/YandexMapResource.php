@@ -15,6 +15,7 @@ class YandexMapResource extends JsonResource
      */
     public function toArray($request)
     {
+        $icon = $request->route()->getName() == 'api.dealers.index' ? 'islands#orangeShoppingIcon' : 'islands#orangeRepairShopIcon';
         $roles = [];
         foreach (Role::query()->where('display', 1)->get() as $role){
             if($this->addressable->hasRole($role->name)){
@@ -29,18 +30,17 @@ class YandexMapResource extends JsonResource
                 'coordinates' => [$this->lat(), $this->lon()]
             ],
             'properties' => [
-                'balloonContentBody' => view('site::service.balloon', [
+                'balloonContentBody' => view('site::address.balloon', [
                     'name'      => $this->name,
                     'roles'      => $roles,
                     'web'      => $this->addressable->web,
                     'phones'     => $this->phones,
                     'email'   => $this->addressable->email,
                     'address' => $this->full,
-                    //'phones'  => $this->sc_phones()
                 ])->render(),
                 'balloonMaxWidth'    => 700
             ],
-            'options'    => ['preset' => 'islands#orangeStarIcon', 'zIndex' => 10],
+            'options'    => ['preset' => $icon, 'zIndex' => 10],
         ];
     }
 }

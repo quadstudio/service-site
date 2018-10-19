@@ -2,7 +2,7 @@
 return [
     'equipment'     => 'модель',
     'equipments'    => 'Модели',
-    'icon'          => 'cog',
+    'icon'          => 'tablet',
     //
     'name'          => 'Наименование',
     'annotation'    => 'Короткая аннотация',

@@ -96,6 +96,10 @@
                         <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.name')</dt>
                         <dd class="col-sm-8">{{ $address->name }}</dd>
                     @endif
+                    @if($address->name)
+                        <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.sort_order')</dt>
+                        <dd class="col-sm-8">{{ $address->sort_order }}</dd>
+                    @endif
                     {{--@if(($phones = $address->phones())->count() > 0)--}}
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::phone.phones')</dt>
                     <dd class="col-sm-8">

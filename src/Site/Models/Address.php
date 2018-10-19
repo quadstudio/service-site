@@ -3,6 +3,7 @@
 namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use QuadStudio\Service\Site\Http\Resources\Address\YandexMapResource;
 
 class Address extends Model
 {
@@ -10,7 +11,7 @@ class Address extends Model
         'type_id', 'country_id', 'region_id',
         'locality', 'street', 'building',
         'apartment', 'postal', 'name', 'active',
-        'is_shop', 'is_service'
+        'is_shop', 'is_service', 'sort_order'
     ];
 
     /**

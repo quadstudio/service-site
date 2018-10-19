@@ -49,6 +49,7 @@ class IsShopSelectFilter extends WhereFilter
     {
         return [
             '' => trans('site::messages.select_from_list'),
+            '0' => trans('site::messages.no'),
             '1' => trans('site::messages.yes')
         ];
     }

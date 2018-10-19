@@ -2,6 +2,7 @@
 return [
     'feedback'    => 'Написать письмо',
     'contacts'    => 'Контакты',
+    'icon'    => 'phone',
     //
     'name'        => 'Имя',
     'email'       => 'E-mail',

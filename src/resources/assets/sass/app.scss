@@ -184,6 +184,18 @@ nav ul {
   background-color: $ferroli-color !important;
 }
 
+.badge-ferroli {
+  color: $white;
+  background-color: $ferroli-color;
+}
+
+.list-group-item.active-ferroli{
+  z-index: 2;
+  color: #fff;
+  background-color: $ferroli-color;
+  border-color: $ferroli-color;
+}
+
 .text-muted {
   color: #a3a4a6 !important;
 }
@@ -1119,7 +1131,7 @@ nav.nav-centered.outOfSight .logo {
   -webkit-filter: grayscale(100%);
 }
 
-.service-map {
+.addresses-map {
   height: 600px;
   width: 100%;
 }

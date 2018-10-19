@@ -71,6 +71,8 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
         'SchemeController.stub'                   => 'SchemeController',
         'PhoneController.stub'                    => 'PhoneController',
         'CurrencyController.stub'                 => 'CurrencyController',
+        'ServiceController.stub'                  => 'ServiceController',
+        'DealerController.stub'                   => 'DealerController',
         //
         'api/FileController.stub'                 => 'Api/FileController',
         'api/RepairController.stub'               => 'Api/RepairController',
@@ -85,6 +87,7 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
         'api/BoilerController.stub'               => 'Api/BoilerController',
         'api/OrderController.stub'                => 'Api/OrderController',
         'api/ActController.stub'                  => 'Api/ActController',
+        'api/DealerController.stub'               => 'Api/DealerController',
         //
         'admin/WarehouseController.stub'          => 'Admin/WarehouseController',
         'admin/OrganizationController.stub'       => 'Admin/OrganizationController',

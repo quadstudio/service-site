@@ -41,10 +41,22 @@
                             @include('site::cart.nav')
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('services') }}">@lang('site::service.services')</a>
+                            <a class="nav-link" href="{{ route('services.index') }}">
+                                <i class="fa fa-@lang('site::service.icon')"></i>
+                                @lang('site::service.services')
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('feedback') }}">@lang('site::messages.feedback')</a>
+                            <a class="nav-link" href="{{ route('dealers.index') }}">
+                                <i class="fa fa-@lang('site::dealer.icon')"></i>
+                                @lang('site::dealer.dealers')
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('feedback') }}">
+                                <i class="fa fa-@lang('site::feedback.icon')"></i>
+                                @lang('site::messages.feedback')
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -70,7 +82,8 @@
                 <li><a href="{{ route('products.index') }}" class="menuprinc">@lang('site::product.products')</a></li>
                 <li><a href="{{ route('catalogs.index') }}" class="menuprinc">@lang('site::catalog.catalogs')</a></li>
                 <li><a href="{{ route('datasheets.index') }}" class="menuprinc">@lang('site::datasheet.datasheets')</a></li>
-                <li><a href="{{ route('services') }}">@lang('site::service.services')</a></li>
+                <li><a href="{{ route('services.index') }}">@lang('site::service.services')</a></li>
+                <li><a href="{{ route('dealers.index') }}">@lang('site::dealer.dealers')</a></li>
                 <li><a href="{{ route('feedback') }}">@lang('site::messages.feedback')</a></li>
             </ul>
         </div>

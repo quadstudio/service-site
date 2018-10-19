@@ -21,7 +21,10 @@
                     <a class="nav-link" href="{{ route('datasheets.index') }}">@lang('site::datasheet.datasheets')</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('services') }}">@lang('site::service.services')</a>
+                    <a class="nav-link" href="{{ route('services.index') }}">@lang('site::service.services')</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('dealers.index') }}">@lang('site::dealer.dealers')</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('feedback') }}">@lang('site::messages.feedback')</a>

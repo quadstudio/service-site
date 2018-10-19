@@ -53,6 +53,7 @@ class AddressRequest extends FormRequest
                     'address.street'     => 'sometimes|max:255',
                     'address.building'   => 'required|string|max:255',
                     'address.apartment'  => 'sometimes|max:255',
+                    'address.sort_order' => 'required|numeric|min:0|max:200',
                 ];
             }
             default:
@@ -86,6 +87,7 @@ class AddressRequest extends FormRequest
             'address.street'     => trans('site::address.street'),
             'address.building'   => trans('site::address.building'),
             'address.apartment'  => trans('site::address.apartment'),
+            'address.sort_order' => trans('site::address.sort_order'),
             //
             'phone.country_id'   => trans('site::phone.country_id'),
             'phone.number'       => trans('site::phone.number'),
