@@ -41,6 +41,7 @@ class SiteServiceProvider extends ServiceProvider
         Models\Distance::class   => Policies\DistancePolicy::class,
         Models\Difficulty::class => Policies\DifficultyPolicy::class,
         Models\Phone::class      => Policies\PhonePolicy::class,
+        Models\OrderItem::class  => Policies\OrderItemPolicy::class,
     ];
 
     /**
@@ -65,7 +66,6 @@ class SiteServiceProvider extends ServiceProvider
 
             return new Exchanges\Cbr();
         });
-
 
 
         $this->loadConfig()->loadMigrations();

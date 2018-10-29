@@ -139,7 +139,7 @@
                                         <span class="bg-danger text-white d-block d-sm-inline-block py-1 px-3 mb-1 mb-sm-0">@lang('site::messages.with_error')</span>
                                         <input type="tel" id="phone_primary" name="phone_primary"
                                                class="form-control{{ $errors->has('phone_primary') ? ' is-invalid' : '' }}"
-                                               pattern="^\d{10}$" maxlength="10" required
+                                               pattern="^\d{9,10}$" maxlength="10" required
                                                value="{{ old('phone_primary') }}"
                                                placeholder="@lang('site::repair.placeholder.phone_primary')">
                                         <span class="invalid-feedback">{{ $errors->first('phone_primary') }}</span>
@@ -155,7 +155,7 @@
                                         <span class="bg-danger text-white d-block d-sm-inline-block py-1 px-3 mb-1 mb-sm-0">@lang('site::messages.with_error')</span>
                                         <input type="tel" id="phone_secondary" name="phone_secondary"
                                                class="form-control{{ $errors->has('phone_secondary') ? ' is-invalid' : '' }}"
-                                               pattern="^\d{10}$" maxlength="10"
+                                               pattern="^\d{9,10}$" maxlength="10"
                                                value="{{ old('phone_secondary') }}"
                                                placeholder="@lang('site::repair.placeholder.phone_secondary')">
                                         <span class="invalid-feedback">{{ $errors->first('phone_secondary') }}</span>

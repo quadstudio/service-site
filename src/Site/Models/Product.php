@@ -23,7 +23,7 @@ class Product extends Model implements Imageable
      * @var array
      */
     protected $fillable = [
-        'name', 'sku', 'enabled', 'active',
+        'name', 'sku', 'old_sku', 'enabled', 'active',
         'h1', 'title', 'metadescription',
         'warranty', 'service', 'description',
         'specification', 'equipment_id', 'type_id'
@@ -330,6 +330,33 @@ class Product extends Model implements Imageable
             'analogs',
             'product_id',
             'analog_id');
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public function analogs_array()
+    {
+
+        $analogs = collect([]);
+        if (!is_null($this->getAttribute('old_sku'))) {
+            $analogs->push($this->getAttribute('old_sku'));
+        }
+
+        if ($this->analogs()->exists()) {
+            foreach ($this->analogs as $analog) {
+                if($analog->hasSku()){
+                    $analogs->push($analog->getAttribute('sku'));
+                }
+            }
+        }
+
+        return $analogs;
+    }
+
+    public function hasSku()
+    {
+        return !is_null($this->getAttribute('sku'));
     }
 
     /**

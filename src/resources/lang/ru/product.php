@@ -15,6 +15,7 @@ return [
     'h1'                  => 'Тег H1',
     'quantity'            => 'Остаток на складе',
     'sku'                 => 'Артикул',
+    'old_sku'             => 'Старый артикул',
     'brand_id'            => 'Бренд',
     'type_id'             => 'Тип товара',
     'weight'              => 'Вес',
@@ -28,6 +29,7 @@ return [
     'service'             => 'Услуга',
     //
     'placeholder'         => [
+        'old_sku'         => '',
         'description'     => '',
         'specification'   => '',
         'metadescription' => '',

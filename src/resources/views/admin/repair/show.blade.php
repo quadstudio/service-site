@@ -34,6 +34,11 @@
                 <i class="fa fa-print"></i>
                 <span>@lang('site::messages.print')</span>
             </a>
+            <a href="{{ route('admin.users.force', $repair->user) }}"
+               class="d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn-warning">
+                <i class="fa fa-sign-in"></i>
+                <span>@lang('site::user.force_login')</span>
+            </a>
             <a href="{{ route('admin.repairs.index') }}" class="d-block d-sm-inline btn btn-secondary">
                 <i class="fa fa-reply"></i>
                 <span>@lang('site::messages.back')</span>
@@ -159,7 +164,7 @@
                                 @if(count($parts = $repair->parts) > 0)
                                     @foreach($parts as $part)
                                         <div class="row">
-                                            <div class="col-8">{!! $part->product->name !!}
+                                            <div class="col-8">{!! $part->product->sku !!} {!! $part->product->name !!}
                                                 ( ={{Site::format($part->cost)}} x {{$part->count}} {{$part->product->unit}} )
                                             </div>
                                             <div class="col-4 text-right text-info">

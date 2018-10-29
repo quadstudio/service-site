@@ -6,8 +6,10 @@ use Illuminate\Events\Dispatcher;
 use Illuminate\Support\Facades\Mail;
 use QuadStudio\Service\Site\Events\RepairCreateEvent;
 use QuadStudio\Service\Site\Events\RepairEditEvent;
+use QuadStudio\Service\Site\Events\RepairStatusEvent;
 use QuadStudio\Service\Site\Mail\Admin\Repair\RepairCreateEmail;
 use QuadStudio\Service\Site\Mail\Admin\Repair\RepairEditEmail;
+use QuadStudio\Service\Site\Mail\User\Repair\RepairStatusEmail;
 
 class RepairListener
 {
@@ -36,6 +38,17 @@ class RepairListener
         Mail::to(env('MAIL_TO_ADDRESS'))->send(new RepairEditEmail($event->repair));
     }
 
+    /**
+     * Обработчик события:
+     * Смена администратором статуса отчета по ремонту
+     *
+     * @param RepairStatusEvent $event
+     */
+    public function onRepairStatus(RepairStatusEvent $event)
+    {
+        // Отправка пользователю письма при смене статуса отчета по ремонту
+        Mail::to($event->repair->user->email)->send(new RepairStatusEmail($event->repair, $event->adminMessage));
+    }
 
     /**
      * @param Dispatcher $events
@@ -50,6 +63,11 @@ class RepairListener
         $events->listen(
             RepairEditEvent::class,
             'QuadStudio\Service\Site\Listeners\RepairListener@onRepairEdit'
+        );
+
+        $events->listen(
+            RepairStatusEvent::class,
+            'QuadStudio\Service\Site\Listeners\RepairListener@onRepairStatus'
         );
     }
 }

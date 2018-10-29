@@ -78,6 +78,11 @@
 
                                 <dt class="col-sm-4">@lang('site::product.sku')</dt>
                                 <dd class="col-sm-8">{{$product->sku}}</dd>
+
+                                @if($analogs->isNotEmpty() || $product->old_sku)
+                                    <dt class="col-sm-4">@lang('site::analog.analogs')</dt>
+                                    <dd class="col-sm-8">{!! $product->analogs_array()->implode(', ') !!}</dd>
+                                @endif
                                 @if($product->brand_id)
                                     <dt class="col-sm-4">@lang('site::product.brand_id')</dt>
                                     <dd class="col-sm-8">{!! $product->brand->name !!}</dd>

@@ -179,9 +179,11 @@
                             <div class="product-name">
                                 <a class="text-dark"
                                    href="{{route('products.show', $product)}}">{!! str_limit($product->name, 60) !!}</a>
-                                <div class="text-muted mb-2">@lang('site::product.sku')
-                                    : {{$product->sku}}</div>
-                                <div class="product-relations">
+                                <div class="text-muted">@lang('site::product.sku'): {{$product->sku}}</div>
+                                @if($product->old_sku)
+                                    <div class="text-muted">({!! $product->old_sku !!})</div>
+                                @endif
+                                <div class="product-relations mt-2">
                                     @if( $product->relation_equipments()->count() > 0)
                                         @lang('site::relation.header.back_relations')
                                         : {{ $product->relation_equipments()->implode('name', ', ') }}

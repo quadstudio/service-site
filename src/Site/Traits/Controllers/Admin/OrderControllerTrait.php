@@ -68,4 +68,26 @@ trait OrderControllerTrait
 
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  Order $order
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Order $order)
+    {
+
+        $this->authorize('delete', $order);
+
+        if ($order->delete()) {
+            $redirect = route('admin.orders.index');
+        } else {
+            $redirect = route('admin.orders.show', $order);
+        }
+        $json['redirect'] = $redirect;
+
+        return response()->json($json);
+
+    }
+
 }

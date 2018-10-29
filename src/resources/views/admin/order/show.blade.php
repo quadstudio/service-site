@@ -10,7 +10,7 @@
                 <a href="{{ route('admin') }}">@lang('site::messages.admin')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('orders.index') }}">@lang('site::order.breadcrumb_index')</a>
+                <a href="{{ route('admin.orders.index') }}">@lang('site::order.orders')</a>
             </li>
             <li class="breadcrumb-item active">@lang('site::order.breadcrumb_show', ['order' => $order->id, 'date' => $order->created_at(true) ])</li>
         </ol>
@@ -33,11 +33,28 @@
                     </span>
                 </a>
             @endif
+            <button @cannot('delete', $order) disabled @endcannot
+            class="btn btn-danger btn-row-delete"
+                    data-form="#order-delete-form-{{$order->id}}"
+                    data-btn-delete="@lang('site::messages.delete')"
+                    data-btn-cancel="@lang('site::messages.cancel')"
+                    data-label="@lang('site::messages.delete_confirm')"
+                    data-message="@lang('site::messages.delete_sure') @lang('site::order.order')? "
+                    data-toggle="modal" data-target="#form-modal"
+                    href="javascript:void(0);" title="@lang('site::messages.delete')">
+                @lang('site::messages.delete')
+            </button>
+
             <a href="{{ route('admin.orders.index') }}" class="d-block d-sm-inline btn btn-secondary">
                 <i class="fa fa-reply"></i>
                 <span>@lang('site::messages.back')</span>
             </a>
-
+            <form id="order-delete-form-{{$order->id}}"
+                  action="{{route('admin.orders.destroy', $order)}}"
+                  method="POST">
+                @csrf
+                @method('DELETE')
+            </form>
         </div>
 
         <div class="row">
@@ -188,6 +205,25 @@
                                     <div class="text-muted">
                                         {{ $item->quantity }} {{ $item->product->unit }}
                                         x {{ Site::format($item->price) }}
+                                    </div>
+                                    <div class="mt-2">
+                                        <button @cannot('delete', $item->order) disabled @endcannot
+                                        class="btn btn-danger btn-sm btn-row-delete"
+                                           data-form="#order-item-delete-form-{{$item->id}}"
+                                           data-btn-delete="@lang('site::messages.delete')"
+                                           data-btn-cancel="@lang('site::messages.cancel')"
+                                           data-label="@lang('site::messages.delete_confirm')"
+                                           data-message="@lang('site::messages.delete_sure') {!! $item->product->name() !!}? "
+                                           data-toggle="modal" data-target="#form-modal"
+                                           href="javascript:void(0);" title="@lang('site::messages.delete')">
+                                            @lang('site::messages.delete')
+                                        </button>
+                                        <form id="order-item-delete-form-{{$item->id}}"
+                                              action="{{route('admin.orders.items.destroy', $item)}}"
+                                              method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
                                     </div>
                                 </div>
                                 <div class="col-sm-3 mb-4 mb-sm-0 text-large text-left text-sm-right">{{ Site::format($item->subtotal()) }}</div>

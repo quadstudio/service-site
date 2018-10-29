@@ -71,7 +71,7 @@
                                    name="phone"
                                    id="phone"
                                    title="@lang('site::engineer.placeholder.phone')"
-                                   pattern="^\d{10}$" maxlength="10"
+                                   pattern="^\d{9,10}$" maxlength="10"
                                    class="form-control{{ $errors->has('phone') ? ' is-invalid' : '' }}"
                                    placeholder="@lang('site::engineer.placeholder.phone')"
                                    value="{{ old('phone', $engineer->phone) }}">

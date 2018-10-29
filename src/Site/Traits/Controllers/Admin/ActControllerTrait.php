@@ -2,6 +2,7 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 
+use QuadStudio\Service\Site\Events\ActCreateEvent;
 use QuadStudio\Service\Site\Events\ActExport;
 use QuadStudio\Service\Site\Filters\User\HasApprovedRepairFilter;
 use QuadStudio\Service\Site\Http\Requests\ActRequest;
@@ -86,6 +87,7 @@ trait ActControllerTrait
         foreach ($request->input('repair') as $user_id => $contragents) {
             /** @var User $user */
             $user = User::find($user_id);
+            $acts = collect([]);
             foreach ($contragents as $contragent_id => $repairs) {
                 $contragent = Contragent::find($contragent_id);
                 /** @var Act $act */
@@ -102,7 +104,9 @@ trait ActControllerTrait
 
                     $repair->save();
                 }
+                $acts->push($act);
             }
+            event(new ActCreateEvent($user, $acts));
         }
 
         return redirect()->route('admin.acts.index')->with('success', trans('site::act.created'));

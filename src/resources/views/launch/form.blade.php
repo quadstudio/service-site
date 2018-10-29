@@ -30,7 +30,7 @@
                     <label class="control-label" for="contact">@lang('site::launch.phone')</label>
                     <input type="tel" name="phone" id="phone"
                            title="@lang('site::launch.placeholder.phone')"
-                           pattern="^\d{10}$" maxlength="10"
+                           pattern="^\d{9,10}$" maxlength="10"
                            class="form-control{{ $errors->has('phone') ? ' is-invalid' : '' }}"
                            placeholder="@lang('site::launch.placeholder.phone')"
                            value="{{ old('phone') }}" required>

@@ -38,7 +38,7 @@ class AddressRequest extends FormRequest
                     'address.apartment'  => 'sometimes|max:255',
                     //
                     'phone.country_id'   => 'required|exists:countries,id',
-                    'phone.number'       => 'required|numeric|digits:10',
+                    'phone.number'       => 'required|numeric|digits_between:9,10',
                     'phone.extra'        => 'max:20',
                 ];
             }

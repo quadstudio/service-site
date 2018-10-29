@@ -29,7 +29,7 @@ class PhoneRequest extends FormRequest
             case 'POST': {
                 return [
                     'country_id'   => 'required|exists:countries,id',
-                    'number'       => 'required|numeric|digits:10',
+                    'number'       => 'required|numeric|digits_between:9,10',
                     'extra'        => 'max:20',
                 ];
             }

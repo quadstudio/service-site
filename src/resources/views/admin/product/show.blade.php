@@ -73,6 +73,10 @@
                             <div>{{ $product->sku }}</div>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="text-muted">@lang('site::product.old_sku')</div>
+                            <div>{{ $product->old_sku }}</div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
                             <div class="text-muted">@lang('site::product.brand_id')</div>
                             <div>{{ $product->brand->name }}</div>
                         </li>

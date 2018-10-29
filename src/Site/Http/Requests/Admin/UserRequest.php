@@ -43,7 +43,7 @@ class UserRequest extends FormRequest
                     'address.sc.locality'   => 'required|string|max:255',
                     //
                     'phone.sc.country_id'   => 'required|exists:countries,id',
-                    'phone.sc.number'       => 'required|numeric|digits:10',
+                    'phone.sc.number'       => 'required|numeric|digits_between:9,10',
                     'phone.sc.extra'        => 'max:20',
                 ];
             }

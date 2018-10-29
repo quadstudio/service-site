@@ -44,7 +44,7 @@ class RegisterRequest extends FormRequest
                     'contact.position'          => 'max:255',
                     //
                     'phone.contact.country_id'  => 'required|exists:countries,id',
-                    'phone.contact.number'      => 'required|numeric|digits:10',
+                    'phone.contact.number'      => 'required|numeric|digits_between:9,10',
                     'phone.contact.extra'       => 'max:20',
 
                     //
@@ -57,7 +57,7 @@ class RegisterRequest extends FormRequest
                     'address.sc.apartment'      => 'sometimes|max:255',
                     //
                     'phone.sc.country_id'       => 'required|exists:countries,id',
-                    'phone.sc.number'           => 'required|numeric|digits:10',
+                    'phone.sc.number'           => 'required|numeric|digits_between:9,10',
                     'phone.sc.extra'            => 'max:20',
                     //
                     'contragent.type_id'        => 'required|exists:contragent_types,id',

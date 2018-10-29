@@ -6,7 +6,9 @@ use Illuminate\Events\Dispatcher;
 use Illuminate\Support\Facades\Mail;
 use QuadStudio\Service\Site\Events\OrderCreateEvent;
 use QuadStudio\Service\Site\Events\OrderScheduleEvent;
-use QuadStudio\Service\Site\Mail\Admin\Order\OrderCreateEmail;
+use QuadStudio\Service\Site\Mail\Admin\Order\OrderCreateEmail as AdminOrderCreateEmail;
+use QuadStudio\Service\Site\Mail\User\Order\OrderCreateEmail as UserOrderCreateEmail;
+use QuadStudio\Service\Site\Mail\User\Order\OrderScheduleEmail as UserOrderScheduleEmail;
 
 class OrderListener
 {
@@ -23,6 +25,7 @@ class OrderListener
         ]);
         $event->order->setAttribute('status_id', 2);
         $event->order->save();
+        Mail::to($event->order->user->email)->send(new UserOrderScheduleEmail($event->order));
         //Schedule::create();
     }
 
@@ -31,8 +34,11 @@ class OrderListener
      */
     public function onOrderCreate(OrderCreateEvent $event)
     {
-        // Отправка администратору письма об офромлении нового заказа
-        Mail::to(env('MAIL_TO_ADDRESS'))->send(new OrderCreateEmail($event->order));
+        // Отправка администратору письма об оформлении нового заказа
+        Mail::to(env('MAIL_TO_ADDRESS'))->send(new AdminOrderCreateEmail($event->order));
+
+        // Отправка пользователю письма об оформлении нового заказа
+        Mail::to($event->order->user->email)->send(new UserOrderCreateEmail($event->order));
     }
 
 

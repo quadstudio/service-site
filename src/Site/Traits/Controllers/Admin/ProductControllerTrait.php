@@ -95,7 +95,6 @@ trait ProductControllerTrait
      */
     public function update(ProductRequest $request, Product $product)
     {
-        dd($request->all());
         $product->update($request->except(['_method', '_token', '_stay', 'files']));
 
         if ($request->input('_stay') == 1) {

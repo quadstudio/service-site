@@ -3,6 +3,7 @@
 namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use QuadStudio\Rbac\Repositories\RoleRepository;
 use QuadStudio\Service\Site\Events\UserScheduleEvent;
 use QuadStudio\Service\Site\Filters\PriceType\EnabledFilter;
@@ -15,6 +16,7 @@ use QuadStudio\Service\Site\Filters\User\IsDealerSelectFilter;
 use QuadStudio\Service\Site\Filters\User\IsServiceFilter;
 use QuadStudio\Service\Site\Filters\User\RegionFilter;
 use QuadStudio\Service\Site\Filters\User\SortByCreatedAtFilter;
+use QuadStudio\Service\Site\Filters\User\UserRoleFilter;
 use QuadStudio\Service\Site\Filters\User\VerifiedFilter;
 use QuadStudio\Service\Site\Filters\UserFilter;
 use QuadStudio\Service\Site\Http\Requests\Admin\UserRequest;
@@ -136,6 +138,7 @@ trait UserControllerTrait
         $this->users->pushTrackFilter(ActiveSelectFilter::class);
         $this->users->pushTrackFilter(VerifiedFilter::class);
         $this->users->pushTrackFilter(DisplaySelectFilter::class);
+        //$this->users->pushTrackFilter(UserRoleFilter::class);
 
         return view('site::admin.user.index', [
             'roles'      => $this->roles->all(),
@@ -383,6 +386,26 @@ trait UserControllerTrait
             'repository' => $this->contacts,
             'contacts'   => $this->contacts->paginate(config('site.per_page.contact', 10), ['contacts.*'])
         ]);
+    }
+
+    /**
+     * Логин под пользователем
+     *
+     * @param User $user
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function force(User $user, Request $request)
+    {
+
+        Auth::guard()->logout();
+
+        $request->session()->invalidate();
+
+        Auth::login($user);
+
+        return redirect()->route('home');
+
     }
 
 }

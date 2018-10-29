@@ -58,6 +58,19 @@
                                 </div>
                             </div>
 
+                            <div class="form-row">
+                                <div class="col mb-3">
+                                    <label class="control-label" for="old_sku">@lang('site::product.old_sku')</label>
+                                    <input type="text"
+                                           name="old_sku"
+                                           id="old_sku"
+                                           class="form-control{{ $errors->has('old_sku') ? ' is-invalid' : '' }}"
+                                           placeholder="@lang('site::product.placeholder.old_sku')"
+                                           value="{{ old('old_sku', $product->old_sku) }}">
+                                    <span class="invalid-feedback">{{ $errors->first('old_sku') }}</span>
+                                </div>
+                            </div>
+
                             <div class="form-group required">
                                 <label class="control-label"
                                        for="type_id">@lang('site::product.type_id')</label>

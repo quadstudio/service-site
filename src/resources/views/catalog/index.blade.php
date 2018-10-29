@@ -22,7 +22,7 @@
                         <h5 class="card-title text-center">
                             <a href="{{route('catalogs.show', $catalog)}}">{{$catalog->name_plural}}</a>
                         </h5>
-                        <p class="card-text">{{$catalog->description}}</p>
+                        <p class="card-text">{!! $catalog->description !!}</p>
                     </div>
                 </div>
             </div>

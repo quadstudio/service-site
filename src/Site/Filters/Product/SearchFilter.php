@@ -47,6 +47,7 @@ class SearchFilter extends BaseFilter
         return [
             'products.name',
             'products.sku',
+            'products.old_sku',
         ];
     }
 

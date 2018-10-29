@@ -125,7 +125,7 @@
                                                            name="phone[sc][number]"
                                                            id="phone_sc_number"
                                                            title="@lang('site::phone.placeholder.number')"
-                                                           pattern="^\d{10}$"
+                                                           pattern="^\d{9,10}$"
                                                            maxlength="10"
                                                            class="form-control{{ $errors->has('phone.sc.number') ? ' is-invalid' : '' }}"
                                                            placeholder="@lang('site::phone.placeholder.number')"

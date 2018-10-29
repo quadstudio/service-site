@@ -4,8 +4,8 @@
             <div class="row">
                 <div class="col-10">
                     <a href="{{route('admin.products.show', $analog)}}"
-                       class="text-dark">{{$analog->sku}}</a>
-                    <small class="text-muted d-block">{{$analog->name}}</small>
+                       class="text-dark">{{$analog->name}}</a>
+                    <small class="text-muted d-block">{{$analog->sku}}</small>
                 </div>
                 <div class="col-2">
                     <div class="btn-group dropleft pull-right">

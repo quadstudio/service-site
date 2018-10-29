@@ -3,6 +3,7 @@
 namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use QuadStudio\Service\Site\Events\RepairStatusEvent;
 use QuadStudio\Service\Site\Filters\FileType\ModelHasFilesFilter;
 use QuadStudio\Service\Site\Filters\Repair\RegionFilter;
 use QuadStudio\Service\Site\Filters\Repair\ScSearchFilter;
@@ -93,6 +94,9 @@ trait RepairControllerTrait
         if ($request->filled('fail')) {
             $repair->fails()->createMany($request->input('fail'));
         }
+
+        event(new RepairStatusEvent($repair, $request->input('message.text')));
+
         return redirect()->route('admin.repairs.show', $repair)->with('success', trans('site::repair.status_updated'));
     }
 

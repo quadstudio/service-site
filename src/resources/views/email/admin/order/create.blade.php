@@ -9,6 +9,7 @@
 @endsection
 
 @section('body')
+    <p><b>№ заказа</b>: {{$order->id }}</p>
     <p><b>Компания</b>: {{$order->user->name }}</p>
     <p>
         <a class="btn btn-ferroli btn-lg" href="{{ route('admin.orders.show', $order) }}">

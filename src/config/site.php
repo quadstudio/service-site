@@ -49,7 +49,8 @@ return [
     ],
 
     'per_page' => [
-        'block'      => 25,
+        'user'         => 50,
+        'block'        => 25,
         'catalog'      => 25,
         'repair'       => 10,
         'trade'        => 10,
@@ -177,7 +178,7 @@ return [
             'role_id'         => 2,
         ],
         'part'     => [
-            'price_type_id'   => '7fb003f7-aca8-11e8-80cc-85ebbdeccdc7',
+            'price_type_id' => '7fb003f7-aca8-11e8-80cc-85ebbdeccdc7',
         ],
 
     ],

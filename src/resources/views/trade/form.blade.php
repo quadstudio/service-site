@@ -28,7 +28,7 @@
             <label class="control-label" for="contact">@lang('site::trade.phone')</label>
             <input type="tel" name="phone" id="phone"
                    title="@lang('site::trade.placeholder.phone')"
-                   pattern="^\d{10}$" maxlength="10"
+                   pattern="^\d{9,10}$" maxlength="10"
                    class="form-control{{ $errors->has('phone') ? ' is-invalid' : '' }}"
                    placeholder="@lang('site::trade.placeholder.phone')"
                    value="{{ old('phone') }}" required>

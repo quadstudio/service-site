@@ -30,11 +30,32 @@
 
         {{$users->render()}}
         @filter(['repository' => $repository])@endfilter
-        <div class="row items-row-view mt-2 mb-4">
+
+
+        <table class="table table-bordered bg-white table-sm table-hover">
+            <tr>
+                <th>Имя</th>
+                <th>Регион</th>
+                <th>Город</th>
+                <th>ПЛЗ</th>
+                <th>АСЦ</th>
+                <th>ЦСЦ</th>
+                <th>Дил</th>
+                <th>Дистр</th>
+                <th>ГенДист</th>
+                <th>Вкл</th>
+                <th>Email</th>
+                <th>Отобр</th>
+                <th>Дата рег.</th>
+                <th>Вход</th>
+                <th>Заказ</th>
+            </tr>
             @foreach($users as $user)
                 @include('site::admin.user.index.row')
             @endforeach
-        </div>
+        </table>
+            
+
         {{$users->render()}}
     </div>
 @endsection

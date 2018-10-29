@@ -32,8 +32,14 @@
                 <i class="fa fa-@lang('site::user_price.icon')"></i>
                 <span>@lang('site::user_price.user_price')</span>
             </a>
+            <a href="{{ route('admin.users.force', $user) }}"
+               class="d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn-warning">
+                <i class="fa fa-sign-in"></i>
+                <span>@lang('site::user.force_login')</span>
+            </a>
+
             <a href="{{ route('admin.users.index') }}"
-               class="d-block d-sm-inline btn btn btn-secondary">
+               class="d-block d-sm-inline btn btn-secondary">
                 <i class="fa fa-reply"></i>
                 <span>@lang('site::messages.back')</span>
             </a>

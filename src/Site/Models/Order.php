@@ -74,6 +74,10 @@ class Order extends Model implements Messagable
         return $this->belongsTo(Contragent::class);
     }
 
+    public function hasGuid(){
+        return !is_null($this->getAttribute('guid'));
+    }
+
     /**
      * Сообщения
      *

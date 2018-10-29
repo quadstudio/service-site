@@ -35,6 +35,7 @@ class ProductRequest extends FormRequest
                 return [
                     'name'     => 'required|string|max:255',
                     'sku'      => 'max:255',
+                    'old_sku'  => 'max:255',
                     'type_id'  => 'required|exists:product_types,id',
                     'enabled'  => 'required|boolean',
                     'active'   => 'required|boolean',
@@ -67,6 +68,7 @@ class ProductRequest extends FormRequest
         return [
             'name'     => trans('site::product.name'),
             'sku'      => trans('site::product.sku'),
+            'old_sku'  => trans('site::product.old_sku'),
             'type_id'  => trans('site::product.type_id'),
             'enabled'  => trans('site::product.enabled'),
             'active'   => trans('site::product.active'),

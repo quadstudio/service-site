@@ -72,7 +72,7 @@
                                            for="phone_primary">@lang('site::repair.phone_primary')</label>
                                     <input type="tel" id="phone_primary" name="phone_primary"
                                            class="form-control{{ $errors->has('phone_primary') ? ' is-invalid' : '' }}"
-                                           pattern="^\d{10}$" maxlength="10"
+                                           pattern="^\d{9,10}$" maxlength="10"
                                            required
                                            value="{{ old('phone_primary') }}"
                                            placeholder="@lang('site::repair.placeholder.phone_primary')">
@@ -84,7 +84,7 @@
                                            for="phone_secondary">@lang('site::repair.phone_secondary')</label>
                                     <input type="tel" id="phone_secondary" name="phone_secondary"
                                            class="form-control{{ $errors->has('phone_secondary') ? ' is-invalid' : '' }}"
-                                           pattern="^\d{10}$" maxlength="10"
+                                           pattern="^\d{9,10}$" maxlength="10"
                                            value="{{ old('phone_secondary') }}"
                                            placeholder="@lang('site::repair.placeholder.phone_secondary')">
                                     <span class="invalid-feedback">{{ $errors->first('phone_secondary') }}</span>
