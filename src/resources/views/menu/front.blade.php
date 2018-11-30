@@ -7,10 +7,14 @@
                     <img class="logo logo-dark" alt="Ferroli" src="{{asset('/images/logo-dark.png')}}">
                 </a>
             </div>
-            <div class="module right mobile-menu d-inline-block d-lg-none navbar-toggle collapsed"
-                 data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <a class="module right mobile-menu d-inline-block d-lg-none navbar-toggle collapsed"
+               href="#"
+               data-toggle="collapse"
+               data-target="#navbar"
+               aria-expanded="false"
+               aria-controls="navbar">
                 <i class="fa fa-bars"></i>
-            </div>
+            </a>
             <div class="module right d-inline-block mt-4 d-lg-none">
                 @include('site::cart.nav')
             </div>
@@ -81,7 +85,8 @@
                 </li>
                 <li><a href="{{ route('products.index') }}" class="menuprinc">@lang('site::product.products')</a></li>
                 <li><a href="{{ route('catalogs.index') }}" class="menuprinc">@lang('site::catalog.catalogs')</a></li>
-                <li><a href="{{ route('datasheets.index') }}" class="menuprinc">@lang('site::datasheet.datasheets')</a></li>
+                <li><a href="{{ route('datasheets.index') }}" class="menuprinc">@lang('site::datasheet.datasheets')</a>
+                </li>
                 <li><a href="{{ route('services.index') }}">@lang('site::service.services')</a></li>
                 <li><a href="{{ route('dealers.index') }}">@lang('site::dealer.dealers')</a></li>
                 <li><a href="{{ route('feedback') }}">@lang('site::messages.feedback')</a></li>

@@ -103,6 +103,9 @@
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.full')</dt>
                     <dd class="col-sm-8"> {{ $address->full }}</dd>
 
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.emailaddress')</dt>
+                    <dd class="col-sm-8"> {{ $address->emailaddress }}</dd>
+
                     @if($address->addressable_type == 'contragents')
                         <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.addressable.'.$address->addressable_type)</dt>
                         <dd class="col-sm-8">

@@ -29,7 +29,19 @@ class PhoneRequest extends FormRequest
             case 'POST': {
                 return [
                     'country_id'   => 'required|exists:countries,id',
-                    'number'       => 'required|numeric|digits_between:9,10',
+                    'number'           => array(
+                        'required',
+                        'numeric',
+                        function ($attribute, $value, $fail) {
+
+                            if ($this->input('country_id') == 643 && strlen($value) != 10) {
+                                return $fail(trans('site::phone.error.length_10'));
+                            }
+                            if ($this->input('country_id') == 112 && strlen($value) != 9) {
+                                return $fail(trans('site::phone.error.length_9'));
+                            }
+                        }
+                    ),
                     'extra'        => 'max:20',
                 ];
             }

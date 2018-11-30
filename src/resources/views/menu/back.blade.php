@@ -4,12 +4,15 @@
             <img alt="Logo" class="logo" src="{{asset('images/logo_bianco.svg')}}"
                  style="height:74px;position:absolute;top:-30px;left:-18px;">
         </a>
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
-                data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
-                aria-label="Toggle navigation">
+        <a href="#" class="navbar-toggler navbar-toggler-right bg-dark"
+           data-toggle="collapse"
+           data-target="#navbarResponsive"
+           aria-controls="navbarResponsive"
+           aria-expanded="false"
+           aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
+        </a>
+        <div class="collapse navbar-collapse" style="z-index: 25000 !important;" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('products.index') }}">@lang('site::product.products')</a>
@@ -164,10 +167,10 @@
                             <i class="fa fa-@lang('site::address.icon')"></i> @lang('site::address.addresses')
                         </a>
                         {{--<a class="dropdown-item" href="{{ route('admin.contacts.index') }}">--}}
-                            {{--<i class="fa fa-@lang('site::contact.icon')"></i> @lang('site::contact.contacts')--}}
+                        {{--<i class="fa fa-@lang('site::contact.icon')"></i> @lang('site::contact.contacts')--}}
                         {{--</a>--}}
                         {{--<a class="dropdown-item" href="{{ route('admin.phones.index') }}">--}}
-                            {{--<i class="fa fa-@lang('site::phone.icon')"></i> @lang('site::phone.phones')--}}
+                        {{--<i class="fa fa-@lang('site::phone.icon')"></i> @lang('site::phone.phones')--}}
                         {{--</a>--}}
 
                         <div class="dropdown-divider"></div>

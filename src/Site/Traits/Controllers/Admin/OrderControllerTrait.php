@@ -7,6 +7,7 @@ namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 //use QuadStudio\Service\Shop\Http\Requests\Order As Request;
 use QuadStudio\Service\Site\Events\OrderScheduleEvent;
 use QuadStudio\Service\Site\Filters\Order\ScSearchFilter;
+use QuadStudio\Service\Site\Http\Requests\MessageRequest;
 use QuadStudio\Service\Site\Models\Order;
 use QuadStudio\Service\Site\Repositories\OrderRepository As Repository;
 
@@ -88,6 +89,13 @@ trait OrderControllerTrait
 
         return response()->json($json);
 
+    }
+
+    public function message(MessageRequest $request, Order $order)
+    {
+        $order->messages()->save($request->user()->outbox()->create($request->input('message')));
+
+        return redirect()->route('admin.orders.show', $order)->with('success', trans('site::message.created'));
     }
 
 }

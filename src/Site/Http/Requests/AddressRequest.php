@@ -28,32 +28,46 @@ class AddressRequest extends FormRequest
 
             case 'POST': {
                 return [
-                    'address.type_id'    => 'required|exists:address_types,id',
-                    'address.name'       => 'required_if:address.type_id,2|max:255',
-                    'address.country_id' => 'required|exists:countries,id',
-                    'address.region_id'  => 'sometimes|exists:regions,id',
-                    'address.locality'   => 'required|string|max:255',
-                    'address.street'     => 'sometimes|max:255',
-                    'address.building'   => 'required|string|max:255',
-                    'address.apartment'  => 'sometimes|max:255',
+                    'address.type_id'      => 'required|exists:address_types,id',
+                    'address.name'         => 'required_if:address.type_id,2|max:255',
+                    'address.country_id'   => 'required|exists:countries,id',
+                    'address.region_id'    => 'sometimes|exists:regions,id',
+                    'address.locality'     => 'required|string|max:255',
+                    'address.street'       => 'sometimes|max:255',
+                    'address.building'     => 'required|string|max:255',
+                    'address.apartment'    => 'sometimes|max:255',
+                    'address.emailaddress' => 'sometimes|email',
                     //
-                    'phone.country_id'   => 'required|exists:countries,id',
-                    'phone.number'       => 'required|numeric|digits_between:9,10',
-                    'phone.extra'        => 'max:20',
+                    'phone.country_id'     => 'required|exists:countries,id',
+                    'phone.number'           => array(
+                        'required',
+                        'numeric',
+                        function ($attribute, $value, $fail) {
+
+                            if ($this->input('phone.country_id') == 643 && strlen($value) != 10) {
+                                return $fail(trans('site::phone.error.length_10'));
+                            }
+                            if ($this->input('phone.country_id') == 112 && strlen($value) != 9) {
+                                return $fail(trans('site::phone.error.length_9'));
+                            }
+                        }
+                    ),
+                    'phone.extra'          => 'max:20',
                 ];
             }
             case 'PUT':
             case 'PATCH': {
                 return [
-                    'address.type_id'    => 'required|exists:address_types,id',
-                    'address.name'       => 'required_if:address.type_id,2|max:255',
-                    'address.country_id' => 'required|exists:countries,id',
-                    'address.region_id'  => 'sometimes|exists:regions,id',
-                    'address.locality'   => 'required|string|max:255',
-                    'address.street'     => 'sometimes|max:255',
-                    'address.building'   => 'required|string|max:255',
-                    'address.apartment'  => 'sometimes|max:255',
-                    'address.sort_order' => 'required|numeric|min:0|max:200',
+                    'address.type_id'      => 'required|exists:address_types,id',
+                    'address.name'         => 'required_if:address.type_id,2|max:255',
+                    'address.country_id'   => 'required|exists:countries,id',
+                    'address.region_id'    => 'sometimes|exists:regions,id',
+                    'address.locality'     => 'required|string|max:255',
+                    'address.street'       => 'sometimes|max:255',
+                    'address.building'     => 'required|string|max:255',
+                    'address.apartment'    => 'sometimes|max:255',
+                    'address.sort_order'   => 'numeric|min:0|max:200',
+                    'address.emailaddress' => 'sometimes|email',
                 ];
             }
             default:

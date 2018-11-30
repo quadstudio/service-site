@@ -1,4 +1,4 @@
-<div class="items-col col-12">
+<div class="items-col col-12" id="contact-{{$contact->id}}">
 
     <div class="card mb-4">
         <div class="card-body">
@@ -12,8 +12,31 @@
                 <div class="items-dropdown-menu dropdown-menu dropdown-menu-right"
                      x-placement="bottom-end"
                      style="position: absolute; will-change: top, left; top: 26px; left: -134px;">
-                    <a class="disabled dropdown-item" href="javascript:void(0)">@lang('site::messages.edit')</a>
-                    <a class="disabled dropdown-item" href="javascript:void(0)">@lang('site::messages.delete')</a>
+                    <a @can('edit', $contact)
+                       href="{{route('contacts.edit', $contact)}}"
+                       class="dropdown-item"
+                       @else()
+                       href="javascript:void(0);"
+                       class="disabled dropdown-item"
+                            @endcan>@lang('site::messages.edit')</a>
+                    {{--<a class="disabled dropdown-item" href="javascript:void(0)">@lang('site::messages.edit')</a>--}}
+                    <button @cannot('delete', $contact) disabled @endcannot
+                    class="dropdown-item btn-row-delete"
+                            data-form="#contact-delete-form-{{$contact->id}}"
+                            data-btn-delete="@lang('site::messages.delete')"
+                            data-btn-cancel="@lang('site::messages.cancel')"
+                            data-label="@lang('site::messages.delete_confirm')"
+                            data-message="@lang('site::messages.delete_sure') @lang('site::contact.contact')? "
+                            data-toggle="modal" data-target="#form-modal"
+                            href="javascript:void(0);" title="@lang('site::messages.delete')">
+                        @lang('site::messages.delete')
+                    </button>
+                    <form id="contact-delete-form-{{$contact->id}}"
+                          action="{{route('contacts.destroy', $contact)}}"
+                          method="POST">
+                        @csrf
+                        @method('DELETE')
+                    </form>
                 </div>
             </div>
 

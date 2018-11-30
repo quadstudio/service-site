@@ -101,8 +101,10 @@ class Site
                             })->middleware('can:pdf,act')->name('acts.pdf');
 
                             $router->resource('/orders', 'OrderController')->except(['edit', 'update'])->middleware('permission:orders');
+                            $router->post('/orders/{order}/message', 'OrderController@message')->middleware('permission:messages')->name('orders.message');
                             $router->delete('/order-items/{item}', 'OrderItemController@destroy')->name('orders.items.destroy');
                             $router->resource('/repairs', 'RepairController')->middleware('permission:repairs');
+                            $router->post('/repairs/{repair}/message', 'RepairController@message')->middleware('permission:messages')->name('repairs.message');
                             $router->get('/repairs/{repair}/pdf', function (Repair $repair) {
                                 return (new RepairPdf())->setModel($repair)->render();
                             })->middleware('can:pdf,repair')->name('repairs.pdf');
@@ -194,9 +196,11 @@ class Site
                                     });
                                 $router->name('admin')->resource('/banks', 'BankController');
                                 $router->name('admin')->resource('/orders', 'OrderController')->only(['index', 'show', 'destroy']);
+                                $router->name('admin')->post('/orders/{order}/message', 'OrderController@message')->name('.orders.message');
                                 $router->name('admin')->delete('/order-items/{item}', 'OrderItemController@destroy')->name('.orders.items.destroy');
                                 $router->name('admin')->get('/orders/{order}/schedule', 'OrderController@schedule')->name('.orders.schedule');
                                 $router->name('admin')->resource('/repairs', 'RepairController');
+                                $router->name('admin')->post('/repairs/{repair}/message', 'RepairController@message')->name('.repairs.message');
                                 $router->name('admin')->resource('/messages', 'MessageController');
                                 $router->name('admin')->post('/repairs/{repair}/status', 'RepairController@status')->name('.repairs.status');
                                 $router->name('admin')->resource('/serials', 'SerialController');

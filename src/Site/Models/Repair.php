@@ -274,6 +274,16 @@ class Repair extends Model implements Messagable
     }
 
     /**
+     * Серийный номер
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function serial()
+    {
+        return $this->belongsTo(Serial::class);
+    }
+
+    /**
      * Акт выполненных работ
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

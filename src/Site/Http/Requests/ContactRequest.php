@@ -30,14 +30,36 @@ class ContactRequest extends FormRequest
                 return [];
             }
             case 'POST': {
-                return [
-                    'name'       => 'required|string|max:255',
+                $rules = [
+                    'contact.name'     => 'required|string|max:255',
+                    'contact.position' => 'max:255',
+                    'contact.type_id'  => 'required|exists:contact_types,id',
+                    //
+                    'phone.country_id' => 'required|exists:countries,id',
+
+                    'phone.number'           => array(
+                        'required',
+                        'numeric',
+                        function ($attribute, $value, $fail) {
+
+                            if ($this->input('phone.country_id') == 643 && strlen($value) != 10) {
+                                return $fail(trans('site::phone.error.length_10'));
+                            }
+                            if ($this->input('phone.country_id') == 112 && strlen($value) != 9) {
+                                return $fail(trans('site::phone.error.length_9'));
+                            }
+                        }
+                    ),
+                    'phone.extra'      => 'max:20',
                 ];
+
+                return $rules;
             }
             case 'PUT':
             case 'PATCH': {
                 return [
-                    'name'       => 'required|string|max:255',
+                    'contact.name'     => 'required|string|max:255',
+                    'contact.position' => 'max:255',
                 ];
             }
             default:
@@ -63,7 +85,14 @@ class ContactRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name'       => trans('site::contact.name'),
+            'contact.name'     => trans('site::contact.name'),
+            'contact.position' => trans('site::contact.position'),
+            'contact.type_id'  => trans('site::contact.type_id'),
+            //
+            //
+            'phone.country_id'   => trans('site::phone.country_id'),
+            'phone.number'       => trans('site::phone.number'),
+            'phone.extra'        => trans('site::phone.extra'),
         ];
     }
 }

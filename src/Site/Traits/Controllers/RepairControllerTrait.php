@@ -14,6 +14,7 @@ use QuadStudio\Service\Site\Filters\Distance\ActiveFilter As DistanceActiveFilte
 use QuadStudio\Service\Site\Filters\FileType\ModelHasFilesFilter;
 use QuadStudio\Service\Site\Filters\FileType\RepairFilter;
 use QuadStudio\Service\Site\Filters\FileType\SortFilter;
+use QuadStudio\Service\Site\Http\Requests\MessageRequest;
 use QuadStudio\Service\Site\Http\Requests\RepairRequest;
 use QuadStudio\Service\Site\Models\File;
 use QuadStudio\Service\Site\Models\Product;
@@ -323,6 +324,13 @@ trait RepairControllerTrait
         ));
     }
 
+    public function message(MessageRequest $request, Repair $repair)
+    {
+        $repair->messages()->save($request->user()->outbox()->create($request->input('message')));
+
+        return redirect()->route('repairs.show', $repair)->with('success', trans('site::message.created'));
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -339,9 +347,9 @@ trait RepairControllerTrait
         }
         $this->setFiles($request, $repair);
 
-        if ($request->filled('parts')) {
-            $repair->parts()->delete();
+        $repair->parts()->delete();
 
+        if ($request->filled('parts')) {
             $parts = collect($request->input('parts'))->values()->toArray();
             $repair->parts()->createMany($parts);
         }

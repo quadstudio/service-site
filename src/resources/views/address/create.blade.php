@@ -174,6 +174,23 @@
 
                     <hr/>
 
+                    {{-- E-MAIL --}}
+
+                    <div class="form-row">
+                        <div class="col mb-3">
+                            <label class="control-label" for="email">@lang('site::address.emailaddress')</label>
+                            <input type="email"
+                                   name="address[emailaddress]"
+                                   id="address[emailaddress]"
+                                   class="form-control{{ $errors->has('address.emailaddress') ? ' is-invalid' : '' }}"
+                                   placeholder="@lang('site::address.placeholder.emailaddress')"
+                                   value="{{ old('address.emailaddress') }}">
+                            <span class="invalid-feedback">{{ $errors->first('address.emailaddress') }}</span>
+                        </div>
+                    </div>
+
+                    <hr/>
+
                     {{-- ТЕЛЕФОН --}}
 
                     <h4 class="mb-2 mt-2">@lang('site::register.sc_phone')</h4>

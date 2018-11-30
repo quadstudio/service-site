@@ -20,7 +20,8 @@
         <div class=" border p-3 mb-4">
 
             @if($order->messages->isNotEmpty())
-                <a href="#messages-list" role="button" class="d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-ferroli">
+                <a href="#messages-list" role="button"
+                   class="d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-ferroli">
                     <i class="fa fa-@lang('site::message.icon')"></i>
                     <span>
                         @lang('site::messages.show') @lang('site::message.messages')
@@ -28,27 +29,27 @@
                     </span>
                 </a>
             @endif
-                <button @cannot('delete', $order) disabled @endcannot
-                class="btn btn-danger btn-row-delete"
-                        data-form="#order-delete-form-{{$order->id}}"
-                        data-btn-delete="@lang('site::messages.delete')"
-                        data-btn-cancel="@lang('site::messages.cancel')"
-                        data-label="@lang('site::messages.delete_confirm')"
-                        data-message="@lang('site::messages.delete_sure') @lang('site::order.order')? "
-                        data-toggle="modal" data-target="#form-modal"
-                        href="javascript:void(0);" title="@lang('site::messages.delete')">
-                    @lang('site::messages.delete')
-                </button>
+            <button @cannot('delete', $order) disabled @endcannot
+            class="btn btn-danger btn-row-delete"
+                    data-form="#order-delete-form-{{$order->id}}"
+                    data-btn-delete="@lang('site::messages.delete')"
+                    data-btn-cancel="@lang('site::messages.cancel')"
+                    data-label="@lang('site::messages.delete_confirm')"
+                    data-message="@lang('site::messages.delete_sure') @lang('site::order.order')? "
+                    data-toggle="modal" data-target="#form-modal"
+                    href="javascript:void(0);" title="@lang('site::messages.delete')">
+                @lang('site::messages.delete')
+            </button>
             <a href="{{ route('orders.index') }}" class="d-block d-sm-inline btn btn-secondary">
                 <i class="fa fa-reply"></i>
                 <span>@lang('site::messages.back')</span>
             </a>
-                <form id="order-delete-form-{{$order->id}}"
-                      action="{{route('orders.destroy', $order)}}"
-                      method="POST">
-                    @csrf
-                    @method('DELETE')
-                </form>
+            <form id="order-delete-form-{{$order->id}}"
+                  action="{{route('orders.destroy', $order)}}"
+                  method="POST">
+                @csrf
+                @method('DELETE')
+            </form>
         </div>
 
         <div class="card mb-2">
@@ -115,11 +116,12 @@
                 @endforeach
             </div>
         </div>
-        @if($order->messages->isNotEmpty())
-            <hr id="messages-list"/>
-            <div class="card mt-5 mb-4">
-                <div class="card-body flex-grow-1 position-relative overflow-hidden">
-                    <h5 class="card-title">@lang('site::message.messages')</h5>
+
+        <hr id="messages-list"/>
+        <div class="card mt-5 mb-4">
+            <div class="card-body flex-grow-1 position-relative overflow-hidden">
+                <h5 class="card-title">@lang('site::message.messages')</h5>
+                @if($order->messages->isNotEmpty())
                     <div class="row no-gutters h-100">
                         <div class="d-flex col flex-column">
                             <div class="flex-grow-1 position-relative">
@@ -144,8 +146,37 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                    <hr/>
+                @endif
+                <form action="{{route('orders.message', $order)}}" method="post">
+                    @csrf
+
+                    <div class="row no-gutters">
+                        <div class="d-flex col flex-column">
+                            <div class="flex-grow-1 position-relative">
+                                <div class="form-group">
+                                    <input type="hidden" name="message[receiver_id]" value="1">
+                                    <textarea name="message[text]"
+                                              id="message_text"
+                                              rows="3"
+                                              placeholder="@lang('site::message.placeholder.text')"
+                                              class="form-control{{  $errors->has('message.text') ? ' is-invalid' : '' }}"></textarea>
+                                    <span class="invalid-feedback">{{ $errors->first('message.text') }}</span>
+                                </div>
+                                <button type="submit"
+                                        class="btn btn-success d-block d-sm-inline-block">
+                                    <i class="fa fa-check"></i>
+                                    <span>@lang('site::messages.send')</span>
+                                </button>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+
             </div>
-        @endif
+        </div>
+
     </div>
 @endsection

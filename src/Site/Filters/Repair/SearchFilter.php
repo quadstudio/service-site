@@ -41,8 +41,6 @@ class SearchFilter extends BaseFilter
     {
         return [
             'repairs.serial_id',
-            'repairs.number',
-            'repairs.warranty_number',
         ];
     }
 

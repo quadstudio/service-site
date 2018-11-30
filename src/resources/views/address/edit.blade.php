@@ -187,6 +187,21 @@
                         </div>
                     </div>
 
+                    <hr/>
+
+                    <div class="form-row">
+                        <div class="col mb-3">
+                            <label class="control-label" for="email">@lang('site::address.emailaddress')</label>
+                            <input type="email"
+                                   name="address[emailaddress]"
+                                   id="address[emailaddress]"
+                                   class="form-control{{ $errors->has('address.emailaddress') ? ' is-invalid' : '' }}"
+                                   placeholder="@lang('site::address.placeholder.emailaddress')"
+                                   value="{{ old('address.emailaddress',$address->emailaddress) }}">
+                            <span class="invalid-feedback">{{ $errors->first('address.emailaddress') }}</span>
+                        </div>
+                    </div>
+
                 </form>
                 <hr/>
                 <div class=" mb-2 text-right">

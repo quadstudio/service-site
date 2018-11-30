@@ -346,11 +346,11 @@
                                             <option value="">@lang('site::messages.select_from_list')</option>
                                             @foreach($distances as $distance)
                                                 @if($distance->active == 1 || $repair->distance_id == $distance->id)
-                                                <option data-cost="{{$distance->cost}}"
-                                                        @if(old('distance_id', $repair->distance_id) == $distance->id) selected
-                                                        @endif
-                                                        value="{{ $distance->id }}">{{ $distance->name }}@if($distance->cost > 0)
-                                                        - {{ Site::format($distance->cost) }}@endif</option>
+                                                    <option data-cost="{{$distance->cost}}"
+                                                            @if(old('distance_id', $repair->distance_id) == $distance->id) selected
+                                                            @endif
+                                                            value="{{ $distance->id }}">{{ $distance->name }}@if($distance->cost > 0)
+                                                            - {{ Site::format($distance->cost) }}@endif</option>
                                                 @endif
                                             @endforeach
                                         </select>
@@ -452,59 +452,38 @@
                         <div class="card-body">
                             <h5 class="card-title">@lang('site::file.files')</h5>
                             @foreach($types as $type)
-                                @if($fails->contains('field', 'file_'.$type->id))
-                                    <div class="form-group @if($type->required == 1) required @endif form-control{{ $errors->has('file.'.$type->id) ? ' is-invalid' : '' }}">
-                                        <div>
-                                            <label class="control-label"
-                                                   for="type_id">{{$type->name}}</label>
-                                            <span class="bg-danger text-white d-block d-sm-inline-block py-1 px-3 mb-1 mb-sm-0">@lang('site::messages.with_error')</span>
-                                        </div>
-                                        <form method="POST" enctype="multipart/form-data"
-                                              action="{{route('files.store')}}">
-                                            @csrf
-                                            <input type="hidden" name="type_id" value="{{$type->id}}"/>
-                                            <input type="hidden" name="storage" value="repairs"/>
-                                            <input type="file" name="path"/>
-                                            <button class="btn btn-ferroli repair-file-upload"><i
-                                                        class="fa fa-download"></i> @lang('site::messages.load')
-                                            </button>
-
-                                            <small id="fileHelp-{{$type->id}}"
-                                                   class="form-text text-muted">{{$type->comment}}</small>
-                                        </form>
-                                        <ul class="list-group" class="file-list">
-                                            @if( !$files->isEmpty())
-                                                @foreach($files as $file)
-                                                    @if($file->type_id == $type->id)
-                                                        @include('site::repair.field.file')
-                                                    @endif
-                                                @endforeach
-                                            @endif
-                                        </ul>
-                                    </div>
-                                    <span class="invalid-feedback">{{ $errors->first('file.'.$type->id) }}</span>
-                                @else
-                                    <div class="form-group required form-control">
-                                        <label class="control-label d-block"
+                                <div class="form-group @if($type->required == 1) required @endif form-control{{ $errors->has('file.'.$type->id) ? ' is-invalid' : '' }}">
+                                    <div>
+                                        <label class="control-label"
                                                for="type_id">{{$type->name}}</label>
-                                        <ul class="list-group file-list">
-                                            @if( !$files->isEmpty())
-                                                @foreach($files as $file)
-                                                    @if($file->type_id == $type->id)
-                                                        <li class="list-group-item">
-                                                            <a href="{{ route('files.show', $file) }}"
-                                                               class="">{{$file->name}}</a>
-                                                            <input form="repair-form" type="hidden"
-                                                                   name="file[{{$file->type_id}}][]"
-                                                                   value="{{$file->id}}">
-                                                        </li>
-                                                    @endif
-                                                @endforeach
-                                            @endif
-                                        </ul>
+                                        @if($fails->contains('field', 'file_'.$type->id))
+                                            <span class="bg-danger text-white d-block d-sm-inline-block py-1 px-3 mb-1 mb-sm-0">@lang('site::messages.with_error')</span>
+                                        @endif
                                     </div>
+                                    <form method="POST" enctype="multipart/form-data"
+                                          action="{{route('files.store')}}">
+                                        @csrf
+                                        <input type="hidden" name="type_id" value="{{$type->id}}"/>
+                                        <input type="hidden" name="storage" value="repairs"/>
+                                        <input type="file" name="path"/>
+                                        <button class="btn btn-ferroli repair-file-upload"><i
+                                                    class="fa fa-download"></i> @lang('site::messages.load')
+                                        </button>
 
-                                @endif
+                                        <small id="fileHelp-{{$type->id}}"
+                                               class="form-text text-muted">{{$type->comment}}</small>
+                                    </form>
+                                    <ul class="list-group" class="file-list">
+                                        @if( !$files->isEmpty())
+                                            @foreach($files as $file)
+                                                @if($file->type_id == $type->id)
+                                                    @include('site::repair.field.file')
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    </ul>
+                                </div>
+                                <span class="invalid-feedback">{{ $errors->first('file.'.$type->id) }}</span>
                             @endforeach
                         </div>
                     </div>

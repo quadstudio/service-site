@@ -7,6 +7,7 @@ use QuadStudio\Service\Site\Events\RepairStatusEvent;
 use QuadStudio\Service\Site\Filters\FileType\ModelHasFilesFilter;
 use QuadStudio\Service\Site\Filters\Repair\RegionFilter;
 use QuadStudio\Service\Site\Filters\Repair\ScSearchFilter;
+use QuadStudio\Service\Site\Http\Requests\MessageRequest;
 use QuadStudio\Service\Site\Models\Repair;
 use QuadStudio\Service\Site\Repositories\FileTypeRepository;
 use QuadStudio\Service\Site\Repositories\MessageRepository;
@@ -57,7 +58,7 @@ trait RepairControllerTrait
 
         return view('site::admin.repair.index', [
             'repository' => $this->repairs,
-            'repairs'    => $this->repairs->paginate(config('site.per_page.repair', 10), ['repairs.*'])
+            'repairs'    => $this->repairs->paginate((isset($_GET['filter']) ? 10000 : config('site.per_page.repair', 10)), ['repairs.*'])
         ]);
     }
 
@@ -100,37 +101,12 @@ trait RepairControllerTrait
         return redirect()->route('admin.repairs.show', $repair)->with('success', trans('site::repair.status_updated'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @param Repair $repair
-     * @return \Illuminate\Http\Response
-     */
-//    public function edit(Repair $repair)
-//    {
-//        $this->authorize('update', Repair::class);
-//
-//        $engineers = $this->engineers
-//            ->applyFilter(new BelongsUserFilter())
-//            ->applyFilter(new ByNameSortFilter())
-//            ->all();
-//        $trades = $this->trades
-//            ->applyFilter(new BelongsUserFilter())
-//            ->applyFilter(new ByNameSortFilter())
-//            ->all();
-//        $launches = $this->launches
-//            ->applyFilter(new BelongsUserFilter())
-//            ->applyFilter(new ByNameSortFilter())
-//            ->all();
-//        $countries = $this->countries
-//            ->applyFilter(new CountryEnabledFilter())
-//            ->applyFilter(new CountrySortFilter())
-//            ->all();
-//        $types = $this->types->all();
-//        $parts = $this->getParts($request);
-//        $files = $this->getFiles($request);
-//
-//        return view('site::repair.create', compact('engineers', 'trades', 'launches', 'countries', 'types', 'files', 'parts'));
-//    }
+
+    public function message(MessageRequest $request, Repair $repair)
+    {
+        $repair->messages()->save($request->user()->outbox()->create($request->input('message')));
+
+        return redirect()->route('admin.repairs.show', $repair)->with('success', trans('site::message.created'));
+    }
 
 }

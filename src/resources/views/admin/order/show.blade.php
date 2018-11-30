@@ -106,7 +106,9 @@
                                 @if($order->contragent->organization)
                                     <a href="{{route('admin.organizations.show', $order->contragent->organization)}}">{{ $order->contragent->organization->name }}</a>
                                 @else
-                                    [ <a href="{{route('admin.contragents.edit', [$order->contragent, '#contragent_organization_id'])}}">@lang('site::messages.select')</a> ]
+                                    [
+                                    <a href="{{route('admin.contragents.edit', [$order->contragent, '#contragent_organization_id'])}}">@lang('site::messages.select')</a>
+                                    ]
                                 @endif
 
                             </span>
@@ -209,13 +211,13 @@
                                     <div class="mt-2">
                                         <button @cannot('delete', $item->order) disabled @endcannot
                                         class="btn btn-danger btn-sm btn-row-delete"
-                                           data-form="#order-item-delete-form-{{$item->id}}"
-                                           data-btn-delete="@lang('site::messages.delete')"
-                                           data-btn-cancel="@lang('site::messages.cancel')"
-                                           data-label="@lang('site::messages.delete_confirm')"
-                                           data-message="@lang('site::messages.delete_sure') {!! $item->product->name() !!}? "
-                                           data-toggle="modal" data-target="#form-modal"
-                                           href="javascript:void(0);" title="@lang('site::messages.delete')">
+                                                data-form="#order-item-delete-form-{{$item->id}}"
+                                                data-btn-delete="@lang('site::messages.delete')"
+                                                data-btn-cancel="@lang('site::messages.cancel')"
+                                                data-label="@lang('site::messages.delete_confirm')"
+                                                data-message="@lang('site::messages.delete_sure') {!! $item->product->name() !!}? "
+                                                data-toggle="modal" data-target="#form-modal"
+                                                href="javascript:void(0);" title="@lang('site::messages.delete')">
                                             @lang('site::messages.delete')
                                         </button>
                                         <form id="order-item-delete-form-{{$item->id}}"
@@ -244,31 +246,59 @@
                     </h6>
                     <div class="card-body flex-grow-1 position-relative overflow-hidden">
                         {{--<h5 class="card-title">@lang('site::message.messages')</h5>--}}
-                        <div class="row no-gutters h-100">
-                            <div class="d-flex col flex-column">
-                                <div class="flex-grow-1 position-relative">
+                        @if($order->messages->isNotEmpty())
+                            <div class="row no-gutters h-100">
+                                <div class="d-flex col flex-column">
+                                    <div class="flex-grow-1 position-relative">
 
-                                    <!-- Remove `.chat-scroll` and add `.flex-grow-1` if you don't need scroll -->
-                                    <div class="chat-messages p-4 ps">
+                                        <!-- Remove `.chat-scroll` and add `.flex-grow-1` if you don't need scroll -->
+                                        <div class="chat-messages p-4 ps">
 
-                                        @foreach($order->messages as $message)
-                                            <div class="@if($message->user_id == Auth::user()->id) chat-message-right @else chat-message-left @endif mb-4">
-                                                <div>
-                                                    <img src="{{$message->user->logo}}" style="width: 40px!important;"
-                                                         class="rounded-circle" alt="">
-                                                    <div class="text-muted small text-nowrap mt-2">{{ $message->created_at(true) }}</div>
+                                            @foreach($order->messages as $message)
+                                                <div class="@if($message->user_id == Auth::user()->id) chat-message-right @else chat-message-left @endif mb-4">
+                                                    <div>
+                                                        <img src="{{$message->user->logo}}"
+                                                             style="width: 40px!important;"
+                                                             class="rounded-circle" alt="">
+                                                        <div class="text-muted small text-nowrap mt-2">{{ $message->created_at(true) }}</div>
+                                                    </div>
+                                                    <div class="flex-shrink-1 bg-lighter rounded py-2 px-3 @if($message->user_id == Auth::user()->id) mr-3 @else ml-3 @endif">
+                                                        <div class="mb-1"><b>{{$message->user->name}}</b></div>
+                                                        <span class="text-big">{!! $message->text !!}</span>
+                                                    </div>
                                                 </div>
-                                                <div class="flex-shrink-1 bg-lighter rounded py-2 px-3 @if($message->user_id == Auth::user()->id) mr-3 @else ml-3 @endif">
-                                                    <div class="mb-1"><b>{{$message->user->name}}</b></div>
-                                                    <span class="text-big">{!! $message->text !!}</span>
-                                                </div>
-                                            </div>
-                                        @endforeach
+                                            @endforeach
+                                        </div>
+                                        <!-- / .chat-messages -->
                                     </div>
-                                    <!-- / .chat-messages -->
                                 </div>
                             </div>
-                        </div>
+                        @endif
+                        <form action="{{route('admin.orders.message', $order)}}" method="post">
+                            @csrf
+
+                            <div class="row no-gutters">
+                                <div class="d-flex col flex-column">
+                                    <div class="flex-grow-1 position-relative">
+                                        <div class="form-group">
+                                            <input type="hidden" name="message[receiver_id]"
+                                                   value="{{$order->user_id}}">
+                                            <textarea name="message[text]"
+                                                      id="message_text"
+                                                      rows="3"
+                                                      placeholder="@lang('site::message.placeholder.text')"
+                                                      class="form-control{{  $errors->has('message.text') ? ' is-invalid' : '' }}"></textarea>
+                                            <span class="invalid-feedback">{{ $errors->first('message.text') }}</span>
+                                        </div>
+                                        <button type="submit"
+                                                class="btn btn-success d-block d-sm-inline-block">
+                                            <i class="fa fa-check"></i>
+                                            <span>@lang('site::messages.send')</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
 

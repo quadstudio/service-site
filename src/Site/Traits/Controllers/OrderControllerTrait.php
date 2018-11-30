@@ -6,6 +6,7 @@ use QuadStudio\Service\Site\Events\OrderCreateEvent;
 use QuadStudio\Service\Site\Facades\Cart;
 use QuadStudio\Service\Site\Filters\BelongsUserFilter;
 use QuadStudio\Service\Site\Filters\OrderDateFilter;
+use QuadStudio\Service\Site\Http\Requests\MessageRequest;
 use QuadStudio\Service\Site\Http\Requests\OrderRequest;
 use QuadStudio\Service\Site\Models\Order;
 use QuadStudio\Service\Site\Repositories\OrderRepository;
@@ -67,10 +68,18 @@ trait OrderControllerTrait
         return redirect()->route('orders.show', $order)->with('success', trans('site::order.created'));
     }
 
+    public function message(MessageRequest $request, Order $order)
+    {
+        $order->messages()->save($request->user()->outbox()->create($request->input('message')));
+
+        return redirect()->route('orders.show', $order)->with('success', trans('site::message.created'));
+    }
+
     /**
      * @return \Illuminate\Http\Response
      */
-    public function create(){
+    public function create()
+    {
         return view('site::order.create');
     }
 

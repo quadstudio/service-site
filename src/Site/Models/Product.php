@@ -303,6 +303,16 @@ class Product extends Model implements Imageable
     }
 
     /**
+     * Отчеты по ремонту
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function repairs()
+    {
+        return $this->hasMany(Repair::class, 'product_id');
+    }
+
+    /**
      * Добавить аналог
      *
      * @param mixed $analog

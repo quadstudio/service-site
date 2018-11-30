@@ -4,6 +4,7 @@ return [
     'serials'     => 'Серийные номера',
     'icon'        => 'barcode',
     'product_id'  => 'Оборудование',
+    'comment'     => 'Комментарий',
     //
     'placeholder' => [
         'search'         => 'Поиск серийного номера',

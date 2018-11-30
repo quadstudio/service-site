@@ -11,7 +11,8 @@ class Address extends Model
         'type_id', 'country_id', 'region_id',
         'locality', 'street', 'building',
         'apartment', 'postal', 'name', 'active',
-        'is_shop', 'is_service', 'sort_order'
+        'is_shop', 'is_service', 'sort_order',
+        'emailaddress'
     ];
 
     /**

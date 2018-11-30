@@ -16,10 +16,14 @@ class UserRoleFilter extends CheckboxFilter
 
     function apply($builder, RepositoryInterface $repository)
     {
-//        if($this->has($this->name())){
-//            $builder = $builder->where('quantity', '>', 0);
-//        }
-
+        if($this->has($this->name()) && $this->filled($this->name())){
+            $builder = $builder->whereHas('roles', function ($query){
+                $query->whereIn('id', $this->get($this->name()));
+            });
+            //$builder = $builder->where('quantity', '>', 0);
+        }
+        //dump($builder->toSql());
+        //dd($builder->getBindings());
         return $builder;
     }
 
@@ -30,7 +34,7 @@ class UserRoleFilter extends CheckboxFilter
      */
     public function options(): array
     {
-        return Role::all()->pluck('title', 'id')->toArray();
+        return Role::where('id', '!=', 1)->get()->pluck('title', 'id')->toArray();
     }
 
     /**

@@ -89,6 +89,9 @@
                         <dt class="col-sm-4 text-left text-sm-right">@lang('site::serial.product_id')</dt>
                         <dd class="col-sm-8">{{ $repair->product->name }}</dd>
 
+                        <dt class="col-sm-4 text-left text-sm-right">@lang('site::serial.comment')</dt>
+                        <dd class="col-sm-8">{{ $repair->serial ? $repair->serial->comment : null }}</dd>
+
                         <dt class="col-sm-4 text-left text-sm-right">@lang('site::product.sku')</dt>
                         <dd class="col-sm-8">{{ $repair->product->sku }}</dd>
 
@@ -165,7 +168,8 @@
                                     @foreach($parts as $part)
                                         <div class="row">
                                             <div class="col-8">{!! $part->product->sku !!} {!! $part->product->name !!}
-                                                ( ={{Site::format($part->cost)}} x {{$part->count}} {{$part->product->unit}} )
+                                                ( ={{Site::format($part->cost)}}
+                                                x {{$part->count}} {{$part->product->unit}} )
                                             </div>
                                             <div class="col-4 text-right text-info">
                                                 <a href="{{route('admin.parts.edit', $part)}}"
@@ -414,85 +418,113 @@
                     </button>
                 </div>
             @endif
-            <hr id="messages-list"/>
-            <div class="card mt-5 mb-4">
-                <div class="card-body flex-grow-1 position-relative overflow-hidden">
-                    <h5 class="card-title">@lang('site::message.messages')</h5>
+        </form>
+        <hr id="messages-list"/>
+        <div class="card mt-5 mb-4">
+            <div class="card-body flex-grow-1 position-relative overflow-hidden">
+                <h5 class="card-title">@lang('site::message.messages')</h5>
+                <div class="row no-gutters">
+                    <div class="d-flex col flex-column">
+                        <div class="flex-grow-1 position-relative">
+
+                            <!-- Remove `.chat-scroll` and add `.flex-grow-1` if you don't need scroll -->
+                            <div class="chat-messages p-4 ps">
+                                @foreach($repair->messages as $message)
+                                    <div class="@if($message->user_id == Auth::user()->id) chat-message-right @else chat-message-left @endif mb-4">
+                                        <div>
+                                            <img src="{{$message->user->logo}}" style="width: 40px!important;"
+                                                 class="rounded-circle" alt="">
+                                            <div class="text-muted small text-nowrap mt-2">{{ $message->created_at(true) }}</div>
+                                        </div>
+                                        <div class="flex-shrink-1 bg-lighter rounded py-2 px-3 @if($message->user_id == Auth::user()->id) mr-3 @else ml-3 @endif">
+                                            <div class="mb-1"><b>{{$message->user->name}}</b></div>
+                                            {!! $message->text !!}
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <!-- / .chat-messages -->
+                        </div>
+                    </div>
+                </div>
+                @if($statuses->isNotEmpty())
                     <div class="row no-gutters">
                         <div class="d-flex col flex-column">
                             <div class="flex-grow-1 position-relative">
-
-                                <!-- Remove `.chat-scroll` and add `.flex-grow-1` if you don't need scroll -->
-                                <div class="chat-messages p-4 ps">
-                                    @foreach($repair->messages as $message)
-                                        <div class="@if($message->user_id == Auth::user()->id) chat-message-right @else chat-message-left @endif mb-4">
-                                            <div>
-                                                <img src="{{$message->user->logo}}" style="width: 40px!important;"
-                                                     class="rounded-circle" alt="">
-                                                <div class="text-muted small text-nowrap mt-2">{{ $message->created_at(true) }}</div>
-                                            </div>
-                                            <div class="flex-shrink-1 bg-lighter rounded py-2 px-3 @if($message->user_id == Auth::user()->id) mr-3 @else ml-3 @endif">
-                                                <div class="mb-1"><b>{{$message->user->name}}</b></div>
-                                                {!! $message->text !!}
-                                            </div>
-                                        </div>
-                                    @endforeach
+                                <div class="form-group">
+                                    <label class="control-label"
+                                           for="message_text">@lang('site::message.text')</label>
+                                    <input type="hidden" form="repair-admin-edit-form" name="message[receiver_id]" value="{{$repair->user_id}}">
+                                    <textarea name="message[text]"
+                                              form="repair-admin-edit-form"
+                                              id="message_text"
+                                              rows="3"
+                                              class="form-control{{  $errors->has('message.text') ? ' is-invalid' : '' }}"></textarea>
+                                    <span class="invalid-feedback">{{ $errors->first('message.text') }}</span>
                                 </div>
-                                <!-- / .chat-messages -->
+                                @foreach($statuses as $key => $status)
+                                    <button
+                                            @if($status->id == 5 && !$repair->check())
+                                            disabled
+                                            @endif
+                                            type="submit"
+                                            {{--@if(!$repair->canSetStatus($status->id)) disabled @endif--}}
+                                            name="repair[status_id]"
+                                            value="{{$status->id}}"
+                                            form="repair-admin-edit-form"
+                                            style="color:#fff;background-color: {{$status->color}}"
+                                            class="btn d-block d-sm-inline-block @if($key != $statuses->count()) mb-1 @endif">
+                                        <i class="fa fa-{{$status->icon}}"></i>
+                                        <span>{{$status->button}}</span>
+                                    </button>
+                                @endforeach
+                                <div class="card mt-4">
+                                    <div class="card-body">
+                                        <h6 class="card-title">@lang('site::messages.header.check')</h6>
+                                        <dl class="row">
+
+                                            <dt class="col-sm-4 text-left text-sm-right">@lang('site::part.parts')</dt>
+                                            <dd class="col-sm-8">@bool(['bool' => $repair->checkParts()])@endbool</dd>
+
+                                            <dt class="col-sm-4 text-left text-sm-right">@lang('site::repair.contragent_id')</dt>
+                                            <dd class="col-sm-8">@bool(['bool' => $repair->checkContragent()])@endbool</dd>
+
+                                        </dl>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
+
                     </div>
-                    @if($statuses->isNotEmpty())
+                @else
+                    <form action="{{route('admin.repairs.message', $repair)}}" method="post">
+                        @csrf
+
                         <div class="row no-gutters">
                             <div class="d-flex col flex-column">
                                 <div class="flex-grow-1 position-relative">
                                     <div class="form-group">
-                                        <label class="control-label"
-                                               for="message_text">@lang('site::message.text')</label>
                                         <input type="hidden" name="message[receiver_id]" value="{{$repair->user_id}}">
                                         <textarea name="message[text]"
                                                   id="message_text"
                                                   rows="3"
+                                                  placeholder="@lang('site::message.placeholder.text')"
                                                   class="form-control{{  $errors->has('message.text') ? ' is-invalid' : '' }}"></textarea>
                                         <span class="invalid-feedback">{{ $errors->first('message.text') }}</span>
                                     </div>
-                                    @foreach($statuses as $key => $status)
-                                        <button
-                                                @if($status->id == 5 && !$repair->check())
-                                                disabled
-                                                @endif
-                                                type="submit"
-                                                {{--@if(!$repair->canSetStatus($status->id)) disabled @endif--}}
-                                                name="repair[status_id]"
-                                                value="{{$status->id}}"
-                                                style="color:#fff;background-color: {{$status->color}}"
-                                                class="btn d-block d-sm-inline-block @if($key != $statuses->count()) mb-1 @endif">
-                                            <i class="fa fa-{{$status->icon}}"></i>
-                                            <span>{{$status->button}}</span>
-                                        </button>
-                                    @endforeach
-                                    <div class="card mt-4">
-                                        <div class="card-body">
-                                            <h6 class="card-title">@lang('site::messages.header.check')</h6>
-                                            <dl class="row">
-
-                                                <dt class="col-sm-4 text-left text-sm-right">@lang('site::part.parts')</dt>
-                                                <dd class="col-sm-8">@bool(['bool' => $repair->checkParts()])@endbool</dd>
-
-                                                <dt class="col-sm-4 text-left text-sm-right">@lang('site::repair.contragent_id')</dt>
-                                                <dd class="col-sm-8">@bool(['bool' => $repair->checkContragent()])@endbool</dd>
-
-                                            </dl>
-                                        </div>
-                                    </div>
-
+                                    <button type="submit"
+                                            class="btn btn-success d-block d-sm-inline-block">
+                                        <i class="fa fa-check"></i>
+                                        <span>@lang('site::messages.send')</span>
+                                    </button>
                                 </div>
                             </div>
-
                         </div>
-                    @endif
-                </div>
+                    </form>
+                @endif
             </div>
-        </form>
+        </div>
+
     </div>
 @endsection

@@ -152,9 +152,7 @@ class RepairRequest extends FormRequest
                     $rules->put('difficulty_id', 'required|exists:difficulties,id');
                 }
                 foreach ($types as $type) {
-                    if ($fails->contains('field', 'file_' . $type->id)) {
-                        $rules->put('file.' . $type->id, 'required|array');
-                    }
+                    $rules->put('file.' . $type->id, 'required|array');
                 }
 
                 return $rules->toArray();
@@ -181,7 +179,7 @@ class RepairRequest extends FormRequest
      */
     public function attributes()
     {
-        return [
+        $attributes = [
             'contragent_id'   => trans('site::repair.contragent_id'),
             'client'          => trans('site::repair.client'),
             'country_id'      => trans('site::repair.country_id'),
@@ -203,6 +201,14 @@ class RepairRequest extends FormRequest
             'file.1'          => trans('site::repair.file_1'),
             'file.2'          => trans('site::repair.file_2'),
             'file.3'          => trans('site::repair.file_3'),
+            'file.5'          => trans('site::repair.file_5'),
         ];
+
+        $types = FileType::enabled()->whereGroupId(1)->get();
+        foreach ($types as $type) {
+            $attributes['file.' . $type->id] = trans('site::repair.file_' . $type->id);
+        }
+
+        return $attributes;
     }
 }

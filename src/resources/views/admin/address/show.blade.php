@@ -83,6 +83,9 @@
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.type_id')</dt>
                     <dd class="col-sm-8">{{ $address->type->name }}</dd>
 
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.emailaddress')</dt>
+                    <dd class="col-sm-8"> {{ $address->emailaddress }}</dd>
+
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.active')</dt>
                     <dd class="col-sm-8">@bool(['bool' => $address->active])@endbool</dd>
 

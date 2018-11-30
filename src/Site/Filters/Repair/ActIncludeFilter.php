@@ -16,7 +16,7 @@ class ActIncludeFilter extends WhereFilter
 
     function apply($builder, RepositoryInterface $repository)
     {
-        if ($this->has($this->name())) {
+        if ($this->has($this->name()) && $this->filled($this->name())) {
             if ($this->get($this->name()) == 0) {
                 $builder = $builder->whereNull('act_id');
             } else {

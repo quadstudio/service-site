@@ -52,7 +52,7 @@ return [
         'user'         => 50,
         'block'        => 25,
         'catalog'      => 25,
-        'repair'       => 10,
+        'repair'       => 50,
         'trade'        => 10,
         'launch'       => 10,
         'engineer'     => 10,

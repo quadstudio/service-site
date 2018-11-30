@@ -44,7 +44,19 @@ class RegisterRequest extends FormRequest
                     'contact.position'          => 'max:255',
                     //
                     'phone.contact.country_id'  => 'required|exists:countries,id',
-                    'phone.contact.number'      => 'required|numeric|digits_between:9,10',
+                    'phone.contact.number'           => array(
+                        'required',
+                        'numeric',
+                        function ($attribute, $value, $fail) {
+
+                            if ($this->input('phone.contact.country_id') == 643 && strlen($value) != 10) {
+                                return $fail(trans('site::phone.error.length_10'));
+                            }
+                            if ($this->input('phone.contact.country_id') == 112 && strlen($value) != 9) {
+                                return $fail(trans('site::phone.error.length_9'));
+                            }
+                        }
+                    ),
                     'phone.contact.extra'       => 'max:20',
 
                     //
@@ -57,7 +69,19 @@ class RegisterRequest extends FormRequest
                     'address.sc.apartment'      => 'sometimes|max:255',
                     //
                     'phone.sc.country_id'       => 'required|exists:countries,id',
-                    'phone.sc.number'           => 'required|numeric|digits_between:9,10',
+                    'phone.sc.number'           => array(
+                        'required',
+                        'numeric',
+                        function ($attribute, $value, $fail) {
+
+                            if ($this->input('phone.sc.country_id') == 643 && strlen($value) != 10) {
+                                return $fail(trans('site::phone.error.length_10'));
+                            }
+                            if ($this->input('phone.sc.country_id') == 112 && strlen($value) != 9) {
+                                return $fail(trans('site::phone.error.length_9'));
+                            }
+                        }
+                    ),
                     'phone.sc.extra'            => 'max:20',
                     //
                     'contragent.type_id'        => 'required|exists:contragent_types,id',

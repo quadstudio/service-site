@@ -11,12 +11,10 @@ use QuadStudio\Service\Site\Filters\User\ActiveSelectFilter;
 use QuadStudio\Service\Site\Filters\User\AddressSearchFilter;
 use QuadStudio\Service\Site\Filters\User\ContactSearchFilter;
 use QuadStudio\Service\Site\Filters\User\DisplaySelectFilter;
-use QuadStudio\Service\Site\Filters\User\IsAscSelectFilter;
-use QuadStudio\Service\Site\Filters\User\IsDealerSelectFilter;
 use QuadStudio\Service\Site\Filters\User\IsServiceFilter;
 use QuadStudio\Service\Site\Filters\User\RegionFilter;
-use QuadStudio\Service\Site\Filters\User\SortByCreatedAtFilter;
 use QuadStudio\Service\Site\Filters\User\UserRoleFilter;
+use QuadStudio\Service\Site\Filters\User\UserSortFilter;
 use QuadStudio\Service\Site\Filters\User\VerifiedFilter;
 use QuadStudio\Service\Site\Filters\UserFilter;
 use QuadStudio\Service\Site\Http\Requests\Admin\UserRequest;
@@ -128,17 +126,15 @@ trait UserControllerTrait
     public function index()
     {
         $this->users->trackFilter();
-        $this->users->applyFilter(new SortByCreatedAtFilter());
         $this->users->applyFilter(new IsServiceFilter);
         $this->users->pushTrackFilter(ContactSearchFilter::class);
         $this->users->pushTrackFilter(RegionFilter::class);
         $this->users->pushTrackFilter(AddressSearchFilter::class);
-        $this->users->pushTrackFilter(IsAscSelectFilter::class);
-        $this->users->pushTrackFilter(IsDealerSelectFilter::class);
         $this->users->pushTrackFilter(ActiveSelectFilter::class);
         $this->users->pushTrackFilter(VerifiedFilter::class);
         $this->users->pushTrackFilter(DisplaySelectFilter::class);
-        //$this->users->pushTrackFilter(UserRoleFilter::class);
+        $this->users->pushTrackFilter(UserSortFilter::class);
+        $this->users->pushTrackFilter(UserRoleFilter::class);
 
         return view('site::admin.user.index', [
             'roles'      => $this->roles->all(),

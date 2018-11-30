@@ -6,6 +6,11 @@ namespace QuadStudio\Service\Site\Repositories;
 use QuadStudio\Repo\Eloquent\Repository;
 use QuadStudio\Service\Site\Filters\Repair\ActIncludeFilter;
 use QuadStudio\Service\Site\Filters\Repair\ClientSearchFilter;
+use QuadStudio\Service\Site\Filters\Repair\DateActFromFilter;
+use QuadStudio\Service\Site\Filters\Repair\DateActToFilter;
+use QuadStudio\Service\Site\Filters\Repair\DateRepairFromFilter;
+use QuadStudio\Service\Site\Filters\Repair\DateRepairToFilter;
+use QuadStudio\Service\Site\Filters\Repair\EquipmentFilter;
 use QuadStudio\Service\Site\Filters\Repair\PartSearchFilter;
 use QuadStudio\Service\Site\Filters\Repair\SearchFilter;
 use QuadStudio\Service\Site\Filters\Repair\SortFilter;
@@ -36,6 +41,11 @@ class RepairRepository extends Repository
             ClientSearchFilter::class,
             PartSearchFilter::class,
             ActIncludeFilter::class,
+            DateRepairFromFilter::class,
+            DateRepairToFilter::class,
+            DateActFromFilter::class,
+            DateActToFilter::class,
+            EquipmentFilter::class,
         ];
     }
 }
