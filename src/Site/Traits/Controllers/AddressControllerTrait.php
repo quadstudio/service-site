@@ -3,7 +3,14 @@
 namespace QuadStudio\Service\Site\Traits\Controllers;
 
 use Illuminate\Support\Facades\Auth;
+use QuadStudio\Rbac\Models\Role;
+use QuadStudio\Service\Site\Filters\Address\ActiveFilter;
+use QuadStudio\Service\Site\Filters\Address\IsEShopFilter;
+use QuadStudio\Service\Site\Filters\Address\TypeFilter;
+use QuadStudio\Service\Site\Filters\Address\UserActiveFilter;
+use QuadStudio\Service\Site\Filters\Address\UserDisplayFilter;
 use QuadStudio\Service\Site\Filters\AddressableFilter;
+use QuadStudio\Service\Site\Filters\User\UserIsEShopFilter;
 use QuadStudio\Service\Site\Http\Requests\AddressRequest;
 use QuadStudio\Service\Site\Http\Requests\PhoneRequest;
 use QuadStudio\Service\Site\Models\Address;
@@ -12,20 +19,30 @@ use QuadStudio\Service\Site\Models\Country;
 use QuadStudio\Service\Site\Models\Phone;
 use QuadStudio\Service\Site\Models\Region;
 use QuadStudio\Service\Site\Repositories\AddressRepository;
+use QuadStudio\Service\Site\Repositories\RegionRepository;
 
 trait AddressControllerTrait
 {
 
     protected $addresses;
+    /**
+     * @var RegionRepository
+     */
+    private $regions;
 
     /**
      * Create a new controller instance.
      *
      * @param AddressRepository $addresses
+     * @param RegionRepository $regions
      */
-    public function __construct(AddressRepository $addresses)
+    public function __construct(
+        AddressRepository $addresses,
+        RegionRepository $regions
+    )
     {
         $this->addresses = $addresses;
+        $this->regions = $regions;
     }
 
     /**
@@ -73,9 +90,9 @@ trait AddressControllerTrait
     public function edit(Address $address)
     {
         $this->authorize('edit', $address);
-        if($address->addressable_type == 'contragents'){
+        if ($address->addressable_type == 'contragents') {
             $types = AddressType::find([1]);
-        } else{
+        } else {
             $types = AddressType::find([2]);
         }
 
@@ -143,6 +160,28 @@ trait AddressControllerTrait
         }
 
         return response()->json($json);
+    }
+
+    /**
+     * Show the eshop's list
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function eshop()
+    {
+
+        $addresses = $this->addresses
+            ->trackFilter()
+            ->applyFilter((new TypeFilter())->setTypeId(5))
+            ->applyFilter(new IsEShopFilter())
+            ->applyFilter(new ActiveFilter())
+            ->applyFilter(new UserDisplayFilter())
+            ->applyFilter(new UserIsEShopFilter())
+            ->applyFilter(new UserActiveFilter())
+            ->all();
+        $roles = Role::query()->where('display', 1)->get();
+
+        return view('site::dealer.eshop', compact('addresses', 'roles'));
     }
 
 }

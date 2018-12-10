@@ -57,6 +57,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ route('addresses.eshop') }}">
+                                <i class="fa fa-@lang('site::dealer.icon')"></i>
+                                @lang('site::address.eshop')
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('feedback') }}">
                                 <i class="fa fa-@lang('site::feedback.icon')"></i>
                                 @lang('site::messages.feedback')

@@ -114,6 +114,31 @@ trait ActControllerTrait
 
     /**
      * @param Act $act
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Act $act)
+    {
+        $this->authorize('update', $act);
+
+        return view('site::admin.act.edit', compact('act'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  ActRequest $request
+     * @param  Act $act
+     * @return \Illuminate\Http\Response
+     */
+    public function update(ActRequest $request, Act $act)
+    {
+        $act->update(array_merge($request->input(['act']), ['received' => $request->filled('act.received') ? 1 : 0]));
+
+        return redirect()->route('admin.acts.show', $act)->with('success', trans('site::act.updated'));
+    }
+
+    /**
+     * @param Act $act
      * @return \Illuminate\Http\RedirectResponse
      */
     public function schedule(Act $act)

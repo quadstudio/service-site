@@ -29,5 +29,5 @@
         </dl>
 
     </div>
-    {{--<img style="width: 25px;" class="img-fluid border" src="{{ asset($address->country->flag) }}" alt="">--}}
+
 </div>

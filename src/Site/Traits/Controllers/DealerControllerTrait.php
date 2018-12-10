@@ -72,5 +72,4 @@ trait DealerControllerTrait
         return view('site::dealer.index', compact('regions', 'region_id'));
     }
 
-
 }

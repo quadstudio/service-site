@@ -19,6 +19,7 @@ return [
         'feedback',
         'services.index',
         'dealers.index',
+        'addresses.eshop',
         'datasheets.index',
         'datasheets.show',
         'catalogs.index',
@@ -178,7 +179,7 @@ return [
             'role_id'         => 2,
         ],
         'part'     => [
-            'price_type_id' => '7fb003f7-aca8-11e8-80cc-85ebbdeccdc7',
+            'price_type_id' => '7fb003f6-aca8-11e8-80cc-85ebbdeccdc7',
         ],
 
     ],
@@ -197,7 +198,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Код основной валюта
+    | Код основной валюты
     |--------------------------------------------------------------------------
     |
     | Для основной валюты устанавливается обменный курс = 1.0000

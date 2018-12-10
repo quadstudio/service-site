@@ -50,6 +50,7 @@ return [
     'download'         => 'Скачать',
     'refresh'          => 'Обновить',
     'delete'           => 'Удалить',
+    'to_excel'         => 'в Excel',
     //
     'delete_confirm'   => 'Подтверждение удаления',
     'delete_sure'      => 'Вы действительно хотите удалить',

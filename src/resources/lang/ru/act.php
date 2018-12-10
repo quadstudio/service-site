@@ -35,6 +35,10 @@ return [
         'received' => 'Оригинал отправлен',
     ],
 
+    'placeholder' => [
+        'number' => ''
+    ],
+
     'error' => [
         'require' => 'Не отмечены отчеты по ремонту'
     ],

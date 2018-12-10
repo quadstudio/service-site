@@ -66,12 +66,12 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label"
-                                           for="number">@lang('site::equipment.cost_difficulty')</label>
+                                           for="number">@lang('site::repair.cost_difficulty')</label>
                                     <div class="text-big">{{Site::format($repair->cost_difficulty())}}</div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label"
-                                           for="number">@lang('site::equipment.cost_distance')</label>
+                                           for="number">@lang('site::repair.cost_distance')</label>
                                     <div class="text-big">{{Site::format($repair->cost_distance())}}</div>
                                 </div>
                             </div>

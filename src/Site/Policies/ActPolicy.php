@@ -52,7 +52,7 @@ class ActPolicy
      */
     public function update(User $user, Act $act)
     {
-        return false;
+        return $user->getAttribute('admin') == 1 || $user->id == $act->getAttribute('user_id');
     }
 
     /**

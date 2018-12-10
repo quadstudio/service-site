@@ -5,7 +5,6 @@ return [
     'icon'    => 'shopping-cart',
     //
     'text'    => 'дилер',
-
     'regions' => 'Выберите регион',
 
 ];

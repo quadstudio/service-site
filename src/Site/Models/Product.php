@@ -74,6 +74,18 @@ class Product extends Model implements Imageable
         return !empty($name) ? implode(' &bull; ', $name) : $this->id;
     }
 
+    public function getNameAttribute($name)
+    {
+        $name = str_replace('&rsquo;', "'", $name);
+        $name = str_replace('&rdquo;', '"', $name);
+        $name = str_replace('&lt;', '<', $name);
+        $name = str_replace('&gt;', '>', $name);
+        $name = str_replace('&frasl;', '/', $name);
+        $name = str_replace('&ndash;', '-', $name);
+
+        return $name;
+    }
+
     /**
      * Модель
      *
@@ -168,7 +180,6 @@ class Product extends Model implements Imageable
      */
     private function getRepairPrice()
     {
-        //dd($this->priceType);
         return $this
             ->prices()
             ->where('type_id', '=', $this->repairPriceType)
@@ -355,7 +366,7 @@ class Product extends Model implements Imageable
 
         if ($this->analogs()->exists()) {
             foreach ($this->analogs as $analog) {
-                if($analog->hasSku()){
+                if ($analog->hasSku()) {
                     $analogs->push($analog->getAttribute('sku'));
                 }
             }

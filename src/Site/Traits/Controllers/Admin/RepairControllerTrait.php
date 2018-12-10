@@ -4,6 +4,7 @@ namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use QuadStudio\Service\Site\Events\RepairStatusEvent;
+use QuadStudio\Service\Site\Exports\Excel\RepairExcel;
 use QuadStudio\Service\Site\Filters\FileType\ModelHasFilesFilter;
 use QuadStudio\Service\Site\Filters\Repair\RegionFilter;
 use QuadStudio\Service\Site\Filters\Repair\ScSearchFilter;
@@ -50,12 +51,15 @@ trait RepairControllerTrait
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->repairs->trackFilter();
         $this->repairs->pushTrackFilter(RegionFilter::class);
         $this->repairs->pushTrackFilter(ScSearchFilter::class);
-
+        if ($request->has('excel')) {
+            $excel = new RepairExcel();
+            $excel->render($this->repairs);
+        }
         return view('site::admin.repair.index', [
             'repository' => $this->repairs,
             'repairs'    => $this->repairs->paginate((isset($_GET['filter']) ? 10000 : config('site.per_page.repair', 10)), ['repairs.*'])

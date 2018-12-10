@@ -77,6 +77,23 @@ class Part extends Model
 //        }
     }
 
+    public function getTotalEuroAttribute()
+    {
+
+        $cacheKey = 'currency_978_' . $this->repair->getAttribute('date_repair');
+
+        return cache()->remember($cacheKey, config('site::cache.ttl'), function () {
+            $rates = CurrencyArchive::query()
+                ->select(array('rates'))
+                ->where('currency_id', 978)
+                ->where('date', $this->repair->getAttribute('date_repair'))
+                ->firstOrNew(['rates' => Currency::query()->find(978)->getAttribute('rates')])
+                ->getAttribute('rates');
+
+            return $this->cost / $rates * $this->count;
+        });
+    }
+
     /**
      * Коэффициент курса валюты
      *
@@ -84,9 +101,10 @@ class Part extends Model
      */
     public function getRatesAttribute()
     {
-        if(!$this->product->repairPrice->exists){
+        if (!$this->product->repairPrice->exists) {
             return 1;
         }
+
         return Site::currencyRates($this->product->repairPrice->currency, $this->repair->user->currency, $this->repair->getAttribute('date_repair'));
         //return Site::currencyRates($this->repair->user->price_type->currency, $this->repair->user->currency);
     }

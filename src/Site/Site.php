@@ -72,6 +72,7 @@ class Site
             ->group(['middleware' => ['online']],
                 function () use ($router) {
                     $router->get('/', 'IndexController@index')->name('index');
+                    $router->get('/eshop', 'AddressController@eshop')->name('addresses.eshop');
                     $router->match(['get', 'post'],'/services', 'ServiceController@index')->name('services.index');
                     $router->match(['get', 'post'], '/dealers', 'DealerController@index')->name('dealers.index');
 
@@ -144,6 +145,7 @@ class Site
                         ],
                             function () use ($router) {
                                 $router->name('admin')->get('/', 'IndexController@index');
+                                $router->name('admin')->post('/excel/repairs', 'ExcelController@repairs')->name('.excel.repairs');
                                 $router->name('admin')->resource('/acts', 'ActController');
                                 $router->name('admin')->get('/acts/{act}/schedule', 'ActController@schedule')->name('.acts.schedule');
                                 $router->name('admin')->put('/blocks/sort', function (Request $request) {

@@ -202,6 +202,11 @@ class Repair extends Model implements Messagable
         return $this->cost_parts();
     }
 
+    public function getTotalCostPartsEuroAttribute()
+    {
+        return $this->parts()->count() == 0 ? 0 : $this->parts->sum('TotalEuro');
+    }
+
     public function getDifficultyCostAttribute()
     {
         return $this->difficulty->cost * Site::currencyRates($this->difficulty->currency, $this->user->currency);

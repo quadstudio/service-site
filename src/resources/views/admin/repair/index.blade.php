@@ -17,6 +17,13 @@
         @alert()@endalert()
 
         <div class=" border p-3 mb-2">
+            <button form="repository-form"
+                    type="submit"
+                    name="excel" value="{{ route('admin.excel.repairs') }}"
+                    class="d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-primary">
+                <i class="fa fa-upload"></i>
+                <span>@lang('site::messages.upload') @lang('site::messages.to_excel')</span>
+            </button>
             <a href="{{ route('admin') }}" class="d-block d-sm-inline btn btn-secondary">
                 <i class="fa fa-reply"></i>
                 <span>@lang('site::messages.back_admin')</span>
