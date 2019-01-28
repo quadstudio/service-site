@@ -2,8 +2,39 @@
 
     "use strict";
 
+
+
     $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
+
+        global.$ = require('jquery');
+
+        $('[data-toggle="tooltip"]').tooltip();
+        let options = [];
+        $('.dropdown-checkboxes .dropdown-menu div').on('click', function (event) {
+
+            //console.log('dd');
+            let $target = $(event.currentTarget),
+                val = $target.attr('data-value'),
+                $inp = $target.find('input'),
+                idx = options.indexOf(val);
+            //console.log(idx);
+            if (idx > -1) {
+                options.splice(idx, 1);
+                setTimeout(function () {
+                    $inp.prop('checked', false)
+                }, 0);
+            } else {
+                options.push(val);
+                setTimeout(function () {
+                    $inp.prop('checked', true)
+                }, 0);
+            }
+
+            $(event.target).blur();
+
+            //console.log(options);
+            return false;
+        });
     });
 
     let blockElements = document.getElementById("block-elements");
@@ -199,12 +230,14 @@
             lang: 'ru-RU',
             toolbar: [
                 // [groupName, [list of button]]
+
                 ['style', ['bold', 'italic', 'underline', 'clear']],
                 ['font', ['strikethrough', 'superscript', 'subscript']],
                 ['fontsize', ['fontsize']],
                 ['color', ['color']],
                 ['para', ['ul', 'ol', 'paragraph']],
                 ['height', ['height']],
+                ['insert', ['picture', 'link', 'table']],
                 ['misc', ['undo', 'redo', 'codeview']],
             ]
         });
@@ -724,6 +757,24 @@
         }
     };
 
+    $(".datetimepicker")
+        .datetimepicker({
+            locale: 'ru',
+            format: 'L',
+            useCurrent: false
+        });
+
+    $("#datetimepicker_date_from")
+        .on("change.datetimepicker", function (e) {
+            $('#datetimepicker_date_to').datetimepicker('minDate', e.date);
+        });
+
+    $("#datetimepicker_date_to")
+
+        .on("change.datetimepicker", function (e) {
+            $('#datetimepicker_date_from').datetimepicker('maxDate', e.date);
+        });
+
 
     $('body')
         .on('click', '.btn-row-delete:not(:disabled)', function (e) {
@@ -893,6 +944,27 @@
                 processData: false,
                 success: function (response) {
                     list.append(response.image);
+                },
+            });
+        })
+        .on('click', '.participant-add', function () {
+
+            let list = $('#participants-list'),
+                action = $(this).data('action');
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: action,
+                type: 'GET',
+                dataType: 'html',
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    list.append(response);
                 },
             });
         })
@@ -1090,15 +1162,16 @@
 
     function submitForm(form, callback) {
         $('[data-toggle="popover"]').popover('hide');
-        // console.log(form.attr('method'));
-        // console.log(form.attr('action'));
+        //console.log(form.attr('method'));
+        //console.log(form.attr('action'));
+        //console.log(form.serializeArray());
         $.ajax({
             type: form.attr('method'),
             url: form.attr('action'),
             dataType: 'json',
             data: form.serializeArray() || [],
             error: function (xhr, status, error) {
-
+                console.log(error);
                 if ("errors" in xhr.responseJSON) {
                     $("#form-content")
                         .find('.form-control')
