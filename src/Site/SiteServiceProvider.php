@@ -42,6 +42,7 @@ class SiteServiceProvider extends ServiceProvider
         Models\Difficulty::class => Policies\DifficultyPolicy::class,
         Models\Phone::class      => Policies\PhonePolicy::class,
         Models\OrderItem::class  => Policies\OrderItemPolicy::class,
+        Models\Member::class     => Policies\MemberPolicy::class,
     ];
 
     /**
@@ -64,7 +65,7 @@ class SiteServiceProvider extends ServiceProvider
 
         $this->app->bind(Contracts\Exchange::class, function () {
 
-            return new Exchanges\Cbr();
+            return new Exchanges\Nbrb();
         });
 
 
@@ -284,6 +285,7 @@ class SiteServiceProvider extends ServiceProvider
         Event::subscribe(new Listeners\ActListener());
         Event::subscribe(new Listeners\RepairListener());
         Event::subscribe(new Listeners\FeedbackListener());
+        Event::subscribe(new Listeners\MemberListener());
     }
 
     /**

@@ -54,7 +54,7 @@ trait AddressControllerTrait
      */
     public function create(User $user)
     {
-        $types = AddressType::find([2]);
+        $types = AddressType::find([2,5]);
         $countries = Country::enabled()->orderBy('sort_order')->get();
         $regions = collect([]);
         if (old('country_id')) {

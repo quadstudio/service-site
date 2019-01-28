@@ -77,6 +77,35 @@ trait ImageControllerTrait
     }
 
     /**
+     * Store a newly created resource in storage.
+     *
+     * @param  ImageRequest $request
+     * @return \Illuminate\Http\Response
+     */
+    public function field(ImageRequest $request)
+    {
+
+        $this->authorize('create', Image::class);
+        $file = $request->file('path');
+
+        $image = new Image([
+            'path'    => Storage::disk($request->input('storage'))->putFile('', new File($file->getPathName())),
+            'mime'    => $file->getMimeType(),
+            'storage' => $request->input('storage'),
+            'size'    => $file->getSize(),
+            'name'    => $file->getClientOriginalName(),
+        ]);
+
+        $image->save();
+
+        return response()->json([
+            'update' => [
+                '#image-src' => view('site::admin.image.field', ['image' => $image])->render()
+            ]
+        ]);
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param Image $image

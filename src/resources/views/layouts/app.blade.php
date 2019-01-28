@@ -63,11 +63,16 @@
                     <div class="widget">
                         <hr>
                         <ul class="recent-post">
-				<li><a class="title" href="http://service.ferroli.ru/services">Сервисные центры и дилеры</a></li>
-				<li><a class="title" href="http://service.ferroli.ru/products" class="title">Запчасти</a></li>
-        		        <li><a class="title" href="http://service.ferroli.ru/catalogs" class="title">Оборудование</a></li>
-	                	<li><a class="title" href="http://service.ferroli.ru/datasheets" class="title">Документация</a></li>
-                                <li><a class="title" href="http://service.ferroli.ru/feedback">Контакты</a></li>
+                            <li><a class="title" href="http://service.ferroli.ru/services">Сервисные центры</a></li>
+                            <li><a class="title" href="http://service.ferroli.ru/dealers">Где купить?</a></li>
+                            <!--- <li><a class="title" href="http://service.ferroli.ru/eshops">Интернет-магазины</a></li> -->
+                            <li><a class="title" href="http://service.ferroli.ru/products" class="title">Запчасти</a>
+                            </li>
+                            <li><a class="title" href="http://service.ferroli.ru/catalogs"
+                                   class="title">Оборудование</a></li>
+                            <li><a class="title" href="http://service.ferroli.ru/datasheets"
+                                   class="title">Документация</a></li>
+                            <li><a class="title" href="http://service.ferroli.ru/feedback">Контакты</a></li>
 
                         </ul>
                     </div>
@@ -76,8 +81,8 @@
                     <div class="widget">
                         <hr>
                         <ul class="recent-post">
-                        <li><a class="title" href="http://service.ferroli.ru/login">Вход</a></li>
-                        <li><a class="title" href="http://service.ferroli.ru/register">Регистрация</a></li>
+                            <li><a class="title" href="http://service.ferroli.ru/login">Вход</a></li>
+                            <li><a class="title" href="http://service.ferroli.ru/register">Регистрация</a></li>
                         </ul>
                     </div>
                 </div>
@@ -90,12 +95,34 @@
                             <img src="{{asset('images/tuv.png')}}" style="margin-right:22px;"/>
                             <img src="{{asset('images/eac.png')}}"/>
                         </div>
+                        <div>
+                            <br/><br/>
+
+                        </div>
+
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-12">
+                <div class="col-lg-3">
                     <span class="sub">© Copyright {{ env('APP_NAME') }} {{ date('Y') }}</span>
+                </div>
+                <div class="col-lg-3"> &nbsp;</div>
+                <div class="col-lg-3"> &nbsp;</div>
+                <div class="col-lg-3">
+                    <a target="_blank" href="https://www.instagram.com/ferroli_rus_bel/"><img
+                                style="width: 30px; height: 30px; margin-left:45px; margin-right:22px;"
+                                onmouseover="this.src='/images/inst-footer-hover.png';"
+                                onmouseout="this.src='images/inst-footer.png';" src="/images/inst-footer.png"></$
+                    <a href="#"><img style="width: 30px; height: 30px; margin-right:22px;"
+                                     onmouseover="this.src='/images/fb-footer-hover.png';"
+                                     onmouseout="this.src='images/fb-footer.png';" src="/images/fb-footer.png"></a>
+                    <a href="#"><img style="width: 30px; height: 30px; margin-right:22px;"
+                                     onmouseover="this.src='/images/youtube-footer-hover.png';"
+                                     onmouseout="this.src='images/youtube-footer.png';"
+                                     src="/images/youtube-footer.png"></a>
+
+
                 </div>
             </div>
         </div>
@@ -106,5 +133,48 @@
 @stack('scripts')
 
 @include('site::modal.form')
+
+@if($current_route == 'index' OR substr($current_route,0,7) == 'product' OR substr($current_route,0,8) == 'catalogs' OR substr($current_route,0,10) == 'datasheets')
+    {{$current_route}}
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function (d, w, c) {
+            (w[c] = w[c] || []).push(function () {
+                try {
+                    w.yaCounter51104846 = new Ya.Metrika2({
+                        id: 51104846,
+                        clickmap: true,
+                        trackLinks: true,
+                        accurateTrackBounce: true,
+                        webvisor: true
+                    });
+                } catch (e) {
+                }
+            });
+
+            var n = d.getElementsByTagName("script")[0],
+                s = d.createElement("script"),
+                f = function () {
+                    n.parentNode.insertBefore(s, n);
+                };
+            s.type = "text/javascript";
+            s.async = true;
+            s.src = "https://mc.yandex.ru/metrika/tag.js";
+
+            if (w.opera == "[object Opera]") {
+                d.addEventListener("DOMContentLoaded", f, false);
+            } else {
+                f();
+            }
+        })(document, window, "yandex_metrika_callbacks2");
+    </script>
+    <noscript>
+        <div><img src="https://mc.yandex.ru/watch/51104846" style="position:absolute; left:-9999px;" alt=""/></div>
+    </noscript>
+    <!-- /Yandex.Metrika counter -->
+
+
+@endif
+
 </body>
 </html>

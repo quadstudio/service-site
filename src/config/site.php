@@ -17,6 +17,11 @@ return [
         'login',
         'register',
         'feedback',
+        'news.index',
+        'news.show',
+        'events.index',
+        'events.show',
+        'members.index',
         'services.index',
         'dealers.index',
         'addresses.eshop',
@@ -66,6 +71,7 @@ return [
         'product_list' => 100,
         'product_type' => 25,
         'message'      => 30,
+        'news'         => 15,
     ],
 
     'sort_order' => [
@@ -154,6 +160,12 @@ return [
 
     ],
 
+    'mailing' => [
+        'mimes'               => 'jpg,jpeg,png,pdf',
+        'message_max_size'    => 25000000,  // 25мб
+        'attachment_max_size' => 5000000,   // 5мб
+    ],
+
     'files' => [
         'mime' => 'jpg,jpeg,png,pdf',
         'size' => 8092,
@@ -204,7 +216,7 @@ return [
     | Для основной валюты устанавливается обменный курс = 1.0000
     |
     */
-    'main'              => 643,
+    'main'              => 933,
 
     'country' => 643,
 
@@ -217,10 +229,10 @@ return [
     |
     */
     'update'  => [
-        840,
-        933,
-        978
+        840, //USD
+        //933,
+        978 // EUR
     ],
 
-    'exchange' => 'QuadStudio\Service\Site\Exchanges\Cbr'
+    'exchange' => 'QuadStudio\Service\Site\Exchanges\Nbrb'
 ];

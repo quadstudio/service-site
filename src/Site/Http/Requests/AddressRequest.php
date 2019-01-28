@@ -34,7 +34,7 @@ class AddressRequest extends FormRequest
                     'address.region_id'    => 'sometimes|exists:regions,id',
                     'address.locality'     => 'required|string|max:255',
                     'address.street'       => 'sometimes|max:255',
-                    'address.building'     => 'required|string|max:255',
+                    'address.building'     => 'sometimes|max:255',
                     'address.apartment'    => 'sometimes|max:255',
                     'address.emailaddress' => 'sometimes|email',
                     //
@@ -64,7 +64,7 @@ class AddressRequest extends FormRequest
                     'address.region_id'    => 'sometimes|exists:regions,id',
                     'address.locality'     => 'required|string|max:255',
                     'address.street'       => 'sometimes|max:255',
-                    'address.building'     => 'required|string|max:255',
+                    'address.building'     => 'sometimes|max:255',
                     'address.apartment'    => 'sometimes|max:255',
                     'address.sort_order'   => 'numeric|min:0|max:200',
                     'address.emailaddress' => 'sometimes|email',

@@ -338,22 +338,19 @@
                 <fieldset>
                     <div class="card mt-2 mb-2">
                         <div class="card-body">
-                            <h5 class="card-title">@lang('site::file.files')</h5>
+                            <h5 class="card-title">@lang('site::file.files') <small class="form-text text-muted">@lang('site::file.maxsize5mb')</small><h5>
                             @foreach($types as $type)
 
                                 <div class="form-group @if($type->required) required @endif form-control{{ $errors->has('file.'.$type->id) ? ' is-invalid' : '' }}">
+                                    <span class="text-danger">{{ $errors->first('file.'.$type->id) }}</span>
                                     <label class="control-label d-block" for="type_id">{{$type->name}}</label>
-                                    <form method="POST" enctype="multipart/form-data"
-                                          action="{{route('files.store')}}">
+                                    <form method="POST" enctype="multipart/form-data" action="{{route('files.store')}}">
                                         @csrf
                                         <input type="hidden" name="type_id" value="{{$type->id}}"/>
                                         <input type="hidden" name="storage" value="repairs"/>
                                         <input type="file" name="path"/>
-                                        <button class="btn btn-ferroli repair-file-upload">
-                                            <i class="fa fa-download"></i> @lang('site::messages.load')
-                                        </button>
-                                        <small id="fileHelp-{{$type->id}}"
-                                               class="form-text text-muted">{{$type->comment}}</small>
+                                        <button class="btn btn-ferroli repair-file-upload"> <i class="fa fa-download"></i> @lang('site::messages.load')</button>
+                                        <small id="fileHelp-{{$type->id}}" class="form-text text-muted">{{$type->comment}} <b>@lang('site::repair.pressupbutton')</b></small>
                                     </form>
                                     <ul class="list-group" class="file-list">
                                         @if($files->isNotEmpty())
@@ -365,7 +362,8 @@
                                         @endif
                                     </ul>
                                 </div>
-                                <span class="invalid-feedback">{{ $errors->first('file.'.$type->id) }}</span>
+<!---                               <span class="invalid-feedback">{{ $errors->first('file.'.$type->id) }}</span> -->
+
                             @endforeach
                         </div>
                     </div>

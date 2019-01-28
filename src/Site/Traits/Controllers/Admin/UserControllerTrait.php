@@ -11,12 +11,19 @@ use QuadStudio\Service\Site\Filters\User\ActiveSelectFilter;
 use QuadStudio\Service\Site\Filters\User\AddressSearchFilter;
 use QuadStudio\Service\Site\Filters\User\ContactSearchFilter;
 use QuadStudio\Service\Site\Filters\User\DisplaySelectFilter;
+use QuadStudio\Service\Site\Filters\User\IsAscSelectFilter;
+use QuadStudio\Service\Site\Filters\User\IsCscSelectFilter;
+use QuadStudio\Service\Site\Filters\User\IsDealerSelectFilter;
+use QuadStudio\Service\Site\Filters\User\IsDistrSelectFilter;
+use QuadStudio\Service\Site\Filters\User\IsEshopSelectFilter;
+use QuadStudio\Service\Site\Filters\User\IsGendistrSelectFilter;
 use QuadStudio\Service\Site\Filters\User\IsServiceFilter;
 use QuadStudio\Service\Site\Filters\User\RegionFilter;
 use QuadStudio\Service\Site\Filters\User\UserRoleFilter;
 use QuadStudio\Service\Site\Filters\User\UserSortFilter;
 use QuadStudio\Service\Site\Filters\User\VerifiedFilter;
 use QuadStudio\Service\Site\Filters\UserFilter;
+use QuadStudio\Service\Site\Filters\UserSearchFilter;
 use QuadStudio\Service\Site\Http\Requests\Admin\UserRequest;
 use QuadStudio\Service\Site\Models\Address;
 use QuadStudio\Service\Site\Models\Contact;
@@ -31,6 +38,7 @@ use QuadStudio\Service\Site\Repositories\OrderRepository;
 use QuadStudio\Service\Site\Repositories\PriceTypeRepository;
 use QuadStudio\Service\Site\Repositories\ProductTypeRepository;
 use QuadStudio\Service\Site\Repositories\RepairRepository;
+use QuadStudio\Service\Site\Repositories\TemplateRepository;
 use QuadStudio\Service\Site\Repositories\UserPriceRepository;
 use QuadStudio\Service\Site\Repositories\UserRepository;
 use QuadStudio\Service\Site\Repositories\WarehouseRepository;
@@ -78,6 +86,10 @@ trait UserControllerTrait
      * @var ProductTypeRepository
      */
     private $product_types;
+    /**
+     * @var TemplateRepository
+     */
+    private $templates;
 
     /**
      * Create a new controller instance.
@@ -92,6 +104,7 @@ trait UserControllerTrait
      * @param RepairRepository $repairs
      * @param UserPriceRepository $user_prices
      * @param ProductTypeRepository $product_types
+     * @param TemplateRepository $templates
      */
     public function __construct(
         UserRepository $users,
@@ -103,7 +116,8 @@ trait UserControllerTrait
         ContactRepository $contacts,
         RepairRepository $repairs,
         UserPriceRepository $user_prices,
-        ProductTypeRepository $product_types
+        ProductTypeRepository $product_types,
+        TemplateRepository $templates
     )
     {
         $this->users = $users;
@@ -116,6 +130,7 @@ trait UserControllerTrait
         $this->repairs = $repairs;
         $this->user_prices = $user_prices;
         $this->product_types = $product_types;
+        $this->templates = $templates;
     }
 
     /**
@@ -127,9 +142,16 @@ trait UserControllerTrait
     {
         $this->users->trackFilter();
         $this->users->applyFilter(new IsServiceFilter);
+        $this->users->pushTrackFilter(UserSearchFilter::class);
         $this->users->pushTrackFilter(ContactSearchFilter::class);
         $this->users->pushTrackFilter(RegionFilter::class);
         $this->users->pushTrackFilter(AddressSearchFilter::class);
+        $this->users->pushTrackFilter(IsAscSelectFilter::class);
+        $this->users->pushTrackFilter(IsCscSelectFilter::class);
+        $this->users->pushTrackFilter(IsDealerSelectFilter::class);
+        $this->users->pushTrackFilter(IsDistrSelectFilter::class);
+        $this->users->pushTrackFilter(IsGendistrSelectFilter::class);
+        $this->users->pushTrackFilter(IsEshopSelectFilter::class);
         $this->users->pushTrackFilter(ActiveSelectFilter::class);
         $this->users->pushTrackFilter(VerifiedFilter::class);
         $this->users->pushTrackFilter(DisplaySelectFilter::class);
@@ -402,6 +424,59 @@ trait UserControllerTrait
 
         return redirect()->route('home');
 
+    }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function mailing()
+    {
+        $templates = $this->templates->all();
+
+        $headers = collect([
+            trans('site::user.name'),
+            trans('site::address.full'),
+        ]);
+
+        $emails = collect([]);
+
+        $this->users->trackFilter();
+        $this->users->applyFilter(new IsServiceFilter);
+        $this->users->pushTrackFilter(RegionFilter::class);
+        $this->users->pushTrackFilter(UserRoleFilter::class);
+        $repository = $this->users;
+        $duplicates = collect([]);
+        /** @var User $user */
+        foreach ($this->users->all() as $user) {
+            if ($duplicates->search($user->getAttribute('email')) === false) {
+                $emails->push([
+                    'email'    => $user->getAttribute('email'),
+                    'verified' => $user->getAttribute('verified'),
+                    'extra'    => [
+                        'name'    => $user->getAttribute('name'),
+                        'address' => '',
+                    ]
+                ]);
+                $duplicates->push($user->getAttribute('email'));
+            }
+            /** @var Address $address */
+            foreach ($user->addresses()->get() as $address) {
+                if ($address->hasEmail() && $duplicates->search($address->getAttribute('emailaddress')) === false) {
+                    $emails->push([
+                        'email'    => $address->getAttribute('emailaddress'),
+                        'verified' => false,
+                        'extra'    => [
+                            'name'    => $user->getAttribute('name'),
+                            'address' => $address->getAttribute('name'),
+                        ]
+                    ]);
+                }
+                $duplicates->push($address->getAttribute('emailaddress'));
+            }
+        }
+        $route = route('admin.users.index');
+
+        return view('site::admin.user.mailing', compact('headers', 'emails', 'templates', 'route', 'repository'));
     }
 
 }

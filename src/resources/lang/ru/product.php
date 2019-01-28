@@ -43,7 +43,7 @@ return [
     'yes'                 => 'Да',
     'no'                  => 'Нет',
     'in_stock'            => 'В наличии',
-    'not_available'       => 'Нет в наличии',
+    'not_available'       => 'информация в СЦ',
     'contact_the_manager' => 'Обратитесь к менеджеру',
     'header'              => [
         'boiler' => 'Оборудование'

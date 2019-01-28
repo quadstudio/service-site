@@ -152,12 +152,11 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="form-row required">
+                            <div class="form-row">
                                 <div class="col mb-3">
                                     <label class="control-label" for="building">@lang('site::address.building')</label>
                                     <input type="text"
                                            name="address[building]"
-                                           required
                                            id="building"
                                            class="form-control{{ $errors->has('address.building') ? ' is-invalid' : '' }}"
                                            placeholder="@lang('site::address.placeholder.building')"
@@ -191,14 +190,26 @@
 
                     <div class="form-row">
                         <div class="col mb-3">
-                            <label class="control-label" for="email">@lang('site::address.emailaddress')</label>
+                            <label class="control-label" for="email">@lang('site::address.email')</label>
                             <input type="email"
                                    name="address[emailaddress]"
                                    id="address[emailaddress]"
                                    class="form-control{{ $errors->has('address.emailaddress') ? ' is-invalid' : '' }}"
                                    placeholder="@lang('site::address.placeholder.emailaddress')"
                                    value="{{ old('address.emailaddress',$address->emailaddress) }}">
-                            <span class="invalid-feedback">{{ $errors->first('address.emailaddress') }}</span>
+                            <span class="invalid-feedback">{{ $errors->first('address.email') }}</span>
+                        </div>
+                    </div>
+		   <div class="form-row">
+                        <div class="col mb-3">
+                            <label class="control-label" for="email">@lang('site::address.eshop')</label>
+                            <input type="esohp"
+                                   name="address[eshop]"
+                                   id="address[eshop]"
+                                   class="form-control{{ $errors->has('address.eshop') ? ' is-invalid' : '' }}"
+                                   placeholder="@lang('site::address.placeholder.eshop')"
+                                   value="{{ old('address.eshop',$address->eshop) }}">
+                            <span class="invalid-feedback">{{ $errors->first('address.eshop') }}</span>
                         </div>
                     </div>
 

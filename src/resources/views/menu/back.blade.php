@@ -117,6 +117,12 @@
                         <a class="dropdown-item" href="{{ route('admin.pages.index') }}">
                             <i class="fa fa-@lang('site::page.icon')"></i> @lang('site::page.pages')
                         </a>
+                        <a class="dropdown-item" href="{{ route('admin.templates.index') }}">
+                            <i class="fa fa-@lang('site::template.icon')"></i> @lang('site::template.templates')
+                        </a>
+                        <a class="dropdown-item" href="{{ route('admin.event_types.index') }}">
+                            <i class="fa fa-@lang('site::event_type.icon')"></i> @lang('site::event_type.event_types')
+                        </a>
                     </div>
                 </li>
                 @endadmin()
@@ -180,6 +186,17 @@
                         </a>
                         <a class="dropdown-item" href="{{ route('admin.permissions.index') }}">
                             <i class="fa fa-unlock-alt"></i> @lang('rbac::permission.permissions')
+                        </a>
+                        <div class="dropdown-divider"></div>
+
+                        <a class="dropdown-item" href="{{ route('admin.news.index') }}">
+                            <i class="fa fa-@lang('site::news.icon')"></i> @lang('site::news.news')
+                        </a>
+                        <a class="dropdown-item" href="{{ route('admin.events.index') }}">
+                            <i class="fa fa-@lang('site::event.icon')"></i> @lang('site::event.events')
+                        </a>
+                        <a class="dropdown-item" href="{{ route('admin.members.index') }}">
+                            <i class="fa fa-@lang('site::member.icon')"></i> @lang('site::member.members')
                         </a>
                         @elseadmin()
 

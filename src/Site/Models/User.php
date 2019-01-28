@@ -44,12 +44,6 @@ class User extends Authenticatable implements Addressable
             $user->price_type_id = config('site.defaults.user.price_type_id');
             $user->warehouse_id = config('site.defaults.user.warehouse_id');
         });
-//        static::updated(function(User $user){
-//            dd('Models\User');
-//            if(is_null($user->guid) &&$user->hasRole('asc')){
-//                event(new Authorized($user));
-//            }
-//        });
     }
 
     /**
@@ -79,7 +73,10 @@ class User extends Authenticatable implements Addressable
      */
     public function image()
     {
-        return $this->belongsTo(Image::class);
+        return $this->belongsTo(Image::class)->withDefault([
+            'storage' => 'images',
+            'path'    => 'logo/default.png',
+        ]);
     }
 
 

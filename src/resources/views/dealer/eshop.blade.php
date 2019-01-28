@@ -1,13 +1,13 @@
 @extends('layouts.app')
-@section('title')@lang('site::address.eshop')@lang('site::messages.title_separator')@endsection
+@section('title')@lang('site::address.eshops')@lang('site::messages.title_separator')@endsection
 
 
 @section('header')
     @include('site::header.front',[
-        'h1' => '<i class="fa fa-'.__('site::dealer.icon').'"></i> '.__('site::address.eshop'),
+        'h1' => '<i class="fa fa-'.__('site::dealer.icon').'"></i> '.__('site::address.eshops'),
         'breadcrumbs' => [
             ['url' => route('index'), 'name' => __('site::messages.index')],
-            ['name' => __('site::address.eshop')]
+            ['name' => __('site::address.eshops')]
         ]
     ])
 @endsection
@@ -28,8 +28,9 @@
                         'address' => $address->address,
                         'roles' => $user_roles,
                         'phones' => $address->phones,
-                        'email' => $address->addressable->email,
+                        'email' => $address->emailaddress,
                         'web' => $address->eshop,
+			'logo' => $address->addressable->logo,
                     ])
                 @endforeach
             </div>

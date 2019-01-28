@@ -22,9 +22,10 @@ trait CurrencyControllerTrait
             );
             $currency_archive->save();
         }
-        if(Auth::user()->admin == 1){
+        if (!Auth::guest() && Auth::user()->admin == 1) {
             return redirect()->route('admin.currency_archives.index')->with('success', trans('site::archive.updated'));
         }
+
         return null;
 
     }

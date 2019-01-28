@@ -3,7 +3,6 @@
 namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use QuadStudio\Service\Site\Http\Resources\Address\YandexMapResource;
 
 class Address extends Model
 {
@@ -11,8 +10,8 @@ class Address extends Model
         'type_id', 'country_id', 'region_id',
         'locality', 'street', 'building',
         'apartment', 'postal', 'name', 'active',
-        'is_shop', 'is_service', 'sort_order',
-        'emailaddress'
+        'is_shop', 'is_service', 'is_eshop', 'sort_order',
+        'emailaddress', 'eshop'
     ];
 
     /**
@@ -135,6 +134,10 @@ class Address extends Model
         return $this->hasMany(Contragent::class, 'id', 'addressable_id')->where('addressable_type', 'contragents');
     }
 
+    public function hasEmail()
+    {
+        return !is_null($this->getAttribute('emailaddress'));
+    }
 
     /**
      * Регион

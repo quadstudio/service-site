@@ -10,6 +10,7 @@ use QuadStudio\Service\Site\Models\Catalog;
 use QuadStudio\Service\Site\Models\Currency;
 use QuadStudio\Service\Site\Models\Element;
 use QuadStudio\Service\Site\Models\Equipment;
+use QuadStudio\Service\Site\Models\EventType;
 use QuadStudio\Service\Site\Models\FileType;
 use QuadStudio\Service\Site\Models\Repair;
 use QuadStudio\Service\Site\Pdf\ActPdf;
@@ -51,14 +52,14 @@ class Site
 //        } else {
 //            return $user_currency->getAttribute('rates');
 //        }
-        if(is_null($date)){
+        if (is_null($date)) {
             return $currency->getAttribute('rates');
-        } else{
-          if(($result = $currency->archives()->where('date', $date))->exists()){
-              return $result->first()->getAttribute('rates');
-          } else{
-              return 0.00;
-          }
+        } else {
+            if (($result = $currency->archives()->where('date', $date))->exists()) {
+                return $result->first()->getAttribute('rates');
+            } else {
+                return 0.00;
+            }
         }
     }
 
@@ -72,8 +73,20 @@ class Site
             ->group(['middleware' => ['online']],
                 function () use ($router) {
                     $router->get('/', 'IndexController@index')->name('index');
+
+                    /* Новости */
+                    $router->resource('/news', 'NewsController')->only(['index']);
+                    /* Мероприятия */
+                    $router->resource('/events', 'EventController')->only(['index', 'show']);
+                    /* Заявки */
+                    $router->get('/members/confirm/{token}', 'MemberController@confirm')->name('members.confirm');
+                    $router->resource('/members', 'MemberController')->only(['index', 'create', 'store']);
+
+                    /* Участники */
+                    $router->resource('/participants', 'ParticipantController')->only(['create']);
+                    /* Интернет-магазины */
                     $router->get('/eshop', 'AddressController@eshop')->name('addresses.eshop');
-                    $router->match(['get', 'post'],'/services', 'ServiceController@index')->name('services.index');
+                    $router->match(['get', 'post'], '/services', 'ServiceController@index')->name('services.index');
                     $router->match(['get', 'post'], '/dealers', 'DealerController@index')->name('dealers.index');
 
                     $router->get('/products/list', 'ProductController@list')->name('products.list');
@@ -145,6 +158,24 @@ class Site
                         ],
                             function () use ($router) {
                                 $router->name('admin')->get('/', 'IndexController@index');
+                                $router->name('admin')->post('/news/image', 'NewsController@image')->name('.news.image');
+                                $router->name('admin')->resource('/news', 'NewsController');
+                                $router->name('admin')->resource('/mailings', 'MailingController')->only(['store']);
+                                $router->name('admin')->resource('/templates', 'TemplateController');
+                                $router->name('admin')->resource('/events', 'EventController');
+                                $router->name('admin')->get('/events/{event}/mailing', 'EventController@mailing')->name('.events.mailing');
+                                $router->name('admin')->get('/events/{event}/attachment', 'EventController@attachment')->name('.events.attachment');
+                                $router->name('admin')->get('/events/create/{member?}', 'EventController@create')->name('.events.create');
+                                $router->name('admin')->post('/events/store/{member?}', 'EventController@store')->name('.events.store');
+                                $router->name('admin')->put('/event_types/sort', function (Request $request) {
+                                    EventType::sort($request);
+                                })->name('.event_types.sort');
+                                $router->name('admin')->resource('/event_types', 'EventTypeController');
+                                $router->name('admin')->resource('/members', 'MemberController');
+
+                                $router->name('admin')->get('/participants/create/{member}', 'ParticipantController@create')->name('.participants.create');
+                                $router->name('admin')->post('/participants/store/{member}', 'ParticipantController@store')->name('.participants.store');
+                                $router->name('admin')->resource('/participants', 'ParticipantController')->only(['destroy']);
                                 $router->name('admin')->post('/excel/repairs', 'ExcelController@repairs')->name('.excel.repairs');
                                 $router->name('admin')->resource('/acts', 'ActController');
                                 $router->name('admin')->get('/acts/{act}/schedule', 'ActController@schedule')->name('.acts.schedule');
@@ -165,10 +196,11 @@ class Site
                                 $router->name('admin')->resource('/elements', 'ElementController');
                                 $router->name('admin')->resource('/pointers', 'PointerController');
                                 $router->name('admin')->resource('/shapes', 'ShapeController');
+
+                                // Пользователи
+                                $router->name('admin')->get('/users/mailing', 'UserController@mailing')->name('.users.mailing');
                                 $router->name('admin')->resource('/users', 'UserController');
                                 $router->name('admin')->get('/users/{user}/orders', 'UserController@orders')->name('.users.orders');
-
-
                                 $router->name('admin')->get('/users/{user}/contragents', 'UserController@contragents')->name('.users.contragents');
                                 $router->name('admin')->get('/users/{user}/contacts', 'UserController@contacts')->name('.users.contacts');
                                 $router->name('admin')->get('/users/{user}/repairs', 'UserController@repairs')->name('.users.repairs');
@@ -211,6 +243,7 @@ class Site
                                     Catalog::sort($request);
                                 })->name('.catalogs.sort');
                                 $router->name('admin')->resource('/catalogs', 'CatalogController');
+                                $router->name('admin')->post('/images/field', 'ImageController@field')->name('.images.field');
                                 $router->name('admin')->resource('/images', 'ImageController');
                                 $router->name('admin')->get('/tree', 'CatalogController@tree')->name('.catalogs.tree');
                                 $router->name('admin')->get('/catalogs/create/{catalog?}', 'CatalogController@create')->name('.catalogs.create.parent');

@@ -2,58 +2,72 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use QuadStudio\Service\Site\Http\Resources\UserResource;
-use QuadStudio\Service\Site\Models\User;
+use QuadStudio\Service\Site\Filters;
+use QuadStudio\Service\Site\Filters\Event\EventRunnedFilter;
+use QuadStudio\Service\Site\Filters\Event\SortDateFromFilter;
+use QuadStudio\Service\Site\Repositories\EventRepository;
+use QuadStudio\Service\Site\Repositories\EventTypeRepository;
+use QuadStudio\Service\Site\Repositories\NewsRepository;
 
 trait IndexControllerTrait
 {
+
+    /**
+     * @var NewsRepository
+     */
+    protected $news;
+    /**
+     * @var EventRepository
+     */
+    private $events;
+    /**
+     * @var EventTypeRepository
+     */
+    private $types;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param NewsRepository $news
+     * @param EventRepository $events
+     * @param EventTypeRepository $types
+     */
+    public function __construct(
+        NewsRepository $news,
+        EventRepository $events,
+        EventTypeRepository $types
+    )
+    {
+        $this->news = $news;
+        $this->events = $events;
+        $this->types = $types;
+    }
+
     /**
      * Show application index page
      *
-     *
+     * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-//        $m = [
-//            'bik' => 'id',
-//            'ks' => 'ks',
-//            'name' => 'name',
-//            'city' => 'city',
-//            'address' => 'address',
-//            'phone' => 'phone',
-//        ];
-//        $xml = simplexml_load_file(__DIR__ . '/../../../resources/assets/base.xml') or die("Error: Cannot create object");
-//        $result = [];
-//        $i =0;
-//        foreach ($xml->bik as $bik) {
-//
-//            foreach ($bik->attributes() as $key => $value) {
-//                if(key_exists($key, $m)){
-//                    $result[$i][$m[$key]] =strval($value);
-//                }
-//
-//            }
-//            $i++;
-//        }
-//        DB::table('banks')->insert($result);
-//
-//        dd($result);
-//        dd('dd');
+        $news = $this->news
+            ->applyFilter(new Filters\News\SortDateFilter())
+            ->applyFilter(new Filters\News\PublishedFilter())
+            ->applyFilter(new Filters\News\LimitSixFilter())
+            ->all(['news.*']);
+        $events = $this->events
+            ->applyFilter(new SortDateFromFilter())
+            ->applyFilter(new EventRunnedFilter())
+//            ->applyFilter(new SortDateFilter())
+//            ->applyFilter(new PublishedFilter())
+//            ->applyFilter(new LimitSixFilter())
+            ->all(['events.*']);
+        $types = $this->types
+            ->applyFilter(new Filters\EventType\SortFilter())
+            ->applyFilter(new Filters\EventType\ActiveFilter())
+            ->all(['event_types.*']);
 
-        //return new UserResource(User::find(19));
-//        $httpClient = new \Http\Adapter\Guzzle6\Client();
-//        $provider = new \Geocoder\Provider\Yandex\Yandex($httpClient);
-//        $geocoder = new \Geocoder\StatefulGeocoder($provider, 'ru');
-//        $addresses = $geocoder->geocodeQuery(\Geocoder\Query\GeocodeQuery::create('Рязанская обл, г. Рязань, ул. Ленина, 12'));
-//        //dd(implode(',', $addresses->first()->getCoordinates()->toArray()));
-//        $formatter = new \Geocoder\Formatter\StringFormatter();
-//        foreach ($addresses as $address) {
-//            dump(preg_replace(['/\s,/', '/\s+/'], ' ',$formatter->format($address, '%A1, %A2, %A3, %L, %D %S, %n')));
-//        }
-//        dd($addresses);
+        return view('site::index', compact('news', 'events', 'types'));
 
-        return view('site::index');
     }
 }

@@ -64,7 +64,7 @@ trait AddressControllerTrait
 
     public function create()
     {
-        $types = AddressType::find([2]);
+        $types = AddressType::find([2,5]);
         $countries = Country::enabled()->orderBy('sort_order')->get();
         $regions = collect([]);
         if (old('country_id')) {
@@ -93,7 +93,7 @@ trait AddressControllerTrait
         if ($address->addressable_type == 'contragents') {
             $types = AddressType::find([1]);
         } else {
-            $types = AddressType::find([2]);
+            $types = AddressType::find([2,2]);
         }
 
         $countries = Country::enabled()->orderBy('sort_order')->get();

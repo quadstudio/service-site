@@ -9,7 +9,6 @@ use QuadStudio\Service\Site\Filters\Datasheet\TypeFilter;
 use QuadStudio\Service\Site\Filters\Scheme\BlockSelectFilter;
 use QuadStudio\Service\Site\Filters\Scheme\DatasheetSelectFilter;
 use QuadStudio\Service\Site\Filters\Scheme\ProductSelectFilter;
-use QuadStudio\Service\Site\Filters\Scheme\SortFilter;
 use QuadStudio\Service\Site\Http\Requests\Admin\SchemeElementRequest;
 use QuadStudio\Service\Site\Http\Requests\Admin\SchemeRequest;
 use QuadStudio\Service\Site\Http\Requests\ImageRequest;

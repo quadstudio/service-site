@@ -74,6 +74,10 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
         'ServiceController.stub'                  => 'ServiceController',
         'DealerController.stub'                   => 'DealerController',
         'OrderItemController.stub'                => 'OrderItemController',
+        'NewsController.stub'                     => 'NewsController',
+        'EventController.stub'                    => 'EventController',
+        'MemberController.stub'                   => 'MemberController',
+        'ParticipantController.stub'              => 'ParticipantController',
         //
         'api/FileController.stub'                 => 'Api/FileController',
         'api/RepairController.stub'               => 'Api/RepairController',
@@ -136,6 +140,13 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
         'admin/EquipmentImageController.stub'     => 'Admin/EquipmentImageController',
         'admin/PageController.stub'               => 'Admin/PageController',
         'admin/OrderItemController.stub'          => 'Admin/OrderItemController',
+        'admin/NewsController.stub'               => 'Admin/NewsController',
+        'admin/EventController.stub'              => 'Admin/EventController',
+        'admin/MemberController.stub'             => 'Admin/MemberController',
+        'admin/EventTypeController.stub'          => 'Admin/EventTypeController',
+        'admin/ParticipantController.stub'        => 'Admin/ParticipantController',
+        'admin/TemplateController.stub'           => 'Admin/TemplateController',
+        'admin/MailingController.stub'            => 'Admin/MailingController',
     ];
 
     /**

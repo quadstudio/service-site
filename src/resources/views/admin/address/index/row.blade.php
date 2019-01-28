@@ -46,24 +46,20 @@
 
                 <div class="item-content-about">
                     <div class="item-content-user text-muted small mb-2">{{$address->type->name}}</div>
-                    <h5 class="item-content-name mb-1">
-                        <a href="{{route('admin.addresses.show', $address)}}">
-                            <img style="width: 30px;" class="img-fluid border"
-                                 src="{{ asset($address->country->flag) }}"
-                                 alt="">
-                            {{$address->full}}
-                        </a>
-                    </h5>
+                        <a href="{{route('admin.addresses.show', $address)}}">{{$address->full}} </a>
+			@if(( $address->is_service ))<span class="badge text-normal mb-0 mb-sm-1 badge-ferroli">Сервис</span> @endif
+                        @if(( $address->is_shop ))<span class="badge text-normal mb-0 mb-sm-1 badge-ferroli">Торговая точка</span> @endif
+                        @if(( $address->is_eshop ))<span class="badge text-normal mb-0 mb-sm-1 badge-ferroli">Интернет-магазин</span> @endif
+
                     <div class="list-group">
                         @foreach($address->phones as $phone)
-                            <a href="{{route('admin.phones.edit', $phone)}}"
-                               class="list-group-item list-group-item-action">{{$phone->format()}}</a>
+                              {{$phone->format()}} &nbsp;
                         @endforeach
                     </div>
                     <hr class="border-light">
                     <div>
                         <a href="{{route('admin.'.$address->addressable_type.'.show', $address->addressable)}}">
-                            {{$address->addressable->name}}
+                            {{$address->addressable->name}} 
                         </a>
                     </div>
                 </div>

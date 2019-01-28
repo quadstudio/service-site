@@ -53,7 +53,10 @@ class Scheme extends Model
      */
     public function image()
     {
-        return $this->belongsTo(Image::class);
+        return $this->belongsTo(Image::class)->withDefault([
+            'storage' => 'events',
+            'path'    => 'noimage.png',
+        ]);
     }
 
     /**

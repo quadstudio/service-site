@@ -35,7 +35,7 @@
                     @csrf
                     @method('PUT')
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <div class="form-row required">
                                 <div class="col mb-3">
                                     <label class="control-label d-block"
@@ -67,39 +67,30 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <div class="form-row">
                                 <div class="col mb-3">
-                                    <label class="control-label d-block"
-                                           for="active">@lang('site::address.is_shop')</label>
+                                    <label class="control-label d-block" for="active">@lang('site::address.is_shop')</label>
                                     <div class="custom-control custom-radio custom-control-inline">
-                                        <input class="custom-control-input
-                                                    {{$errors->has('address.is_shop') ? ' is-invalid' : ''}}"
-                                               type="radio"
-                                               name="address[is_shop]"
+                                        <input class="custom-control-input {{$errors->has('address.is_shop') ? ' is-invalid' : ''}}"
+                                               type="radio" name="address[is_shop]"
                                                @if(old('address.is_shop', $address->is_shop) == 0) checked @endif
-                                               id="is_shop_0"
-                                               value="0">
-                                        <label class="custom-control-label"
-                                               for="is_shop_0">@lang('site::messages.no')</label>
+                                               id="is_shop_0"  value="0">
+                                        <label class="custom-control-label" for="is_shop_0">@lang('site::messages.no')</label>
                                     </div>
                                     <div class="custom-control custom-radio  custom-control-inline">
-                                        <input class="custom-control-input
-                                                    {{$errors->has('address.is_shop') ? ' is-invalid' : ''}}"
-                                               type="radio"
-                                               name="address[is_shop]"
+                                        <input class="custom-control-input {{$errors->has('address.is_shop') ? ' is-invalid' : ''}}"
+                                               type="radio" name="address[is_shop]"
                                                required
                                                @if(old('address.is_shop', $address->is_shop) == 1) checked @endif
-                                               id="is_shop_1"
-                                               value="1">
-                                        <label class="custom-control-label"
-                                               for="is_shop_1">@lang('site::messages.yes')</label>
+                                               id="is_shop_1"  value="1">
+                                        <label class="custom-control-label" for="is_shop_1">@lang('site::messages.yes')</label>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-4">
+
+                        <div class="col-sm-3">
                             <div class="form-row">
                                 <div class="col mb-3">
                                     <label class="control-label d-block"
@@ -131,7 +122,31 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-row">
+                                <div class="col mb-3">
+                                    <label class="control-label d-block" for="active">@lang('site::address.is_eshop')</label>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input class="custom-control-input {{$errors->has('address.is_eshop') ? ' is-invalid' : ''}}"
+                                               type="radio" name="address[is_eshop]"
+                                               @if(old('address.is_eshop', $address->is_eshop) == 0) checked @endif
+                                               id="is_eshop_0"  value="0">
+                                        <label class="custom-control-label" for="is_eshop_0">@lang('site::messages.no')</label>
+                                    </div>
+                                    <div class="custom-control custom-radio  custom-control-inline">
+                                        <input class="custom-control-input {{$errors->has('address.is_eshop') ? ' is-invalid' : ''}}"
+                                               type="radio" name="address[is_eshop]"
+                                               required
+                                               @if(old('address.is_eshop', $address->is_eshop) == 1) checked @endif
+                                               id="is_eshop_1"  value="1">
+                                        <label class="custom-control-label" for="is_eshop_1">@lang('site::messages.yes')</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
 
 
                     <div class="form-row required">
@@ -261,12 +276,11 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="form-row required">
+                            <div class="form-row">
                                 <div class="col mb-3">
                                     <label class="control-label" for="building">@lang('site::address.building')</label>
                                     <input type="text"
                                            name="address[building]"
-                                           required
                                            id="building"
                                            class="form-control{{ $errors->has('address.building') ? ' is-invalid' : '' }}"
                                            placeholder="@lang('site::address.placeholder.building')"
@@ -304,6 +318,20 @@
                             <span class="invalid-feedback">{{ $errors->first('address.emailaddress') }}</span>
                         </div>
                     </div>
+
+                    <div class="form-row">
+                        <div class="col mb-3">
+                            <label class="control-label" for="eshop">@lang('site::address.eshop')</label>
+                            <input type="txt"
+                                   name="address[eshop]"
+                                   id="address[eshop]"
+                                   class="form-control{{ $errors->has('address.eshop') ? ' is-invalid' : '' }}"
+                                   placeholder="@lang('site::address.placeholder.eshop')"
+                                   value="{{ old('address.eshop',$address->eshop) }}">
+                            <span class="invalid-feedback">{{ $errors->first('address.eshop') }}</span>
+                        </div>
+                    </div>
+
 
                 </form>
                 <hr/>

@@ -36,32 +36,72 @@
                             <label class="control-label d-block"
                                    for="active">@lang('site::address.active')</label>
                             <div class="custom-control custom-radio  custom-control-inline">
+                                <input class="custom-control-input {{$errors->has('address.active') ? ' is-invalid' : ''}}"
+                                       type="radio" name="address[active]" required checked  id="active_1" value="1">
+                                <label class="custom-control-label" for="active_1">@lang('site::messages.yes')</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input class="custom-control-input {{$errors->has('address.active') ? ' is-invalid' : ''}}"
+                                       type="radio" name="address[active]" required id="active_0" value="0">
+                                <label class="custom-control-label" for="active_0">@lang('site::messages.no')</label>
+                            </div>
+                        </div>
+                    
+                        <div class="col mb-3">
+                            <label class="control-label d-block" for="is_shop">@lang('site::address.is_shop')</label>
+                            <div class="custom-control custom-radio  custom-control-inline">
+                                <input class="custom-control-input {{$errors->has('address.is_shop') ? ' is-invalid' : ''}}"
+                                       type="radio" name="address[is_shop]" required checked id="is_shop_1" value="1">
+                                <label class="custom-control-label" for="is_shop_1">@lang('site::messages.yes')</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input class="custom-control-input {{$errors->has('address.is_shop') ? ' is-invalid' : ''}}"
+                                       type="radio" name="address[is_shop]" required checked id="is_shop_0" value="0">
+                                <label class="custom-control-label" for="is_shop_0">@lang('site::messages.no')</label>
+                            </div>
+                        </div>                    
+                        <div class="col mb-3">
+                            <label class="control-label d-block" for="is_service">@lang('site::address.is_service')</label>
+                            <div class="custom-control custom-radio  custom-control-inline">
+                                <input class="custom-control-input {{$errors->has('address.is_service') ? ' is-invalid' : ''}}"
+                                       type="radio" name="address[is_service]" required id="is_service_1" value="1">
+                                <label class="custom-control-label" for="is_service_1">@lang('site::messages.yes')</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input class="custom-control-input {{$errors->has('address.is_service') ? ' is-invalid' : ''}}"
+                                       type="radio" name="address[is_service]" required checked id="is_service_0" value="0">
+                                <label class="custom-control-label" for="is_service_0">@lang('site::messages.no')</label>
+                            </div>
+                        </div>
+						<div class="col mb-3">
+                            <label class="control-label d-block"
+                                   for="is_eshop">@lang('site::address.is_eshop')</label>
+                            <div class="custom-control custom-radio  custom-control-inline">
                                 <input class="custom-control-input
-                                                    {{$errors->has('address.active') ? ' is-invalid' : ''}}"
+                                                    {{$errors->has('address.is_eshop') ? ' is-invalid' : ''}}"
                                        type="radio"
-                                       name="address[active]"
+                                       name="address[is_eshop]"
                                        required
-                                       @if(old('address.active', 1) == 1) checked @endif
-                                       id="active_1"
+                                       
+                                       id="is_eshop_1"
                                        value="1">
                                 <label class="custom-control-label"
-                                       for="active_1">@lang('site::messages.yes')</label>
+                                       for="is_eshop_1">@lang('site::messages.yes')</label>
                             </div>
                             <div class="custom-control custom-radio custom-control-inline">
                                 <input class="custom-control-input
-                                                    {{$errors->has('address.active') ? ' is-invalid' : ''}}"
+                                                    {{$errors->has('address.is_eshop') ? ' is-invalid' : ''}}"
                                        type="radio"
-                                       name="address[active]"
-                                       required
-                                       @if(old('address.active', 1) == 0) checked @endif
-                                       id="active_0"
+                                       name="address[is_eshop]" required   checked
+                                       id="is_eshop_0"
                                        value="0">
                                 <label class="custom-control-label"
-                                       for="active_0">@lang('site::messages.no')</label>
+                                       for="is_eshop_0">@lang('site::messages.no')</label>
                             </div>
                         </div>
                     </div>
-
+					
+					
                     <div class="form-row required">
                         <div class="col mb-3">
                             <label class="control-label" for="name">@lang('site::address.name')</label>
@@ -174,12 +214,11 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="form-row required">
+                            <div class="form-row">
                                 <div class="col mb-3">
                                     <label class="control-label" for="building">@lang('site::address.building')</label>
                                     <input type="text"
                                            name="address[building]"
-                                           required
                                            id="building"
                                            class="form-control{{ $errors->has('address.building') ? ' is-invalid' : '' }}"
                                            placeholder="@lang('site::address.placeholder.building')"
@@ -208,6 +247,38 @@
                             </div>
                         </div>
                     </div>
+
+                    <hr/>
+                    {{-- E-MAIL --}}
+
+                    <div class="form-row">
+                        <div class="col mb-3">
+                            <label class="control-label" for="email">@lang('site::address.emailaddress')</label>
+                            <input type="email"
+                                   name="address[emailaddress]"
+                                   id="address[emailaddress]"
+                                   class="form-control{{ $errors->has('address.emailaddress') ? ' is-invalid' : '' }}"
+                                   placeholder="@lang('site::address.placeholder.emailaddress')"
+                                   value="{{ old('address.emailaddress') }}">
+                            <span class="invalid-feedback">{{ $errors->first('address.emailaddress') }}</span>
+                        </div>
+                    </div>
+
+                    {{-- E-SHOP --}}
+
+                    <div class="form-row">
+                        <div class="col mb-3">
+                            <label class="control-label" for="email">@lang('site::address.eshop')</label>
+                            <input type="text"
+                                   name="address[eshop]"
+                                   id="address[eshop]"
+                                   class="form-control{{ $errors->has('address.eshop') ? ' is-invalid' : '' }}"
+                                   placeholder="@lang('site::address.placeholder.eshop')"
+                                   value="{{ old('address.eshop') }}">
+                            <span class="invalid-feedback">{{ $errors->first('address.eshop') }}</span>
+                        </div>
+                    </div>
+
 
                     <hr/>
 

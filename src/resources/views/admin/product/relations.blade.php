@@ -28,8 +28,24 @@
                               action="{{ route('admin.products.relations.update', $product) }}">
 
                             @csrf
+        <div class=" border p-3 mt-2 mb-4">
+            <button name="_stay" form="form-content" value="1" type="submit" class="btn btn-ferroli">
+                <i class="fa fa-check"></i>
+                <span>@lang('site::messages.save_stay')</span>
+            </button>
+            <button name="_stay" form="form-content" value="0" type="submit" class="btn btn-ferroli">
+                <i class="fa fa-check"></i>
+                <span>@lang('site::messages.save')</span>
+            </button>
+            <a href="{{ route('admin.products.show', $product) }}" class="d-block d-sm-inline btn btn-secondary">
+                <i class="fa fa-close"></i>
+                <span>@lang('site::messages.cancel')</span>
+            </a>
+        </div>
+
 
                             <div class="row">
+
                                 <div class="col-sm-4">
                                     <div class="form-row required">
                                         <div class="col mb-3">

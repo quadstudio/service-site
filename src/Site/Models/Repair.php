@@ -3,12 +3,10 @@
 namespace QuadStudio\Service\Site\Models;
 
 use Carbon\Carbon;
-use Codedge\Fpdf\Fpdf\Fpdf;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use QuadStudio\Service\Site\Contracts\Messagable;
 use QuadStudio\Service\Site\Facades\Site;
-use QuadStudio\Service\Site\Pdf\RepairPdf;
 
 
 class Repair extends Model implements Messagable

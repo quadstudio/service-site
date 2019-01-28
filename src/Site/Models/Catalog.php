@@ -40,7 +40,10 @@ class Catalog extends Model
      */
     public function image()
     {
-        return $this->belongsTo(Image::class);
+        return $this->belongsTo(Image::class)->withDefault([
+            'storage' => 'products',
+            'path'    => 'noimage.png',
+        ]);
     }
 
     /**

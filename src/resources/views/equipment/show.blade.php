@@ -116,7 +116,7 @@
                          id="equipments"
                          role="tabpanel"
                          aria-labelledby="equipments-tab">
-                        @foreach($equipment->products()->where('enabled', 1)->orderBy('name')->get() as $product)
+                        @foreach($equipment->products()->where('enabled', 1)->where('active', 1)->orderBy('name')->get() as $product)
                             <div class="row border-bottom py-2">
                                 <div class="col-12 col-md-6">
                                     <a class="d-block text-large"
@@ -159,65 +159,56 @@
                             </div>
                         @endforeach
                     </div>
-                    <div class="tab-pane fade p-3"
-                         id="datasheet"
-                         role="tabpanel"
-                         aria-labelledby="datasheet-tab">
-                        <div class="row">
+                    <div class="tab-pane fade p-3" id="datasheet" role="tabpanel" aria-labelledby="datasheet-tab">
+                      
                             @foreach($datasheets as $datasheet)
-                                <div class="col-xl-4 col-md-4 col-sm-6">
-                                    <div class="card">
+                                <div class="card item-hover mb-1">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <a class="text-large mb-1"
+                                                   href="{{ route('datasheets.show', $datasheet) }}">{{ $datasheet->name ?: $datasheet->file->name }}</a>
+                                                {{--<span class="text-lighter d-block">{{ $datasheet->name }}</span>--}}
+                                                <span class="text-muted d-block">@include('site::datasheet.date')</span>
+												@if(!($products = $datasheet->products()->where('enabled', 1)->orderBy('equipment_id')->orderBy('name')->get())->isEmpty())
+													@include('site::datasheet.index.row.products')
+												@endif
+                                            </div>
 
-                                        <div class="card-body">
-                                            <h5 class="card-title"><a
-                                                        href="{{route('datasheets.show', $datasheet)}}">{{ $datasheet->file->type->name }}</a>
-                                            </h5>
-                                            <p class="card-text">{{$datasheet->name}}</p>
-                                            <p class="text-muted">@include('site::datasheet.date')</p>
-                                        </div>
-                                        <ul class="list-group list-group-flush">
-                                            @foreach(($products = $datasheet->products()->where('enabled', 1)->get()) as $key => $product)
-                                                @if($key < config('site.datasheet.products.count', 5))
-                                                    <li class="list-group-item"><a
-                                                                href="{{route('products.show', $product)}}">{!! $product->name !!}</a>
-                                                    </li>
-                                                @else
-                                                    <li class="list-group-item text-muted">... подходит еще
-                                                        к {{$products->count() - config('site.datasheet.products.count', 5)}} {{numberof($products->count() - config('site.datasheet.products.count', 5), 'товар', ['у', 'ам', 'ам'])}} </li>
-                                                    <li class="list-group-item"><a
-                                                                href="{{route('datasheets.show', $datasheet)}}">Показать
-                                                            все товары</a></li>
-                                                    @break
-                                                @endif
-                                            @endforeach
-                                        </ul>
-                                        @if($datasheet->schemes()->count() > 0)
-                                            @if($products->isNotEmpty())
-                                                <div class="card-body py-2">
-                                                    <div class="dropdown">
-                                                        <a class="btn btn-ferroli btn-block dropdown-toggle" href="#"
-                                                           role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                                                           aria-haspopup="true" aria-expanded="false">
-                                                            @lang('site::scheme.schemes')
-                                                        </a>
+                                        <div class="col-sm-3 text-right">
+                                                @if($datasheet->schemes()->count() > 0)
+                                                @if($products->count() > 1)
+													@if($products->isNotEmpty())
+														<div class="dropdown">
+															<a class="btn btn-ferroli dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+																@lang('site::scheme.schemes') ({{$products->count() }})
+															</a>
 
-                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                            @foreach($products as $product)
-                                                                <a class="dropdown-item"
-                                                                   href="{{route('products.scheme', [$product, $datasheet->schemes()->first()])}}">{!! $product->name !!}</a>
-                                                            @endforeach
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endif
-                                        @endif
-                                        <div class="card-body py-2">
-                                            @include('site::file.download', ['file' => $datasheet->file, 'block' => true])
+															<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+																@foreach($products as $product)
+																<a class="dropdown-item" href="{{route('products.scheme', [$product, $datasheet->schemes()->first()])}}">{!! $product->name !!}</a>
+																@endforeach
+															</div>
+														</div>
+													@endif
+
+                                                                                               
+												@else
+												
+												<a class="btn btn-ferroli"
+                                                   href="{{route('products.scheme', [$product, $datasheet->schemes()->first()])}}">@lang('site::messages.open') @lang('site::scheme.scheme')</a>
+                                                @endif 
+												@endif
+                                            </div>
+                                            <div class="col-sm-3 text-right">
+                                                @include('site::file.download', ['file' => $datasheet->file])
+                                            </div>
                                         </div>
                                     </div>
+
                                 </div>
                             @endforeach
-                        </div>
+                      
                     </div>
                 </div>
 

@@ -57,7 +57,13 @@
                     </div>
                     <hr class="border-light">
                     <div>
-                        @lang('site::address.name'): {{$address->name}}
+                        @lang('site::address.name'): <b>{{$address->name}}</b><br />
+                        @lang('site::address.eshop'): <b>{{$address->eshop}}</b><br />
+			@lang('site::address.email'): <b>{{$address->emailaddress}}</b><br />
+			@if(( $address->is_service ))<span class="badge text-normal mb-0 mb-sm-1 badge-ferroli">Сервис</span> @endif
+			@if(( $address->is_shop ))<span class="badge text-normal mb-0 mb-sm-1 badge-ferroli">Торговая точка</span> @endif
+			@if(( $address->is_eshop ))<span class="badge text-normal mb-0 mb-sm-1 badge-ferroli">Интернет-магазин</span> @endif
+
                     </div>
                 </div>
             </div>

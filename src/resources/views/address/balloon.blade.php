@@ -1,6 +1,6 @@
 <div class="card mb-2">
     <div class="card-body">
-        <h4 class="card-title">{{$name}}</h4>
+    <h4 class="card-title">{{$name}}</h4>
         <dl class="row">
             <dd class="col-12">{{$address}}</dd>
             <dd class="col-12">

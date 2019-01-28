@@ -17,6 +17,15 @@
                 <span>@lang('site::repair.repairs') <span class="badge badge-light">{{$user->repairs()->count()}}</span></span>
             </a>
             @endpermission()
+            @permission('acts')
+            <a href="{{ route('acts.index') }}"
+               class="d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-ferroli">
+                <i class="fa fa-@lang('site::order.icon')"></i>
+                <span>@lang('site::act.acts') <span
+                            class="badge badge-light">{{$user->acts()->count()}}</span></span>
+            </a>
+            @endpermission()
+
             @permission('orders')
             <a href="{{ route('orders.index') }}"
                class="d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-ferroli">

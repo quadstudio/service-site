@@ -24,8 +24,6 @@ class UserRepository extends Repository
      */
     public function track():array
     {
-        return [
-            UserSearchFilter::class,
-        ];
+        return [];
     }
 }

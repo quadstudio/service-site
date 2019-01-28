@@ -65,7 +65,7 @@ trait AddressControllerTrait
      */
     public function edit(Address $address)
     {
-        $types = AddressType::find([$address->type_id]);
+        $types = AddressType::find([$address->type_id,2,5]);
         $countries = Country::enabled()->orderBy('sort_order')->get();
         $regions = collect([]);
         if (old('country_id', $address->country_id)) {

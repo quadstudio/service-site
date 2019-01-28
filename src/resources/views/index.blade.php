@@ -17,117 +17,22 @@
             </div>
             <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Назад</span>
+                <span class="sr-only">@lang('site::messages.prev')</span>
             </a>
             <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Вперед</span>
+                <span class="sr-only">@lang('site::messages.next')</span>
             </a>
         </div>
     </header>
 @endsection
 
-  <style type="text/css">
-    .carousel-item .post {
-		float:left;
-    }
-	.post-date {
-		text-align: left;
-		color: #b5b5b5;
-		font-size: 12px;
-	}
-	.post-desc {
-		text-align:left;
-	}
-	.carousel-control-prev.outside {
-		left: 15px;
-		top: -50px;
-		bottom: unset;
-		width: auto;	
-	}
-	.carousel-control-next.outside {
-		right: 15px;
-		top: -50px;
-		bottom: unset;
-		width: auto;	
-	}
-	.carousel-control-prev.outside span, .carousel-control-next.outside span {
-		color:#222;
-		font-weight:bold;
-	}
-	.carousel-control-prev-icon.black {
-		background-image:url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%222222' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E");
-	}
-	.carousel-control-next-icon.black {
-		background-image:url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%222222' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E");
-	}
-  </style>
 @section('content')
-    <section class="news">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 mb-5">
-                    <h2 class="text-center">Новости</h2>
-                </div>
-            </div>
-			<div class="row">
-				<div id="carouselNewsIndicators" class="carousel slide carousel-multi-item" data-ride="carousel" data-interval="false">			
-					<div class="carousel-inner">
-						<div class="carousel-item active qe">
-							<!-- начало блока новостей -->
-							<div class="col-md-4 post clearfix">
-							<!-- начало новости -->
-							<p class="post-date">02.10.2018</p><p class="post-desc">Начиная с 01.09.2018г все вопросы, связанные с обеспечением гарантии котлов производства Ferroli Heating Equipment (China) CO. Ltd, Ferroli s.p.a., а также иных заводов группы Ferroli,включая модели котлов Fortuna и Diva, решает представительство Ferroli в России - ООО "Ферроли рус".<br />По всем вопросам, связанным с постпродажным обслуживанием котлов Ferroli или по вопросам авторизациив качестве сервисного центра просим обращаться по адресу service@ferroli.ru или через форму заявки на авторизацию по адресу:<a href="http://service.ferroli.ru/register">service.ferroli.ru/register</a><br /><a href="/up/ferroli-service.pdf">&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; <b>Подробнее.</b></a></p>                                                                
-							<!-- конец новости -->
-							</div>
-							<div class="col-md-4 post clearfix">
-								<!-- начало новости -->
-								<p class="post-date">11.09.2018</p>
-								<p class="post-desc">В конце 2017 г в конструкцию котлов FORTUNA внесены изменения, позволяющие повысить качество оборудования и его эксплуатационные параметры. <a href="/up/ferroli-letter-fortuna.pdf">Подробнее.</a></p>
-								<!-- конец новости -->
-							</div>
-							<div class="col-md-4 post clearfix">					
-								<p class="post-date">02.09.2018</p>
-								<p class="post-desc">Компания ТЕПЛОЦЕЛЬ, г. Ростов-на-Дону стала генеральным дистрибьютором по водонагревателям и котельному оборудованию Ferroli.<img src="/images/teplocel.jpg"></p>
-							</div>
-							<!-- конец блока новостей -->
-						</div>
+    <div class="container">
+        @include('site::news.carousel')
+        @include('site::event_type.main')
+        @include('site::event.main')
+        @include('site::member.main')
+    </div>
 
-						<div class="carousel-item qz">
-							<div class="col-md-4 post clearfix">
-								<p class="post-date">15.08.2018</p>
-								<p class="post-desc">Компания Авангард Система, г. Москва стала официальным дистрибьютором компании Ferroli.<br /> <br /><img src="/images/avangard-cert.jpg"></p>
-							</div>
-
-							<div class="col-md-4 post clearfix">
-								<p class="post-date">14.08.2018</p>
-								<p class="post-desc">24 апреля 2018 года на заводе группы FERROLI в Белоруссии, ИЗАО ФЕРРОЛИБЕЛ, открылось производство газовых настенных котлов DIVABEL. Мощность производственной линии 20000 котлов в год.<br /><img width="200px" src="http://service.ferroli.ru//storage/equipments/atf05eFyKUgODP5jekbX8HCNzPyPS5xiIJjCIQKL.jpeg"></p>
-							</div>
-							<div class="col-md-4 post clearfix">
-								<p class="post-date">02.08.2018</p>
-								<p class="post-desc">Приглашаем к сотрудничеству профессионалов. <br /> ООО «Ферроли Рус», официальное
-									представительство
-									компании FerroliS.p.A в России, приглашает к сотрудничеству сервисные центры для работы по
-									обслуживанию оборудования FERROLI. Для отправки запроса на авторизацию необходимо
-									зарегистрироваться в разделе <a href="{{route('register')}}">Регистрация</a></p>
-							</div>
-						</div>
-						<div class="carousel-item qz">
-							<div class="col-md-4 post clearfix">								<p class="post-date">01.07.2018</p>								<p class="post-desc">С 1 Августа 2018 года импорт продукции под маркой FERROLI на территорию Российской Федерации осуществляется исключительно через дочерние юридические лица Группы FERROLI: ООО «ФерролиРус» и ИЗАО «ФерролиБел», за исключением модели Fortuna, импорт которой до конца 2018 года будет осуществляться структурами компании «Лаборатория Отопления».</p>								<p class="post-desc">Основной задачей представительства Ferroli в России является:</p>								<ul><li class="post-desc">&bull;&nbsp;Обеспечение рынка и Партнеров продукцией, выпускаемой заводами Группы Ферроли и запасными	частями к нему</li>									<li class="post-desc">&bull;&nbsp;Организация сервисной политики и постпродажного/гарантийного обслуживания, создание сети авторизованных гарантийных сервисных центров	</li>									<li class="post-desc">&bull;&nbsp;Маркетинговая поддержка и поддержка продаж</li>									<li class="post-desc">&bull;&nbsp;Информирование рынка о продукции под маркой Ferroli</li>									<a href="http://service.ferroli.ru/up/ferroli-letter-1.pdf"><b>ПОДРОБНЕЕ</b></a>								</ul>
-							</div>
-
-						</div>
-					</div>
-					<a class="carousel-control-prev outside" href="#carouselNewsIndicators" role="button" data-slide="prev" style="display:none;">
-						<span><img src="http://service.ferroli.ru/up/left.png"></span>
-					</a>						
-					<a class="carousel-control-next outside" href="#carouselNewsIndicators" role="button" data-slide="next">
-					<span><img src="http://service.ferroli.ru/up/right.png"></span>
-					</a>				
-				</div>		
-			</div>
-			
-			
-        </div>
-    </section>
 @endsection

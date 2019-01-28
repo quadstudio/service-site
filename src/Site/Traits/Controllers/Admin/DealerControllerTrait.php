@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Mail;
 use QuadStudio\Rbac\Repositories\RoleRepository;
 use QuadStudio\Service\Site\Events\UserScheduleEvent;
 use QuadStudio\Service\Site\Filters\AddressableFilter;
-use QuadStudio\Service\Site\Filters\User\ActiveSelectFilter;
+use QuadStudio\Service\Site\Filters\User\PublishedSelectFilter;
 use QuadStudio\Service\Site\Filters\User\AddressSearchFilter;
 use QuadStudio\Service\Site\Filters\User\ContactSearchFilter;
 use QuadStudio\Service\Site\Filters\User\DisplaySelectFilter;
@@ -89,7 +89,7 @@ trait DealerControllerTrait
         $this->users->pushTrackFilter(AddressSearchFilter::class);
         $this->users->pushTrackFilter(IsAscSelectFilter::class);
         $this->users->pushTrackFilter(IsDealerSelectFilter::class);
-        $this->users->pushTrackFilter(ActiveSelectFilter::class);
+        $this->users->pushTrackFilter(PublishedSelectFilter::class);
         $this->users->pushTrackFilter(VerifiedFilter::class);
         $this->users->pushTrackFilter(DisplaySelectFilter::class);
 

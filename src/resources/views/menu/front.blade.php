@@ -58,8 +58,8 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('addresses.eshop') }}">
-                                <i class="fa fa-@lang('site::dealer.icon')"></i>
-                                @lang('site::address.eshop')
+                                <i class="fa fa-internet-explorer"></i>
+                                @lang('site::address.eshopxs')
                             </a>
                         </li>
                         <li class="nav-item">
@@ -91,11 +91,13 @@
                 </li>
                 <li><a href="{{ route('products.index') }}" class="menuprinc">@lang('site::product.products')</a></li>
                 <li><a href="{{ route('catalogs.index') }}" class="menuprinc">@lang('site::catalog.catalogs')</a></li>
-                <li><a href="{{ route('datasheets.index') }}" class="menuprinc">@lang('site::datasheet.datasheets')</a>
-                </li>
+                <li><a href="{{ route('datasheets.index') }}" class="menuprinc">@lang('site::datasheet.datasheets')</a></li>
                 <li><a href="{{ route('services.index') }}">@lang('site::service.services')</a></li>
                 <li><a href="{{ route('dealers.index') }}">@lang('site::dealer.dealers')</a></li>
+                <li><a href="{{ route('addresses.eshop') }}">@lang('site::address.eshopxs')</a></li>
                 <li><a href="{{ route('feedback') }}">@lang('site::messages.feedback')</a></li>
+
+
             </ul>
         </div>
 

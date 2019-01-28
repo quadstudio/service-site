@@ -38,5 +38,24 @@ class Region extends Model
         return $this->hasMany(Address::class, 'region_id');
     }
 
+    /**
+     * Мероприятия
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function events()
+    {
+        return $this->hasMany(Event::class, 'region_id');
+    }
+
+    /**
+     * Заявки
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function members()
+    {
+        return $this->hasMany(Member::class, 'region_id');
+    }
 
 }

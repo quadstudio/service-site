@@ -22,6 +22,11 @@
                 <i class="fa fa-plus"></i>
                 <span>@lang('site::messages.add') @lang('site::user.create.dealer')</span>
             </a>
+            <a href="{{ route('admin.users.mailing') }}"
+               class="d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn-ferroli">
+                <i class="fa fa-@lang('site::mailing.icon')"></i>
+                <span>@lang('site::messages.create') @lang('site::mailing.mailing')</span>
+            </a>
             <a href="{{ route('admin') }}" class="d-block d-sm-inline btn btn-secondary">
                 <i class="fa fa-reply"></i>
                 <span>@lang('site::messages.back_admin')</span>
@@ -30,7 +35,7 @@
 
         {{$users->render()}}
         @filter(['repository' => $repository])@endfilter
-
+        @pagination(['pagination' => $users])@endpagination
 
         <table class="table table-bordered bg-white table-sm table-hover">
             <tr>

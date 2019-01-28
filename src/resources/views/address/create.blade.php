@@ -137,12 +137,11 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="form-row required">
+                            <div class="form-row">
                                 <div class="col mb-3">
                                     <label class="control-label" for="building">@lang('site::address.building')</label>
                                     <input type="text"
                                            name="address[building]"
-                                           required
                                            id="building"
                                            class="form-control{{ $errors->has('address.building') ? ' is-invalid' : '' }}"
                                            placeholder="@lang('site::address.placeholder.building')"
@@ -188,6 +187,22 @@
                             <span class="invalid-feedback">{{ $errors->first('address.emailaddress') }}</span>
                         </div>
                     </div>
+
+                    {{-- E-SHOP --}}
+
+                    <div class="form-row">
+                        <div class="col mb-3">
+                            <label class="control-label" for="email">@lang('site::address.eshop')</label>
+                            <input type="text"
+                                   name="address[eshop]"
+                                   id="address[eshop]"
+                                   class="form-control{{ $errors->has('address.eshop') ? ' is-invalid' : '' }}"
+                                   placeholder="@lang('site::address.placeholder.eshop')"
+                                   value="{{ old('address.eshop') }}">
+                            <span class="invalid-feedback">{{ $errors->first('address.eshop') }}</span>
+                        </div>
+                    </div>
+
 
                     <hr/>
 
