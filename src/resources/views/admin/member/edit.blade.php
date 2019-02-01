@@ -174,12 +174,26 @@
                                     <div class="form-group required">
                                         <label class="control-label"
                                                for="date_from">@lang('site::member.date_from')</label>
-                                        <input type="date"
-                                               name="date_from"
-                                               id="date_from"
-                                               required
-                                               class="form-control{{ $errors->has('date_from') ? ' is-invalid' : '' }}"
-                                               value="{{ old('date_from', $member->date_from) }}">
+                                        <div class="input-group date datetimepicker" id="datetimepicker_date_from"
+                                             data-target-input="nearest">
+                                            <input type="text"
+                                                   name="date_from"
+                                                   id="date_from"
+                                                   maxlength="10"
+                                                   required
+                                                   placeholder="@lang('site::member.placeholder.date_from')"
+                                                   data-target="#datetimepicker_date_from"
+                                                   data-toggle="datetimepicker"
+                                                   class="datetimepicker-input form-control{{ $errors->has('date_from') ? ' is-invalid' : '' }}"
+                                                   value="{{ old('date_from', $member->date_from()) }}">
+                                            <div class="input-group-append"
+                                                 data-target="#datetimepicker_date_from"
+                                                 data-toggle="datetimepicker">
+                                                <div class="input-group-text">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <span class="invalid-feedback">{{ $errors->first('date_from') }}</span>
                                     </div>
                                 </div>
@@ -187,12 +201,26 @@
                                     <div class="form-group required">
                                         <label class="control-label"
                                                for="date_to">@lang('site::member.date_to')</label>
-                                        <input type="date"
-                                               name="date_to"
-                                               id="date_to"
-                                               required
-                                               class="form-control{{ $errors->has('date_to') ? ' is-invalid' : '' }}"
-                                               value="{{ old('date_to', $member->date_to) }}">
+                                        <div class="input-group date datetimepicker" id="datetimepicker_date_to"
+                                             data-target-input="nearest">
+                                            <input type="text"
+                                                   name="date_to"
+                                                   id="date_to"
+                                                   maxlength="10"
+                                                   required
+                                                   placeholder="@lang('site::member.placeholder.date_to')"
+                                                   data-target="#datetimepicker_date_to"
+                                                   data-toggle="datetimepicker"
+                                                   class="datetimepicker-input form-control{{ $errors->has('date_to') ? ' is-invalid' : '' }}"
+                                                   value="{{ old('date_to', $member->date_to()) }}">
+                                            <div class="input-group-append"
+                                                 data-target="#datetimepicker_date_to"
+                                                 data-toggle="datetimepicker">
+                                                <div class="input-group-text">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <span class="invalid-feedback">{{ $errors->first('date_to') }}</span>
                                     </div>
                                 </div>

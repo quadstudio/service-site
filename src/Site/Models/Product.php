@@ -120,7 +120,10 @@ class Product extends Model implements Imageable
     public function image()
     {
         if ($this->images()->count() == 0) {
-            return new Image(['src' => storage_path('app/public/images/products/noimage.png')]);
+            return new Image([
+                'src'     => storage_path('app/public/images/products/noimage.png'),
+                'storage' => 'products'
+            ]);
         }
 
         return $this->images()->first();
@@ -133,16 +136,17 @@ class Product extends Model implements Imageable
      */
     public function images()
     {
-        if (config('site::cache.use', true) === true) {
-            $key = $this->primaryKey;
-            $cacheKey = 'product_images_' . $this->{$key};
-
-            return cache()->remember($cacheKey, config('site::cache.ttl'), function () {
-                return $this->_images();
-            });
-        }
-
-        return $this->_images();
+        return $this->morphMany(Image::class, 'imageable');
+//        if (config('site::cache.use', true) === true) {
+//            $key = $this->primaryKey;
+//            $cacheKey = 'product_images_' . $this->{$key};
+//
+//            return cache()->remember($cacheKey, config('site::cache.ttl'), function () {
+//                return $this->_images();
+//            });
+//        }
+//
+//        return $this->_images();
     }
 
     /**

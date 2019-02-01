@@ -2,7 +2,6 @@
 
 namespace QuadStudio\Service\Site\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Item extends Model
@@ -15,6 +14,16 @@ class Item extends Model
 
     protected $fillable = ['title', 'annotation', 'description', 'image_id', 'date', 'published'];
 
+    protected $casts = [
+
+        'title'       => 'string',
+        'annotation'  => 'string',
+        'description' => 'string',
+        'published'   => 'boolean',
+        'image_id'    => 'integer',
+        'date'        => 'date',
+    ];
+
     /**
      * @param array $attributes
      */
@@ -22,6 +31,11 @@ class Item extends Model
     {
         parent::__construct($attributes);
         $this->table = 'news';
+    }
+
+    public function setDateAttribute($value)
+    {
+        $this->attributes['date'] = date('Y-m-d', strtotime($value));
     }
 
     /**
@@ -37,9 +51,14 @@ class Item extends Model
         ]);
     }
 
+    /**
+     * Желаемая дата С
+     *
+     * @return string
+     */
     public function date()
     {
-        return !is_null($this->getAttribute('date')) ? Carbon::instance(\DateTime::createFromFormat('Y-m-d', $this->getAttribute('date')))->format('d.m.Y') : '';
+        return \Carbon\Carbon::instance($this->getAttribute('date'))->format('d.m.Y');
     }
 
     public function hasDescription()

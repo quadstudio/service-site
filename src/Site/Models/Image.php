@@ -39,7 +39,8 @@ class Image extends Model
 
     public function src()
     {
-        if (!$this->exists || !Storage::disk($this->storage)->has($this->path)) {
+
+        if (!$this->exists || !Storage::disk($this->storage)->exists($this->path)) {
             return Storage::disk($this->storage)->url('noimage.png');
         } else {
             return Storage::disk($this->storage)->url($this->path);

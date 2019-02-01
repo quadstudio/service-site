@@ -4,9 +4,6 @@ namespace QuadStudio\Service\Site\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Mail;
-use QuadStudio\Service\Site\Http\Requests\Admin\MailingSendRequest;
-use QuadStudio\Service\Site\Mail\Guest\MailingHtmlEmail;
 
 class Event extends Model
 {
@@ -23,6 +20,22 @@ class Event extends Model
         'region_id', 'city', 'address',
     ];
 
+    protected $casts = [
+
+        'title'       => 'string',
+        'annotation'  => 'string',
+        'description' => 'string',
+        'confirmed'   => 'boolean',
+        'image_id'    => 'integer',
+        'type_id'     => 'integer',
+        'status_id'   => 'integer',
+        'region_id'   => 'string',
+        'city'        => 'string',
+        'address'     => 'string',
+        'date_from'   => 'date',
+        'date_to'     => 'date'
+    ];
+
     /**
      * @param array $attributes
      */
@@ -30,6 +43,16 @@ class Event extends Model
     {
         parent::__construct($attributes);
         $this->table = 'events';
+    }
+
+    public function setDateFromAttribute($value)
+    {
+        $this->attributes['date_from'] = date('Y-m-d', strtotime($value));
+    }
+
+    public function setDateToAttribute($value)
+    {
+        $this->attributes['date_to'] = date('Y-m-d', strtotime($value));
     }
 
     /**
@@ -66,23 +89,23 @@ class Event extends Model
     }
 
     /**
-     * Дата проведения С
+     * Желаемая дата С
      *
      * @return string
      */
     public function date_from()
     {
-        return !is_null($this->getAttribute('date_from')) ? Carbon::instance(\DateTime::createFromFormat('Y-m-d', $this->getAttribute('date_from')))->format('d.m.Y') : '';
+        return \Carbon\Carbon::instance($this->getAttribute('date_from'))->format('d.m.Y');
     }
 
     /**
-     * Дата проведения По
+     * Желаемая дата По
      *
      * @return string
      */
     public function date_to()
     {
-        return !is_null($this->getAttribute('date_to')) ? Carbon::instance(\DateTime::createFromFormat('Y-m-d', $this->getAttribute('date_to')))->format('d.m.Y') : '';
+        return \Carbon\Carbon::instance($this->getAttribute('date_to'))->format('d.m.Y');
     }
 
     public function hasDescription()

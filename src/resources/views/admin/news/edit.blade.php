@@ -74,11 +74,26 @@
                     <div class="form-group required">
                         <label class="control-label"
                                for="date">@lang('site::news.date')</label>
-                        <input type="date" name="date" id="date"
-                               class="form-control{{ $errors->has('date') ? ' is-invalid' : '' }}"
-                               placeholder="@lang('site::news.placeholder.date')"
-                               required
-                               value="{{ old('date', $item->date) }}">
+                        <div class="input-group date datetimepicker" id="datetimepicker_date"
+                             data-target-input="nearest">
+                            <input type="text"
+                                   name="date"
+                                   id="date"
+                                   maxlength="10"
+                                   required
+                                   placeholder="@lang('site::news.placeholder.date')"
+                                   data-target="#datetimepicker_date"
+                                   data-toggle="datetimepicker"
+                                   class="datetimepicker-input form-control{{ $errors->has('date') ? ' is-invalid' : '' }}"
+                                   value="{{ old('date', $item->date()) }}">
+                            <div class="input-group-append"
+                                 data-target="#datetimepicker_date"
+                                 data-toggle="datetimepicker">
+                                <div class="input-group-text">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                            </div>
+                        </div>
                         <span class="invalid-feedback">{{ $errors->first('date') }}</span>
                     </div>
 

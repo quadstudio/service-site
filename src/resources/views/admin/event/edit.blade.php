@@ -22,7 +22,7 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body" id="summernote">
                         <form method="POST" id="form-content"
                               action="{{ route('admin.events.update', $event) }}">
 
@@ -49,7 +49,8 @@
                                     <textarea class="form-control{{ $errors->has('annotation') ? ' is-invalid' : '' }}"
                                               placeholder="@lang('site::event.placeholder.annotation')"
                                               required
-                                              name="annotation" id="annotation">{{ old('annotation', $event->annotation) }}</textarea>
+                                              name="annotation"
+                                              id="annotation">{{ old('annotation', $event->annotation) }}</textarea>
                                     <span class="invalid-feedback">{{ $errors->first('annotation') }}</span>
                                 </div>
                             </div>
@@ -59,7 +60,8 @@
                                     <div class="form-row required">
                                         <div class="col mb-3 required">
 
-                                            <label class="control-label" for="type_id">@lang('site::event.type_id')</label>
+                                            <label class="control-label"
+                                                   for="type_id">@lang('site::event.type_id')</label>
                                             <select class="form-control{{  $errors->has('type_id') ? ' is-invalid' : '' }}"
                                                     name="type_id"
                                                     required
@@ -82,7 +84,8 @@
                                     <div class="form-row required">
                                         <div class="col mb-3 required">
 
-                                            <label class="control-label" for="status_id">@lang('site::event.status_id')</label>
+                                            <label class="control-label"
+                                                   for="status_id">@lang('site::event.status_id')</label>
                                             <select class="form-control{{  $errors->has('status_id') ? ' is-invalid' : '' }}"
                                                     name="status_id"
                                                     required
@@ -110,7 +113,8 @@
                                     <div class="form-row required">
                                         <div class="col mb-3 required">
 
-                                            <label class="control-label" for="region_id">@lang('site::event.region_id')</label>
+                                            <label class="control-label"
+                                                   for="region_id">@lang('site::event.region_id')</label>
                                             <select class="form-control{{  $errors->has('region_id') ? ' is-invalid' : '' }}"
                                                     name="region_id"
                                                     required
@@ -162,26 +166,54 @@
                                 <div class="col-md-6">
                                     <div class="form-group required">
                                         <label class="control-label"
-                                               for="date_from">@lang('site::event.date_from_to') @lang('site::event.date_from')</label>
-                                        <input type="date"
-                                               name="date_from"
-                                               id="date_from"
-                                               required
-                                               class="form-control{{ $errors->has('date_from') ? ' is-invalid' : '' }}"
-                                               value="{{ old('date_from', $event->date_from) }}">
+                                               for="date_from">@lang('site::event.date_from')</label>
+                                        <div class="input-group date datetimepicker" id="datetimepicker_date_from"
+                                             data-target-input="nearest">
+                                            <input type="text"
+                                                   name="date_from"
+                                                   id="date_from"
+                                                   maxlength="10"
+                                                   required
+                                                   placeholder="@lang('site::event.placeholder.date_from')"
+                                                   data-target="#datetimepicker_date_from"
+                                                   data-toggle="datetimepicker"
+                                                   class="datetimepicker-input form-control{{ $errors->has('date_from') ? ' is-invalid' : '' }}"
+                                                   value="{{ old('date_from', $event->date_from()) }}">
+                                            <div class="input-group-append"
+                                                 data-target="#datetimepicker_date_from"
+                                                 data-toggle="datetimepicker">
+                                                <div class="input-group-text">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <span class="invalid-feedback">{{ $errors->first('date_from') }}</span>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group required">
                                         <label class="control-label"
-                                               for="date_to">@lang('site::event.date_from_to') @lang('site::event.date_to')</label>
-                                        <input type="date"
-                                               name="date_to"
-                                               id="date_to"
-                                               required
-                                               class="form-control{{ $errors->has('date_to') ? ' is-invalid' : '' }}"
-                                               value="{{ old('date_to', $event->date_to) }}">
+                                               for="date_to">@lang('site::event.date_to')</label>
+                                        <div class="input-group date datetimepicker" id="datetimepicker_date_to"
+                                             data-target-input="nearest">
+                                            <input type="text"
+                                                   name="date_to"
+                                                   id="date_to"
+                                                   maxlength="10"
+                                                   required
+                                                   placeholder="@lang('site::event.placeholder.date_to')"
+                                                   data-target="#datetimepicker_date_to"
+                                                   data-toggle="datetimepicker"
+                                                   class="datetimepicker-input form-control{{ $errors->has('date_to') ? ' is-invalid' : '' }}"
+                                                   value="{{ old('date_to', $event->date_to()) }}">
+                                            <div class="input-group-append"
+                                                 data-target="#datetimepicker_date_to"
+                                                 data-toggle="datetimepicker">
+                                                <div class="input-group-text">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <span class="invalid-feedback">{{ $errors->first('date_to') }}</span>
                                     </div>
                                 </div>
@@ -191,7 +223,8 @@
                                 <input type="checkbox" @if(old('confirmed', $event->confirmed) == 1) checked @endif
                                 class="custom-control-input{{  $errors->has('confirmed') ? ' is-invalid' : '' }}"
                                        id="confirmed" name="confirmed">
-                                <label class="custom-control-label" for="confirmed">@lang('site::event.confirmed')</label>
+                                <label class="custom-control-label"
+                                       for="confirmed">@lang('site::event.confirmed')</label>
                                 <span class="invalid-feedback">{{ $errors->first('confirmed') }}</span>
                             </div>
 
@@ -240,7 +273,8 @@
                                 <i class="fa fa-check"></i>
                                 <span>@lang('site::messages.save')</span>
                             </button>
-                            <a href="{{ route('admin.events.show', $event) }}" class="d-block d-sm-inline btn btn-secondary">
+                            <a href="{{ route('admin.events.show', $event) }}"
+                               class="d-block d-sm-inline btn btn-secondary">
                                 <i class="fa fa-close"></i>
                                 <span>@lang('site::messages.cancel')</span>
                             </a>

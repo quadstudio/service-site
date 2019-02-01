@@ -10,6 +10,7 @@ use QuadStudio\Service\Site\Filters\Event\SortDateFromFilter;
 use QuadStudio\Service\Site\Filters\Member\DateFromFilter;
 use QuadStudio\Service\Site\Filters\Member\DateToFilter;
 use QuadStudio\Service\Site\Filters\Member\MemberRunnedFilter;
+use QuadStudio\Service\Site\Filters\Member\MemberVerifiedFilter;
 use QuadStudio\Service\Site\Filters\Member\RegionSelectFilter;
 use QuadStudio\Service\Site\Filters\Member\SearchCityFilter;
 use QuadStudio\Service\Site\Filters\Member\SortDateFromAscFilter;
@@ -73,6 +74,7 @@ trait MemberControllerTrait
 
         $this->members->trackFilter();
         $this->members->applyFilter(new MemberRunnedFilter());
+        $this->members->applyFilter(new MemberVerifiedFilter());
         $this->members->applyFilter(new SortDateFromAscFilter());
         $this->members
             ->pushTrackFilter(SearchCityFilter::class)

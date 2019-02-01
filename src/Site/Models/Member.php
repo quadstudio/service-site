@@ -22,19 +22,21 @@ class Member extends Model
     //protected $dateFormat = 'd.m.Y H:i:s';
 
     protected $casts = [
-        'type_id'   => 'integer',
-        'event_id'  => 'integer',
-        'status_id' => 'string',
-        'region_id' => 'string',
-        'city'      => 'string',
-        'name'      => 'string',
-        'phone'     => 'string',
-        'contact'   => 'string',
-        'count'     => 'integer',
-        'email'     => 'string',
-        'address'   => 'string',
-        'date_from' => 'date',
-        'date_to'   => 'date',
+        'type_id'      => 'integer',
+        'event_id'     => 'integer',
+        'status_id'    => 'string',
+        'region_id'    => 'string',
+        'city'         => 'string',
+        'name'         => 'string',
+        'phone'        => 'string',
+        'contact'      => 'string',
+        'count'        => 'integer',
+        'email'        => 'string',
+        'address'      => 'string',
+        'date_from'    => 'date',
+        'date_to'      => 'date',
+        'verified'     => 'boolean',
+        'verify_token' => 'string',
     ];
 
 
