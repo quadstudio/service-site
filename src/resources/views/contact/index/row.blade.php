@@ -45,7 +45,7 @@
                 <div class="item-content-about">
                     <div class="item-content-user text-muted small mb-2">{{$contact->type->name}}</div>
                     <h5 class="item-content-name mb-1">
-                        <a href="javascript:void(0)" class="text-dark">{{$contact->name}}</a>
+                        {{$contact->name}} <span style="font-size: 12px"><a href="{{route('contacts.edit', $contact)}}">Изменить</a></span>
                     </h5>
 
                     @if($contact->position)
@@ -59,6 +59,8 @@
                         <div>
                             @foreach($contact->phones as $phone)
                                 <span class="text-secondary mr-3">{{$phone->country->phone}}{{$phone->number}}</span>
+								@if($phone->extra) @lang('site::phone.extra') {{$phone->extra}} @endif
+								<a href="{{route('phones.edit', $phone)}}">Изменить</a>
                             @endforeach
                         </div>
                     @endif

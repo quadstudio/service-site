@@ -36,7 +36,7 @@ class NewsRequest extends FormRequest
                     'title'       => 'required|string|max:64',
                     'annotation'  => 'required|string|max:255',
                     'published'   => 'required|boolean',
-                    'date'        => 'required|date_format:"Y-m-d"',
+                    'date'        => 'required|date',
                     'image_id'    => 'sometimes|exists:images,id',
                 ];
             }

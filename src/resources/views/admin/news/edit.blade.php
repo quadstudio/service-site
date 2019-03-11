@@ -71,7 +71,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group required">
+                    <div class="form-group required col-sm-2">
                         <label class="control-label"
                                for="date">@lang('site::news.date')</label>
                         <div class="input-group date datetimepicker" id="datetimepicker_date"
@@ -155,7 +155,7 @@
                     </div>
                     <div class="col-md-6">
                         <div id="image-src" class="bg-light"
-                             style="width: {{config('site.news.size.image.width', 370)}}px;height: {{config('site.news.size.image.height', 200)}}px;">
+                             style="width: {{config('site.news.size.image.width', 300)}}px;height: {{config('site.news.size.image.height', 200)}}px;">
                             @include('site::admin.image.field', ['image'   => $item->image])
                         </div>
                     </div>

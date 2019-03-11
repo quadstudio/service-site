@@ -56,6 +56,34 @@
 
                             <div class="form-row required">
                                 <div class="col mb-3">
+                                    <label class="control-label"
+                                           for="user_region_id">@lang('site::user.region_id')</label>
+                                    <select class="form-control
+                                            {{$errors->has('user.region_id') ? ' is-invalid' : ''}}"
+                                            required
+                                            name="user[region_id]"
+                                            id="user_region_id">
+                                        <option value="">@lang('site::messages.select_from_list')</option>
+                                        @foreach($districts as $district)
+                                            <optgroup label="{{$district->name}}">
+                                                @foreach($district->regions()->orderBy('name')->get() as $region)
+                                                    <option
+                                                            @if(old('user.region_id', $user->region_id) == $region->id)
+                                                            selected
+                                                            @endif
+                                                            value="{{ $region->id }}">{{ $region->name }}</option>
+                                                @endforeach
+                                            </optgroup>
+                                        @endforeach
+                                    </select>
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('user.region_id') }}</strong>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="form-row required">
+                                <div class="col mb-3">
                                     <label class="control-label d-block"
                                            for="user_active">@lang('site::user.active')</label>
                                     <div class="custom-control custom-radio  custom-control-inline">

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use QuadStudio\Rbac\Repositories\RoleRepository;
 use QuadStudio\Service\Site\Events\UserScheduleEvent;
+use QuadStudio\Service\Site\Filters\District\SortFilter;
 use QuadStudio\Service\Site\Filters\PriceType\EnabledFilter;
 use QuadStudio\Service\Site\Filters\User\ActiveSelectFilter;
 use QuadStudio\Service\Site\Filters\User\AddressSearchFilter;
@@ -29,11 +30,13 @@ use QuadStudio\Service\Site\Models\Address;
 use QuadStudio\Service\Site\Models\Contact;
 use QuadStudio\Service\Site\Models\ContragentType;
 use QuadStudio\Service\Site\Models\Country;
+use QuadStudio\Service\Site\Models\District;
 use QuadStudio\Service\Site\Models\Phone;
 use QuadStudio\Service\Site\Models\Region;
 use QuadStudio\Service\Site\Models\User;
 use QuadStudio\Service\Site\Repositories\ContactRepository;
 use QuadStudio\Service\Site\Repositories\ContragentRepository;
+use QuadStudio\Service\Site\Repositories\DistrictRepository;
 use QuadStudio\Service\Site\Repositories\OrderRepository;
 use QuadStudio\Service\Site\Repositories\PriceTypeRepository;
 use QuadStudio\Service\Site\Repositories\ProductTypeRepository;
@@ -90,6 +93,10 @@ trait UserControllerTrait
      * @var TemplateRepository
      */
     private $templates;
+    /**
+     * @var DistrictRepository
+     */
+    private $districts;
 
     /**
      * Create a new controller instance.
@@ -105,6 +112,7 @@ trait UserControllerTrait
      * @param UserPriceRepository $user_prices
      * @param ProductTypeRepository $product_types
      * @param TemplateRepository $templates
+     * @param DistrictRepository $districts
      */
     public function __construct(
         UserRepository $users,
@@ -117,7 +125,8 @@ trait UserControllerTrait
         RepairRepository $repairs,
         UserPriceRepository $user_prices,
         ProductTypeRepository $product_types,
-        TemplateRepository $templates
+        TemplateRepository $templates,
+        DistrictRepository $districts
     )
     {
         $this->users = $users;
@@ -131,6 +140,7 @@ trait UserControllerTrait
         $this->user_prices = $user_prices;
         $this->product_types = $product_types;
         $this->templates = $templates;
+        $this->districts = $districts;
     }
 
     /**
@@ -246,8 +256,10 @@ trait UserControllerTrait
     {
         $roles = $this->roles->all();
         $warehouses = $this->warehouses->all();
+        $this->districts->applyFilter(new SortFilter());
+        $districts = $this->districts->all();
 
-        return view('site::admin.user.edit', compact('user', 'roles', 'warehouses'));
+        return view('site::admin.user.edit', compact('user', 'roles', 'warehouses', 'districts'));
     }
 
 
@@ -349,6 +361,48 @@ trait UserControllerTrait
             ));
         }
     }
+
+    /**
+     * Зоны дистрибуции пользователя
+     *
+     * @param Request $request
+     * @param User $user
+     * @return \Illuminate\Http\Response
+     */
+    public function distrzones(Request $request, User $user)
+    {
+        if ($request->isMethod('post')) {
+            $user->prices()->delete();
+            $data = [];
+            foreach ($request->input('user_price') as $product_type_id => $price_type_id) {
+                $data[] = [
+                    'product_type_id' => $product_type_id,
+                    'price_type_id'   => $price_type_id,
+                ];
+            }
+            $user->prices()->createMany($data);
+            if ($request->input('_stay') == 1) {
+                $redirect = redirect()->route('admin.users.prices', $user)->with('success', trans('site::user_price.updated'));
+            } else {
+                $redirect = redirect()->route('admin.users.show', $user)->with('success', trans('site::user_price.updated'));
+            }
+
+            return $redirect;
+        } else {
+            $user_prices = $user->prices;
+            $product_types = $this->product_types->all();
+            $price_types = $this->price_types->applyFilter(new EnabledFilter())->all();
+            $default_price_type = config('site.defaults.user.price_type_id');
+            $regions = Region::where('country_id', '643')->orderBy('name')->get();
+            $districts = District::where('country_id', '643')->orderBy('sort_order')->get();
+
+            return view('site::admin.user.distrzone', compact(
+                'user', 'regions', 'districts'
+
+            ));
+        }
+    }
+
 
     /**
      * Показать список заказов сервисного центра

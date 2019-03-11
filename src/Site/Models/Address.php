@@ -3,9 +3,13 @@
 namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use QuadStudio\Service\Site\Traits\Models\AddressStorehouseTrait;
 
 class Address extends Model
 {
+
+    use AddressStorehouseTrait;
+
     protected $fillable = [
         'type_id', 'country_id', 'region_id',
         'locality', 'street', 'building',
@@ -18,11 +22,6 @@ class Address extends Model
      * @var string
      */
     protected $table;
-
-    /**
-     * @var \Geocoder\StatefulGeocoder
-     */
-    private $geocoder;
 
     /**
      * @param array $attributes
@@ -148,5 +147,8 @@ class Address extends Model
     {
         return $this->belongsTo(Region::class);
     }
+
+
+
 
 }

@@ -33,6 +33,7 @@ class UserRequest extends FormRequest
                     'active'                => 'required|boolean',
                     'dealer'                => 'required|boolean',
                     'verified'              => 'required|boolean',
+                    'region_id'             => 'required|exists:regions,id',
                     //
                     'name'                  => 'required|string|max:255',
                     'email'                 => 'required|string|email|max:255|unique:users',
@@ -50,10 +51,10 @@ class UserRequest extends FormRequest
             case 'PUT':
             case 'PATCH': {
                 return [
-                    'user.display'       => 'required|boolean',
-                    'user.active'        => 'required|boolean',
-                    'user.dealer'        => 'required|boolean',
-                    'user.verified'      => 'required|boolean',
+                    'user.display'  => 'required|boolean',
+                    'user.active'   => 'required|boolean',
+                    'user.dealer'   => 'required|boolean',
+                    'user.verified' => 'required|boolean',
                 ];
             }
             default:
@@ -82,6 +83,7 @@ class UserRequest extends FormRequest
             'name'                  => trans('site::user.name'),
             'email'                 => trans('site::user.email'),
             'web'                   => trans('site::user.web'),
+            'region_id'             => trans('site::user.region_id'),
             //
             'phone.sc.country_id'   => trans('site::phone.country_id'),
             'phone.sc.number'       => trans('site::phone.number'),

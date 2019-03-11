@@ -21,6 +21,7 @@ return [
         'phone'        => '',
         'email'        => '',
         'list'         => 'состав участников',
+        'list_h'         => 'Состав участников',
     ],
     'placeholder'  => [
         'name'         => '',

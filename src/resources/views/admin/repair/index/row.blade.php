@@ -19,7 +19,7 @@
                     @if($repair->act)
                         <a href="{{route('admin.acts.show', $repair->act)}}"><i
                                     class="fa fa-@lang('site::act.icon')"></i> @lang('site::repair.act_id')
-                            № {{ $repair->act->id }}</a>
+                            № {{ $repair->act->id }}</a> @lang('site::repair.received_'.($repair->act->received))
                     @endif
                 </div>
 
@@ -59,8 +59,9 @@
                     <div class="small mr-2 mr-sm-0"><b
                                 class="text-muted">@lang('site::repair.help.cost_distance')</b>&nbsp;{{$repair->cost_distance()}}
                         &nbsp;{{ Auth::user()->currency->symbol_right }}<br><span class="text-muted"> {{ $repair->distance->name }}</span></div>
-                    <div class="small"><b
-                                class="text-muted">@lang('site::repair.help.cost_parts')</b>&nbsp;{{Site::format($repair->cost_parts())}}
+                    <div class="small"><b class="text-muted">@lang('site::repair.help.cost_parts')</b>&nbsp;{{Site::format($repair->cost_parts())}}
+                    </div>
+                    <div class="small"><b class="text-muted">@lang('site::repair.total_cost')</b>&nbsp;{{Site::format($repair->totalCost)}}
                     </div>
                 </div>
 

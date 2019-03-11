@@ -23,6 +23,9 @@
     <td class="text-center">@if(( $user->roles()->where('id', 7)->get()->isNotEmpty() ))<span
                 class="text-normal text-success">@lang('site::user.gendistr_ico_1')</span> @else <span
                 class="text-normal text-danger">@lang('site::user.active_ico_0')</span> @endif</td>
+    <td class="text-center">@if(( $user->roles()->where('id', 10)->get()->isNotEmpty() ))<span
+                class="text-normal text-success">@lang('site::user.active_ico_1')</span> @else <span
+                class="text-normal text-danger">@lang('site::user.active_ico_0')</span> @endif</td>
     <td class="text-center">
         <span class="text-normal @if($user->active) text-success @else text-danger @endif">@lang('site::user.active_ico_'.($user->active))</span>
     </td>

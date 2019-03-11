@@ -13,7 +13,7 @@
     function init() {
         myMap = new ymaps.Map('contact-map', {
             center: [55.76, 37.64],
-            zoom: 8,
+            zoom: 4,
             controls: ['zoomControl', 'typeSelector', 'fullscreenControl']
         }, {
             searchControlProvider: 'yandex#search'
@@ -35,7 +35,7 @@
             );
             myMap.geoObjects.add(myPlacemark);
 
-            myMap.setBounds(myMap.geoObjects.getBounds(), {checkZoomRange: true});
+            myMap.setBounds(myMap.geoObjects.getBounds(), {checkZoomRange:true}).then(function(){ if(myMap.getZoom() > 9) myMap.setZoom(12);});
         });
     }
 </script>

@@ -49,7 +49,6 @@
                                     <label class="control-label" for="annotation">@lang('site::event_type.annotation')</label>
                                     <textarea class="form-control{{ $errors->has('annotation') ? ' is-invalid' : '' }}"
                                               placeholder="@lang('site::event_type.placeholder.annotation')"
-                                              maxlength="255"
                                               required
                                               name="annotation"
                                               id="annotation">{{ old('annotation', $event_type->annotation) }}</textarea>

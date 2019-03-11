@@ -78,6 +78,9 @@ class Site
                     $router->resource('/news', 'NewsController')->only(['index']);
                     /* Мероприятия */
                     $router->resource('/events', 'EventController')->only(['index', 'show']);
+                    $router->resource('/events_fsf', 'EventFsfController')->only(['index', 'show']);
+                    $router->resource('/events_fpf', 'EventFpfController')->only(['index', 'show']);
+                    $router->resource('/events_fd', 'EventFdController')->only(['index', 'show']);
                     /* Заявки */
                     $router->get('/members/confirm/{token}', 'MemberController@confirm')->name('members.confirm');
                     $router->resource('/members', 'MemberController')->only(['index', 'create', 'store']);
@@ -114,6 +117,7 @@ class Site
                                 return (new ActPdf())->setModel($act)->render();
                             })->middleware('can:pdf,act')->name('acts.pdf');
 
+                            $router->post('/orders/load', 'OrderController@load')->middleware('permission:orders')->name('orders.load');
                             $router->resource('/orders', 'OrderController')->except(['edit', 'update'])->middleware('permission:orders');
                             $router->post('/orders/{order}/message', 'OrderController@message')->middleware('permission:messages')->name('orders.message');
                             $router->delete('/order-items/{item}', 'OrderItemController@destroy')->name('orders.items.destroy');
@@ -226,7 +230,8 @@ class Site
 
                                 $router->group(['namespace' => 'Address', 'prefix' => 'addresses/{address}'],
                                     function () use ($router) {
-                                        $router->name('admin.addresses')->resource('/phones', 'PhoneController');//->only(['create', 'store'])
+                                        $router->name('admin.addresses')->resource('/phones', 'PhoneController');
+                                        $router->name('admin.addresses')->resource('/regions', 'RegionController');
                                     });
                                 $router->name('admin')->resource('/banks', 'BankController');
                                 $router->name('admin')->resource('/orders', 'OrderController')->only(['index', 'show', 'destroy']);

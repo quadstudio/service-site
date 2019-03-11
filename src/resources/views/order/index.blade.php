@@ -18,7 +18,6 @@
                 <i class="fa fa-magic"></i>
                 <span>@lang('site::messages.create') @lang('site::order.order')</span>
             </a>
-
             <a href="{{ route('home') }}"
                class="d-block d-sm-inline btn btn btn-secondary">
                 <i class="fa fa-reply"></i>

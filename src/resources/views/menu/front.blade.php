@@ -45,6 +45,11 @@
                             @include('site::cart.nav')
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="https://yadi.sk/d/7CXTYatd-Xp4bw">
+                                Каталог и прайс (PDF)
+                            </a>
+                        </li>
+			<li class="nav-item">
                             <a class="nav-link" href="{{ route('services.index') }}">
                                 <i class="fa fa-@lang('site::service.icon')"></i>
                                 @lang('site::service.services')
@@ -91,6 +96,7 @@
                 </li>
                 <li><a href="{{ route('products.index') }}" class="menuprinc">@lang('site::product.products')</a></li>
                 <li><a href="{{ route('catalogs.index') }}" class="menuprinc">@lang('site::catalog.catalogs')</a></li>
+                <li><a href="https://yadi.sk/d/7CXTYatd-Xp4bw">Каталог и прайс (PDF)</a></li>
                 <li><a href="{{ route('datasheets.index') }}" class="menuprinc">@lang('site::datasheet.datasheets')</a></li>
                 <li><a href="{{ route('services.index') }}">@lang('site::service.services')</a></li>
                 <li><a href="{{ route('dealers.index') }}">@lang('site::dealer.dealers')</a></li>

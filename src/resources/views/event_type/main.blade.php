@@ -1,5 +1,8 @@
-<h2 class="my-5">@lang('site::event.events')</h2>
+<h2 class="my-5">@lang('site::event_type.h1')</h2>
 <div class="card-deck">
+
+<div class="card col-md-2" style="padding-left: 0px; padding-right: 0px;"><img style="width: 100%;" src="/images/skillabo-800.jpg" />
+</div>
     @foreach($types as $type)
         <div class="card">
             <div class="card-body news-content">
@@ -7,7 +10,7 @@
                 <p class="card-text">{!! $type->annotation !!}</p>
             </div>
             <div class="card-footer bg-lightest text-center">
-                <a href="{{route('members.create', ['type_id' => $type->id])}}" class="btn btn-ferroli">@lang('site::messages.leave') @lang('site::member.member')</a>
+                <a href="{!! $type->route !!}" class="btn btn-ferroli">@lang('site::event_type.more')</a>
             </div>
         </div>
     @endforeach

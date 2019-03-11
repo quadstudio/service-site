@@ -34,15 +34,16 @@ class OrderRequest extends FormRequest
             }
             case 'POST': {
                 return [
-                    'status_id' => 'required|in:1',
-                    'comment'   => 'max:5000',
+                    'status_id'     => 'required|in:1',
+                    'comment'       => 'max:5000',
                     'contragent_id' => [
                         'required',
-                        'exists:' . 'contragents,id',
+                        'exists:contragents,id',
                         Rule::exists('contragents', 'id')->where(function ($query) {
                             $query->where('contragents.user_id', $this->user()->id);
                         }),
                     ],
+                    'address_id'    => 'required|exists:addresses,id',
                 ];
             }
             case 'PUT':
@@ -74,8 +75,9 @@ class OrderRequest extends FormRequest
     public function attributes()
     {
         return [
-            'products' => trans('site::messages.products'),
-            'comments' => trans('site::messages.comments'),
+            'products'   => trans('site::messages.products'),
+            'comments'   => trans('site::messages.comments'),
+            'address_id' => trans('site::order.address_id'),
         ];
     }
 }

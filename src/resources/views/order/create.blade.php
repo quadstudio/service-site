@@ -33,22 +33,56 @@
 
         <div class="card mt-2 mb-2">
             <div class="card-body">
-                <form class="product-button" data-name="" action="" method="post">
-                    @csrf
-                    <div class="form-group required">
-                        <label class="control-label"
-                               for="fast_product_id">@lang('site::order_item.product_id')</label>
-                        <select data-limit="10" id="fast_product_id" style="width:100%" class="form-control">
-                            <option value=""></option>
-                        </select>
-                        <span id="fast_product_idHelp" class="d-block form-text text-success">
-                            @lang('site::order_item.help.product_id')
-                        </span>
+                <div class="row">
+                    <div class="col-6">
+                        <h4>Добавить товары по артикулу</h4>
+                        <form class="product-button" data-name="" action="" method="post">
+                            @csrf
+                            <fieldset class="border p-3">
+                                <div class="form-group required">
+                                    <label class="control-label"
+                                           for="fast_product_id">@lang('site::order_item.product_id')</label>
+                                    <select data-limit="10" id="fast_product_id" style="width:100%"
+                                            class="form-control">
+                                        <option value=""></option>
+                                    </select>
+                                    <span id="fast_product_idHelp" class="d-block form-text text-success">
+                                    @lang('site::order_item.help.product_id')
+                                </span>
+                                </div>
+                            </fieldset>
+                        </form>
                     </div>
-                </form>
+                    <div class="col-6">
+                        <h4>Загрузить из файла</h4>
+                        <form enctype="multipart/form-data" action="{{route('orders.load')}}" method="post">
+                            @csrf
 
+                            <div class="form-row border p-3">
+                                <div class="form-group mb-0">
+                                    <label for="path">Файл Excel</label>
+                                    <input type="file"
+                                           name="path"
+                                           accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                           class="form-control-file{{  $errors->has('path') ? ' is-invalid' : '' }}"
+                                           id="path">
+                                    {{--{{dump($errors)}}--}}
+                                    <span class="invalid-feedback">{!! $errors->first('path') !!}</span>
+                                    <button type="submit" class="btn btn-ferroli">
+                                        <i class="fa fa-download"></i>
+                                        <span>@lang('site::messages.load')</span>
+                                    </button>
+                                    <span id="pathHelp" class="d-block form-text text-success">
+                                            @lang('site::order.help.load')
+                                        </span>
+                                </div>
+                            </div>
 
-                <table class="table">
+                        </form>
+                    </div>
+                </div>
+
+                <table class="table mt-3">
                     <thead class="thead-light">
                     <tr>
                         <th class="text-left">@lang('site::cart.name')</th>

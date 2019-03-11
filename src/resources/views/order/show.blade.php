@@ -60,6 +60,15 @@
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::order.id')</dt>
                     <dd class="col-sm-8">{{ $order->id() }}</dd>
 
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::order.address_id')</dt>
+                    <dd class="col-sm-8">{{ $order->address->name }}
+					<div>
+					@foreach($order->address->phones as $phone)
+					{{ $phone->format() }}
+					@endforeach
+					</div>
+					</dd>
+
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::order.created_at')</dt>
                     <dd class="col-sm-8">{{ $order->created_at(true) }}</dd>
 

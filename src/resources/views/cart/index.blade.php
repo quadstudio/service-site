@@ -69,7 +69,25 @@
                                     </select>
                                     <span class="invalid-feedback">{{ $errors->first('contragent_id') }}</span>
                                 </div>
-
+								
+								 <div class="form-group required">
+                                    <label class="control-label"
+                                           for="address_id">@lang('site::order.address_id')</label>
+                                    <select class="form-control{{  $errors->has('address_id') ? ' is-invalid' : '' }}"
+                                            required
+                                            name="address_id"
+                                            id="address_id">
+                                            <option value="">@lang('site::messages.select_from_list')</option>
+                                        @foreach($storehouses as $storehouse)
+                                            <option
+                                                @if(old('address_id') == $storehouse->id) selected
+                                                @endif
+                                                value="{{ $storehouse->id }}">{{ $storehouse->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="invalid-feedback">{{ $errors->first('address_id') }}</span>
+                                </div>
+				
                                 <div class="form-group text-right">
                                     <textarea placeholder="@lang('site::cart.order_comment')" class="form-control"
                                               name="message[text]" maxlength="5000" rows="3"></textarea>

@@ -44,10 +44,11 @@
                 <th>Город</th>
                 <th>ПЛЗ</th>
                 <th>АСЦ</th>
-                <th>ЦСЦ</th>
+                <th>ДЗЧ</th>
                 <th>Дил</th>
                 <th>Дистр</th>
                 <th>ГенДист</th>
+                <th>Eshop</th>
                 <th>Вкл</th>
                 <th>Email</th>
                 <th>Отобр</th>

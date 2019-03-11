@@ -127,6 +127,10 @@
                             <span class="text-dark">{{ $user->warehouse->name }}</span>
                         </div>
                         <div class="mb-2">
+                            <span class="text-muted">@lang('site::user.region_id'):</span>&nbsp;
+                            <span class="text-dark">{{ optional($user->region)->name }}</span>
+                        </div>
+                        <div class="mb-2">
                             <span class="text-muted">@lang('site::user.guid'):</span>&nbsp;
                             <span class="text-dark">{{ $user->guid }}</span>
                         </div>

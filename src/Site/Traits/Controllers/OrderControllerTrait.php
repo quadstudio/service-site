@@ -2,14 +2,19 @@
 
 namespace QuadStudio\Service\Site\Traits\Controllers;
 
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Reader\BaseReader;
 use QuadStudio\Service\Site\Events\OrderCreateEvent;
 use QuadStudio\Service\Site\Facades\Cart;
 use QuadStudio\Service\Site\Filters\BelongsUserFilter;
 use QuadStudio\Service\Site\Filters\OrderDateFilter;
 use QuadStudio\Service\Site\Http\Requests\MessageRequest;
+use QuadStudio\Service\Site\Http\Requests\OrderLoadRequest;
 use QuadStudio\Service\Site\Http\Requests\OrderRequest;
 use QuadStudio\Service\Site\Models\Order;
+use QuadStudio\Service\Site\Models\Product;
 use QuadStudio\Service\Site\Repositories\OrderRepository;
+use QuadStudio\Service\Site\Support\OrderLoadFilter;
 
 trait OrderControllerTrait
 {
@@ -56,7 +61,7 @@ trait OrderControllerTrait
     public function store(OrderRequest $request)
     {
 
-        $request->user()->orders()->save($order = $this->orders->create($request->only(['status_id', 'contragent_id'])));
+        $request->user()->orders()->save($order = $this->orders->create($request->only(['status_id', 'contragent_id', 'address_id'])));
         if ($request->filled('message.text')) {
             $order->messages()->save($request->user()->outbox()->create($request->input('message')));
         }
@@ -81,6 +86,54 @@ trait OrderControllerTrait
     public function create()
     {
         return view('site::order.create');
+    }
+
+    /**
+     * @param OrderLoadRequest $request
+     * @return \Illuminate\Http\Response
+     */
+    public function load(OrderLoadRequest $request)
+    {
+        $inputFileType = ucfirst($request->path->getClientOriginalExtension());
+        $filterSubset = new OrderLoadFilter();
+        /** @var BaseReader $reader */
+        $reader = IOFactory::createReader($inputFileType);
+        $reader->setReadDataOnly(true);
+        $reader->setReadFilter($filterSubset);
+
+        $spreadsheet = $reader->load($request->path->getPathname());
+
+        $rowIterator = $spreadsheet->getActiveSheet()->getRowIterator();
+
+        $data = [];
+
+        foreach ($rowIterator as $r => $row) {
+
+            $cellIterator = $row->getCellIterator();
+
+            foreach ($cellIterator as $c => $cell) {
+
+
+                switch ($c) {
+                    case 'A':
+                        $sku = (string)trim($cell->getValue());
+                        /** @var Product $product */
+                        $product = Product::query()->where('sku', $sku)->firstOrFail();
+
+                        break;
+                    case 'B':
+
+                        $quantity = (int)$cell->getValue();
+
+                        break;
+                }
+            }
+            Cart::add(array_merge($product->toCart(), compact('quantity')));
+        }
+
+        return redirect()->route('orders.create')->with('success', trans('site::order.loaded'));
+
+
     }
 
     /**

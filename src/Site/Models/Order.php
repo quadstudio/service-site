@@ -18,7 +18,7 @@ class Order extends Model implements Messagable
      */
     protected $table;
 
-    protected $fillable = ['status_id', 'contragent_id'];
+    protected $fillable = ['status_id', 'contragent_id','address_id'];
 
     /**
      * @param array $attributes
@@ -72,6 +72,16 @@ class Order extends Model implements Messagable
     public function contragent()
     {
         return $this->belongsTo(Contragent::class);
+    }
+
+    /**
+     * Склад отгрузки
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+	public function address()
+    {
+        return $this->belongsTo(Address::class);
     }
 
     public function hasGuid(){

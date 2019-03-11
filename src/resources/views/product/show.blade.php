@@ -108,8 +108,10 @@
                                     <dd class="col-sm-8">@lang('site::price.help.price')</dd>
                                 @endif
                                 <dt class="col-sm-4"></dt>
-                                <dd class="col-sm-8">
+				<dd class="col-sm-8">
+                              @if($product->forsale)
                                     @include('site::cart.buy.large')
+				@endif
                                 </dd>
 
                             </dl>
@@ -127,16 +129,18 @@
 
                 </div>
                 <ul class="nav nav-tabs mt-3" id="myTab" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" id="description-tab" data-toggle="tab" href="#description"
+                    @if($product->description)
+					<li class="nav-item">
+                        <a class="nav-link @if($product->type_id<4) active @endif" id="description-tab" data-toggle="tab" href="#description"
                            role="tab"
                            aria-controls="description" aria-selected="true">
                             @lang('site::product.description')
                         </a>
                     </li>
+					@endif
                     @if($product->specification)
                         <li class="nav-item">
-                            <a class="nav-link" id="specification-tab" data-toggle="tab" href="#specification"
+                            <a class="nav-link @if(!$product->description) active @endif" id="specification-tab" data-toggle="tab" href="#specification"
                                role="tab"
                                aria-controls="specification" aria-selected="true">
                                 @lang('site::product.specification')
@@ -145,7 +149,7 @@
                     @endif
                     @if($equipments->isNotEmpty())
                         <li class="nav-item">
-                            <a class="nav-link" id="back-relation-tab" data-toggle="tab" href="#back-relation"
+                            <a class="nav-link @if($product->type_id>3) active @endif" id="back-relation-tab" data-toggle="tab" href="#back-relation"
                                role="tab"
                                aria-controls="back-relation"
                                aria-selected="false">@lang('site::relation.header.back_relations')
@@ -198,16 +202,18 @@
 
                 </ul>
                 <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active p-3" id="description" role="tabpanel"
+                    @if($product->description)
+					<div class="tab-pane fade @if($product->type_id<4) show active @endif p-3" id="description" role="tabpanel"
                          aria-labelledby="description-tab">{!! $product->description !!}
                     </div>
+					@endif
                     @if($product->specification)
-                        <div class="tab-pane fade p-3" id="specification" role="tabpanel"
+                        <div class="tab-pane fade @if(!$product->description) show active @endif p-3" id="specification" role="tabpanel"
                              aria-labelledby="specification-tab">{!! $product->specification !!}
                         </div>
                     @endif
                     @if($equipments->isNotEmpty())
-                        <div class="tab-pane fade p-3" id="back-relation" role="tabpanel"
+                        <div class="tab-pane fade @if($product->type_id>3) show active @endif p-3" id="back-relation" role="tabpanel"
                              aria-labelledby="back-relation-tab">
                             <table class="table">
                                 <tbody>

@@ -50,11 +50,12 @@ trait AddressControllerTrait
 
     /**
      * @param User $user
+	 * Для адресов пользователя доступны фактический, интернет-магазин, оптовый склад 2,5,6
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create(User $user)
     {
-        $types = AddressType::find([2,5]);
+        $types = AddressType::find([2,5,6]);
         $countries = Country::enabled()->orderBy('sort_order')->get();
         $regions = collect([]);
         if (old('country_id')) {

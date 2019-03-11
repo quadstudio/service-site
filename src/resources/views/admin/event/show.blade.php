@@ -106,6 +106,22 @@
                     @endforeach
                     </tbody>
                 </table>
+				
+				<h4 class="mb-2">@lang('site::participant.participants')</h4>
+                    
+                        <table class="table table-sm table-hover">
+                            <thead><tr><th>@lang('site::participant.name')</th><th>@lang('site::participant.headposition')</th><th>@lang('site::participant.phone')</th><th>@lang('site::participant.email')</th></tr></thead>
+                            <tbody>
+                            
+							@foreach($event->members as $member)
+							@foreach($member->participants as $participant)
+                                <tr><td>{{$participant->name}}</td><td>{{$participant->headposition}}</td><td>{{$participant->phone}}</td><td>{{$participant->email}}</td></tr>
+                            @endforeach
+							@endforeach
+                            </tbody>
+                        </table>
+                    
+				
             </div>
         </div>
     </div>

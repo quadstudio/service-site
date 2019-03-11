@@ -60,7 +60,7 @@
                         <span class="invalid-feedback">{{ $errors->first('description') }}</span>
                     </div>
 
-                    <div class="form-group required">
+                    <div class="form-group col-md-4 required">
                         <label class="control-label"
                                for="date">@lang('site::news.date')</label>
                         <div class="input-group date datetimepicker" id="datetimepicker_date"

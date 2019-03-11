@@ -15,7 +15,7 @@ class EventType extends Model
      */
     protected $table;
 
-    protected $fillable = ['name', 'annotation', 'active', 'sort_order'];
+    protected $fillable = ['name', 'annotation', 'description', 'route', 'active', 'sort_order'];
 
     /**
      * @param array $attributes

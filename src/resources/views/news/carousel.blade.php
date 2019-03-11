@@ -1,6 +1,6 @@
 @if($news->isNotEmpty())
     <h2 class="mt-5">@lang('site::news.news')</h2>
-    <div id="news-carousel" class="carousel mt-5 slide" data-ride="carousel">
+    <div id="news-carousel" class="carousel mt-5 slide">
         @if(($count = $news->count()) > 3)
             <ol class="carousel-indicators">
                 <li data-target="#news-carousel" data-slide-to="0" class="active"></li>

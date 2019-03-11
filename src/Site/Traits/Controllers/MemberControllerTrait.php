@@ -19,6 +19,7 @@ use QuadStudio\Service\Site\Filters\Region\SelectFilter;
 use QuadStudio\Service\Site\Filters\Region\SortFilter;
 use QuadStudio\Service\Site\Http\Requests\MemberRequest;
 use QuadStudio\Service\Site\Models\Event;
+use QuadStudio\Service\Site\Models\EventType;
 use QuadStudio\Service\Site\Models\Member;
 use QuadStudio\Service\Site\Repositories\EventRepository;
 use QuadStudio\Service\Site\Repositories\EventTypeRepository;
@@ -95,7 +96,7 @@ trait MemberControllerTrait
         $events = $this->events->applyFilter(new SortDateFromFilter())->applyFilter(new EventRunnedFilter())->all();
         $types = $this->types->all();
         $event = Event::query()->findOrNew($request->input('event_id'));
-        $type = Event::query()->findOrNew($request->input('type_id'));
+        $type = EventType::query()->findOrNew($request->input('type_id'));
 
         return view('site::member.create', compact('regions', 'type', 'types', 'event', 'events'));
     }

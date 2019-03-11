@@ -21,6 +21,8 @@ return [
         'news.show',
         'events.index',
         'events.show',
+        'events_fsf.index',
+        'events_fsf.show',
         'members.index',
         'services.index',
         'dealers.index',
@@ -49,7 +51,7 @@ return [
 
     'nds' => 18,
 
-    'cache' => [
+	'cache' => [
         'use' => false,
         'ttl' => 60 * 60 * 24
     ],
@@ -66,7 +68,7 @@ return [
         'serial'       => 10,
         'period'       => 10,
         'order'        => 10,
-        'product'      => 16,
+        'product'      => 28,
         'archive'      => 21,
         'product_list' => 100,
         'product_type' => 25,
@@ -168,7 +170,7 @@ return [
 
     'files' => [
         'mime' => 'jpg,jpeg,png,pdf',
-        'size' => 8092,
+        'size' => 128092,
         'path' => '',
         //'path' => date('Ym'),
     ],
@@ -216,7 +218,7 @@ return [
     | Для основной валюты устанавливается обменный курс = 1.0000
     |
     */
-    'main'              => 933,
+    'main'              => 643,
 
     'country' => 643,
 
@@ -229,10 +231,8 @@ return [
     |
     */
     'update'  => [
-        840, //USD
-        //933,
-        978 // EUR
+        978
     ],
 
-    'exchange' => 'QuadStudio\Service\Site\Exchanges\Nbrb'
+    'exchange' => 'QuadStudio\Service\Site\Exchanges\Cbr'
 ];

@@ -63,16 +63,13 @@
                     <div class="widget">
                         <hr>
                         <ul class="recent-post">
-                            <li><a class="title" href="http://service.ferroli.ru/services">Сервисные центры</a></li>
-                            <li><a class="title" href="http://service.ferroli.ru/dealers">Где купить?</a></li>
-                            <!--- <li><a class="title" href="http://service.ferroli.ru/eshops">Интернет-магазины</a></li> -->
-                            <li><a class="title" href="http://service.ferroli.ru/products" class="title">Запчасти</a>
-                            </li>
-                            <li><a class="title" href="http://service.ferroli.ru/catalogs"
-                                   class="title">Оборудование</a></li>
-                            <li><a class="title" href="http://service.ferroli.ru/datasheets"
-                                   class="title">Документация</a></li>
-                            <li><a class="title" href="http://service.ferroli.ru/feedback">Контакты</a></li>
+                            <li><a class="title" href="/services">Сервисные центры</a></li>
+                            <li><a class="title" href="/dealers">Где купить?</a></li>
+                            <li><a class="title" href="/products" class="title">Запчасти</a></li>
+                            <li><a class="title" href="/catalogs" class="title">Оборудование</a></li>
+                            <li><a class="title" href="/datasheets" class="title">Документация</a></li>
+                            <li><a class="title" href="https://yadi.sk/d/7CXTYatd-Xp4bw" class="title">Каталог и прайс (PDF)</a></li>
+                            <li><a class="title" href="/feedback">Контакты</a></li>
 
                         </ul>
                     </div>
@@ -81,8 +78,8 @@
                     <div class="widget">
                         <hr>
                         <ul class="recent-post">
-                            <li><a class="title" href="http://service.ferroli.ru/login">Вход</a></li>
-                            <li><a class="title" href="http://service.ferroli.ru/register">Регистрация</a></li>
+                            <li><a class="title" href="/login">Вход</a></li>
+                            <li><a class="title" href="/register">Регистрация</a></li>
                         </ul>
                     </div>
                 </div>

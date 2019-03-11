@@ -8,8 +8,13 @@
             </li>
             <li class="breadcrumb-item active">@lang('site::messages.leave') @lang('site::member.member')</li>
         </ol>
-        <h1 class="header-title mb-4">@lang('site::messages.leave') @lang('site::member.member')</h1>
-
+		
+		@if($event->id)
+        <h1 class="header-title mb-4">@lang('site::event.register_h')</h1>
+		@else
+		<h1 class="header-title mb-4">@lang('site::event.request_h')</h1>
+		@endif
+		
         @alert()@endalert
 
         <div class="card mb-5">
@@ -18,13 +23,105 @@
                 <form id="form-content" method="POST" action="{{ route('members.store') }}">
                     @csrf
 
+@if($event->exists)
+                    <div class="form-row">
+                        <div class="col mb-3">
+							<select class="form-control{{  $errors->has('event_id') ? ' is-invalid' : '' }}"
+                                    name="event_id" id="event_id" readonly >
+                                <option selected value="{{ $event->id }}"> {{ $event->date_from() }} / {{ $event->city }} / {{ $event->type->name }} </option>
+                             </select>
+                            <span class="invalid-feedback">{{ $errors->first('event_id') }}</span>
+                        </div>
+                    </div>
+
+                    <div class="form-row required">
+                        <div class="col mb-3 required">
+                            <select class="form-control{{  $errors->has('type_id') ? ' is-invalid' : '' }}"
+                                    name="type_id" required readonly id="type_id">
+                                    <option selected value="{{ $event->type_id }}">{{ $event->type->name }}</option>
+							</select>
+                            <span class="invalid-feedback">{{ $errors->first('type_id') }}</span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-row required">
+                                <div class="col mb-3 required">
+									<select class="form-control{{  $errors->has('event_id') ? ' is-invalid' : '' }}"
+                                            name="region_id" required readonly
+                                            id="region_id">
+                                            <option selected value="{{ $event->region_id }}">{{ $event->region->name }}
+                                            </option>
+                                        
+                                    </select>
+                                    <span class="invalid-feedback">{{ $errors->first('region_id') }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-row required">
+                                <div class="col mb-3">
+                                    
+                                    <input type="text" name="city"
+                                           id="city"
+                                           required readonly
+                                           class="form-control{{ $errors->has('city') ? ' is-invalid' : '' }}"
+                                           placeholder="@lang('site::member.placeholder.city')"
+                                           value="{{ old('city', ($event->exists && $event->status_id == 2) ? $event->city : null) }}">
+                                    <span class="invalid-feedback">{{ $errors->first('city') }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group required">
+                                <label class="control-label"
+                                       for="date_from">@lang('site::member.date_from')</label>
+                                <div class="input-group date datetimepicker" id="datetimepicker_date_from"
+                                     data-target-input="nearest">
+                                    <input type="text"
+                                           name="date_from"
+                                           id="date_from"
+                                           maxlength="10"
+                                           required readonly
+                                           class="datetimepicker-input form-control{{ $errors->has('date_from') ? ' is-invalid' : '' }}"
+                                           value="{{ old('date_from', ($event->exists && $event->status_id == 2) ? $event->date_from() : null) }}">
+                                    
+                                </div>
+                                <span class="invalid-feedback">{{ $errors->first('date_from') }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group required">
+                                <label class="control-label"
+                                       for="date_to">@lang('site::member.date_to')</label>
+                                <div class="input-group date datetimepicker" id="datetimepicker_date_to"
+                                     data-target-input="nearest">
+                                    <input type="text"
+                                           name="date_to"
+                                           id="date_to"
+                                           maxlength="10"
+                                           required readonly
+                                           class="datetimepicker-input form-control{{ $errors->has('date_to') ? ' is-invalid' : '' }}"
+                                           value="{{ old('date_to', ($event->exists && $event->status_id == 2) ? $event->date_to() : null) }}">
+                                    
+                                </div>
+                                <span class="invalid-feedback">{{ $errors->first('date_to') }}</span>
+                            </div>
+                        </div>
+                    </div>
+					
+@else					
+					@if(!$type->id)
                     <div class="form-row">
                         <div class="col mb-3">
 
-                            <label class="control-label" for="event_id">@lang('site::member.event_id')</label>
+                            <label class="control-label" for="event_id">@lang('site::member.event_id') @lang('site::event.help.notrequired') </label>
                             <select class="form-control{{  $errors->has('event_id') ? ' is-invalid' : '' }}"
-                                    name="event_id"
-                                    id="event_id">
+                                    name="event_id" id="event_id">
                                 <option value="">@lang('site::messages.select_from_list')</option>
                                 @foreach($events as $e)
                                     <option
@@ -39,17 +136,25 @@
                             <span class="invalid-feedback">{{ $errors->first('event_id') }}</span>
                         </div>
                     </div>
-
+					@endif
                     <div class="form-row required">
                         <div class="col mb-3 required">
 
                             <label class="control-label" for="type_id">@lang('site::member.type_id')</label>
-                            <select class="form-control{{  $errors->has('type_id') ? ' is-invalid' : '' }}"
+                            
+								
+								@if($type->id)
+								<select class="form-control{{  $errors->has('type_id') ? ' is-invalid' : '' }}"
+                                    name="type_id" required readonly id="type_id">
+                                    <option selected value="{{ $type->id }}">{{ $type->name }}</option>
+								</select>
+								@else
+								<select class="form-control{{  $errors->has('type_id') ? ' is-invalid' : '' }}"
                                     name="type_id"
-                                    required
+                                    required 
                                     id="type_id">
                                 <option value="">@lang('site::messages.select_from_list')</option>
-                                @foreach($types as $t)
+								@foreach($types as $t)
                                     <option
                                             @if(old('type_id', ($event->exists && $event->status_id == 2) ? $event->type_id : ($type->exists ? $type->id : null)) == $t->id)
                                             selected
@@ -57,6 +162,7 @@
                                             value="{{ $t->id }}">{{ $t->name }}
                                     </option>
                                 @endforeach
+								@endif
                             </select>
                             <span class="invalid-feedback">{{ $errors->first('type_id') }}</span>
                         </div>
@@ -161,7 +267,7 @@
                             </div>
                         </div>
                     </div>
-
+@endif
                     <h4 class=" mt-3">@lang('site::member.header.name')</h4>
 
 
@@ -257,13 +363,16 @@
                                 </div>
                             </div>
                         </div>
+						@if($event->exists)
+						{{ $event->address }}
+						@else
                         <div class="col-md-6">
                             <div class="form-row">
                                 <div class="col mb-3">
                                     <label class="control-label" for="address">@lang('site::member.address')</label>
                                     <input type="text"
                                            name="address"
-                                           id="address"
+                                           id="address" 
                                            maxlength="255"
                                            class="form-control{{ $errors->has('address') ? ' is-invalid' : '' }}"
                                            placeholder="@lang('site::member.placeholder.address')"
@@ -275,10 +384,11 @@
                                 </div>
                             </div>
                         </div>
+						@endif
                     </div>
 
 
-                    <h4 class=" mt-3">@lang('site::messages.edit') @lang('site::participant.help.list')</h4>
+                    <h4 class=" mt-3">@lang('site::participant.help.list_h')</h4>
                     <span class="text-success">@lang('site::member.help.participants')</span>
 
                     <fieldset id="participants-list">
@@ -304,13 +414,14 @@
                 <hr/>
                 <div class="form-row">
                     <div class="col text-right">
-                        <button name="_create" form="form-content" value="1" type="submit" class="btn btn-ferroli mb-1">
-                            <i class="fa fa-check"></i>
-                            <span>@lang('site::member.help.save')</span>
-                        </button>
+
                         <button name="_create" form="form-content" value="0" type="submit" class="btn btn-ferroli mb-1">
                             <i class="fa fa-check"></i>
-                            <span>@lang('site::messages.save')</span>
+                            @if($event->exists)
+							<span>@lang('site::member.register')</span>
+							@else
+                            <span>@lang('site::messages.leave') @lang('site::member.member')</span>
+							@endif
                         </button>
                         @if($event->exists && $event->status_id == 2)
                             <a href="{{ route('events.show', $event) }}" class="btn btn-secondary mb-1">

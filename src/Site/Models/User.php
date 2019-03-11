@@ -24,7 +24,7 @@ class User extends Authenticatable implements Addressable
     protected $fillable = [
         'name', 'email', 'password', 'dealer',
         'display', 'type_id', 'active', 'image_id',
-        'warehouse_id', 'currency_id',
+        'warehouse_id', 'currency_id', 'region_id'
     ];
 
     /**
@@ -165,6 +165,16 @@ class User extends Authenticatable implements Addressable
     }
 
     /**
+     * Основной регион клиента
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function region()
+    {
+        return $this->belongsTo(Region::class);
+    }
+
+    /**
      * Валюта расчетов
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -172,6 +182,13 @@ class User extends Authenticatable implements Addressable
     public function currency()
     {
         return $this->belongsTo(Currency::class);
+    }
+
+    public function storehouses(){
+        if($this->hasRole('gendistr')){
+            return User::query()->find(1)->addresses()->where('type_id', 6)->get();
+        }
+        return $this->region->storehouses;
     }
 
     /**
@@ -199,7 +216,8 @@ class User extends Authenticatable implements Addressable
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function prices()
+
+	 public function prices()
     {
         return $this->hasMany(UserPrice::class);
     }

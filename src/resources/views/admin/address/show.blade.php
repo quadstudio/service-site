@@ -65,6 +65,15 @@
                 <i class="fa fa-plus"></i>
                 <span>@lang('site::messages.add') @lang('site::phone.phone')</span>
             </a>
+            @if($address->type_id == 6)
+                <a class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0"
+                   href="{{ route('admin.addresses.regions.index', $address) }}"
+                   role="button">
+                    <i class="fa fa-map-marker"></i>
+                    <span>@lang('site::address.regions') <span
+                                class="badge badge-light">{{$address->regions->count()}}</span></span>
+                </a>
+            @endif
             <a href="{{ route('admin.'.$address->addressable->path().'.addresses.index', $address->addressable) }}"
                class="d-block d-sm-inline btn btn-secondary">
                 <i class="fa fa-reply"></i>
@@ -82,6 +91,15 @@
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.type_id')</dt>
                     <dd class="col-sm-8">{{ $address->type->name }}</dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.regions')</dt>
+                    <dd class="col-sm-8">
+                        <ul class="list-group">
+                            @foreach($address->regions as $region)
+                                <li class="list-group-item p-1">{{$region->name}}</li>
+                            @endforeach
+                        </ul>
+                    </dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.emailaddress')</dt>
                     <dd class="col-sm-8"> {{ $address->emailaddress }}</dd>

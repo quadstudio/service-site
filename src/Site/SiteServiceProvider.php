@@ -65,7 +65,7 @@ class SiteServiceProvider extends ServiceProvider
 
         $this->app->bind(Contracts\Exchange::class, function () {
 
-            return new Exchanges\Nbrb();
+            return new Exchanges\Cbr();
         });
 
 

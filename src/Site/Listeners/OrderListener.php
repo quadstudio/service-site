@@ -39,6 +39,7 @@ class OrderListener
 
         // Отправка пользователю письма об оформлении нового заказа
         Mail::to($event->order->user->email)->send(new UserOrderCreateEmail($event->order));
+        Mail::to($event->order->address->emailaddress)->send(new UserOrderCreateEmail($event->order));
     }
 
 

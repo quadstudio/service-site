@@ -18,7 +18,9 @@
             padding: 20px;
             border-top: 2px solid #ed9068;
         }
-
+		h1 {
+			font-size: 1.125rem;
+		}
         a {
             font-weight: 400;
             color: #ed9068;
@@ -26,6 +28,15 @@
             background-color: transparent;
             -webkit-text-decoration-skip: objects;
         }
+		
+		table {
+			border-collapse: collapse; 
+			border: 1px solid grey; 
+		}
+		th, td {
+			border: 1px solid grey;
+			padding: 5px;
+		}
 
         .btn {
             display: inline-block;

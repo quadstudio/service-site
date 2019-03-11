@@ -1,11 +1,8 @@
-<div class="col-sm-6 col-md-4 my-5 news-item fixed-height-400">
-    <a href="{{route('events.show', $event)}}">
-        <figure>
-            <img style="width: 100%;" src="{{Storage::disk($event->image->storage)->url($event->image->path)}}" alt="">
-        </figure>
-    </a>
-    <div class="news-content">
-        <div class="news-meta">
+<div class="col-md-12">
+<div class="card mb-1">
+<div class="card-body">
+    <div class="row">
+        <div class="col-md-3 news-meta-top">
 
             <time datetime="{{$event->date_from()}}">
                 <i class="fa mr-2 fa-@lang('site::news.icon')"></i>{{$event->date_from()}}
@@ -16,15 +13,21 @@
             <span class="d-block mt-2 news-type">
                 <i class="fa mr-2 fa-map-marker"></i>{{ $event->region->name }}, {{ $event->city }}
             </span>
-            <span class="d-block mt-2 news-type">
-                <i class="fa mr-2 fa-@lang('site::event.icon')"></i>{{$event->type->name}}
+			<span class="d-block mt-2 news-type">
+				<i class="fa mr-2 fa-status-{{ $event->status->id }}"></i>{{ $event->status->name }}
             </span>
+
         </div>
-        <h4 class="news-title my-4 text-ferroli"><a class="text-big" href="{{route('events.show', $event)}}">{{$event->title }}</a></h4>
-        <div class="d-flex flex-column">
+		
+		<div class="col-md-3">
+        <a class="text-big" href="{{route('events.show', $event)}}">{{$event->title }}</a>
+		</div>
+        <div class="col-md-4">
             <p class="news-annotation">
                 {!! $event->annotation !!}
             </p>
-        </div>
+        </div><div class="col-md-2 ">
+			<a class="btn btn-ferroli" href="{{route('members.create', ['event_id' => $event->id])}}">@lang('site::event.register')</a>
+		</div>
     </div>
-</div>
+</div></div></div>

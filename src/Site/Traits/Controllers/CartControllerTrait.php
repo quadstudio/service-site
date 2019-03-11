@@ -8,8 +8,10 @@ use QuadStudio\Service\Site\Http\Requests\CartItemRequest;
 use QuadStudio\Service\Site\Models\Product;
 use QuadStudio\Service\Site\Repositories\ContragentRepository;
 
+
 trait CartControllerTrait
 {
+    protected $storehouses;
     /**
      * @var ContragentRepository
      */
@@ -23,6 +25,7 @@ trait CartControllerTrait
     {
 
         $this->contragents = $contragents;
+
     }
 
     /**
@@ -34,8 +37,11 @@ trait CartControllerTrait
     public function index(CartItemRequest $request)
     {
         $contragents = $request->user()->contragents;
+        $storehouses = $request->user()->storehouses();
 
-        return view('site::cart.index', compact('contragents'));
+        //dd($request->user()->region->storehouses);
+        return view('site::cart.index', compact('contragents', 'storehouses'));
+
     }
 
     /**

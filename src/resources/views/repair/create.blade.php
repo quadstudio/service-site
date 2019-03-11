@@ -338,7 +338,7 @@
                 <fieldset>
                     <div class="card mt-2 mb-2">
                         <div class="card-body">
-                            <h5 class="card-title">@lang('site::file.files') <small class="form-text text-muted">@lang('site::file.maxsize5mb')</small><h5>
+                            <h5 class="card-title">@lang('site::file.files') <small class="form-text text-muted">@lang('site::file.maxsize5mb')</small></h5>
                             @foreach($types as $type)
 
                                 <div class="form-group @if($type->required) required @endif form-control{{ $errors->has('file.'.$type->id) ? ' is-invalid' : '' }}">

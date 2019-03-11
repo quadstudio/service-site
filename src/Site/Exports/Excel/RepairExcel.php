@@ -59,59 +59,63 @@ class RepairExcel extends Excel
             ->setFormatCode('dd.mm.yyyy');
         if ($repair->act()->exists()) {
             $this->_sheet->setCellValue('E' . $count, $repair->act->getAttribute('number'));
+            if ($repair->act->getAttribute('received')) 
+		$this->_sheet->setCellValue('F' . $count, "ДА");
+	 else $this->_sheet->setCellValue('F' . $count, "НЕТ");
         }
         if ($repair->contragent()->exists()) {
-            $this->_sheet->setCellValue('F' . $count, $repair->contragent->getAttribute('name'));
+            $this->_sheet->setCellValue('G' . $count, $repair->contragent->getAttribute('name'));
             /** @var \Illuminate\Database\Eloquent\Relations\MorphMany $addresses */
             if (($addresses = $repair->contragent->addresses()->where('type_id', 1))->exists()) {
-                $this->_sheet->setCellValue('G' . $count, $addresses->first()->getAttribute('locality'));
+                $this->_sheet->setCellValue('H' . $count, $addresses->first()->getAttribute('locality'));
             }
         }
         $this->_sheet
-            ->setCellValue('H' . $count, \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel($repair->getAttribute('date_repair')))
-            ->getStyle('H' . $count)
-            ->getNumberFormat()
-            ->setFormatCode('dd.mm.yyyy');
-        $this->_sheet
-            ->setCellValue('I' . $count, \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel($repair->getAttribute('date_launch')))
+            ->setCellValue('I' . $count, \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel($repair->getAttribute('date_repair')))
             ->getStyle('I' . $count)
             ->getNumberFormat()
             ->setFormatCode('dd.mm.yyyy');
         $this->_sheet
-            ->setCellValue('J' . $count, $repair->getAttribute('serial_id'))
-            ->setCellValue('K' . $count, $repair->product->getAttribute('name'))
-            ->setCellValue('L' . $count, $repair->product->getAttribute('sku'))
-            ->setCellValue('M' . $count, $repair->distance->getAttribute('name'))
-            ->setCellValue('N' . $count, $repair->cost_distance())
-            ->setCellValue('O' . $count, $repair->cost_difficulty())
-            ->setCellValue('P' . $count, $repair->cost_parts())
-            ->setCellValue('Q' . $count, $repair->getAttribute('TotalCostPartsEuro'))
-            ->setCellValue('T' . $count, $repair->getAttribute('TotalCost'))
-            ->setCellValue('U' . $count, $repair->getAttribute('client'))
-            ->setCellValue('V' . $count, $repair->getAttribute('address'))
-            ->setCellValue('W' . $count, $repair->country->getAttribute('phone') . $repair->getAttribute('phone_primary'))
-            ->setCellValue('X' . $count, $repair->trade->getAttribute('name'));
-        $this->_sheet
-            ->setCellValue('Y' . $count, \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel($repair->getAttribute('date_trade')))
-            ->getStyle('Y' . $count)
-            ->getNumberFormat()
-            ->setFormatCode('dd.mm.yyyy');
-
-        $this->_sheet->setCellValue('Z' . $count, $repair->launch->getAttribute('name'));
-
-        $this->_sheet
-            ->setCellValue('AA' . $count, \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel($repair->getAttribute('date_launch')))
-            ->getStyle('AA' . $count)
+            ->setCellValue('J' . $count, \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel($repair->getAttribute('date_launch')))
+            ->getStyle('J' . $count)
             ->getNumberFormat()
             ->setFormatCode('dd.mm.yyyy');
         $this->_sheet
-            ->setCellValue('AB' . $count, \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel($repair->getAttribute('date_call')))
+            ->setCellValue('K' . $count, $repair->getAttribute('serial_id'))
+            ->setCellValue('L' . $count, $repair->product->getAttribute('name'))
+            ->setCellValue('M' . $count, $repair->product->getAttribute('sku'))
+            ->setCellValue('N' . $count, $repair->distance->getAttribute('name'))
+            ->setCellValue('O' . $count, $repair->cost_distance())
+            ->setCellValue('P' . $count, $repair->cost_difficulty())
+            ->setCellValue('S' . $count, $repair->cost_parts())
+            ->setCellValue('T' . $count, $repair->getAttribute('TotalCostPartsEuro'))
+            ->setCellValue('U' . $count, $repair->getAttribute('TotalCost'))
+            ->setCellValue('V' . $count, $repair->getAttribute('client'))
+            ->setCellValue('W' . $count, $repair->getAttribute('address'))
+            ->setCellValue('X' . $count, $repair->country->getAttribute('phone') . $repair->getAttribute('phone_primary'))
+            ->setCellValue('Y' . $count, $repair->trade->getAttribute('name'));
+        $this->_sheet
+            ->setCellValue('Z' . $count, \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel($repair->getAttribute('date_trade')))
+            ->getStyle('Z' . $count)
+            ->getNumberFormat()
+            ->setFormatCode('dd.mm.yyyy');
+
+        $this->_sheet->setCellValue('AA' . $count, $repair->launch->getAttribute('name'));
+
+        $this->_sheet
+            ->setCellValue('AB' . $count, \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel($repair->getAttribute('date_launch')))
             ->getStyle('AB' . $count)
             ->getNumberFormat()
             ->setFormatCode('dd.mm.yyyy');
         $this->_sheet
-            ->setCellValue('AC' . $count, $repair->getAttribute('reason_call'))
-            ->setCellValue('AD' . $count, $repair->getAttribute('diagnostics'))
-            ->setCellValue('AE' . $count, $repair->getAttribute('works'));
+            ->setCellValue('AC' . $count, \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel($repair->getAttribute('date_call')))
+            ->getStyle('AC' . $count)
+            ->getNumberFormat()
+            ->setFormatCode('dd.mm.yyyy');
+        $this->_sheet
+            ->setCellValue('AD' . $count, $repair->getAttribute('reason_call'))
+            ->setCellValue('AE' . $count, $repair->getAttribute('diagnostics'))
+            ->setCellValue('AF' . $count, $repair->getAttribute('works'));
+        
     }
 }
