@@ -2,19 +2,25 @@
 
 namespace QuadStudio\Service\Site\Exports\Excel;
 
-
-use QuadStudio\Repo\Eloquent\Repository;
 use QuadStudio\Service\Site\Models\Repair;
 use QuadStudio\Service\Site\Support\Excel;
-
 
 class RepairExcel extends Excel
 {
     /** @var \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet Sheet */
     private $_sheet;
 
-    function build(Repository $repository)
+
+
+
+    function build()
     {
+        if (is_null($this->repository)) {
+            echo "Невозможно создать xls файл, т.к. не указан репозиторий с данными";
+            exit();
+        }
+        $this->getProperties()->setTitle(trans('site::repair.repairs'));
+        $this->getActiveSheet()->setTitle(trans('site::repair.repairs'));
         $this->_sheet = $this->getActiveSheet();
         foreach (trans('site::repair.excel') as $cell => $value) {
             $this->_sheet->setCellValue($cell, $value);
@@ -24,7 +30,7 @@ class RepairExcel extends Excel
          * @var int $key
          * @var Repair $repair
          */
-        foreach ($repository->all() as $key => $repair) {
+        foreach ($this->repository->all() as $key => $repair) {
 
             $this->_buildRepair($repair, $count);
             /** @var \Illuminate\Database\Eloquent\Relations\MorphMany $parts */
@@ -59,9 +65,9 @@ class RepairExcel extends Excel
             ->setFormatCode('dd.mm.yyyy');
         if ($repair->act()->exists()) {
             $this->_sheet->setCellValue('E' . $count, $repair->act->getAttribute('number'));
-            if ($repair->act->getAttribute('received')) 
-		$this->_sheet->setCellValue('F' . $count, "ДА");
-	 else $this->_sheet->setCellValue('F' . $count, "НЕТ");
+            if ($repair->act->getAttribute('received'))
+                $this->_sheet->setCellValue('F' . $count, "ДА");
+            else $this->_sheet->setCellValue('F' . $count, "НЕТ");
         }
         if ($repair->contragent()->exists()) {
             $this->_sheet->setCellValue('G' . $count, $repair->contragent->getAttribute('name'));
@@ -116,6 +122,6 @@ class RepairExcel extends Excel
             ->setCellValue('AD' . $count, $repair->getAttribute('reason_call'))
             ->setCellValue('AE' . $count, $repair->getAttribute('diagnostics'))
             ->setCellValue('AF' . $count, $repair->getAttribute('works'));
-        
+
     }
 }

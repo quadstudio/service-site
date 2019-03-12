@@ -10,7 +10,7 @@
                 <a href="{{ route('home') }}">@lang('site::messages.home')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('orders.index') }}">@lang('site::order.breadcrumb_index')</a>
+                <a href="{{ route('distributors.index') }}">@lang('site::order.distributors')</a>
             </li>
             <li class="breadcrumb-item active">@lang('site::order.breadcrumb_show', ['order' => $order->id, 'date' => $order->created_at(true) ])</li>
         </ol>
@@ -29,27 +29,15 @@
                     </span>
                 </a>
             @endif
-            <button @cannot('delete', $order) disabled @endcannot
-            class="btn btn-danger btn-row-delete"
-                    data-form="#order-delete-form-{{$order->id}}"
-                    data-btn-delete="@lang('site::messages.delete')"
-                    data-btn-cancel="@lang('site::messages.cancel')"
-                    data-label="@lang('site::messages.delete_confirm')"
-                    data-message="@lang('site::messages.delete_sure') @lang('site::order.order')? "
-                    data-toggle="modal" data-target="#form-modal"
-                    href="javascript:void(0);" title="@lang('site::messages.delete')">
-                @lang('site::messages.delete')
-            </button>
-            <a href="{{ route('orders.index') }}" class="d-block d-sm-inline btn btn-secondary">
+            <a href="{{ route('distributors.excel', ['order' => $order]) }}"
+               class="d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn-primary">
+                <i class="fa fa-download"></i>
+                <span>@lang('site::messages.download') @lang('site::messages.to_excel')</span>
+            </a>
+            <a href="{{ route('distributors.index') }}" class="d-block d-sm-inline btn btn-secondary">
                 <i class="fa fa-reply"></i>
                 <span>@lang('site::messages.back')</span>
             </a>
-            <form id="order-delete-form-{{$order->id}}"
-                  action="{{route('orders.destroy', $order)}}"
-                  method="POST">
-                @csrf
-                @method('DELETE')
-            </form>
         </div>
 
         <div class="card mb-2">
@@ -62,12 +50,12 @@
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::order.address_id')</dt>
                     <dd class="col-sm-8">{{ $order->address->name }}
-					<div>
-					@foreach($order->address->phones as $phone)
-					{{ $phone->format() }}
-					@endforeach
-					</div>
-					</dd>
+                        <div>
+                            @foreach($order->address->phones as $phone)
+                                {{ $phone->format() }}
+                            @endforeach
+                        </div>
+                    </dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::order.created_at')</dt>
                     <dd class="col-sm-8">{{ $order->created_at(true) }}</dd>
@@ -99,25 +87,6 @@
                             <div class="text-muted">
                                 {{ $item->quantity }} {{ $item->product->unit }} x {{ Site::format($item->price) }}
                             </div>
-                            <div class="mt-2">
-                                <button @cannot('delete', $item->order) disabled @endcannot
-                                class="btn btn-danger btn-sm btn-row-delete"
-                                        data-form="#order-item-delete-form-{{$item->id}}"
-                                        data-btn-delete="@lang('site::messages.delete')"
-                                        data-btn-cancel="@lang('site::messages.cancel')"
-                                        data-label="@lang('site::messages.delete_confirm')"
-                                        data-message="@lang('site::messages.delete_sure') {!! $item->product->name() !!}? "
-                                        data-toggle="modal" data-target="#form-modal"
-                                        href="javascript:void(0);" title="@lang('site::messages.delete')">
-                                    @lang('site::messages.delete')
-                                </button>
-                                <form id="order-item-delete-form-{{$item->id}}"
-                                      action="{{route('orders.items.destroy', $item)}}"
-                                      method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
-                            </div>
                         </div>
                         <div class="col-sm-3 mb-4 mb-sm-0 text-large text-left text-sm-right">{{ Cart::price_format($item->subtotal()) }}</div>
                     </div>
@@ -125,17 +94,14 @@
                 @endforeach
             </div>
         </div>
-
-        <hr id="messages-list"/>
-        <div class="card mt-5 mb-4">
-            <div class="card-body flex-grow-1 position-relative overflow-hidden">
-                <h5 class="card-title">@lang('site::message.messages')</h5>
-                @if($order->messages->isNotEmpty())
+        @if($order->messages->isNotEmpty())
+            <hr id="messages-list"/>
+            <div class="card mt-5 mb-4">
+                <div class="card-body flex-grow-1 position-relative overflow-hidden">
+                    <h5 class="card-title">@lang('site::message.messages')</h5>
                     <div class="row no-gutters h-100">
                         <div class="d-flex col flex-column">
                             <div class="flex-grow-1 position-relative">
-
-                                <!-- Remove `.chat-scroll` and add `.flex-grow-1` if you don't need scroll -->
                                 <div class="chat-messages p-4 ps">
                                     @foreach($order->messages as $message)
                                         <div class="@if($message->user_id == Auth::user()->id) chat-message-right @else chat-message-left @endif mb-4">
@@ -151,41 +117,12 @@
                                         </div>
                                     @endforeach
                                 </div>
-                                <!-- / .chat-messages -->
                             </div>
                         </div>
                     </div>
                     <hr/>
-                @endif
-                <form action="{{route('orders.message', $order)}}" method="post">
-                    @csrf
-
-                    <div class="row no-gutters">
-                        <div class="d-flex col flex-column">
-                            <div class="flex-grow-1 position-relative">
-                                <div class="form-group">
-                                    <input type="hidden" name="message[receiver_id]" value="1">
-                                    <textarea name="message[text]"
-                                              id="message_text"
-                                              rows="3"
-                                              placeholder="@lang('site::message.placeholder.text')"
-                                              class="form-control{{  $errors->has('message.text') ? ' is-invalid' : '' }}"></textarea>
-                                    <span class="invalid-feedback">{{ $errors->first('message.text') }}</span>
-                                </div>
-                                <button type="submit"
-                                        class="btn btn-success d-block d-sm-inline-block">
-                                    <i class="fa fa-check"></i>
-                                    <span>@lang('site::messages.send')</span>
-                                </button>
-
-                            </div>
-                        </div>
-
-                    </div>
-                </form>
-
+                </div>
             </div>
-        </div>
-
+        @endif
     </div>
 @endsection

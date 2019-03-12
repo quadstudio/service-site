@@ -34,6 +34,16 @@
                             class="badge badge-light">{{$user->orders()->count()}}</span></span>
             </a>
             @endpermission()
+
+            @permission('distributors')
+            <a href="{{ route('distributors.index') }}"
+               class="d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-ferroli">
+                <i class="fa fa-@lang('site::order.icon')"></i>
+                <span>@lang('site::order.distributors') <span
+                            class="badge badge-light"> {{$user->distributors()->count()}}</span></span>
+            </a>
+            @endpermission()
+            <hr />
             @permission('contragents')
             <a href="{{ route('contragents.index') }}"
                class="d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-ferroli">
@@ -50,7 +60,7 @@
                             class="badge badge-light">{{$user->contacts()->count()}}</span></span>
             </a>
             @endpermission()
-            @permission('contacts')
+            @permission('addresses')
             <a href="{{ route('addresses.index') }}"
                class="d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-ferroli">
                 <i class="fa fa-@lang('site::address.icon')"></i>

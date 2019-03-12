@@ -4,6 +4,7 @@ namespace QuadStudio\Service\Site;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use QuadStudio\Service\Site\Exports\Excel\OrderExcel;
 use QuadStudio\Service\Site\Models\Act;
 use QuadStudio\Service\Site\Models\Block;
 use QuadStudio\Service\Site\Models\Catalog;
@@ -12,6 +13,7 @@ use QuadStudio\Service\Site\Models\Element;
 use QuadStudio\Service\Site\Models\Equipment;
 use QuadStudio\Service\Site\Models\EventType;
 use QuadStudio\Service\Site\Models\FileType;
+use QuadStudio\Service\Site\Models\Order;
 use QuadStudio\Service\Site\Models\Repair;
 use QuadStudio\Service\Site\Pdf\ActPdf;
 use QuadStudio\Service\Site\Pdf\RepairPdf;
@@ -117,8 +119,14 @@ class Site
                                 return (new ActPdf())->setModel($act)->render();
                             })->middleware('can:pdf,act')->name('acts.pdf');
 
+                            $router->resource('/distributors', 'DistributorController')->only(['index', 'show'])->middleware('permission:distributors');
+                            $router->get('/distributors/{order}/excel', function (Order $order) {
+                                return (new OrderExcel())->setModel($order)->render();
+                            })->middleware('can:distributor,order')->name('distributors.excel');
+
                             $router->post('/orders/load', 'OrderController@load')->middleware('permission:orders')->name('orders.load');
                             $router->resource('/orders', 'OrderController')->except(['edit', 'update'])->middleware('permission:orders');
+
                             $router->post('/orders/{order}/message', 'OrderController@message')->middleware('permission:messages')->name('orders.message');
                             $router->delete('/order-items/{item}', 'OrderItemController@destroy')->name('orders.items.destroy');
                             $router->resource('/repairs', 'RepairController')->middleware('permission:repairs');

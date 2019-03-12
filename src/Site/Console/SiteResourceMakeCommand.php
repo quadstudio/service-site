@@ -78,6 +78,7 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
         'EventController.stub'                    => 'EventController',
         'MemberController.stub'                   => 'MemberController',
         'ParticipantController.stub'              => 'ParticipantController',
+        'DistributorController.stub'              => 'DistributorController',
         //
         'api/FileController.stub'                 => 'Api/FileController',
         'api/RepairController.stub'               => 'Api/RepairController',

@@ -123,10 +123,10 @@ class Order extends Model implements Messagable
         return trans('site::order.order') . ' ' . $this->id();
     }
 
-    public function id()
-    {
-        return str_pad($this->id, 8, '0', STR_PAD_LEFT);
-    }
+//    public function id()
+//    {
+//        return str_pad($this->id, 8, '0', STR_PAD_LEFT);
+//    }
 
     function route()
     {

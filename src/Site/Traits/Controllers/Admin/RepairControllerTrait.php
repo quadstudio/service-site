@@ -57,8 +57,7 @@ trait RepairControllerTrait
         $this->repairs->pushTrackFilter(RegionFilter::class);
         $this->repairs->pushTrackFilter(ScSearchFilter::class);
         if ($request->has('excel')) {
-            $excel = new RepairExcel();
-            $excel->render($this->repairs);
+            (new RepairExcel())->setRepository($this->repairs)->render();
         }
         return view('site::admin.repair.index', [
             'repository' => $this->repairs,

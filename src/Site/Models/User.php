@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use QuadStudio\Online\OnlineChecker;
 use QuadStudio\Rbac\Traits\Models\RbacUserTrait;
@@ -230,6 +231,29 @@ class User extends Authenticatable implements Addressable
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function distributors()
+    {
+        return Order::query()->whereHas('address', function ($query) {
+            $query
+                ->where('type_id', 6)
+                ->where('addressable_id', $this->getAttribute('id'))
+                ->where('addressable_type', DB::raw('"users"'));
+        });
+    }
+
+    /**
+     * Пользователь
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
 

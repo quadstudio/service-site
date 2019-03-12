@@ -20,18 +20,22 @@ class OrderSearchFilter extends SearchFilter
 
     function apply($builder, RepositoryInterface $repository)
     {
+
         if ($this->canTrack()) {
             if (!empty($this->columns())) {
                 $words = $this->split($this->get($this->search));
                 if (!empty($words)) {
-                    $builder->whereHas('items', function ($query) use ($words) {
-                        foreach ($words as $word) {
-                            $query->where(function ($query) use ($word) {
-                                foreach ($this->columns() as $column){
-                                    $query->orWhereRaw("LOWER({$column}) LIKE LOWER(?)", ["%{$word}%"]);
-                                }
-                            });
-                        }
+                    $builder = $builder->whereHas('items', function ($query) use ($words) {
+                        $query->whereHas('product', function ($query) use ($words){
+                            foreach ($words as $word) {
+                                $query->where(function ($query) use ($word) {
+                                    foreach ($this->columns() as $column){
+                                        $query->orWhereRaw("LOWER({$column}) LIKE LOWER(?)", ["%{$word}%"]);
+                                    }
+                                });
+                            }
+                        });
+
                     });
                 }
             }
@@ -43,8 +47,8 @@ class OrderSearchFilter extends SearchFilter
     protected function columns()
     {
         return [
-            'name',
-            'sku'
+            'products.name',
+            'products.sku'
         ];
     }
 

@@ -10,20 +10,45 @@ use QuadStudio\Repo\Eloquent\Repository;
 
 abstract class Excel extends Spreadsheet
 {
+    /**
+     * @var Model|null
+     */
+    protected $model;
 
+    /**
+     * @var Repository|null
+     */
+    protected $repository;
 
-    public function render(Repository $repository)
+    /**
+     * @param Model $model
+     * @return $this
+     */
+    public function setModel(Model $model)
     {
-        $this->build($repository);
+        $this->model = $model;
+
+        return $this;
+    }
+
+    public function setRepository(Repository $repository)
+    {
+        $this->repository = $repository;
+
+        return $this;
+    }
+
+    public function render()
+    {
+        $this->build();
         $this->getProperties()
             ->setCreator(Auth::user()->name)
-            ->setLastModifiedBy(Auth::user()->name)
-            ->setTitle(trans('site::repair.repairs'));
-        $this->getActiveSheet()->setTitle(trans('site::repair.repairs'));
+            ->setLastModifiedBy(Auth::user()->name);
+
         $this->setActiveSheetIndex(0);
         $this->_checkoutput();
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="' . date('Y-m-d') . '_repairs.xlsx"');
+        header('Content-Disposition: attachment;filename="' . date('Y-m-d H:i') . '_file.xlsx"');
         header('Cache-Control: private, max-age=0, must-revalidate');
         header('Pragma: public'); // HTTP/1.0
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($this, 'Xlsx');
@@ -31,7 +56,7 @@ abstract class Excel extends Spreadsheet
         exit();
     }
 
-    abstract function build(Repository $repository);
+    abstract function build();
 
     protected function _checkoutput()
     {

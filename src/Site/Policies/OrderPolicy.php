@@ -28,6 +28,12 @@ class OrderPolicy
         return $user->id == $order->user_id;
     }
 
+    public function distributor(User $user, Order $order)
+    {
+        return $user->hasPermission('distributors') && $user->distributors()->pluck('id')->contains($order->getAttribute('id'));
+    }
+
+
     /**
      * Determine whether the user can create posts.
      *
