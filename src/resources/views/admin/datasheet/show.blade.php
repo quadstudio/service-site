@@ -56,10 +56,10 @@
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::datasheet.date_from_to')</dt>
                     <dd class="col-sm-8">
                         @if(!is_null($datasheet->date_from))
-                            @lang('site::datasheet.date_from') {{ \Carbon\Carbon::createFromFormat('Y-m-d', $datasheet->date_from)->format('d.m.Y') }}
+                            @lang('site::datasheet.date_from') {{ $datasheet->date_from->format('d.m.Y') }}
                         @endif
                         @if(!is_null($datasheet->date_to))
-                            @lang('site::datasheet.date_to') {{ \Carbon\Carbon::createFromFormat('Y-m-d', $datasheet->date_to)->format('d.m.Y') }}
+                            @lang('site::datasheet.date_to') {{ $datasheet->date_to->format('d.m.Y') }}
                         @endif
                     </dd>
 

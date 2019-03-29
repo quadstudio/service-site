@@ -62,14 +62,14 @@
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::messages.created_at')</dt>
                     <dd class="col-sm-8">
                         @if($currency->created_at)
-                            {{ \Carbon\Carbon::instance($currency->created_at)->format('d.m.Y H:i') }}
+                            {{ $currency->created_at->format('d.m.Y H:i') }}
                         @endif
                     </dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::messages.updated_at')</dt>
                     <dd class="col-sm-8">
                         @if($currency->updated_at)
-                            {{ \Carbon\Carbon::instance($currency->updated_at)->format('d.m.Y H:i') }}
+                            {{ $currency->updated_at->format('d.m.Y H:i') }}
                         @endif
 
                     </dd>

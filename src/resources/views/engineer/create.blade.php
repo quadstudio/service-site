@@ -16,15 +16,11 @@
         <div class="card mt-2 mb-2">
             <div class="card-body">
 
-                @include('site::engineer.form')
+                @include('site::engineer.form.create')
 
                 <div class="form-row">
                     <div class="col text-right">
-                        <button name="_create" form="form-content" value="1" type="submit" class="btn btn-ferroli mb-1">
-                            <i class="fa fa-check"></i>
-                            <span>@lang('site::messages.save_add')</span>
-                        </button>
-                        <button name="_create" form="form-content" value="0" type="submit" class="btn btn-ferroli mb-1">
+                        <button form="form-content" type="submit" class="btn btn-ferroli mb-1">
                             <i class="fa fa-check"></i>
                             <span>@lang('site::messages.save')</span>
                         </button>

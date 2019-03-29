@@ -50,14 +50,6 @@ class File extends Model
     /**
      * @return bool
      */
-    public function exists()
-    {
-        return Storage::disk($this->storage)->exists($this->path);
-    }
-
-    /**
-     * @return bool
-     */
     public function getIsImageAttribute()
     {
         switch ($this->getAttribute('mime')) {
@@ -67,6 +59,43 @@ class File extends Model
             default:
                 return false;
         }
+    }
+
+    public function getSrcAttribute()
+    {
+        return $this->exists ? Storage::disk($this->storage)->url($this->path) : Storage::disk('products')->url('noimage.png');
+    }
+
+    public function getImageWidthAttribute()
+    {
+        if ($this->exists()) {
+            list($width, $height) = getimagesize($this->src);
+
+            return $width;
+        }
+
+        return 0;
+
+    }
+
+    /**
+     * @return bool
+     */
+    public function exists()
+    {
+        return Storage::disk($this->storage)->exists($this->path);
+    }
+
+    public function getImageHeightAttribute()
+    {
+        if ($this->exists()) {
+            list($width, $height) = getimagesize($this->src);
+
+            return $height;
+        }
+
+        return 0;
+
     }
 
     /**

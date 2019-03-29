@@ -46,7 +46,7 @@
                     <div class="card-body">
                         <div class="mb-2">
                             <span class="text-muted">@lang('site::act.created_at'):</span>&nbsp;
-                            <span class="text-dark">{{\Carbon\Carbon::instance($act->created_at)->format('d.m.Y H:i' )}}</span>
+                            <span class="text-dark">{{$act->created_at->format('d.m.Y H:i' )}}</span>
                         </div>
                         <div class="mb-2">
                             <span class="text-muted">@lang('site::act.user.received'):</span>&nbsp;
@@ -101,7 +101,7 @@
                         @foreach($act->repairs as $repair)
                             <div class="row border-bottom">
                                 <div class="col"><a href="{{route('repairs.show', $repair)}}">{{$repair->id}}</a></div>
-                                <div class="col">{{\Carbon\Carbon::instance(\DateTime::createFromFormat('Y-m-d', $repair->date_repair))->format('d.m.Y')}}</div>
+                                <div class="col">{{$repair->date_repair->format('d.m.Y')}}</div>
                                 <div class="col">
                                     <a href="{{route('products.show', $repair->product)}}">{{$repair->product->name}}</a>
                                 </div>

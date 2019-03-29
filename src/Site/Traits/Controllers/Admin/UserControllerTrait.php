@@ -27,6 +27,8 @@ use QuadStudio\Service\Site\Filters\UserFilter;
 use QuadStudio\Service\Site\Filters\UserSearchFilter;
 use QuadStudio\Service\Site\Http\Requests\Admin\UserRequest;
 use QuadStudio\Service\Site\Models\Address;
+use QuadStudio\Service\Site\Models\AuthorizationRole;
+use QuadStudio\Service\Site\Models\AuthorizationType;
 use QuadStudio\Service\Site\Models\Contact;
 use QuadStudio\Service\Site\Models\ContragentType;
 use QuadStudio\Service\Site\Models\Country;
@@ -34,6 +36,7 @@ use QuadStudio\Service\Site\Models\District;
 use QuadStudio\Service\Site\Models\Phone;
 use QuadStudio\Service\Site\Models\Region;
 use QuadStudio\Service\Site\Models\User;
+use QuadStudio\Service\Site\Repositories\AuthorizationRepository;
 use QuadStudio\Service\Site\Repositories\ContactRepository;
 use QuadStudio\Service\Site\Repositories\ContragentRepository;
 use QuadStudio\Service\Site\Repositories\DistrictRepository;
@@ -97,6 +100,10 @@ trait UserControllerTrait
      * @var DistrictRepository
      */
     private $districts;
+    /**
+     * @var AuthorizationRepository
+     */
+    private $authorizations;
 
     /**
      * Create a new controller instance.
@@ -113,6 +120,7 @@ trait UserControllerTrait
      * @param ProductTypeRepository $product_types
      * @param TemplateRepository $templates
      * @param DistrictRepository $districts
+     * @param AuthorizationRepository $authorizations
      */
     public function __construct(
         UserRepository $users,
@@ -126,7 +134,8 @@ trait UserControllerTrait
         UserPriceRepository $user_prices,
         ProductTypeRepository $product_types,
         TemplateRepository $templates,
-        DistrictRepository $districts
+        DistrictRepository $districts,
+        AuthorizationRepository $authorizations
     )
     {
         $this->users = $users;
@@ -141,6 +150,7 @@ trait UserControllerTrait
         $this->product_types = $product_types;
         $this->templates = $templates;
         $this->districts = $districts;
+        $this->authorizations = $authorizations;
     }
 
     /**
@@ -242,8 +252,19 @@ trait UserControllerTrait
         $addresses = $user->addresses;
         $contacts = $user->contacts;
         $roles = $this->roles->all();
+        $authorization_accepts = $user->authorization_accepts()->get();
+        $authorization_roles = AuthorizationRole::query()->get();
+        $authorization_types = AuthorizationType::query()->where('enabled', 1)->get();
 
-        return view('site::admin.user.show', compact('user', 'addresses', 'contacts', 'roles'));
+        return view('site::admin.user.show', compact(
+            'user',
+            'addresses',
+            'contacts',
+            'roles',
+            'authorization_types',
+            'authorization_roles',
+            'authorization_accepts'
+        ));
     }
 
     /**
@@ -405,7 +426,7 @@ trait UserControllerTrait
 
 
     /**
-     * Показать список заказов сервисного центра
+     * Список заказов
      *
      * @param  User $user
      * @return \Illuminate\Http\Response
@@ -421,6 +442,7 @@ trait UserControllerTrait
             'orders'     => $this->orders->paginate(config('site.per_page.order', 10), ['orders.*'])
         ]);
     }
+
 
     /**
      * Показать список контрагентов сервисного центра

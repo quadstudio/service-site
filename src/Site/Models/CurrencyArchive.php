@@ -14,6 +14,20 @@ class CurrencyArchive extends Model
 
     protected $fillable = ['currency_id', 'date', 'rates', 'multiplicity'];
 
+    protected $casts = [
+
+
+        'currency_id'  => 'integer',
+        'date'         => 'date:Y-m-d',
+        'rates'        => 'decimal',
+        'multiplicity' => 'integer',
+
+    ];
+
+    protected $dates = [
+        'date'
+    ];
+
     /**
      * @param array $attributes
      */

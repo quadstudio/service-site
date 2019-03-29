@@ -25,13 +25,20 @@ class EngineerRequest extends FormRequest
     public function rules()
     {
         switch ($this->method()) {
-            case 'POST':
+            case 'POST': {
+                return [
+                    'engineer.name'       => 'required|string|max:255',
+                    'engineer.country_id' => 'required|exists:countries,id',
+                    'engineer.phone'      => 'required|string|size:'.config('site.phone.maxlength'),
+                    'engineer.address'    => 'sometimes|nullable|max:255',
+                ];
+            }
             case 'PUT':
             case 'PATCH': {
                 return [
-                    'name'       => 'required|string|max:255',
-                    'country_id' => 'required|exists:countries,id',
-                    'phone'      => 'required|numeric|digits:10',
+                    'engineer.country_id' => 'required|exists:countries,id',
+                    'engineer.phone'      => 'required|string|size:'.config('site.phone.maxlength'),
+                    'engineer.address'    => 'sometimes|nullable|max:255',
                 ];
             }
             default:
@@ -57,9 +64,10 @@ class EngineerRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name'       => trans('site::engineer.name'),
-            'country_id' => trans('site::engineer.country_id'),
-            'phone'      => trans('site::engineer.phone'),
+            'engineer.name'       => trans('site::engineer.name'),
+            'engineer.country_id' => trans('site::engineer.country_id'),
+            'engineer.phone'      => trans('site::engineer.phone'),
+            'engineer.address'    => trans('site::engineer.address'),
         ];
     }
 }

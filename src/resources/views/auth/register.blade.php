@@ -16,63 +16,31 @@
             <div class="col">
                 <form id="register-form" method="POST" action="{{ route('register') }}">
                     @csrf
-
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="form-row required">
-                                <div class="col mb-3">
-                                    <label class="control-label" for="name">@lang('site::user.name')</label>
-                                    <input type="text"
-                                           name="name"
-                                           id="name"
-                                           required
-                                           class="form-control form-control-lg
+                    <div class="form-row required">
+                        <div class="col mb-3">
+                            <label class="control-label" for="name">@lang('site::user.name')</label>
+                            <input type="text"
+                                   name="name"
+                                   id="name"
+                                   required
+                                   class="form-control form-control-lg
                                     {{ $errors->has('name')
                                     ? ' is-invalid'
                                     : (old('name') ? ' is-valid' : '') }}"
-                                           placeholder="@lang('site::user.placeholder.name')"
-                                           value="{{ old('name') }}">
-                                    <span class="invalid-feedback">
+                                   placeholder="@lang('site::user.placeholder.name')"
+                                   value="{{ old('name') }}">
+                            <span class="invalid-feedback">
                                         <strong>{{ $errors->first('name') }}</strong>
                                     </span>
-                                    <small id="nameHelp" class="form-text text-success">
-                                        @lang('site::user.help.name')
-                                    </small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-row required">
-                                <div class="col mb-3">
-                                    <label class="control-label" for="type_id">@lang('site::user.type_id')</label>
-                                    @foreach($types as $key => $type)
-                                        <div class="custom-control custom-radio">
-                                            <input class="custom-control-input
-                                            {{$errors->has('type_id') ? ' is-invalid' : ''}}"
-                                                   type="radio"
-                                                   required
-                                                   name="type_id"
-                                                   @if(old('type_id') == $type->id) checked @endif
-                                                   id="type_id_{{ $type->id }}"
-                                                   value="{{ $type->id }}">
-                                            <label class="custom-control-label"
-                                                   for="type_id_{{ $type->id }}">{{ $type->name }}</label>
-                                            @if($key == $types->count()-1)
-                                                <span class="invalid-feedback">
-                                                    <strong>{{ $errors->first('user.type_id') }}</strong>
-                                                </span>
-                                            @endif
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
+                            <small id="nameHelp" class="form-text text-success">
+                                @lang('site::user.help.name')
+                            </small>
                         </div>
                     </div>
 
                     {{-- КОНТАКТНОЕ ЛИЦО --}}
 
                     <h4 class=" mt-4 mb-2" id="sc_info">@lang('site::contact.header')</h4>
-
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-row required">
@@ -110,7 +78,6 @@
                         </div>
                     </div>
 
-
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-row required">
@@ -122,7 +89,6 @@
                                             required
                                             name="phone[contact][country_id]"
                                             id="phone_contact_country_id">
-                                        <option value="">@lang('site::messages.select_from_list')</option>
                                         @foreach($countries as $country)
                                             <option
                                                     @if(old('phone.contact.country_id') == $country->id) selected
@@ -181,263 +147,9 @@
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <fieldset id="sc-content">
-                                {{-- ИНФОРМАЦИЯ ДЛЯ ПОЛЬЗОВТЕЛЕЙ --}}
-
-                                <h4 class="mt-4">@lang('site::register.header.sc')</h4>
-                                {{--<h4 class="mb-2 text-success small">@lang('site::register.help.sc')</h4>--}}
-
-                                <div class="custom-control custom-checkbox mb-1">
-                                    <input value="1" name="dealer" type="checkbox" class="custom-control-input" id="dealer">
-                                    <label class="custom-control-label text-big"
-                                           for="dealer">@lang('site::user.help.dealer')</label>
-                                </div>
-
-                                <div class="form-row required">
-                                    <div class="col mb-3">
-
-                                        <label class="control-label"
-                                               for="address_sc_name">@lang('site::address.name')</label>
-                                        <input type="text"
-                                               name="address[sc][name]"
-                                               id="address_sc_name"
-                                               required
-                                               class="form-control{{ $errors->has('address.sc.name') ? ' is-invalid' : '' }}"
-                                               placeholder="@lang('site::address.placeholder.name')"
-                                               value="{{ old('address.sc.name') }}">
-                                        <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('address.sc.name') }}</strong>
-                                    </span>
-                                    </div>
-                                </div>
-
-                                <div class="form-row">
-                                    <div class="col mb-3">
-                                        <label class="control-label" for="web">@lang('site::user.web')</label>
-                                        <input type="text"
-                                               name="web"
-                                               id="web"
-                                               class="form-control{{ $errors->has('web') ? ' is-invalid' : '' }}"
-                                               pattern="https?://.+" title="@lang('site::user.help.web')"
-                                               placeholder="@lang('site::user.placeholder.web')"
-                                               value="{{ old('web') }}">
-                                        <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('web') }}</strong>
-                                    </span>
-                                        <small id="webHelp" class="form-text text-success">
-                                            @lang('site::user.help.web')
-                                        </small>
-                                    </div>
-                                </div>
-
-                                {{-- ТЕЛЕФОН АСЦ --}}
-
-                                <h4 class="mb-2 mt-2">@lang('site::register.sc_phone')</h4>
-                                <div class="form-row required">
-                                    <div class="col mb-3">
-
-                                        <label class="control-label"
-                                               for="phone_sc_country_id">@lang('site::phone.country_id')</label>
-                                        <select class="form-control{{  $errors->has('phone.sc.country_id') ? ' is-invalid' : '' }}"
-                                                name="phone[sc][country_id]"
-                                                required
-                                                id="phone_sc_country_id">
-                                            <option value="">@lang('site::messages.select_from_list')</option>
-                                            @foreach($countries as $country)
-                                                <option
-                                                        @if(old('phone.sc.country_id') == $country->id) selected
-                                                        @endif
-                                                        value="{{ $country->id }}">{{ $country->name }}
-                                                    ({{ $country->phone }})
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('phone.sc.country_id') }}</strong>
-                                    </span>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-row required">
-                                            <div class="col">
-                                                <label class="control-label"
-                                                       for="phone_sc_number">@lang('site::phone.number')</label>
-                                                <input type="tel"
-                                                       required
-                                                       name="phone[sc][number]"
-                                                       id="phone_sc_number"
-                                                       title="@lang('site::phone.placeholder.number')"
-                                                       pattern="^\d{9,10}$"
-                                                       maxlength="10"
-                                                       class="form-control{{ $errors->has('phone.sc.number') ? ' is-invalid' : '' }}"
-                                                       placeholder="@lang('site::phone.placeholder.number')"
-                                                       value="{{ old('phone.sc.number') }}">
-                                                <span class="invalid-feedback">
-                                                <strong>{{ $errors->first('phone.sc.number') }}</strong>
-                                            </span>
-                                                <small id="sc_phone_numberHelp"
-                                                       class="mb-4 form-text text-success">
-                                                    @lang('site::phone.help.number')
-                                                </small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-row">
-                                            <div class="col mb-3">
-                                                <label class="control-label"
-                                                       for="phone_sc_extra">@lang('site::phone.extra')</label>
-                                                <input type="text"
-                                                       name="phone[sc][extra]"
-                                                       id="phone_sc_extra"
-                                                       class="form-control{{ $errors->has('phone.sc.extra') ? ' is-invalid' : '' }}"
-                                                       placeholder="@lang('site::phone.placeholder.extra')"
-                                                       value="{{ old('phone.sc.extra') }}">
-                                                <span class="invalid-feedback">
-                                                <strong>{{ $errors->first('phone.sc.extra') }}</strong>
-                                            </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </div>
-                        <div class="col-md-6">
-
-                            {{-- АДРЕС АСЦ --}}
-
-                            <h4 class="mb-2 mt-4">@lang('site::register.sc_address')</h4>
-
-                            <div class="form-row required">
-                                <div class="col mb-3">
-                                    <input type="hidden" name="address[sc][type_id]" value="2">
-                                    <label class="control-label"
-                                           for="address_sc_country_id">@lang('site::address.country_id')</label>
-                                    <select class="country-select form-control{{  $errors->has('address.sc.country_id') ? ' is-invalid' : '' }}"
-                                            name="address[sc][country_id]"
-                                            required
-                                            data-regions="#address_sc_region_id"
-                                            data-empty="@lang('site::messages.select_from_list')"
-                                            id="address_sc_country_id">
-                                        <option value="">@lang('site::messages.select_from_list')</option>
-                                        @foreach($countries as $country)
-                                            <option
-                                                    @if(old('address.sc.country_id') == $country->id) selected
-                                                    @endif
-                                                    value="{{ $country->id }}">{{ $country->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('address.sc.country_id') }}</strong>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="form-row required">
-                                <div class="col mb-3">
-
-                                    <label class="control-label"
-                                           for="address_sc_region_id">@lang('site::address.region_id')</label>
-                                    <select class="form-control{{  $errors->has('address.sc.region_id') ? ' is-invalid' : '' }}"
-                                            name="address[sc][region_id]"
-                                            required
-                                            id="address_sc_region_id">
-                                        <option value="">@lang('site::address.help.select_country')</option>
-                                        @foreach($address_sc_regions as $region)
-                                            <option
-                                                    @if(old('address.sc.region_id') == $region->id) selected
-                                                    @endif
-                                                    value="{{ $region->id }}">{{ $region->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('address.sc.region_id') }}</strong>
-                                    </span>
-                                </div>
-                            </div>
-
-
-                            <div class="form-row required">
-                                <div class="col mb-3">
-                                    <label class="control-label"
-                                           for="address_sc_locality">@lang('site::address.locality')</label>
-                                    <input type="text"
-                                           name="address[sc][locality]"
-                                           id="address_sc_locality"
-                                           required
-                                           class="form-control{{ $errors->has('address.sc.locality') ? ' is-invalid' : '' }}"
-                                           placeholder="@lang('site::address.placeholder.locality')"
-                                           value="{{ old('address.sc.locality') }}">
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('address.sc.locality') }}</strong>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="col mb-3">
-                                    <label class="control-label"
-                                           for="address_sc_street">@lang('site::address.street')</label>
-                                    <input type="text"
-                                           name="address[sc][street]"
-                                           id="address_sc_street"
-                                           class="form-control{{ $errors->has('address.sc.street') ? ' is-invalid' : '' }}"
-                                           placeholder="@lang('site::address.placeholder.street')"
-                                           value="{{ old('address.sc.street') }}">
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('address.sc.street') }}</strong>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-row required">
-                                        <div class="col mb-3">
-                                            <label class="control-label"
-                                                   for="address_sc_building">@lang('site::address.building')</label>
-                                            <input type="text"
-                                                   name="address[sc][building]"
-                                                   required
-                                                   id="address_sc_building"
-                                                   class="form-control{{ $errors->has('address.sc.building') ? ' is-invalid' : '' }}"
-                                                   placeholder="@lang('site::address.placeholder.building')"
-                                                   value="{{ old('address.sc.building') }}">
-                                            <span class="invalid-feedback">
-                                                <strong>{{ $errors->first('address.sc.building') }}</strong>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-row">
-                                        <div class="col mb-3">
-                                            <label class="control-label"
-                                                   for="address_sc_apartment">@lang('site::address.apartment')</label>
-                                            <input type="text"
-                                                   name="address[sc][apartment]"
-                                                   id="address_sc_apartment"
-                                                   class="form-control{{ $errors->has('address.sc.apartment') ? ' is-invalid' : '' }}"
-                                                   placeholder="@lang('site::address.placeholder.apartment')"
-                                                   value="{{ old('address.sc.apartment') }}">
-                                            <span class="invalid-feedback">
-                                                <strong>{{ $errors->first('address.sc.apartment') }}</strong>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-
                     {{-- КОНТРАГЕНТ --}}
 
                     <h4 class=" mt-3" id="sc_info">@lang('site::contragent.header.contragent')</h4>
-
                     <div class="form-row required">
                         <div class="col mb-3">
                             <label class="control-label"
@@ -449,9 +161,7 @@
                                    class="form-control{{ $errors->has('contragent.name') ? ' is-invalid' : '' }}"
                                    placeholder="@lang('site::contragent.placeholder.name')"
                                    value="{{ old('contragent.name') }}">
-                            <span class="invalid-feedback">
-                                <strong>{{ $errors->first('contragent.name') }}</strong>
-                            </span>
+                            <span class="invalid-feedback">{{ $errors->first('contragent.name') }}</span>
                         </div>
                     </div>
                     <div class="row">
@@ -461,8 +171,8 @@
                                     <label class="control-label"
                                            for="contragent_type_id">@lang('site::contragent.type_id')</label>
                                     @foreach($types as $key => $type)
-                                        <div class="form-check">
-                                            <input class="form-check-input
+                                        <div class="custom-control custom-radio">
+                                            <input class="custom-control-input
                                             {{$errors->has('contragent.type_id') ? ' is-invalid' : ''}}"
                                                    type="radio"
                                                    required
@@ -470,14 +180,12 @@
                                                    @if(old('contragent.type_id') == $type->id) checked @endif
                                                    id="contragent_type_id_{{ $type->id }}"
                                                    value="{{ $type->id }}">
-                                            <label class="form-check-label"
+                                            <label class="custom-control-label"
                                                    for="contragent_type_id_{{ $type->id }}">
                                                 {{ $type->name }}
                                             </label>
                                             @if($key == $types->count()-1)
-                                                <span class="invalid-feedback">
-                                                    <strong>{{ $errors->first('contragent.type_id') }}</strong>
-                                                </span>
+                                                <span class="invalid-feedback">{{ $errors->first('contragent.type_id') }}</span>
                                             @endif
                                         </div>
                                     @endforeach
@@ -490,8 +198,8 @@
                                     <label class="control-label"
                                            for="contragent_nds">@lang('site::contragent.nds')</label>
 
-                                    <div class="form-check">
-                                        <input class="form-check-input
+                                    <div class="custom-control custom-radio">
+                                        <input class="custom-control-input
                                             {{$errors->has('contragent.nds') ? ' is-invalid' : ''}}"
                                                type="radio"
                                                name="contragent[nds]"
@@ -499,11 +207,11 @@
                                                @if(old('contragent.nds') == 1) checked @endif
                                                id="contragent_nds_1"
                                                value="1">
-                                        <label class="form-check-label"
+                                        <label class="custom-control-label"
                                                for="contragent_nds_1">@lang('site::messages.yes')</label>
                                     </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input
+                                    <div class="custom-control custom-radio">
+                                        <input class="custom-control-input
                                             {{$errors->has('contragent.nds') ? ' is-invalid' : ''}}"
                                                type="radio"
                                                name="contragent[nds]"
@@ -511,11 +219,9 @@
                                                @if(old('contragent.nds') == 0) checked @endif
                                                id="contragent_nds_0"
                                                value="0">
-                                        <label class="form-check-label"
+                                        <label class="custom-control-label"
                                                for="contragent_nds_0">@lang('site::messages.no')</label>
-                                        <span class="invalid-feedback">
-                                            <strong>{{ $errors->first('contragent.nds') }}</strong>
-                                        </span>
+                                        <span class="invalid-feedback">{{ $errors->first('contragent.nds') }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -539,9 +245,7 @@
                                            class="form-control{{ $errors->has('contragent.inn') ? ' is-invalid' : '' }}"
                                            placeholder="@lang('site::contragent.placeholder.inn')"
                                            value="{{ old('contragent.inn') }}">
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('contragent.inn') }}</strong>
-                                    </span>
+                                    <span class="invalid-feedback">{{ $errors->first('contragent.inn') }}</span>
                                 </div>
                             </div>
 
@@ -558,9 +262,7 @@
                                            class="form-control{{ $errors->has('contragent.ogrn') ? ' is-invalid' : '' }}"
                                            placeholder="@lang('site::contragent.placeholder.ogrn')"
                                            value="{{ old('contragent.ogrn') }}">
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('contragent.ogrn') }}</strong>
-                                    </span>
+                                    <span class="invalid-feedback">{{ $errors->first('contragent.ogrn') }}</span>
                                 </div>
                             </div>
 
@@ -577,9 +279,7 @@
                                            class="form-control{{ $errors->has('contragent.okpo') ? ' is-invalid' : '' }}"
                                            placeholder="@lang('site::contragent.placeholder.okpo')"
                                            value="{{ old('contragent.okpo') }}">
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('contragent.okpo') }}</strong>
-                                    </span>
+                                    <span class="invalid-feedback">{{ $errors->first('contragent.okpo') }}</span>
                                 </div>
                             </div>
 
@@ -594,9 +294,7 @@
                                            class="form-control{{ $errors->has('contragent.kpp') ? ' is-invalid' : '' }}"
                                            placeholder="@lang('site::contragent.placeholder.kpp')"
                                            value="{{ old('contragent.kpp') }}">
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('contragent.kpp') }}</strong>
-                                    </span>
+                                    <span class="invalid-feedback">{{ $errors->first('contragent.kpp') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -615,9 +313,7 @@
                                            class="form-control{{ $errors->has('contragent.rs') ? ' is-invalid' : '' }}"
                                            placeholder="@lang('site::contragent.placeholder.rs')"
                                            value="{{ old('contragent.rs') }}">
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('contragent.rs') }}</strong>
-                                    </span>
+                                    <span class="invalid-feedback">{{ $errors->first('contragent.rs') }}</span>
                                 </div>
                             </div>
 
@@ -634,9 +330,7 @@
                                            class="form-control{{ $errors->has('contragent.bik') ? ' is-invalid' : '' }}"
                                            placeholder="@lang('site::contragent.placeholder.bik')"
                                            value="{{ old('contragent.bik') }}">
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('contragent.bik') }}</strong>
-                                    </span>
+                                    <span class="invalid-feedback">{{ $errors->first('contragent.bik') }}</span>
                                 </div>
                             </div>
 
@@ -652,9 +346,7 @@
                                            class="form-control{{ $errors->has('contragent.bank') ? ' is-invalid' : '' }}"
                                            placeholder="@lang('site::contragent.placeholder.bank')"
                                            value="{{ old('contragent.bank') }}">
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('contragent.bank') }}</strong>
-                                    </span>
+                                    <span class="invalid-feedback">{{ $errors->first('contragent.bank') }}</span>
                                 </div>
                             </div>
 
@@ -671,9 +363,7 @@
                                            class="form-control{{ $errors->has('contragent.ks') ? ' is-invalid' : '' }}"
                                            placeholder="@lang('site::contragent.placeholder.ks')"
                                            value="{{ old('contragent.ks') }}">
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('contragent.ks') }}</strong>
-                                    </span>
+                                    <span class="invalid-feedback">{{ $errors->first('contragent.ks') }}</span>
                                 </div>
                             </div>
 
@@ -701,7 +391,6 @@
                                             required
                                             name="address[legal][country_id]"
                                             id="address_legal_country_id">
-                                        <option value="">@lang('site::messages.select_from_list')</option>
                                         @foreach($countries as $country)
                                             <option
                                                     @if(old('address.legal.country_id') == $country->id) selected
@@ -710,9 +399,7 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('address.legal.country_id') }}</strong>
-                                    </span>
+                                    <span class="invalid-feedback">{{ $errors->first('address.legal.country_id') }}</span>
                                 </div>
                             </div>
                             <div class="form-row required">
@@ -724,7 +411,7 @@
                                             name="address[legal][region_id]"
                                             required
                                             id="address_legal_region_id">
-                                        <option value="">@lang('site::address.help.select_country')</option>
+                                        <option value="">@lang('site::messages.select_from_list')</option>
                                         @foreach($address_legal_regions as $region)
                                             <option
                                                     @if(old('address.legal.region_id') == $region->id) selected
@@ -733,9 +420,7 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('address.legal.region_id') }}</strong>
-                                    </span>
+                                    <span class="invalid-feedback">{{ $errors->first('address.legal.region_id') }}</span>
                                 </div>
                             </div>
                             <div class="form-row required">
@@ -749,9 +434,7 @@
                                            class="form-control{{ $errors->has('address.legal.locality') ? ' is-invalid' : '' }}"
                                            placeholder="@lang('site::address.placeholder.locality')"
                                            value="{{ old('address.legal.locality') }}">
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('address.legal.locality') }}</strong>
-                                    </span>
+                                    <span class="invalid-feedback">{{ $errors->first('address.legal.locality') }}</span>
                                 </div>
                             </div>
                             <div class="form-row">
@@ -764,9 +447,7 @@
                                            class="form-control{{ $errors->has('address.legal.street') ? ' is-invalid' : '' }}"
                                            placeholder="@lang('site::address.placeholder.street')"
                                            value="{{ old('address.legal.street') }}">
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('address.legal.street') }}</strong>
-                                    </span>
+                                    <span class="invalid-feedback">{{ $errors->first('address.legal.street') }}</span>
                                 </div>
                             </div>
                             <div class="row">
@@ -782,9 +463,7 @@
                                                    class="form-control{{ $errors->has('address.legal.building') ? ' is-invalid' : '' }}"
                                                    placeholder="@lang('site::address.placeholder.building')"
                                                    value="{{ old('address.legal.building') }}">
-                                            <span class="invalid-feedback">
-                                                <strong>{{ $errors->first('address.legal.building') }}</strong>
-                                            </span>
+                                            <span class="invalid-feedback">{{ $errors->first('address.legal.building') }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -799,9 +478,7 @@
                                                    class="form-control{{ $errors->has('address.legal.apartment') ? ' is-invalid' : '' }}"
                                                    placeholder="@lang('site::address.placeholder.apartment')"
                                                    value="{{ old('address.legal.apartment') }}">
-                                            <span class="invalid-feedback">
-                                                <strong>{{ $errors->first('address.legal.apartment') }}</strong>
-                                            </span>
+                                            <span class="invalid-feedback">{{ $errors->first('address.legal.apartment') }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -827,7 +504,6 @@
                                             data-regions="#address_postal_region_id"
                                             data-empty="@lang('site::messages.select_from_list')"
                                             id="address_postal_country_id">
-                                        <option value="">@lang('site::messages.select_from_list')</option>
                                         @foreach($countries as $country)
                                             <option
                                                     @if(old('address.postal.country_id') == $country->id) selected
@@ -836,9 +512,7 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('address.postal.country_id') }}</strong>
-                                    </span>
+                                    <span class="invalid-feedback">{{ $errors->first('address.postal.country_id') }}</span>
                                 </div>
                             </div>
                             <div class="form-row required">
@@ -850,7 +524,7 @@
                                             name="address[postal][region_id]"
                                             required
                                             id="address_postal_region_id">
-                                        <option value="">@lang('site::address.help.select_country')</option>
+                                        <option value="">@lang('site::messages.select_from_list')</option>
                                         @foreach($address_postal_regions as $region)
                                             <option
                                                     @if(old('address.postal.region_id') == $region->id) selected
@@ -859,9 +533,7 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('address.postal.region_id') }}</strong>
-                                    </span>
+                                    <span class="invalid-feedback">{{ $errors->first('address.postal.region_id') }}</span>
                                 </div>
                             </div>
                             <div class="form-row required">
@@ -875,9 +547,7 @@
                                            class="form-control{{ $errors->has('address.postal.locality') ? ' is-invalid' : '' }}"
                                            placeholder="@lang('site::address.placeholder.locality')"
                                            value="{{ old('address.postal.locality') }}">
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('address.postal.locality') }}</strong>
-                                    </span>
+                                    <span class="invalid-feedback">{{ $errors->first('address.postal.locality') }}</span>
                                 </div>
                             </div>
                             <div class="form-row">
@@ -890,9 +560,7 @@
                                            class="form-control{{ $errors->has('address.postal.street') ? ' is-invalid' : '' }}"
                                            placeholder="@lang('site::address.placeholder.street')"
                                            value="{{ old('address.postal.street') }}">
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('address.postal.street') }}</strong>
-                                    </span>
+                                    <span class="invalid-feedback">{{ $errors->first('address.postal.street') }}</span>
                                 </div>
                             </div>
                             <div class="row">
@@ -908,9 +576,7 @@
                                                    class="form-control{{ $errors->has('address.postal.building') ? ' is-invalid' : '' }}"
                                                    placeholder="@lang('site::address.placeholder.building')"
                                                    value="{{ old('address.postal.building') }}">
-                                            <span class="invalid-feedback">
-                                                <strong>{{ $errors->first('address.postal.building') }}</strong>
-                                            </span>
+                                            <span class="invalid-feedback">{{ $errors->first('address.postal.building') }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -925,9 +591,7 @@
                                                    class="form-control{{ $errors->has('address.postal.apartment') ? ' is-invalid' : '' }}"
                                                    placeholder="@lang('site::address.placeholder.apartment')"
                                                    value="{{ old('address.postal.apartment') }}">
-                                            <span class="invalid-feedback">
-                                                <strong>{{ $errors->first('address.postal.apartment') }}</strong>
-                                            </span>
+                                            <span class="invalid-feedback">{{ $errors->first('address.postal.apartment') }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -950,9 +614,7 @@
                                    class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}"
                                    placeholder="@lang('site::user.placeholder.email')"
                                    value="{{ old('email') }}">
-                            <span class="invalid-feedback">
-                                <strong>{{ $errors->first('email') }}</strong>
-                            </span>
+                            <span class="invalid-feedback">{{ $errors->first('email') }}</span>
                             <small id="emailHelp" class="form-text text-success">
                                 @lang('site::user.help.email')
                             </small>
@@ -970,9 +632,7 @@
                                    class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}"
                                    placeholder="@lang('site::user.placeholder.password')"
                                    value="{{ old('password') }}">
-                            <span class="invalid-feedback">
-                                <strong>{{ $errors->first('password') }}</strong>
-                            </span>
+                            <span class="invalid-feedback">{{ $errors->first('password') }}</span>
 
                         </div>
                     </div>
@@ -990,6 +650,43 @@
                         </div>
                     </div>
 
+                    <hr/>
+
+                    <div class="form-row required">
+                        <div class="col mb-3">
+                            <label class="control-label"
+                                   for="captcha">@lang('site::register.captcha')</label>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <input type="text"
+                                           name="captcha"
+                                           required
+                                           id="captcha"
+                                           class="form-control{{ $errors->has('captcha') ? ' is-invalid' : '' }}"
+                                           placeholder="@lang('site::register.placeholder.captcha')"
+                                           value="">
+                                    <span class="invalid-feedback">{{ $errors->first('captcha') }}</span>
+                                </div>
+                                <div class="col-md-9 captcha">
+                                    <span>{!! captcha_img('flat') !!}</span>
+                                    <button  data-toggle="tooltip" data-placement="top" title="@lang('site::messages.refresh')" type="button" class="btn btn-outline-secondary" id="captcha-refresh">
+                                        <i class="fa fa-refresh"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-row required">
+                        <div class="col mb-3">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" required value="1" class="custom-control-input" id="accept">
+                                <label class="custom-control-label" for="accept"><span style="color:red;margin-right: 2px;">*</span>@lang('site::register.accept')</label>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="form-row">
                         <button class="btn btn-ferroli" type="submit">@lang('site::user.sign_up')</button>
                     </div>
@@ -1002,3 +699,20 @@
         </div>
     </div>
 @endsection
+@push('scripts')
+<script defer>
+    try {
+        document.querySelector('#captcha-refresh').addEventListener('click', function () {
+            fetch('/captcha/flat')
+                .then(response => {
+                    response.blob().then(blobResponse => {
+                        const urlCreator = window.URL || window.webkitURL;
+                        document.querySelector('.captcha span img').src = urlCreator.createObjectURL(blobResponse);
+                    });
+                });
+        });
+    } catch (e) {
+        console.log(e);
+    }
+</script>
+@endpush

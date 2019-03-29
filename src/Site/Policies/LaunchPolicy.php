@@ -8,11 +8,6 @@ use QuadStudio\Service\Site\Models\Launch;
 class LaunchPolicy
 {
 
-    public function index(User $user)
-    {
-        return $user->hasPermission('launches');
-    }
-
     /**
      * Determine whether the user can view the launch.
      *
@@ -22,7 +17,7 @@ class LaunchPolicy
      */
     public function view(User $user, Launch $launch)
     {
-        return $user->hasPermission('launches') ** ($user->id == $launch->user_id);
+        return $user->id == $launch->user_id;
     }
 
     /**
@@ -33,7 +28,7 @@ class LaunchPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermission('launches') && ($user->id > 0);
+        return $user->id > 0;
     }
 
     /**
@@ -43,9 +38,9 @@ class LaunchPolicy
      * @param  Launch $launch
      * @return bool
      */
-    public function update(User $user, Launch $launch)
+    public function edit(User $user, Launch $launch)
     {
-        return $user->hasPermission('launches') && ($user->id == $launch->user_id);
+        return ($user->id == $launch->user_id);
     }
 
     /**
@@ -57,7 +52,7 @@ class LaunchPolicy
      */
     public function delete(User $user, Launch $launch)
     {
-        return $user->hasPermission('launches') && ($user->id == $launch->user_id) && $launch->canDelete();
+        return ($user->id == $launch->user_id) && $launch->repairs()->count() == 0;
     }
 
 

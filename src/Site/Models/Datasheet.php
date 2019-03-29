@@ -17,6 +17,16 @@ class Datasheet extends Model implements SingleFileable
         'date_from', 'date_to', 'name', 'tags', 'active', 'file_id'
     ];
 
+    protected $casts = [
+        'date_from' => 'date:Y-m-d',
+        'date_to'   => 'date:Y-m-d',
+    ];
+
+    protected $dates = [
+        'date_from',
+        'date_to'
+    ];
+
     /**
      * @param array $attributes
      */
@@ -80,16 +90,6 @@ class Datasheet extends Model implements SingleFileable
         }
 
         return null;
-    }
-
-    public function date_from()
-    {
-        return !is_null($this->date_from) ? Carbon::instance(\DateTime::createFromFormat('Y-m-d', $this->date_from))->format('d.m.Y') : null;
-    }
-
-    public function date_to()
-    {
-        return !is_null($this->date_to) ? Carbon::instance(\DateTime::createFromFormat('Y-m-d', $this->date_to))->format('d.m.Y') : null;
     }
 
     /**

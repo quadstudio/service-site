@@ -25,13 +25,20 @@ class LaunchRequest extends FormRequest
     public function rules()
     {
         switch ($this->method()) {
-            case 'POST':
+            case 'POST': {
+                return [
+                    'launch.name'       => 'required|string|max:255',
+                    'launch.country_id' => 'required|exists:countries,id',
+                    'launch.phone'      => 'required|string|size:' . config('site.phone.maxlength'),
+                    'launch.address'    => 'sometimes|nullable|max:255',
+                ];
+            }
             case 'PUT':
             case 'PATCH': {
                 return [
-                    'name'       => 'required|string|max:255',
-                    'country_id' => 'required|exists:countries,id',
-                    'phone'      => 'required|numeric|digits:10',
+                    'launch.country_id' => 'required|exists:countries,id',
+                    'launch.phone'      => 'required|string|size:' . config('site.phone.maxlength'),
+                    'launch.address'    => 'sometimes|nullable|max:255',
                 ];
             }
             default:
@@ -57,9 +64,10 @@ class LaunchRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name'            => trans('site::launch.name'),
-            'country_id'      => trans('site::launch.country_id'),
-            'phone'           => trans('site::launch.phone'),
+            'launch.name'       => trans('site::launch.name'),
+            'launch.country_id' => trans('site::launch.country_id'),
+            'launch.phone'      => trans('site::launch.phone'),
+            'launch.address'    => trans('site::launch.address'),
         ];
     }
 }

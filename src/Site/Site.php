@@ -13,9 +13,11 @@ use QuadStudio\Service\Site\Models\Element;
 use QuadStudio\Service\Site\Models\Equipment;
 use QuadStudio\Service\Site\Models\EventType;
 use QuadStudio\Service\Site\Models\FileType;
+use QuadStudio\Service\Site\Models\Mounting;
 use QuadStudio\Service\Site\Models\Order;
 use QuadStudio\Service\Site\Models\Repair;
 use QuadStudio\Service\Site\Pdf\ActPdf;
+use QuadStudio\Service\Site\Pdf\MountingPdf;
 use QuadStudio\Service\Site\Pdf\RepairPdf;
 
 class Site
@@ -66,15 +68,39 @@ class Site
     }
 
     /**
-     * Service Routes
+     * Service Api Routes
      */
-    public function routes()
+    public function apiRoutes()
+    {
+        ($router = $this->app->make('router'))
+            ->group([
+                'middleware' => ['auth:api'],
+                'namespace'  => 'Api',
+            ],
+                function () use ($router) {
+
+                });
+    }
+
+
+    /**
+     * Service Web Routes
+     */
+    public function webRoutes()
     {
 
         ($router = $this->app->make('router'))
             ->group(['middleware' => ['online']],
                 function () use ($router) {
                     $router->get('/', 'IndexController@index')->name('index');
+
+                    $router->resource('/files',
+                        '\QuadStudio\Service\Site\Http\Controllers\FileController')
+                        ->only(['index', 'store', 'show', 'destroy']);
+
+                    /* Интернет-магазины */
+                    $router->get('/eshop', '\QuadStudio\Service\Site\Http\Controllers\AddressController@eshop')->name('addresses.eshop');
+
 
                     /* Новости */
                     $router->resource('/news', 'NewsController')->only(['index']);
@@ -89,8 +115,7 @@ class Site
 
                     /* Участники */
                     $router->resource('/participants', 'ParticipantController')->only(['create']);
-                    /* Интернет-магазины */
-                    $router->get('/eshop', 'AddressController@eshop')->name('addresses.eshop');
+
                     $router->match(['get', 'post'], '/services', 'ServiceController@index')->name('services.index');
                     $router->match(['get', 'post'], '/dealers', 'DealerController@index')->name('dealers.index');
 
@@ -101,7 +126,7 @@ class Site
                     $router->get('/catalogs/{catalog}/list', 'CatalogController@list')->name('catalogs.list');
                     $router->resource('/equipments', 'EquipmentController')->only(['index', 'show']);
                     $router->resource('/datasheets', 'DatasheetController')->only(['index', 'show']);
-                    $router->resource('/files', 'FileController')->only(['index', 'store', 'show', 'destroy']);
+
                     $router->get('/currencies/refresh/', 'CurrencyController@refresh')->name('currencies.refresh');
                     //$router->resource('/schemes', 'SchemeController')->only(['index','show']);
 
@@ -112,56 +137,121 @@ class Site
 
                     $router->group(['middleware' => ['auth']],
                         function () use ($router) {
-                            $router->get('/home', 'HomeController@index')->name('home');
-                            $router->post('/home/logo', 'HomeController@logo')->name('home.logo');
+                            // Личный кабинет
+                            $router->get('/home',
+                                '\QuadStudio\Service\Site\Http\Controllers\HomeController@index')
+                                ->name('home');
+                            $router->post('/home/logo',
+                                '\QuadStudio\Service\Site\Http\Controllers\HomeController@logo')
+                                ->name('home.logo');
+
+                            // Авторизации
+                            $router->resource('/authorizations',
+                                '\QuadStudio\Service\Site\Http\Controllers\AuthorizationController')
+                                ->middleware('permission:authorizations')
+                                ->only(['index', 'store', 'show']);
+                            $router->post('/authorizations/{authorization}/message',
+                                '\QuadStudio\Service\Site\Http\Controllers\AuthorizationController@message')
+                                ->middleware('permission:messages')
+                                ->name('authorizations.message');
+                            $router->get('/authorizations/create/{role}',
+                                '\QuadStudio\Service\Site\Http\Controllers\AuthorizationController@create')
+                                ->name('authorizations.create')
+                                ->middleware('permission:authorizations');
+
+                            // Адреса
+                            $router->resource('/addresses',
+                                '\QuadStudio\Service\Site\Http\Controllers\AddressController')
+                                ->middleware('permission:addresses')
+                                ->except(['create']);
+                            $router->get('/addresses/create/{address_type}',
+                                '\QuadStudio\Service\Site\Http\Controllers\AddressController@create')
+                                ->middleware('permission:addresses')
+                                ->name('addresses.create');
+                            $router->get('/addresses/{address}/phone',
+                                '\QuadStudio\Service\Site\Http\Controllers\AddressController@phone')
+                                ->middleware('permission:addresses')
+                                ->name('addresses.phone');
+                            $router->post('/addresses/{address}/phone',
+                                '\QuadStudio\Service\Site\Http\Controllers\AddressController@phone')
+                                ->middleware('permission:addresses')
+                                ->name('addresses.phone.store');
+
+                            // Инженеры
+                            $router->resource('/engineers',
+                                '\QuadStudio\Service\Site\Http\Controllers\EngineerController')
+                                ->middleware('permission:engineers')
+                                ->except(['show']);
+
+                            // Отчеты по монтажу
+                            $router->resource('/mountings',
+                                '\QuadStudio\Service\Site\Http\Controllers\MountingController')
+                                ->middleware('permission:mountings')
+                                ->only(['index', 'create', 'store', 'show']);
+                            $router->post('/mountings/{mounting}/message',
+                                '\QuadStudio\Service\Site\Http\Controllers\MountingController@message')
+                                ->middleware('permission:messages')
+                                ->name('mountings.message');
+                            $router->get('/mountings/{mounting}/pdf', function (Mounting $mounting) {
+                                return (new MountingPdf())->setModel($mounting)->render();
+                            })->middleware('can:pdf,mounting')
+                                ->name('mountings.pdf');
+
+                            // Торговые организации
+                            $router->resource('/trades',
+                                '\QuadStudio\Service\Site\Http\Controllers\TradeController')
+                                ->middleware('permission:trades')
+                                ->except(['show']);
+
+                            // Ввод в экплуатацию
+                            $router->resource('/launches',
+                                '\QuadStudio\Service\Site\Http\Controllers\LaunchController')
+                                ->middleware('permission:launches')
+                                ->except(['show']);
+
+                            // Сообщения
+                            $router->resource('/messages',
+                                '\QuadStudio\Service\Site\Http\Controllers\MessageController')
+                                ->middleware('permission:messages')
+                                ->only(['index', 'show']);
+
+                            // Отчеты по ремонту
+                            $router->resource('/repairs',
+                                '\QuadStudio\Service\Site\Http\Controllers\RepairController')
+                                ->middleware('permission:repairs');
+                            $router->post('/repairs/{repair}/message',
+                                '\QuadStudio\Service\Site\Http\Controllers\RepairController@message')
+                                ->middleware('permission:messages')
+                                ->name('repairs.message');
+                            $router->get('/repairs/{repair}/pdf', function (Repair $repair) {
+                                return (new RepairPdf())->setModel($repair)->render();
+                            })->middleware('can:pdf,repair')->name('repairs.pdf');
+                            //
+                            //
+                            //
                             $router->resource('/acts', 'ActController')->middleware('permission:acts');
                             $router->get('/acts/{act}/pdf', function (Act $act) {
                                 return (new ActPdf())->setModel($act)->render();
                             })->middleware('can:pdf,act')->name('acts.pdf');
-
                             $router->resource('/distributors', 'DistributorController')->only(['index', 'show'])->middleware('permission:distributors');
                             $router->get('/distributors/{order}/excel', function (Order $order) {
                                 return (new OrderExcel())->setModel($order)->render();
                             })->middleware('can:distributor,order')->name('distributors.excel');
-
                             $router->post('/orders/load', 'OrderController@load')->middleware('permission:orders')->name('orders.load');
                             $router->resource('/orders', 'OrderController')->except(['edit', 'update'])->middleware('permission:orders');
-
                             $router->post('/orders/{order}/message', 'OrderController@message')->middleware('permission:messages')->name('orders.message');
                             $router->delete('/order-items/{item}', 'OrderItemController@destroy')->name('orders.items.destroy');
-                            $router->resource('/repairs', 'RepairController')->middleware('permission:repairs');
-                            $router->post('/repairs/{repair}/message', 'RepairController@message')->middleware('permission:messages')->name('repairs.message');
-                            $router->get('/repairs/{repair}/pdf', function (Repair $repair) {
-                                return (new RepairPdf())->setModel($repair)->render();
-                            })->middleware('can:pdf,repair')->name('repairs.pdf');
-
-                            $router->resource('/engineers', 'EngineerController')->middleware('permission:engineers');
-                            $router->resource('/trades', 'TradeController')->middleware('permission:trades');
                             $router->resource('/phones', 'PhoneController')->middleware('permission:phones')->except(['index', 'show']);
-                            $router->resource('/launches', 'LaunchController')->middleware('permission:launches');
                             $router->resource('/contragents', 'ContragentController')->middleware('permission:contragents');
                             $router->resource('/contacts', 'ContactController')->middleware('permission:contacts');
-                            $router->resource('/addresses', 'AddressController')->middleware('permission:addresses');
-                            $router->get('/addresses/{address}/phone', 'AddressController@phone')->middleware('permission:addresses')->name('addresses.phone');
-                            $router->post('/addresses/{address}/phone', 'AddressController@phone')->middleware('permission:addresses')->name('addresses.phone.store');
-                            $router->resource('/messages', 'MessageController')->middleware('permission:messages');
                             // Cart
                             $router->get('/cart', 'CartController@index')->name('cart');
                             $router->post('/cart/{product}/add', 'CartController@add')->name('buy');
                             $router->delete('/cart/remove', 'CartController@remove')->name('removeCartItem');
                             $router->put('/cart/update', 'CartController@update')->name('updateCart');
                             $router->get('/cart/clear', 'CartController@clear')->name('clearCart');
-
+                            $router->get('/users/{user}/force', '\QuadStudio\Service\Site\Http\Controllers\HomeController@force')->name('users.admin');
                         });
-//                    $router
-//                        ->group([
-//                            'middleware' => ['auth', 'admin'],
-//                            'namespace'  => 'Admin\User',
-//                            'prefix'     => 'admin/users/{user}',
-//                        ],
-//                            function () use ($router) {
-//                                $router->name('admin.users')->resource('/addresses', 'AddressController');
-//                            });
                     $router
                         ->group([
                             'middleware' => ['auth', 'admin'],
@@ -169,7 +259,46 @@ class Site
                             'prefix'     => 'admin',
                         ],
                             function () use ($router) {
-                                $router->name('admin')->get('/', 'IndexController@index');
+                                // Панель управления
+                                $router->name('admin')->get('/',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\IndexController@index');
+                                // Авторизации
+                                $router->name('admin')->resource('/authorization-brands',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\AuthorizationBrandController')
+                                    ->except(['delete']);
+                                $router->name('admin')->resource('/authorization-roles',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\AuthorizationRoleController')
+                                    ->except(['delete', 'show', 'create']);
+                                $router->name('admin')->get('/authorization-roles/create/{role}',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\AuthorizationRoleController@create')
+                                    ->name('.authorization-roles.create');
+                                $router->name('admin')->resource('/authorization-types',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\AuthorizationTypeController')
+                                    ->except(['delete']);
+                                $router->name('admin')->resource('/authorizations',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\AuthorizationController')
+                                    ->except(['delete']);
+                                $router->name('admin')->post('/authorizations/{authorization}/message',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\AuthorizationController@message')
+                                    ->name('.authorizations.message');
+                                // Роуты
+                                $router->name('admin')->get('routes',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\RouteController@index')
+                                    ->name('.routes.index');
+                                // Отчеты по монтажу
+                                $router->name('admin')->resource('/mountings',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\MountingController')
+                                    ->only(['index', 'show', 'update']);
+                                // Отчеты по ремонту
+                                $router->name('admin')->resource('/repairs',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\RepairController')
+                                    ->only(['index', 'show', 'update']);
+                                $router->name('admin')->post('/repairs/{repair}/message',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\RepairController@message')
+                                    ->name('.repairs.message');
+                                //
+                                //
+                                //
                                 $router->name('admin')->post('/news/image', 'NewsController@image')->name('.news.image');
                                 $router->name('admin')->resource('/news', 'NewsController');
                                 $router->name('admin')->resource('/mailings', 'MailingController')->only(['store']);
@@ -215,6 +344,8 @@ class Site
                                 $router->name('admin')->get('/users/{user}/orders', 'UserController@orders')->name('.users.orders');
                                 $router->name('admin')->get('/users/{user}/contragents', 'UserController@contragents')->name('.users.contragents');
                                 $router->name('admin')->get('/users/{user}/contacts', 'UserController@contacts')->name('.users.contacts');
+                                $router->name('admin')->get('/users/{user}/authorizations', 'UserController@authorizations')->name('.users.authorizations');
+                                $router->name('admin')->get('/users/{user}/mountings', 'UserController@mountings')->name('.users.mountings');
                                 $router->name('admin')->get('/users/{user}/repairs', 'UserController@repairs')->name('.users.repairs');
                                 $router->name('admin')->get('/users/{user}/schedule', 'UserController@schedule')->name('.users.schedule');
                                 $router->name('admin')->get('/users/{user}/prices', 'UserController@prices')->name('.users.prices');
@@ -246,10 +377,9 @@ class Site
                                 $router->name('admin')->post('/orders/{order}/message', 'OrderController@message')->name('.orders.message');
                                 $router->name('admin')->delete('/order-items/{item}', 'OrderItemController@destroy')->name('.orders.items.destroy');
                                 $router->name('admin')->get('/orders/{order}/schedule', 'OrderController@schedule')->name('.orders.schedule');
-                                $router->name('admin')->resource('/repairs', 'RepairController');
-                                $router->name('admin')->post('/repairs/{repair}/message', 'RepairController@message')->name('.repairs.message');
+
                                 $router->name('admin')->resource('/messages', 'MessageController');
-                                $router->name('admin')->post('/repairs/{repair}/status', 'RepairController@status')->name('.repairs.status');
+
                                 $router->name('admin')->resource('/serials', 'SerialController');
                                 //$router->name('admin')->resource('/explodes', 'ExplodeController');
                                 $router->name('admin')->put('/catalogs/sort', function (Request $request) {
@@ -331,11 +461,19 @@ class Site
             'prefix'    => 'api',
         ],
             function () use ($router) {
-                $router->name('api')->get('/countries', 'CountryController@index')->name('.countries.index');
+                // Товары
+                // Для отчета по монтажу
+                $router->name('api')->get('/products/mounting', '\QuadStudio\Service\Site\Http\Controllers\Api\ProductController@mounting');
+//                $router->name('api')->get('/countries', function (){
+//                    return new CountryCollection(
+//                        Country::query()->enabled()->orderBy('sort_order')->get()
+//                    );
+//                })->name('.countries.index');
                 $router->name('api')->get('/services/location', 'ServiceController@location')->name('.services.location');
                 $router->name('api')->get('/services/{region?}', 'ServiceController@index')->name('.services.index');
                 $router->name('api')->get('/dealers/{region?}', 'DealerController@index')->name('.dealers.index');
 
+                $router->name('api')->resource('/countries', 'CountryController')->only(['index']);
                 $router->name('api')->resource('/users', 'UserController');
                 $router->name('api')->resource('/orders', 'OrderController');
                 $router->name('api')->resource('/acts', 'ActController');
@@ -347,6 +485,7 @@ class Site
                 $router->name('api')->get('/products/repair', 'ProductController@repair');
                 $router->name('api')->get('/products/analog', 'ProductController@analog');
                 $router->name('api')->get('/products/product', 'ProductController@product');
+
                 $router->name('api')->get('/products/datasheet', 'ProductController@datasheet');
                 $router->name('api')->get('/products/fast', 'ProductController@fast');
                 $router->name('api')->get('/products/{product}/part', 'ProductController@part');

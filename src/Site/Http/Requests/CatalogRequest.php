@@ -6,27 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class CatalogRequest extends FormRequest
 {
-    /**
-     * @var string
-     */
-    protected $table;
-
-    /**
-     * PermissionRequest constructor.
-     * @param array $query
-     * @param array $request
-     * @param array $attributes
-     * @param array $cookies
-     * @param array $files
-     * @param array $server
-     * @param null $content
-     */
-    public function __construct(array $query = array(), array $request = array(), array $attributes = array(), array $cookies = array(), array $files = array(), array $server = array(), $content = null)
-    {
-        parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
-
-        $this->table = env("DB_PREFIX", "") . 'catalogs';
-    }
 
     /**
      * Determine if the user is authorized to make this request.

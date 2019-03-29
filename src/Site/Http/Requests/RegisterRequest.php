@@ -37,14 +37,16 @@ class RegisterRequest extends FormRequest
                     'name'                      => 'required|string|max:255',
                     'email'                     => 'required|string|email|max:191|unique:users',
                     'password'                  => 'required|string|min:6|confirmed',
-                    'type_id'                   => 'required|exists:contragent_types,id',
+                    'captcha'                   => 'required|captcha',
+                    'accept'                    => 'required|accepted',
+                    //'type_id'                   => 'required|exists:contragent_types,id',
                     'web'                       => 'max:255',
                     //
                     'contact.name'              => 'required|string|max:255',
                     'contact.position'          => 'max:255',
                     //
                     'phone.contact.country_id'  => 'required|exists:countries,id',
-                    'phone.contact.number'           => array(
+                    'phone.contact.number'      => array(
                         'required',
                         'numeric',
                         function ($attribute, $value, $fail) {
@@ -60,29 +62,29 @@ class RegisterRequest extends FormRequest
                     'phone.contact.extra'       => 'max:20',
 
                     //
-                    'address.sc.name'           => 'required|string|max:255',
-                    'address.sc.country_id'     => 'required|exists:countries,id',
-                    'address.sc.region_id'      => 'sometimes|exists:regions,id',
-                    'address.sc.locality'       => 'required|string|max:255',
-                    'address.sc.street'         => 'sometimes|max:255',
-                    'address.sc.building'       => 'required|string|max:255',
-                    'address.sc.apartment'      => 'sometimes|max:255',
+//                    'address.sc.name'           => 'required|string|max:255',
+//                    'address.sc.country_id'     => 'required|exists:countries,id',
+//                    'address.sc.region_id'      => 'sometimes|exists:regions,id',
+//                    'address.sc.locality'       => 'required|string|max:255',
+//                    'address.sc.street'         => 'sometimes|max:255',
+//                    'address.sc.building'       => 'required|string|max:255',
+//                    'address.sc.apartment'      => 'sometimes|max:255',
                     //
-                    'phone.sc.country_id'       => 'required|exists:countries,id',
-                    'phone.sc.number'           => array(
-                        'required',
-                        'numeric',
-                        function ($attribute, $value, $fail) {
-
-                            if ($this->input('phone.sc.country_id') == 643 && strlen($value) != 10) {
-                                return $fail(trans('site::phone.error.length_10'));
-                            }
-                            if ($this->input('phone.sc.country_id') == 112 && strlen($value) != 9) {
-                                return $fail(trans('site::phone.error.length_9'));
-                            }
-                        }
-                    ),
-                    'phone.sc.extra'            => 'max:20',
+//                    'phone.sc.country_id'       => 'required|exists:countries,id',
+//                    'phone.sc.number'           => array(
+//                        'required',
+//                        'numeric',
+//                        function ($attribute, $value, $fail) {
+//
+//                            if ($this->input('phone.sc.country_id') == 643 && strlen($value) != 10) {
+//                                return $fail(trans('site::phone.error.length_10'));
+//                            }
+//                            if ($this->input('phone.sc.country_id') == 112 && strlen($value) != 9) {
+//                                return $fail(trans('site::phone.error.length_9'));
+//                            }
+//                        }
+//                    ),
+//                    'phone.sc.extra'            => 'max:20',
                     //
                     'contragent.type_id'        => 'required|exists:contragent_types,id',
                     'contragent.name'           => 'required|string|max:255',
@@ -171,6 +173,7 @@ class RegisterRequest extends FormRequest
     public function messages()
     {
         return [
+            'captcha'                    => trans('site::register.error.captcha'),
             'contragent.inn.regex'       => trans('site::contragent.placeholder.inn'),
             'contragent.inn.unique'      => trans('site::contragent.error.inn.unique'),
             'contragent.ogrn.regex'      => trans('site::contragent.placeholder.ogrn'),
@@ -190,7 +193,8 @@ class RegisterRequest extends FormRequest
             'name'                      => trans('site::user.name'),
             'email'                     => trans('site::user.email'),
             'password'                  => trans('site::user.password'),
-            'type_id'                   => trans('site::user.type_id'),
+            'captcha'                   => trans('site::register.captcha'),
+            //'type_id'                   => trans('site::user.type_id'),
             'web'                       => trans('site::user.web'),
             //
             'contact.name'              => trans('site::contact.name'),
@@ -200,9 +204,9 @@ class RegisterRequest extends FormRequest
             'phone.contact.number'      => trans('site::phone.number'),
             'phone.contact.extra'       => trans('site::phone.extra'),
             //
-            'phone.sc.country_id'       => trans('site::phone.country_id'),
-            'phone.sc.number'           => trans('site::phone.number'),
-            'phone.sc.extra'            => trans('site::phone.extra'),
+            //'phone.sc.country_id'       => trans('site::phone.country_id'),
+            //'phone.sc.number'           => trans('site::phone.number'),
+            //'phone.sc.extra'            => trans('site::phone.extra'),
             //
             'contragent.type_id'        => trans('site::contragent.type_id'),
             'contragent.name'           => trans('site::contragent.name'),
@@ -217,13 +221,13 @@ class RegisterRequest extends FormRequest
             'contragent.bank'           => trans('site::contragent.bank'),
             'contragent.nds'            => trans('site::contragent.nds'),
             //
-            'address.sc.name'           => trans('site::address.name'),
-            'address.sc.country_id'     => trans('site::address.country_id'),
-            'address.sc.region_id'      => trans('site::address.region_id'),
-            'address.sc.locality'       => trans('site::address.locality'),
-            'address.sc.street'         => trans('site::address.street'),
-            'address.sc.building'       => trans('site::address.building'),
-            'address.sc.apartment'      => trans('site::address.apartment'),
+//            'address.sc.name'           => trans('site::address.name'),
+//            'address.sc.country_id'     => trans('site::address.country_id'),
+//            'address.sc.region_id'      => trans('site::address.region_id'),
+//            'address.sc.locality'       => trans('site::address.locality'),
+//            'address.sc.street'         => trans('site::address.street'),
+//            'address.sc.building'       => trans('site::address.building'),
+//            'address.sc.apartment'      => trans('site::address.apartment'),
             //
             'address.legal.country_id'  => trans('site::address.country_id'),
             'address.legal.region_id'   => trans('site::address.region_id'),

@@ -3,7 +3,6 @@
     "use strict";
 
 
-
     $(function () {
 
         global.$ = require('jquery');
@@ -469,201 +468,8 @@
             }
         });
     }
-    let repairFormExists = document.getElementById("repair-form");
-    if (repairFormExists !== null) {
-        let part_delete = $('.part-delete'),
-            boiler_search = $('#product_id'),
-            parts_search = $('#parts_search'),
-            serial_success = $('#serial-success'),
-            serial_error = $('#serial-error'),
-            //parts_search_fieldset = $('#parts-search-fieldset'),
-            parts = $('#parts'),
-            //parts_count = $('.parts_count'),
-            //parts_cost = $('.parts_cost'),
-            selected = [],
-            value;
-        // serial.on('keyup change', function () {
-        //     value = $(this).val();
-        //     if (value.length >= 5) {
-        //         button.prop("disabled", false);
-        //
-        //     } else {
-        //         button.prop("disabled", true);
-        //     }
-        // });
-        let success_serial_fill = function (index, value) {
-            $('.serial-' + index).html(value);
-            $('.serial-' + index + '-value').val(value);
-        };
 
 
-        parts_search.select2({
-            theme: "bootstrap4",
-            ajax: {
-                url: '/api/products/repair',
-                dataType: 'json',
-                // delay: 200,
-                data: function (params) {
-                    return {
-                        'filter[search_part]': params.term,
-                        'filter[search_product]': boiler_search.val(),
-                    };
-                },
-                processResults: function (data, params) {
-                    return {
-                        results: data.data,
-                    };
-                }
-            },
-            minimumInputLength: 3,
-            templateResult: function (product) {
-                if (product.loading) return "...";
-                //return product.name;
-                //if(product.enabled) return product.name;
-                //let markup = product.name + ' (' + product.sku + ')';
-                let markup = "<img style='width:70px;' src=" + product.image + " /> &nbsp; " + product.name + ' (' + product.sku + ')';
-                return markup;
-            },
-            templateSelection: function (product) {
-                return product.name;
-            },
-            escapeMarkup: function (markup) {
-                return markup;
-            }
-        });
-
-        parts_search.on('select2:select', function (e) {
-            let product_id = $(this).find('option:selected').val();
-            if (!selected.includes(product_id)) {
-                parts_search.removeClass('is-invalid');
-                selected.push(product_id);
-                axios
-                    .get("/api/products/" + product_id + "/part")
-                    .then((response) => {
-                        console.log(response.data);
-                        parts.append(response.data);
-                        $('[name="parts[' + product_id + '][count]"]').focus();
-                        calc_parts();
-                        parts_search.val(null)
-                    })
-                    .catch((error) => {
-                        this.status = 'Error:' + error;
-                    });
-            } else {
-                parts_search.addClass('is-invalid');
-                //alert('Такая деталь уже есть в списке');
-            }
-
-            //console.log(data.val());
-        });
-
-        if (document.getElementById("product_id").tagName === 'SELECT') {
-            boiler_search.select2({
-                theme: "bootstrap4",
-                ajax: {
-                    url: '/api/boilers',
-                    dataType: 'json',
-                    // delay: 200,
-                    data: function (params) {
-                        return {
-                            'filter[search_boiler]': params.term,
-                        };
-                    },
-                    processResults: function (data, params) {
-                        return {
-                            results: data.data,
-                        };
-                    }
-                },
-                minimumInputLength: 3,
-                templateResult: function (boiler) {
-                    if (boiler.loading) return "...";
-                    //return product.name;
-                    //if(product.enabled) return product.name;
-                    let markup = boiler.type + ' ' + boiler.name + ' (' + boiler.sku + ')';
-                    //let markup = "<img style='width:70px;' src="+product.image+" /> &nbsp; "+ product.name + ' (' + product.sku + ')';
-                    return markup;
-                },
-                templateSelection: function (boiler) {
-                    return boiler.name;
-                },
-                escapeMarkup: function (markup) {
-                    return markup;
-                }
-            });
-
-            boiler_search.on('select2:select', function (e) {
-                let boiler_id = $(this).find('option:selected').val();
-                axios
-                    .get("/api/boilers/" + boiler_id)
-                    .then((response) => {
-                        $('#parts').html('');
-                        selected = [];
-                    })
-                    .catch((error) => {
-                        this.status = 'Error:' + error;
-                    });
-                //console.log(data.val());
-            });
-        }
-
-
-        let calc_parts = function () {
-            let count = 0, cost = 0;
-            parts.children().each(function (i) {
-                $(this).find('.parts_cost').val();
-                cost += (parseInt($(this).find('.parts_cost').val()) * $(this).find('.parts_count').val());
-            });
-
-            $('#total-cost').html(number_format(cost));
-        };
-
-        $(document)
-            .on('click', '.part-delete', (function () {
-                let index = selected.indexOf($(this).data('id'));
-                if (index > -1) {
-                    selected.splice(index, 1);
-                }
-                calc_parts();
-            }))
-            .on('keyup mouseup', '.parts_count', (function () {
-                calc_parts();
-            }));
-
-        let number_format = function (number, decimals, dec_point, thousands_sep) {	// Format a number with grouped thousands
-
-            let i, j, kw, kd, km;
-
-            // input sanitation & defaults
-            if (isNaN(decimals = Math.abs(decimals))) {
-                decimals = 0;
-            }
-            if (dec_point === undefined) {
-                dec_point = ".";
-            }
-            if (thousands_sep === undefined) {
-                thousands_sep = " ";
-            }
-
-            i = parseInt(number = (+number || 0).toFixed(decimals)) + "";
-
-            if ((j = i.length) > 3) {
-                j = j % 3;
-            } else {
-                j = 0;
-            }
-
-            km = (j ? i.substr(0, j) + thousands_sep : "");
-            kw = i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands_sep);
-            //kd = (decimals ? dec_point + Math.abs(number - i).toFixed(decimals).slice(2) : "");
-            kd = (decimals ? dec_point + Math.abs(number - i).toFixed(decimals).replace(/-/, 0).slice(2) : "");
-
-
-            return km + kw + kd;
-        };
-
-
-    }
 
     // let schemeFormExists = document.getElementById("scheme-form");
     // if (schemeFormExists !== null) {
@@ -719,6 +525,22 @@
 
     }
 
+    let mountingSourceIdExists = document.getElementById("mounting_source_id");
+    if (mountingSourceIdExists !== null) {
+        mountingSourceIdExists.addEventListener('change', function (e) {
+            let element = e.target.parentElement.nextElementSibling;
+            if (e.target.options.selectedIndex === 4) {
+                element.classList.remove('d-none');
+                element.classList.add('required');
+                element.firstElementChild.nextElementSibling.required = true;
+            } else {
+                element.classList.add('d-none');
+                element.classList.remove('required');
+                element.firstElementChild.nextElementSibling.required = false;
+            }
+        });
+    }
+
     let _modal = $('#form-modal'),
         btnOk = _modal.find('.btn-ok'),
         btnDelete = _modal.find('.btn-delete'),
@@ -757,6 +579,7 @@
         }
     };
 
+
     $(".datetimepicker")
         .datetimepicker({
             locale: 'ru',
@@ -780,8 +603,11 @@
         .on('click', '.btn-row-delete:not(:disabled)', function (e) {
             manageButtonData($(this));
         })
+
         .on('change', '.dynamic-modal-form', function (e) {
             let select = $(this), option = select.find('option:selected');
+            //if (option.val() === 'add-option') {}
+
             if (option.val() === 'load') {
                 select.val('');
                 let action = select.data('formAction');
@@ -792,19 +618,24 @@
                     success: function (data) {
                         _modal.find('.modal-body').html(data);
                         manageButtonData(select);
+                        $('.datetimepicker').datetimepicker({locale: 'ru', format: 'L', useCurrent: false});
                         _modal.modal('show')
                     }
-                });
+                })
             }
         })
-        .on('click', '.repair-file-upload', function (e) {
+
+        .on('click', '.file-type-upload', function (e) {
             let
-                form = $(this).parents('form'),
-                list = form.next(),
+                _this = this,
+                form = $(_this).parents('form'),
+
                 fd = new FormData(),
                 path = form.find('[name="path"]')[0].files[0],
                 type_id = form.find('[name="type_id"]').val(),
                 storage = form.find('[name="storage"]').val(),
+                list = $($(_this).data('list')),
+                multiple = $(_this).data('multiple'),
                 action = form.attr('action');
             fd.append('path', path);
             fd.append('type_id', type_id);
@@ -817,14 +648,18 @@
                 })
                 .then((response) => {
                     form.find('.form-group').removeClass('is-invalid');
-                    list.append(response.data.file);
+                    if (multiple === 0) {
+                        list.html(response.data.file);
+                    } else {
+                        list.append(response.data.file);
+                    }
                 })
                 .catch((error) => {
                     form.find('.form-group').addClass('is-invalid');
                     $.each(error.response.data.errors.path, function (name, error) {
                         form.find('.invalid-feedback').html(error);
                     });
-                    console.log();
+                    //console.log();
                 });
             e.preventDefault();
         })
@@ -862,6 +697,16 @@
                 });
                 //form.submit();
             }
+        })
+        .on('click', '.add-message-button', function (e) {
+            let form = $(this).parents('form');
+            if ($(form) !== undefined) {
+                submitForm($(form), function () {
+                    form[0].reset();
+                    form.find('.is-invalid').removeClass('is-invalid');
+                });
+            }
+            e.preventDefault();
         })
         .on('change', '#change-user-logo', function () {
 
@@ -1078,7 +923,6 @@
         captionText.innerHTML = dots[slideIndex - 1].alt;
     }
 
-    $('[data-toggle="popover"]').popover();
 
     btnOk.on('click', function () {
         let form = $('#form-content');
@@ -1089,19 +933,8 @@
         }
     });
 
-    // btnDelete.on('click', function () {
-    //     let form = $($(this).data('form'));
-    //     //console.log($(this).data('form'));
-    //     if (form !== undefined) {
-    //         //console.log(form);
-    //         submitForm(form, function () {
-    //             $(_modal).modal('hide');
-    //         });
-    //         //form.submit();
-    //     }
-    // });
-
     function parseData(data, callback) {
+
 
         if ("redirect" in data) {
             document.location.href = data.redirect;
@@ -1121,7 +954,9 @@
             }
 
             if ("append" in data) {
+
                 $.each(data.append, function (identifier, view) {
+                    console.log(identifier, view);
                     $(identifier).append(view);
                 });
             }
@@ -1146,49 +981,54 @@
                 });
             }
 
-            if ("errors" in data) {
-                $.each(data.errors, function (identifier, error) {
-                    alert(error);
-                });
-            }
-
             if (callback !== undefined) {
                 callback();
             }
 
             $('[data-toggle="popover"]').popover();
+            mask_phones();
         }
     }
 
     function submitForm(form, callback) {
         $('[data-toggle="popover"]').popover('hide');
-        //console.log(form.attr('method'));
-        //console.log(form.attr('action'));
-        //console.log(form.serializeArray());
+
         $.ajax({
             type: form.attr('method'),
             url: form.attr('action'),
             dataType: 'json',
             data: form.serializeArray() || [],
             error: function (xhr, status, error) {
-                console.log(error);
+
                 if ("errors" in xhr.responseJSON) {
+                    //console.log(xhr.responseJSON.errors);
                     $("#form-content")
                         .find('.form-control')
                         .removeClass('is-invalid')
                         .next()
                         .html('');
+                    let parse_name = function (name) {
+                        if (~name.indexOf(".")) {
+                            let names = name.split('.');
+                            return names.shift() + "[" + names.join("][") + "]"
+                        }
+                        return name;
+                    };
                     $.each(xhr.responseJSON.errors, function (name, error) {
-                        let element = $('#form-content').find('[name="' + name + '"]');
+                        let element = $('#form-content').find('[name="' + parse_name(name) + '"]');
                         element.addClass('is-invalid').next().html(error);
                     });
                 }
             },
             success: function (data) {
                 parseData(data, callback);
-                $('#form-modal').modal('hide')
+                $('.toast.newest').toast('show').removeClass('newest');
+                $('#form-modal').modal('hide');
             }
         });
     }
 
+    $('[data-toggle="popover"]').popover();
+    mask_phones();
+    $('.toast').toast({});
 })(jQuery);

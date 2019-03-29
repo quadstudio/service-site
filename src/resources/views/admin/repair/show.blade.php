@@ -15,38 +15,43 @@
             <li class="breadcrumb-item active">{{ $repair->id }}</li>
         </ol>
         <h1 class="header-title mb-4">@lang('site::repair.header.repair') № {{ $repair->id }}</h1>
+        @alert()@endalert()
         <div class=" border p-3 mb-2">
-            <a href="{{ route('admin.repairs.edit', $repair) }}"
-               class="disabled d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-ferroli">
-                <i class="fa fa-pencil"></i>
-                <span>@lang('site::messages.edit') @lang('site::repair.repair')</span>
-            </a>
-            @if($repair->messages->isNotEmpty())
-                <a href="#messages-list" class="d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-ferroli">
-                    <i class="fa fa-@lang('site::message.icon')"></i>
-                    <span>@lang('site::messages.show') @lang('site::message.messages') <span
-                                class="badge badge-light">{{$repair->messages()->count()}}</span></span>
-                </a>
-            @endif
-
             <a href="{{ route('repairs.pdf', $repair) }}"
-               class="@cannot('pdf', $repair) disabled @endcannot d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-primary">
+               class="@cannot('pdf', $repair) disabled @endcannot d-block d-sm-inline-block mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-primary">
                 <i class="fa fa-print"></i>
                 <span>@lang('site::messages.print')</span>
             </a>
             <a href="{{ route('admin.users.force', $repair->user) }}"
-               class="d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn-warning">
+               class="d-block d-sm-inline-block btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn-warning">
                 <i class="fa fa-sign-in"></i>
                 <span>@lang('site::user.force_login')</span>
             </a>
-            <a href="{{ route('admin.repairs.index') }}" class="d-block d-sm-inline btn btn-secondary">
+            <a href="{{ route('admin.repairs.index') }}" class="d-block d-sm-inline-block btn btn-secondary">
                 <i class="fa fa-reply"></i>
                 <span>@lang('site::messages.back')</span>
             </a>
 
         </div>
-        <form id="repair-admin-edit-form" method="post" action="{{route('admin.repairs.status', $repair)}}">
+
+        @include('site::message.create')
+
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <h4 class="alert-heading">Обратите внимание</h4>
+            <p>
+                Поля, отмеченные значком <i class="fa text-danger text-large fa-hand-pointer-o"></i>,
+                можно пометить как <span class="bg-danger text-white px-1">заполненные с ошибокой</span>
+            </p>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <form id="form"
+              method="POST"
+              action="{{route('admin.repairs.update', $repair)}}">
             @csrf
+            @method('PUT')
             <div class="card mb-2">
                 <div class="card-body">
 
@@ -54,8 +59,10 @@
                     <dl class="row">
 
                         <dt class="col-sm-4 text-left text-sm-right">@lang('site::user.name')</dt>
-                        <dd class="col-sm-8"><a
-                                    href="{{route('admin.users.show', $repair->user)}}">{{ $repair->user->name }}</a>
+                        <dd class="col-sm-8">
+                            <a href="{{route('admin.users.show', $repair->user)}}">
+                                {{ $repair->user->name }}
+                            </a>
                         </dd>
 
                         <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.region_id')</dt>
@@ -73,28 +80,51 @@
                     <dl class="row">
 
                         <dt class="col-sm-4 text-left text-sm-right">@lang('site::repair.created_at')</dt>
-                        <dd class="col-sm-8">{{ $repair->created_at(true) }}</dd>
+                        <dd class="col-sm-8">{{ $repair->created_at->format('d.m.Y H:i') }}</dd>
 
-                        <dt class="col-sm-4 text-left text-sm-right ">@lang('site::repair.status_id')</dt>
-                        <dd class="col-sm-8" style="color:{{$repair->status->color}}"><i
-                                    class="fa fa-{{$repair->status->icon}}"></i> {{ $repair->status->name }}</dd>
+                        <dt class="col-sm-4 text-left text-sm-right">@lang('site::repair.status_id')</dt>
+                        <dd class="col-sm-8">
+                        <span class="badge text-normal badge-{{$repair->status->color}}">
+                            <i class="fa fa-{{$repair->status->icon}}"></i>
+                            {{ $repair->status->name }}
+                        </span>
+                        </dd>
                     </dl>
 
                     <hr/>
                     <dl class="row">
-
-                        <dt class="col-sm-4 text-left text-sm-right @if($fails->contains('field', 'serial_id')) bg-danger text-white @endif">@lang('site::repair.serial_id')</dt>
-                        <dd class="col-sm-8">{{ $repair->serial_id }}</dd>
-
-                        <dt class="col-sm-4 text-left text-sm-right">@lang('site::serial.product_id')</dt>
+                        <dt class="col-sm-4 text-left text-sm-right
+                        @if($fails->contains('field', 'product_id')) bg-danger text-white @endif">
+                            <label for="product_id" class="pointer control-label">
+                                <i class="fa text-danger fa-hand-pointer-o"></i>
+                                @lang('site::repair.product_id')
+                            </label>
+                            <input id="product_id"
+                                   value="product_id"
+                                   @if($fails->contains('field', 'product_id')) checked @endif
+                                   type="checkbox"
+                                   name="fail[][field]"
+                                   class="d-none repair-error-check"/>
+                        </dt>
                         <dd class="col-sm-8">{{ $repair->product->name }}</dd>
-
-                        <dt class="col-sm-4 text-left text-sm-right">@lang('site::serial.comment')</dt>
-                        <dd class="col-sm-8">{{ $repair->serial ? $repair->serial->comment : null }}</dd>
-
                         <dt class="col-sm-4 text-left text-sm-right">@lang('site::product.sku')</dt>
                         <dd class="col-sm-8">{{ $repair->product->sku }}</dd>
-
+                        <dt class="col-sm-4 text-left text-sm-right
+                        @if($fails->contains('field', 'serial_id')) bg-danger text-white @endif">
+                            <label for="serial_id" class="pointer control-label">
+                                <i class="fa text-danger fa-hand-pointer-o"></i>
+                                @lang('site::repair.serial_id')
+                            </label>
+                            <input id="serial_id"
+                                   value="serial_id"
+                                   @if($fails->contains('field', 'serial_id')) checked @endif
+                                   type="checkbox"
+                                   name="fail[][field]"
+                                   class="d-none repair-error-check"/>
+                        </dt>
+                        <dd class="col-sm-8">{{ $repair->serial_id }}</dd>
+                        <dt class="col-sm-4 text-left text-sm-right">@lang('site::serial.comment')</dt>
+                        <dd class="col-sm-8">{{ $repair->serial ? $repair->serial->comment : null }}</dd>
                     </dl>
                 </div>
             </div>
@@ -104,78 +134,93 @@
                     <h5 class="card-title">@lang('site::repair.header.payment')</h5>
                     <dl class="row">
 
-                        <dt class="col-sm-4 text-left text-sm-right @if($fails->contains('field', 'contragent_id')) bg-danger text-white @endif">
+                        <dt class="col-sm-4 text-left text-sm-right
+                        @if($fails->contains('field', 'contragent_id')) bg-danger text-white @endif">
                             <label for="contragent_id"
-                                   class="pointer control-label"><i
-                                        class="fa text-danger fa-hand-pointer-o"></i> @lang('site::repair.contragent_id')
+                                   class="pointer control-label">
+                                <i class="fa text-danger fa-hand-pointer-o"></i>
+                                @lang('site::repair.contragent_id')
                             </label>
                             <input id="contragent_id"
                                    value="contragent_id"
                                    @if($fails->contains('field', 'contragent_id')) checked @endif
                                    type="checkbox" name="fail[][field]" class="d-none repair-error-check">
                         </dt>
-                        <dd class="col-sm-8"><a
-                                    href="{{route('admin.contragents.show', $repair->contragent)}}">{{ $repair->contragent->name }}</a>
+                        <dd class="col-sm-8">
+                            <a href="{{route('admin.contragents.show', $repair->contragent)}}">
+                                {{ $repair->contragent->name }}
+                            </a>
                         </dd>
 
-                        <dt class="col-sm-4 text-left text-sm-right @if($fails->contains('field', 'difficulty_id')) bg-danger text-white @endif">
-                            <label for="difficulty_id"
-                                   class="pointer control-label"><i
-                                        class="fa text-danger fa-hand-pointer-o"></i> @lang('site::repair.difficulty_id')
+                        <dt class="col-sm-4 text-left text-sm-right
+                        @if($fails->contains('field', 'difficulty_id')) bg-danger text-white @endif">
+                            <label for="difficulty_id" class="pointer control-label">
+                                <i class="fa text-danger fa-hand-pointer-o"></i>
+                                @lang('site::repair.difficulty_id')
                             </label>
                             <input id="difficulty_id"
                                    value="difficulty_id"
                                    @if($fails->contains('field', 'difficulty_id')) checked @endif
-                                   type="checkbox" name="fail[][field]" class="d-none repair-error-check">
+                                   type="checkbox"
+                                   name="fail[][field]"
+                                   class="d-none repair-error-check"/>
                         </dt>
                         <dd class="col-sm-8">{{ $repair->difficulty->name }}</dd>
 
-                        <dt class="col-sm-4 text-left text-sm-right @if($fails->contains('field', 'distance_id')) bg-danger text-white @endif">
+                        <dt class="col-sm-4 text-left text-sm-right
+                            @if($fails->contains('field', 'distance_id')) bg-danger text-white @endif">
                             <label for="distance_id"
-                                   class="pointer control-label"><i
-                                        class="fa text-danger fa-hand-pointer-o"></i> @lang('site::repair.distance_id')
+                                   class="pointer control-label">
+                                <i class="fa text-danger fa-hand-pointer-o"></i>
+                                @lang('site::repair.distance_id')
                             </label>
                             <input id="distance_id"
                                    value="distance_id"
                                    @if($fails->contains('field', 'distance_id')) checked @endif
-                                   type="checkbox" name="fail[][field]" class="d-none repair-error-check">
+                                   type="checkbox"
+                                   name="fail[][field]"
+                                   class="d-none repair-error-check">
 
                         </dt>
                         <dd class="col-sm-8">{{ $repair->distance->name }}</dd>
 
                         <dt class="col-sm-4 text-left text-sm-right">@lang('site::repair.cost_distance')</dt>
-                        <dd class="col-sm-8 text-right">{{ Site::format($repair->cost_distance())}}</dd>
+                        <dd class="col-sm-8">{{ Site::format($repair->cost_distance())}}</dd>
 
                         <dt class="col-sm-4 text-left text-sm-right">@lang('site::repair.cost_difficulty')</dt>
-                        <dd class="col-sm-8 text-right">{{ Site::format($repair->cost_difficulty())}}</dd>
+                        <dd class="col-sm-8">{{ Site::format($repair->cost_difficulty())}}</dd>
 
-                        <dt class="col-sm-4  text-left text-sm-right">@lang('site::repair.cost_parts')</dt>
-                        <dd class="col-sm-8 text-right">{{ Site::format($repair->cost_parts())}}</dd>
+                        <dt class="col-sm-4 text-left text-sm-right">@lang('site::repair.cost_parts')</dt>
+                        <dd class="col-sm-8">{{ Site::format($repair->cost_parts())}}</dd>
 
-                        <dt class="col-sm-4 text-left text-sm-right @if($fails->contains('field', 'parts')) bg-danger text-white @endif">
-                            <label for="parts"
-                                   class="pointer control-label"><i
-                                        class="fa text-danger fa-hand-pointer-o"></i> @lang('site::part.parts')
+                        <dt class="col-sm-4 text-left text-sm-right
+                            @if($fails->contains('field', 'parts')) bg-danger text-white @endif">
+                            <label for="parts" class="pointer control-label">
+                                <i class="fa text-danger fa-hand-pointer-o"></i>
+                                @lang('site::part.parts')
                             </label>
                             <input id="parts"
                                    value="parts"
                                    @if($fails->contains('field', 'parts')) checked @endif
-                                   type="checkbox" name="fail[][field]" class="d-none repair-error-check">
+                                   type="checkbox"
+                                   name="fail[][field]"
+                                   class="d-none repair-error-check">
                         </dt>
                         <dd class="col-sm-8">
                             <fieldset id="admin-parts-fieldset">
                                 @if(count($parts = $repair->parts) > 0)
                                     @foreach($parts as $part)
                                         <div class="row">
-                                            <div class="col-8">{!! $part->product->sku !!} {!! $part->product->name !!}
-                                                ( ={{Site::format($part->cost)}}
-                                                x {{$part->count}} {{$part->product->unit}} )
-                                            </div>
-                                            <div class="col-4 text-right text-info">
+                                            <div class="col-4  text-info">
+                                                <span id="part-{{$part->id}}">{{Site::format($part->total)}}</span>
                                                 <a href="{{route('admin.parts.edit', $part)}}"
                                                    class="mr-3">@lang('site::messages.edit')</a>
-                                                <span id="part-{{$part->id}}">{{Site::format($part->total)}}</span>
                                             </div>
+                                            <div class="col-8">{!! $part->product->sku !!} {!! $part->product->name !!}
+                                                ({{Site::format($part->cost)}}
+                                                x {{$part->count}} {{$part->product->unit}})
+                                            </div>
+
                                         </div>
                                     @endforeach
                                 @else
@@ -183,8 +228,8 @@
                                 @endif
                             </fieldset>
                         </dd>
-                        <dt class="col-sm-4 text-right border-top">Итого к оплате</dt>
-                        <dd class="col-sm-8 text-right border-sm-top border-top-0"
+                        <dt class="col-sm-4 text-left text-sm-right border-top">Итого к оплате</dt>
+                        <dd class="col-sm-8 border-sm-top border-top-0"
                             id="parts-total">{{ Site::format($repair->totalCost)}}</dd>
 
                     </dl>
@@ -195,22 +240,26 @@
                     <h5 class="card-title">@lang('site::repair.header.client')</h5>
                     <dl class="row">
 
-                        <dt class="col-sm-4 text-left text-sm-right @if($fails->contains('field', 'client')) bg-danger text-white @endif">
+                        <dt class="col-sm-4 text-left text-sm-right
+                            @if($fails->contains('field', 'client')) bg-danger text-white @endif">
                             <label for="client"
-                                   class="pointer control-label"><i
-                                        class="fa text-danger fa-hand-pointer-o"></i> @lang('site::repair.client')
+                                   class="pointer control-label">
+                                <i class="fa text-danger fa-hand-pointer-o"></i>
+                                @lang('site::repair.client')
                             </label>
                             <input id="client"
                                    value="client"
                                    @if($fails->contains('field', 'client')) checked @endif
-                                   type="checkbox" name="fail[][field]" class="d-none repair-error-check">
+                                   type="checkbox" name="fail[][field]"
+                                   class="d-none repair-error-check">
                         </dt>
                         <dd class="col-sm-8">{{ $repair->client }}</dd>
 
-                        <dt class="col-sm-4 text-left text-sm-right @if($fails->contains('field', 'country_id')) bg-danger text-white @endif">
-                            <label for="country_id"
-                                   class="pointer control-label"><i
-                                        class="fa text-danger fa-hand-pointer-o"></i> @lang('site::repair.country_id')
+                        <dt class="col-sm-4 text-left text-sm-right
+                            @if($fails->contains('field', 'country_id')) bg-danger text-white @endif">
+                            <label for="country_id" class="pointer control-label">
+                                <i class="fa text-danger fa-hand-pointer-o"></i>
+                                @lang('site::repair.country_id')
                             </label>
                             <input id="country_id"
                                    value="country_id"
@@ -219,10 +268,11 @@
                         </dt>
                         <dd class="col-sm-8">{{ $repair->country->name }}</dd>
 
-                        <dt class="col-sm-4 text-left text-sm-right @if($fails->contains('field', 'address')) bg-danger text-white @endif">
-                            <label for="address"
-                                   class="pointer control-label"><i
-                                        class="fa text-danger fa-hand-pointer-o"></i> @lang('site::repair.address')
+                        <dt class="col-sm-4 text-left text-sm-right
+                        @if($fails->contains('field', 'address')) bg-danger text-white @endif">
+                            <label for="address" class="pointer control-label">
+                                <i class="fa text-danger fa-hand-pointer-o"></i>
+                                @lang('site::repair.address')
                             </label>
                             <input id="address"
                                    value="address"
@@ -264,30 +314,33 @@
                     <dl class="row">
 
                         <dt class="col-sm-4 text-left text-sm-right @if($fails->contains('field', 'trade_id')) bg-danger text-white @endif">
-                            <label for="trade_id"
-                                   class="pointer control-label"><i
-                                        class="fa text-danger fa-hand-pointer-o"></i> @lang('site::repair.trade_id')
+                            <label for="trade_id" class="pointer control-label">
+                                <i class="fa text-danger fa-hand-pointer-o"></i>
+                                @lang('site::repair.trade_id')
                             </label>
                             <input id="trade_id"
                                    value="trade_id"
                                    @if($fails->contains('field', 'trade_id')) checked @endif
                                    type="checkbox" name="fail[][field]" class="d-none repair-error-check">
                         </dt>
-                        <dd class="col-sm-8"><a
-                                    href="{{route('admin.trades.show', $repair->trade)}}">{{ $repair->trade->name }}</a>
+                        <dd class="col-sm-8">
+                            <a href="{{route('admin.trades.edit', $repair->trade)}}">
+                                {{ $repair->trade->name }}
+                            </a>
                         </dd>
 
-                        <dt class="col-sm-4 text-left text-sm-right @if($fails->contains('field', 'date_trade')) bg-danger text-white @endif">
-                            <label for="date_trade"
-                                   class="pointer control-label"><i
-                                        class="fa text-danger fa-hand-pointer-o"></i> @lang('site::repair.date_trade')
+                        <dt class="col-sm-4 text-left text-sm-right
+                                @if($fails->contains('field', 'date_trade')) bg-danger text-white @endif">
+                            <label for="date_trade" class="pointer control-label">
+                                <i class="fa text-danger fa-hand-pointer-o"></i>
+                                @lang('site::repair.date_trade')
                             </label>
                             <input id="date_trade"
                                    value="date_trade"
                                    @if($fails->contains('field', 'date_trade')) checked @endif
                                    type="checkbox" name="fail[][field]" class="d-none repair-error-check">
                         </dt>
-                        <dd class="col-sm-8">{{ $repair->date_trade() }}</dd>
+                        <dd class="col-sm-8">{{ $repair->date_trade->format('d.m.Y') }}</dd>
 
 
                         <dt class="col-sm-4 text-left text-sm-right @if($fails->contains('field', 'launch_id')) bg-danger text-white @endif">
@@ -301,7 +354,7 @@
                                    type="checkbox" name="fail[][field]" class="d-none repair-error-check">
                         </dt>
                         <dd class="col-sm-8"><a
-                                    href="{{route('admin.launches.show', $repair->launch)}}">{{ $repair->launch->name }}</a>
+                                    href="{{route('admin.launches.edit', $repair->launch)}}">{{ $repair->launch->name }}</a>
                         </dd>
 
                         <dt class="col-sm-4 text-left text-sm-right @if($fails->contains('field', 'date_launch')) bg-danger text-white @endif">
@@ -314,7 +367,7 @@
                                    @if($fails->contains('field', 'date_launch')) checked @endif
                                    type="checkbox" name="fail[][field]" class="d-none repair-error-check">
                         </dt>
-                        <dd class="col-sm-8">{{ $repair->date_launch() }}</dd>
+                        <dd class="col-sm-8">{{ $repair->date_launch->format('d.m.Y') }}</dd>
 
                     </dl>
                 </div>
@@ -335,7 +388,7 @@
                                    type="checkbox" name="fail[][field]" class="d-none repair-error-check">
                         </dt>
                         <dd class="col-sm-8"><a
-                                    href="{{route('admin.engineers.show', $repair->engineer)}}">{{ $repair->engineer->name }}</a>
+                                    href="{{route('admin.engineers.edit', $repair->engineer)}}">{{ $repair->engineer->name }}</a>
                         </dd>
 
                         <dt class="col-sm-4 text-left text-sm-right @if($fails->contains('field', 'date_call')) bg-danger text-white @endif">
@@ -348,7 +401,7 @@
                                    @if($fails->contains('field', 'date_call')) checked @endif
                                    type="checkbox" name="fail[][field]" class="d-none repair-error-check">
                         </dt>
-                        <dd class="col-sm-8">{{ $repair->date_call() }}</dd>
+                        <dd class="col-sm-8">{{ $repair->date_call->format('d.m.Y') }}</dd>
 
                         <dt class="col-sm-4 text-left text-sm-right @if($fails->contains('field', 'reason_call')) bg-danger text-white @endif">
                             <label for="reason_call"
@@ -396,135 +449,57 @@
                                    @if($fails->contains('field', 'date_repair')) checked @endif
                                    type="checkbox" name="fail[][field]" class="d-none repair-error-check">
                         </dt>
-                        <dd class="col-sm-8">{{ $repair->date_repair() }}</dd>
+                        <dd class="col-sm-8">{{ $repair->date_repair->format('d.m.Y') }}</dd>
 
                     </dl>
                 </div>
             </div>
+            <div class="card mb-2">
+                <div class="card-body">
+                    <h5 class="card-title">@lang('site::repair.header.files')</h5>
+                    @include('site::admin.file.files')
+                </div>
+            </div>
+        </form>
+        @if($statuses->isNotEmpty())
             <div class="card mb-4">
                 <div class="card-body">
-                    <h5 class="card-title">@lang('site::file.files')</h5>
-                    @include('site::repair.files')
+                    @foreach($statuses as $key => $status)
+                        <button type="submit"
+                                name="repair[status_id]"
+                                value="{{$status->id}}"
+                                form="form"
+                                class="pull-right mx-1 btn btn-{{$status->color}} d-block d-sm-inline-block @if($key != $statuses->count()) mb-1 @endif">
+                            <i class="fa fa-{{$status->icon}}"></i>
+                            <span>{{$status->button}}</span>
+                        </button>
+                    @endforeach
                 </div>
             </div>
-            @if($statuses->isNotEmpty())
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    <h4 class="alert-heading">Обратите внимание</h4>
-                    <p>Перед отправлением отчета на доработку - поля, отмеченные значком <i
-                                class="fa text-danger fa-hand-pointer-o"></i>, можно пометить как <span
-                                class="bg-danger text-white p-1">заполненные с ошибокой</span>.</p>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            @endif
-        </form>
-        <hr id="messages-list"/>
-        <div class="card mt-5 mb-4">
-            <div class="card-body flex-grow-1 position-relative overflow-hidden">
-                <h5 class="card-title">@lang('site::message.messages')</h5>
-                <div class="row no-gutters">
-                    <div class="d-flex col flex-column">
-                        <div class="flex-grow-1 position-relative">
-
-                            <!-- Remove `.chat-scroll` and add `.flex-grow-1` if you don't need scroll -->
-                            <div class="chat-messages p-4 ps">
-                                @foreach($repair->messages as $message)
-                                    <div class="@if($message->user_id == Auth::user()->id) chat-message-right @else chat-message-left @endif mb-4">
-                                        <div>
-                                            <img src="{{$message->user->logo}}" style="width: 40px!important;"
-                                                 class="rounded-circle" alt="">
-                                            <div class="text-muted small text-nowrap mt-2">{{ $message->created_at(true) }}</div>
-                                        </div>
-                                        <div class="flex-shrink-1 bg-lighter rounded py-2 px-3 @if($message->user_id == Auth::user()->id) mr-3 @else ml-3 @endif">
-                                            <div class="mb-1"><b>{{$message->user->name}}</b></div>
-                                            {!! $message->text !!}
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                            <!-- / .chat-messages -->
-                        </div>
-                    </div>
-                </div>
-                @if($statuses->isNotEmpty())
-                    <div class="row no-gutters">
-                        <div class="d-flex col flex-column">
-                            <div class="flex-grow-1 position-relative">
-                                <div class="form-group">
-                                    <label class="control-label"
-                                           for="message_text">@lang('site::message.text')</label>
-                                    <input type="hidden" form="repair-admin-edit-form" name="message[receiver_id]" value="{{$repair->user_id}}">
-                                    <textarea name="message[text]"
-                                              form="repair-admin-edit-form"
-                                              id="message_text"
-                                              rows="3"
-                                              class="form-control{{  $errors->has('message.text') ? ' is-invalid' : '' }}"></textarea>
-                                    <span class="invalid-feedback">{{ $errors->first('message.text') }}</span>
-                                </div>
-                                @foreach($statuses as $key => $status)
-                                    <button
-                                            @if($status->id == 5 && !$repair->check())
-                                            disabled
-                                            @endif
-                                            type="submit"
-                                            {{--@if(!$repair->canSetStatus($status->id)) disabled @endif--}}
-                                            name="repair[status_id]"
-                                            value="{{$status->id}}"
-                                            form="repair-admin-edit-form"
-                                            style="color:#fff;background-color: {{$status->color}}"
-                                            class="btn d-block d-sm-inline-block @if($key != $statuses->count()) mb-1 @endif">
-                                        <i class="fa fa-{{$status->icon}}"></i>
-                                        <span>{{$status->button}}</span>
-                                    </button>
-                                @endforeach
-                                <div class="card mt-4">
-                                    <div class="card-body">
-                                        <h6 class="card-title">@lang('site::messages.header.check')</h6>
-                                        <dl class="row">
-
-                                            <dt class="col-sm-4 text-left text-sm-right">@lang('site::part.parts')</dt>
-                                            <dd class="col-sm-8">@bool(['bool' => $repair->checkParts()])@endbool</dd>
-
-                                            <dt class="col-sm-4 text-left text-sm-right">@lang('site::repair.contragent_id')</dt>
-                                            <dd class="col-sm-8">@bool(['bool' => $repair->checkContragent()])@endbool</dd>
-
-                                        </dl>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
-                    </div>
-                @else
-                    <form action="{{route('admin.repairs.message', $repair)}}" method="post">
-                        @csrf
-
-                        <div class="row no-gutters">
-                            <div class="d-flex col flex-column">
-                                <div class="flex-grow-1 position-relative">
-                                    <div class="form-group">
-                                        <input type="hidden" name="message[receiver_id]" value="{{$repair->user_id}}">
-                                        <textarea name="message[text]"
-                                                  id="message_text"
-                                                  rows="3"
-                                                  placeholder="@lang('site::message.placeholder.text')"
-                                                  class="form-control{{  $errors->has('message.text') ? ' is-invalid' : '' }}"></textarea>
-                                        <span class="invalid-feedback">{{ $errors->first('message.text') }}</span>
-                                    </div>
-                                    <button type="submit"
-                                            class="btn btn-success d-block d-sm-inline-block">
-                                        <i class="fa fa-check"></i>
-                                        <span>@lang('site::messages.send')</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                @endif
-            </div>
-        </div>
-
+        @endif
     </div>
 @endsection
+
+@push('scripts')
+<script>
+    try {
+        window.addEventListener('load', function () {
+            let i, checkbox, checks = document.querySelectorAll('.repair-error-check');
+            for (i = 0; i < checks.length; i++){
+                checks[i].addEventListener('click', function(e){
+                    checkbox = e.target;
+                    if(checkbox.checked){
+                        checkbox.parentNode.classList.add('bg-danger');
+                        checkbox.parentNode.classList.add('text-white');
+                    } else{
+                        checkbox.parentNode.classList.remove('bg-danger');
+                        checkbox.parentNode.classList.remove('text-white');
+                    }
+                })
+            }
+        });
+    } catch (e) {
+        console.log(e);
+    }
+</script>
+@endpush

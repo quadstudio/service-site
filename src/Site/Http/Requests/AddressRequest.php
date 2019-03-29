@@ -29,17 +29,17 @@ class AddressRequest extends FormRequest
             case 'POST': {
                 return [
                     'address.type_id'      => 'required|exists:address_types,id',
-                    'address.name'         => 'required_if:address.type_id,2|max:255',
+                    'address.name'         => 'required_if:address.type_id,2,5,6|max:255',
                     'address.country_id'   => 'required|exists:countries,id',
                     'address.region_id'    => 'sometimes|exists:regions,id',
                     'address.locality'     => 'required|string|max:255',
                     'address.street'       => 'sometimes|max:255',
                     'address.building'     => 'sometimes|max:255',
                     'address.apartment'    => 'sometimes|max:255',
-                    'address.emailaddress' => 'sometimes|email',
+                    'address.emailaddress' => 'sometimes|nullable|email',
                     //
                     'phone.country_id'     => 'required|exists:countries,id',
-                    'phone.number'           => array(
+                    'phone.number'         => array(
                         'required',
                         'numeric',
                         function ($attribute, $value, $fail) {
@@ -94,18 +94,20 @@ class AddressRequest extends FormRequest
     {
         return [
             //
-            'address.name'       => trans('site::address.name'),
-            'address.country_id' => trans('site::address.country_id'),
-            'address.region_id'  => trans('site::address.region_id'),
-            'address.locality'   => trans('site::address.locality'),
-            'address.street'     => trans('site::address.street'),
-            'address.building'   => trans('site::address.building'),
-            'address.apartment'  => trans('site::address.apartment'),
-            'address.sort_order' => trans('site::address.sort_order'),
+            'address.type_id'      => trans('site::address.type_id'),
+            'address.name'         => trans('site::address.name'),
+            'address.country_id'   => trans('site::address.country_id'),
+            'address.region_id'    => trans('site::address.region_id'),
+            'address.locality'     => trans('site::address.locality'),
+            'address.street'       => trans('site::address.street'),
+            'address.building'     => trans('site::address.building'),
+            'address.apartment'    => trans('site::address.apartment'),
+            'address.sort_order'   => trans('site::address.sort_order'),
+            'address.emailaddress' => trans('site::address.emailaddress'),
             //
-            'phone.country_id'   => trans('site::phone.country_id'),
-            'phone.number'       => trans('site::phone.number'),
-            'phone.extra'        => trans('site::phone.extra'),
+            'phone.country_id'     => trans('site::phone.country_id'),
+            'phone.number'         => trans('site::phone.number'),
+            'phone.extra'          => trans('site::phone.extra'),
         ];
     }
 }

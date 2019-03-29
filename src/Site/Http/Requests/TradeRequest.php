@@ -25,13 +25,20 @@ class TradeRequest extends FormRequest
     public function rules()
     {
         switch ($this->method()) {
-            case 'POST':
+            case 'POST': {
+                return [
+                    'trade.name'       => 'required|string|max:255',
+                    'trade.country_id' => 'required|exists:countries,id',
+                    'trade.phone'      => 'required|string|size:' . config('site.phone.maxlength'),
+                    'trade.address'    => 'sometimes|nullable|max:255',
+                ];
+            }
             case 'PUT':
             case 'PATCH': {
                 return [
-                    'name'       => 'required|string|max:255',
-                    'country_id' => 'required|exists:countries,id',
-                    'phone'      => 'required|numeric|digits:10',
+                    'trade.country_id' => 'required|exists:countries,id',
+                    'trade.phone'      => 'required|string|size:' . config('site.phone.maxlength'),
+                    'trade.address'    => 'sometimes|nullable|max:255',
                 ];
             }
             default:
@@ -57,9 +64,10 @@ class TradeRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name'       => trans('site::trade.name'),
-            'country_id' => trans('site::trade.country_id'),
-            'phone'      => trans('site::trade.phone'),
+            'trade.name'       => trans('site::trade.name'),
+            'trade.country_id' => trans('site::trade.country_id'),
+            'trade.phone'      => trans('site::trade.phone'),
+            'trade.address'    => trans('site::trade.address'),
         ];
     }
 }

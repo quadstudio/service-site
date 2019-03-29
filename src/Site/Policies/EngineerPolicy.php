@@ -8,11 +8,6 @@ use QuadStudio\Service\Site\Models\User;
 class EngineerPolicy
 {
 
-    public function index(User $user)
-    {
-        return $user->hasPermission('engineers');
-    }
-
     /**
      * Determine whether the user can view the engineer.
      *
@@ -22,7 +17,7 @@ class EngineerPolicy
      */
     public function view(User $user, Engineer $engineer)
     {
-        return $user->hasPermission('engineers') && ($user->id == $engineer->user_id);
+        return $user->id == $engineer->user_id;
     }
 
     /**
@@ -33,7 +28,7 @@ class EngineerPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermission('engineers') && ($user->id > 0);
+        return $user->id > 0;
     }
 
     /**
@@ -43,9 +38,9 @@ class EngineerPolicy
      * @param  Engineer $engineer
      * @return bool
      */
-    public function update(User $user, Engineer $engineer)
+    public function edit(User $user, Engineer $engineer)
     {
-        return $user->hasPermission('engineers') && ($user->id == $engineer->user_id);
+        return $user->id == $engineer->user_id;
     }
 
     /**
@@ -57,7 +52,7 @@ class EngineerPolicy
      */
     public function delete(User $user, Engineer $engineer)
     {
-        return $user->hasPermission('engineers') && ($user->id == $engineer->user_id) && $engineer->canDelete();
+        return ($user->id == $engineer->user_id) && $engineer->repairs()->count() == 0 && $engineer->mountings()->count() == 0;
     }
 
 

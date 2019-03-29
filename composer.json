@@ -5,7 +5,7 @@
     "homepage": "https://github.com/quadstudio/service-site",
     "type": "library",
     "license": "MIT",
-    "version": "0.1.49",
+    "version": "0.2.0",
     "authors": [
         {
             "name": "Alexander Shuleyko",
@@ -31,7 +31,8 @@
         "codedge/laravel-fpdf": "^1.2",
         "intervention/image": "^2.4",
         "stevebauman/location" : "^3.0",
-        "phpoffice/phpspreadsheet" : "^1.5"
+        "phpoffice/phpspreadsheet" : "^1.5",
+        "mews/captcha": "~2.0"
     },
     "extra": {
         "laravel": {

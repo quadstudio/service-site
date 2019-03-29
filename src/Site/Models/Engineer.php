@@ -17,6 +17,14 @@ class Engineer extends Model
         'name', 'country_id', 'phone', 'address'
     ];
 
+    protected $casts = [
+        'name'       => 'string',
+        'country_id' => 'integer',
+        'phone'      => 'string',
+        'address'    => 'string',
+    ];
+
+
     /**
      * @param array $attributes
      */
@@ -30,12 +38,29 @@ class Engineer extends Model
     {
         static::creating(function ($model) {
 
-            $model->address = empty($model->address) ? "" : $model->address ;
+            $model->address = empty($model->address) ? "" : $model->address;
         });
 
         static::updating(function ($model) {
-            $model->address = empty($model->address) ? "" : $model->address ;
+            $model->address = empty($model->address) ? "" : $model->address;
         });
+    }
+
+    /**
+     * @param $value
+     * @return mixed|null
+     */
+    public function getPhoneAttribute($value)
+    {
+        return $value ? preg_replace(config('site.phone.get.pattern'), config('site.phone.get.replacement'), $value) : null;
+    }
+
+    /**
+     * @param $value
+     */
+    public function setPhoneAttribute($value)
+    {
+        $this->attributes['phone'] = $value ? preg_replace(config('site.phone.set.pattern'), config('site.phone.set.replacement'), $value) : null;
     }
 
     /**
@@ -59,6 +84,16 @@ class Engineer extends Model
     }
 
     /**
+     * Отчеты по монтажу
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function mountings()
+    {
+        return $this->hasMany(Mounting::class);
+    }
+
+    /**
      * Отчеты по ремонту
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -66,31 +101,6 @@ class Engineer extends Model
     public function repairs()
     {
         return $this->hasMany(Repair::class);
-    }
-
-    /**
-     * @return bool
-     */
-    public function canDelete()
-    {
-        return $this->repairs()->count() == 0;
-    }
-
-    /**
-     * Отформатированный номер телефона
-     * @return string
-     */
-    public function format()
-    {
-        $result = [$this->country->getAttribute('phone')];
-        if (preg_match('/^(\d{3})(\d{3})(\d{2})(\d{2})$/', $this->getAttribute('phone'), $matches)) {
-            $result[] = '(' . $matches[1] . ') ' . $matches[2] . '-' . $matches[3] . '-' . $matches[4];
-        } else {
-            $result[] = $this->getAttribute('phone');
-        }
-
-
-        return implode(' ', $result);
     }
 
 }

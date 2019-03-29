@@ -3,7 +3,9 @@
 namespace QuadStudio\Service\Site\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use QuadStudio\Service\Site\Contracts\Messagable;
 use QuadStudio\Service\Site\Facades\Site;
@@ -29,6 +31,40 @@ class Repair extends Model implements Messagable
         'address', 'status_id'
     ];
 
+    protected $casts = [
+
+        'serial_id'       => 'string',
+        'product_id'      => 'string',
+        'contragent_id'   => 'integer',
+        'cost_difficulty' => 'integer',
+        'cost_distance'   => 'integer',
+        'date_trade'      => 'date:Y-m-d',
+        'date_repair'     => 'date:Y-m-d',
+        'date_launch'     => 'date:Y-m-d',
+        'date_call'       => 'date:Y-m-d',
+        'engineer_id'     => 'integer',
+        'trade_id'        => 'integer',
+        'launch_id'       => 'integer',
+        'reason_call'     => 'string',
+        'diagnostics'     => 'string',
+        'works'           => 'string',
+        'recommends'      => 'string',
+        'remarks'         => 'string',
+        'country_id'      => 'string',
+        'client'          => 'string',
+        'phone_primary'   => 'string',
+        'phone_secondary' => 'string',
+        'address'         => 'string',
+        'status_id'       => 'integer',
+    ];
+
+    protected $dates = [
+        'date_trade',
+        'date_repair',
+        'date_launch',
+        'date_call',
+    ];
+
     /**
      * @param array $attributes
      */
@@ -38,15 +74,71 @@ class Repair extends Model implements Messagable
         $this->table = 'repairs';
     }
 
-//    public static function boot()
-//    {
-//        parent::boot();
-//
-//        self::updated(function (Repair $repair) {
-//
-//
-//        });
-//    }
+    /**
+     * @param $value
+     */
+    public function setDateTradeAttribute($value)
+    {
+        $this->attributes['date_trade'] = $value ? Carbon::createFromFormat('d.m.Y', $value) : null;
+    }
+
+    /**
+     * @param $value
+     */
+    public function setDateRepairAttribute($value)
+    {
+        $this->attributes['date_repair'] = $value ? Carbon::createFromFormat('d.m.Y', $value) : null;
+    }
+
+    /**
+     * @param $value
+     */
+    public function setDateLaunchAttribute($value)
+    {
+        $this->attributes['date_launch'] = $value ? Carbon::createFromFormat('d.m.Y', $value) : null;
+    }
+
+    /**
+     * @param $value
+     */
+    public function setDateCallAttribute($value)
+    {
+        $this->attributes['date_call'] = $value ? Carbon::createFromFormat('d.m.Y', $value) : null;
+    }
+
+    /**
+     * @param $value
+     * @return mixed|null
+     */
+    public function getPhonePrimaryAttribute($value)
+    {
+        return $value ? preg_replace(config('site.phone.get.pattern'), config('site.phone.get.replacement'), $value) : null;
+    }
+
+    /**
+     * @param $value
+     */
+    public function setPhonePrimaryAttribute($value)
+    {
+        $this->attributes['phone_primary'] = $value ? preg_replace(config('site.phone.set.pattern'), config('site.phone.set.replacement'), $value) : null;
+    }
+
+    /**
+     * @param $value
+     * @return mixed|null
+     */
+    public function getPhoneSecondaryAttribute($value)
+    {
+        return $value ? preg_replace(config('site.phone.get.pattern'), config('site.phone.get.replacement'), $value) : null;
+    }
+
+    /**
+     * @param $value
+     */
+    public function setPhoneSecondaryAttribute($value)
+    {
+        $this->attributes['phone_secondary'] = $value ? preg_replace(config('site.phone.set.pattern'), config('site.phone.set.replacement'), $value) : null;
+    }
 
     public function setStatus($status_id)
     {
@@ -215,34 +307,12 @@ class Repair extends Model implements Messagable
         return $this->distance->cost * Site::currencyRates($this->distance->currency, $this->user->currency);
     }
 
-    public function created_at($time = false)
-    {
-        return !is_null($this->created_at) ? Carbon::instance($this->created_at)->format('d.m.Y' . ($time === true ? ' H:i' : '')) : '';
-    }
-
-    public function date_launch()
-    {
-        return !is_null($this->date_launch) ? Carbon::instance(\DateTime::createFromFormat('Y-m-d', $this->date_launch))->format('d.m.Y') : '';
-    }
-
-    public function date_trade()
-    {
-        return !is_null($this->date_trade) ? Carbon::instance(\DateTime::createFromFormat('Y-m-d', $this->date_trade))->format('d.m.Y') : '';
-    }
-
-    public function date_call()
-    {
-        return !is_null($this->date_call) ? Carbon::instance(\DateTime::createFromFormat('Y-m-d', $this->date_call))->format('d.m.Y') : '';
-    }
-
-    public function date_repair()
-    {
-        return !is_null($this->date_repair) ? Carbon::instance(\DateTime::createFromFormat('Y-m-d', $this->date_repair))->format('d.m.Y') : '';
-    }
-
+    /**
+     * @return Builder
+     */
     public function statuses()
     {
-        return RepairStatus::whereIn('id', config('site.repair_status_transition.' . (Auth::user()->admin == 1 ? 'admin' : 'user') . '.' . $this->getAttribute('status_id'), []));
+        return RepairStatus::query()->whereIn('id', config('site.repair_status_transition.' . (Auth::user()->admin == 1 ? 'admin' : 'user') . '.' . $this->getAttribute('status_id'), []));
     }
 
     /**
@@ -386,14 +456,27 @@ class Repair extends Model implements Messagable
         return $this->belongsTo(Product::class);
     }
 
-    function name()
+    /**
+     * @return string
+     */
+    function messageSubject()
     {
-        return trans('site::repair.repair') . ' ' . $this->getAttribute('number');
+        return trans('site::repair.repair') . ' ' . ($this->getAttribute('number') ?: $this->getAttribute('id'));
     }
 
-    function route()
+    /**
+     * @return \Illuminate\Routing\Route
+     */
+    function messageRoute()
     {
-        //return '';
-        return route((Auth::user()->admin == 1 ? 'admin.' : '') . 'repairs.show', [$this, '#messages-list']);
+        return route((auth()->user()->admin == 1 ? 'admin.' : '') . 'repairs.show', $this);
+    }
+
+    /**
+     * @return \Illuminate\Routing\Route
+     */
+    function messageMailRoute()
+    {
+        return route((auth()->user()->admin == 1 ? '' : 'admin.') . 'repairs.show', $this);
     }
 }

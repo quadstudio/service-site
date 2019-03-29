@@ -52,8 +52,15 @@ class EquipmentFilter extends WhereFilter
      */
     public function options(): array
     {
-        return Equipment::whereHas('products', function ($query) {
-            $query->has('repairs');
+        return Equipment::query()->whereHas('products', function ($query) {
+            if(auth()->user()->admin == 1){
+                $query->has('repairs');
+            } else{
+                $query->whereHas('repairs', function ($query){
+                    $query->where('user_id', auth()->user()->getAuthIdentifier());
+                });
+            }
+
         })->orderBy('name')
             ->pluck('name', 'id')
             ->prepend(trans('site::messages.select_no_matter'), '')

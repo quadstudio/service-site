@@ -53,7 +53,7 @@
                             <td class="align-middle"><a href="{{route('admin.news.show', $item)}}">{!! $item->title !!}</a></td>
                             <td class="align-middle text-center">@bool(['bool' => $item->published == 1])@endbool</td>
                             <td class="align-middle text-center">{{$item->date()}}</td>
-                            <td class="align-middle d-none d-md-table-cell text-center">{{\Carbon\Carbon::instance($item->created_at)->format('d.m.Y H:i' )}}</td>
+                            <td class="align-middle d-none d-md-table-cell text-center">{{$item->created_at->format('d.m.Y H:i' )}}</td>
                         </tr>
                     @endforeach
                     </tbody>

@@ -12,7 +12,7 @@
             <li class="breadcrumb-item">
                 <a href="{{ route('distributors.index') }}">@lang('site::order.distributors')</a>
             </li>
-            <li class="breadcrumb-item active">@lang('site::order.breadcrumb_show', ['order' => $order->id, 'date' => $order->created_at(true) ])</li>
+            <li class="breadcrumb-item active">@lang('site::order.breadcrumb_show', ['order' => $order->id, 'date' => $order->created_at->format('d.m.Y H:i') ])</li>
         </ol>
         <h1 class="header-title mb-4">№ {{ $order->id }}</h1>
         @alert()@endalert()
@@ -58,7 +58,7 @@
                     </dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::order.created_at')</dt>
-                    <dd class="col-sm-8">{{ $order->created_at(true) }}</dd>
+                    <dd class="col-sm-8">{{ $order->created_at->format('d.m.Y H:i') }}</dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::order.status_id')</dt>
                     <dd class="col-sm-8" style="color:{{$order->status->color}}"><i
@@ -104,13 +104,13 @@
                             <div class="flex-grow-1 position-relative">
                                 <div class="chat-messages p-4 ps">
                                     @foreach($order->messages as $message)
-                                        <div class="@if($message->user_id == Auth::user()->id) chat-message-right @else chat-message-left @endif mb-4">
+                                        <div class="@if($message->user_id == auth()->user()->getAuthIdentifier()) chat-message-right @else chat-message-left @endif mb-4">
                                             <div>
                                                 <img src="{{$message->user->logo}}" style="width: 40px!important;"
                                                      class="rounded-circle" alt="">
-                                                <div class="text-muted small text-nowrap mt-2">{{ $message->created_at(true) }}</div>
+                                                <div class="text-muted small text-nowrap mt-2">{{ $message->created_at->format('d.m.Y H:i') }}</div>
                                             </div>
-                                            <div class="flex-shrink-1 bg-lighter rounded py-2 px-3 @if($message->user_id == Auth::user()->id) mr-3 @else ml-3 @endif">
+                                            <div class="flex-shrink-1 bg-lighter rounded py-2 px-3 @if($message->user_id == auth()->user()->getAuthIdentifier()) mr-3 @else ml-3 @endif">
                                                 <div class="mb-1"><b>{{$message->user->name}}</b></div>
                                                 <span class="text-big">{!! $message->text !!}</span>
                                             </div>

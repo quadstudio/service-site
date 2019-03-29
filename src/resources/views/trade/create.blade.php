@@ -16,31 +16,24 @@
 
         @alert()@endalert
 
-        <div class="row justify-content-center mb-5">
-            <div class="col-md-12">
-                <div class="card mt-2 mb-2">
-                    <div class="card-body">
-                        @include('site::trade.form')
-                        <div class="form-row">
-                            <div class="col text-right">
-                                <button name="_create" form="form-content" value="1" type="submit" class="btn btn-ferroli mb-1">
-                                    <i class="fa fa-check"></i>
-                                    <span>@lang('site::messages.save_add')</span>
-                                </button>
-                                <button name="_create" form="form-content" value="0" type="submit" class="btn btn-ferroli mb-1">
-                                    <i class="fa fa-check"></i>
-                                    <span>@lang('site::messages.save')</span>
-                                </button>
-                                <a href="{{ route('trades.index') }}" class="btn btn-secondary mb-1">
-                                    <i class="fa fa-close"></i>
-                                    <span>@lang('site::messages.cancel')</span>
-                                </a>
-                            </div>
+        <div class="card mt-2 mb-2">
+            <div class="card-body">
 
-                        </div>
+                @include('site::trade.form.create')
+
+                <div class="form-row">
+                    <div class="col text-right">
+                        <button form="form-content" type="submit" class="btn btn-ferroli mb-1">
+                            <i class="fa fa-check"></i>
+                            <span>@lang('site::messages.save')</span>
+                        </button>
+                        <a href="{{ route('trades.index') }}" class="btn btn-secondary mb-1">
+                            <i class="fa fa-close"></i>
+                            <span>@lang('site::messages.cancel')</span>
+                        </a>
                     </div>
-                </div>
 
+                </div>
             </div>
         </div>
     </div>

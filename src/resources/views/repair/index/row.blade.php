@@ -20,7 +20,7 @@
                     <div class="repair-list-row row no-gutters">
                         <div class="col-md-6 col-xl-2 py-md-2 px-2 pb-2">
                             <div class="small"><b class="text-muted">@lang('site::repair.created_at')
-                                    :</b>&nbsp;{{$repair->created_at()}}</div>
+                                    :</b>&nbsp;{{$repair->created_at->format('d.m.Y H:i')}}</div>
                             <div class="small"><b class="text-muted">@lang('site::repair.date_repair')
                                     :</b>&nbsp;{{$repair->date_repair()}}</div>
                         </div>
@@ -56,32 +56,3 @@
         </div>
     </div>
 </div>
-
-{{--<table class="table table-hover table-sm">--}}
-{{--<thead>--}}
-{{--<tr>--}}
-{{--<th rowspan="2" scope="col">@lang('site::repair.created_at')</th>--}}
-{{--<th rowspan="2" scope="col">@lang('site::repair.number')</th>--}}
-{{--<th rowspan="2" scope="col">@lang('site::serial.product_id')</th>--}}
-{{--<th class="text-center" colspan="3">Оплата, {{ Auth::user()->currency->symbol_right }}</th>--}}
-{{--<th class="text-center" rowspan="2" scope="col">@lang('site::repair.status_id')</th>--}}
-{{--</tr>--}}
-{{--<tr>--}}
-{{--<th class="text-right">@lang('site::repair.help.cost_difficulty')</th>--}}
-{{--<th class="text-right">@lang('site::repair.help.cost_distance')</th>--}}
-{{--<th class="text-right">@lang('site::repair.help.cost_parts')</th>--}}
-{{--</tr>--}}
-{{--</thead>--}}
-{{--<tbody>--}}
-
-{{--</tbody>--}}
-{{--</table>--}}
-{{--<tr>--}}
-{{--<td>{{$repair->created_at()}}</td>--}}
-{{--<td><a href="{{route('repairs.show', $repair)}}">{{$repair->number}}</a></td>--}}
-{{--<td>{{$repair->serial->product->name}}</td>--}}
-{{--<td class="text-right">{{$repair->cost_difficulty()}}</td>--}}
-{{--<td class="text-right">{{ $repair->cost_distance()}}</td>--}}
-{{--<td class="text-right">{{$repair->cost_parts()}}</td>--}}
-{{--<td class="text-center">{{$repair->status->name}}</td>--}}
-{{--</tr>--}}

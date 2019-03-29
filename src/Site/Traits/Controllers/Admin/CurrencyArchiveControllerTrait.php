@@ -31,7 +31,6 @@ trait CurrencyArchiveControllerTrait
         $this->archives->trackFilter();
         $repository = $this->archives;
         $archives = $this->archives->paginate(config('site.per_page.archive', 10), ['currency_archives.*']);
-
         return view('site::admin.archive.index', compact('archives', 'repository'));
     }
 

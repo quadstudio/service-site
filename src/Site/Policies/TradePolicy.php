@@ -38,7 +38,7 @@ class TradePolicy
      * @param  Trade $trade
      * @return bool
      */
-    public function update(User $user, Trade $trade)
+    public function edit(User $user, Trade $trade)
     {
         return $user->id == $trade->user_id;
     }
@@ -52,7 +52,7 @@ class TradePolicy
      */
     public function delete(User $user, Trade $trade)
     {
-        return $user->id == $trade->user_id && $trade->canDelete();
+        return ($user->id == $trade->user_id) && $trade->repairs()->count() == 0 && $trade->mountings()->count() == 0;
     }
 
 

@@ -43,21 +43,11 @@ trait RegisterControllerTrait
     public function showRegistrationForm()
     {
 
-        $countries = Country::enabled()->orderBy('sort_order')->get();
-        $address_sc_regions = $address_legal_regions = $address_postal_regions = collect([]);
-        if (old('address.sc.country_id', false)) {
-            $address_sc_regions = Region::where('country_id', old('address.sc.country_id'))->orderBy('name')->get();
-        }
-        if (old('address.legal.country_id', false)) {
-            $address_legal_regions = Region::where('country_id', old('address.legal.country_id'))->orderBy('name')->get();
-        }
-        if (old('address.postal.country_id', false)) {
-            $address_postal_regions = Region::where('country_id', old('address.postal.country_id'))->orderBy('name')->get();
-        }
-
+        $countries = Country::query()->where('id', config('site.country'))->get();
+        $address_legal_regions = Region::where('country_id', config('site.country'))->orderBy('name')->get();
+        $address_postal_regions = Region::where('country_id', config('site.country'))->orderBy('name')->get();
         $types = ContragentType::all();
-
-        return view('site::auth.register', compact('countries', 'types', 'address_sc_regions', 'address_legal_regions', 'address_postal_regions'));
+        return view('site::auth.register', compact('countries', 'types', 'address_legal_regions', 'address_postal_regions'));
     }
 
     /**
@@ -79,8 +69,8 @@ trait RegisterControllerTrait
 //            $sc->phones()->save(Phone::create($request->input('phone.sc')));
 //        }
         /** @var $address Address */
-        $user->addresses()->save($address = Address::create($request->input('address.sc')));
-        $address->phones()->save(Phone::create($request->input('phone.sc')));
+        //$user->addresses()->save($address = Address::create($request->input('address.sc')));
+        //$address->phones()->save(Phone::create($request->input('phone.sc')));
 
         /** @var $contragent Contragent */
         $user->contragents()->save($contragent = Contragent::create($request->input('contragent')));
@@ -108,7 +98,6 @@ trait RegisterControllerTrait
             'name'          => $data['name'],
             'email'         => $data['email'],
             'dealer'        => isset($data['dealer']) ? 1 : 0,
-            'type_id'       => $data['type_id'],
             'currency_id'   => config('site.defaults.user.currency_id'),
             'price_type_id' => config('site.defaults.user.price_type_id'),
             'warehouse_id'  => config('site.defaults.user.warehouse_id'),

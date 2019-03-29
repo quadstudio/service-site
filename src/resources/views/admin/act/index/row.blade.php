@@ -9,7 +9,7 @@
 			@endforeach
                 </div>
                 <div class="col-6 col-md-2 col-xl-3 text-right text-sm-left">
-                    {{\Carbon\Carbon::instance($act->created_at)->format('d.m.Y H:i' )}}<br />
+                    {{$act->created_at->format('d.m.Y H:i' )}}<br />
 			<span class="text-muted">@lang('site::act.received'):</span>&nbsp;
                             <span class="text-dark">@bool(['bool' => $act->received])@endbool</span>
 

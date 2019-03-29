@@ -12,7 +12,7 @@
             <li class="breadcrumb-item">
                 <a href="{{ route('admin.orders.index') }}">@lang('site::order.orders')</a>
             </li>
-            <li class="breadcrumb-item active">@lang('site::order.breadcrumb_show', ['order' => $order->id, 'date' => $order->created_at(true) ])</li>
+            <li class="breadcrumb-item active">@lang('site::order.breadcrumb_show', ['order' => $order->id, 'date' => $order->created_at->format('d.m.Y H:i') ])</li>
         </ol>
         <h1 class="header-title mb-4">№ {{ $order->id }}</h1>
         @alert()@endalert()
@@ -72,7 +72,7 @@
 
                         <div class="mb-2">
                             <span class="text-muted">@lang('site::order.created_at'):</span>&nbsp;
-                            <span class="text-dark">{{\Carbon\Carbon::instance($order->created_at)->format('d.m.Y H:i' )}}</span>
+                            <span class="text-dark">{{$order->created_at->format('d.m.Y H:i' )}}</span>
                         </div>
                         <div class="mb-2">
                             <span class="text-muted">@lang('site::order.status_id'):</span>&nbsp;
@@ -138,7 +138,7 @@
                             @foreach($order->schedules as $schedule)
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     <div class="text-muted">
-                                        {{\Carbon\Carbon::instance($schedule->status == 0 ? $schedule->created_at : $schedule->updated_at)->format('d.m.Y H:i' )}}
+                                        {{$schedule->status == 0 ? $schedule->created_at->format('d.m.Y H:i') : $schedule->updated_at->format('d.m.Y H:i')}}
                                     </div>
                                     <div @if($schedule->status == 2)
                                          data-toggle="tooltip" data-placement="top" title="{!!$schedule->message!!}"
@@ -255,14 +255,14 @@
                                         <div class="chat-messages p-4 ps">
 
                                             @foreach($order->messages as $message)
-                                                <div class="@if($message->user_id == Auth::user()->id) chat-message-right @else chat-message-left @endif mb-4">
+                                                <div class="@if($message->user_id == auth()->user()->getAuthIdentifier()) chat-message-right @else chat-message-left @endif mb-4">
                                                     <div>
                                                         <img src="{{$message->user->logo}}"
                                                              style="width: 40px!important;"
                                                              class="rounded-circle" alt="">
-                                                        <div class="text-muted small text-nowrap mt-2">{{ $message->created_at(true) }}</div>
+                                                        <div class="text-muted small text-nowrap mt-2">{{ $message->created_at->format('d.m.Y H:i') }}</div>
                                                     </div>
-                                                    <div class="flex-shrink-1 bg-lighter rounded py-2 px-3 @if($message->user_id == Auth::user()->id) mr-3 @else ml-3 @endif">
+                                                    <div class="flex-shrink-1 bg-lighter rounded py-2 px-3 @if($message->user_id == auth()->user()->getAuthIdentifier()) mr-3 @else ml-3 @endif">
                                                         <div class="mb-1"><b>{{$message->user->name}}</b></div>
                                                         <span class="text-big">{!! $message->text !!}</span>
                                                     </div>

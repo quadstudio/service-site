@@ -26,11 +26,43 @@
                 <span>@lang('site::messages.back_home')</span>
             </a>
         </div>
-        @pagination(['pagination' => $trades])@endpagination
-        {{$trades->render()}}
-        <div class="row items-row-view">
-            @each('site::trade.index.row', $trades, 'trade')
+        <div class="card-deck mb-4">
+            @foreach($trades as $trade)
+                <div class="card mb-2" id="trade-{{$trade->id}}">
+                    <div class="card-body">
+                        <h4 class="card-title">{{$trade->name}}</h4>
+                        <h6 class="card-subtitle mb-2">{{$trade->country->phone}} {{$trade->phone}}</h6>
+                        <p class="card-text">{{$trade->address}}</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{route('trades.edit', $trade)}}"
+                           class="@cannot('edit', $trade) disabled @endcannot btn btn-sm btn-secondary">
+                            <i class="fa fa-pencil"></i>
+                            @lang('site::messages.edit')
+                        </a>
+
+                        <a class="@cannot('delete', $trade) disabled @endcannot btn btn-sm btn-danger btn-row-delete"
+                           title="@lang('site::messages.delete')"
+                           href="javascript:void(0);"
+                           data-form="#trade-delete-form-{{$trade->id}}"
+                           data-btn-delete="@lang('site::messages.delete')"
+                           data-btn-cancel="@lang('site::messages.cancel')"
+                           data-label="@lang('site::messages.delete_confirm')"
+                           data-message="@lang('site::messages.delete_sure') {{ $trade->name }}?"
+                           data-toggle="modal"
+                           data-target="#form-modal">
+                            <i class="fa fa-close"></i>
+                            @lang('site::messages.delete')
+                        </a>
+                        <form id="trade-delete-form-{{$trade->id}}"
+                              action="{{route('trades.destroy', $trade)}}"
+                              method="POST">
+                            @csrf
+                            @method('DELETE')
+                        </form>
+                    </div>
+                </div>
+            @endforeach
         </div>
-        {{$trades->render()}}
     </div>
 @endsection

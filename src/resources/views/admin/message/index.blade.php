@@ -17,12 +17,6 @@
         @alert()@endalert()
 
         <div class=" border p-3 mb-4">
-            <a class="disabled btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0"
-               href="{{ route('messages.create') }}"
-               role="button">
-                <i class="fa fa-edit"></i>
-                <span>@lang('site::messages.write') @lang('site::message.message')</span>
-            </a>
             <a href="{{ route('admin') }}" class="d-block d-sm-inline btn btn-secondary">
                 <i class="fa fa-reply"></i>
                 <span>@lang('site::messages.back_admin')</span>
@@ -42,13 +36,13 @@
                             <!-- Remove `.chat-scroll` and add `.flex-grow-1` if you don't need scroll -->
                             <div class="chat-messages p-4 ps">
                                 @foreach($messages as $message)
-                                    <div class="@if($message->user_id == Auth::user()->id) chat-message-right @else chat-message-left @endif mb-4">
+                                    <div class="@if($message->user_id == auth()->user()->getAuthIdentifier()) chat-message-right @else chat-message-left @endif mb-4">
                                         <div>
                                             <img src="{{$message->user->logo}}" style="width: 40px!important;"
                                                  class="rounded-circle" alt="">
-                                            <div class="text-muted small text-nowrap mt-2">{{ $message->created_at(true) }}</div>
+                                            <div class="text-muted small text-nowrap mt-2">{{ $message->created_at->format('d.m.Y H:i') }}</div>
                                         </div>
-                                        <div class="flex-shrink-1 bg-lighter rounded py-2 px-3 @if($message->user_id == Auth::user()->id) mr-3 @else ml-3 @endif">
+                                        <div class="flex-shrink-1 bg-lighter rounded py-2 px-3 @if($message->user_id == auth()->user()->getAuthIdentifier()) mr-3 @else ml-3 @endif">
                                             <div class="mb-2">
                                                 <a class="text-dark"
                                                    href="{{route('admin.users.show', $message->user)}}">
@@ -66,8 +60,8 @@
                                                 @endif
                                                 @if(!is_null($messagable = $message->messagable))
                                                     <a class="d-block text-muted"
-                                                       href="{{$messagable->route()}}">
-                                                        @lang('site::message.help.messagable'): {{$messagable->name()}}
+                                                       href="{{$messagable->messageRoute()}}">
+                                                        @lang('site::message.help.messagable'): {{$messagable->messageSubject()}}
                                                     </a>
                                                 @endif
                                             </div>

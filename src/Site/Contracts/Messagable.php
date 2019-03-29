@@ -4,7 +4,23 @@ namespace QuadStudio\Service\Site\Contracts;
 
 interface Messagable
 {
-    function name();
+    /**
+     * @return string
+     */
+    function messageSubject();
 
-    function route();
+    /**
+     * @return \Illuminate\Routing\Route
+     */
+    function messageRoute();
+
+    /**
+     * @return \Illuminate\Routing\Route
+     */
+    function messageMailRoute();
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    function messages();
 }

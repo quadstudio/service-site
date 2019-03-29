@@ -45,11 +45,15 @@
                 <dl class="row">
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::repair.created_at')</dt>
-                    <dd class="col-sm-8">{{ $repair->created_at(true) }}</dd>
+                    <dd class="col-sm-8">{{ $repair->created_at->format('d.m.Y') }}</dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::repair.status_id')</dt>
-                    <dd class="col-sm-8" style="color:{{$repair->status->color}}"><i
-                                class="fa fa-{{$repair->status->icon}}"></i> {{ $repair->status->name }}</dd>
+                    <dd class="col-sm-8">
+                        <span class="badge text-normal badge-{{$repair->status->color}}">
+                            <i class="fa fa-{{$repair->status->icon}}"></i>
+                            {{ $repair->status->name }}
+                        </span>
+                    </dd>
                 </dl>
 
                 <hr/>
@@ -90,27 +94,28 @@
                     <dd class="col-sm-8">{{ $repair->difficulty->name }}</dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::repair.cost_distance')</dt>
-                    <dd class="col-sm-8 text-right">{{ Site::format($repair->cost_distance())}}</dd>
+                    <dd class="col-sm-8">{{ Site::format($repair->cost_distance())}}</dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::repair.cost_difficulty')</dt>
-                    <dd class="col-sm-8 text-right">{{ Site::format($repair->cost_difficulty())}}</dd>
+                    <dd class="col-sm-8">{{ Site::format($repair->cost_difficulty())}}</dd>
 
-                    <dt class="col-sm-4  text-left text-sm-right">@lang('site::repair.cost_parts')</dt>
-                    <dd class="col-sm-8 text-right">{{ Site::format($repair->cost_parts())}}</dd>
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::repair.cost_parts')</dt>
+                    <dd class="col-sm-8">{{ Site::format($repair->cost_parts())}}</dd>
 
                     <dt class="@if($fails->contains('field', 'parts')) bg-danger text-white @endif col-sm-4 text-left text-sm-right">@lang('site::part.parts')</dt>
                     <dd class="col-sm-8">
                         @foreach($repair->parts as $part)
                             <div class="row">
+                                <div class="col-4 text-info">{{Site::format($part->total)}}</div>
                                 <div class="col-8">{!! $part->product->name()!!}
                                     x {{$part->count}} {{$part->product->unit}}</div>
-                                <div class="col-4 text-right text-info">{{Site::format($part->total)}}</div>
+
                             </div>
                         @endforeach
                     </dd>
 
-                    <dt class="col-sm-4 text-right border-top">@lang('site::repair.help.total')</dt>
-                    <dd class="col-sm-8 text-right border-sm-top border-top-0">{{ Site::format($repair->totalCost)}}</dd>
+                    <dt class="col-sm-4 text-left text-sm-right border-top">@lang('site::repair.help.total')</dt>
+                    <dd class="col-sm-8 border-sm-top border-top-0">{{ Site::format($repair->totalCost)}}</dd>
 
                 </dl>
             </div>
@@ -123,17 +128,22 @@
                     <dt class="@if($fails->contains('field', 'client')) bg-danger text-white @endif col-sm-4 text-left text-sm-right">@lang('site::repair.client')</dt>
                     <dd class="col-sm-8">{{ $repair->client }}</dd>
 
-                    <dt class="@if($fails->contains('field', 'country')) bg-danger text-white @endif col-sm-4 text-left text-sm-right">@lang('site::repair.country_id')</dt>
-                    <dd class="col-sm-8">{{ $repair->country->name }}</dd>
-
                     <dt class="@if($fails->contains('field', 'address')) bg-danger text-white @endif col-sm-4 text-left text-sm-right">@lang('site::repair.address')</dt>
                     <dd class="col-sm-8">{{ $repair->address }}</dd>
 
                     <dt class="@if($fails->contains('field', 'phone_primary')) bg-danger text-white @endif col-sm-4 text-left text-sm-right">@lang('site::repair.phone_primary')</dt>
-                    <dd class="col-sm-8">{{ $repair->phone_primary }}</dd>
+                    <dd class="col-sm-8">
+                        {{ $repair->country->phone }}
+                        {{ $repair->phone_primary }}
+                    </dd>
 
                     <dt class="@if($fails->contains('field', 'phone_secondary')) bg-danger text-white @endif col-sm-4 text-left text-sm-right">@lang('site::repair.phone_secondary')</dt>
-                    <dd class="col-sm-8">{{ $repair->phone_secondary }}</dd>
+                    <dd class="col-sm-8">
+                        @if($repair->phone_secondary)
+                            {{ $repair->country->phone }}
+                            {{ $repair->phone_secondary }}
+                        @endif
+                    </dd>
 
                 </dl>
             </div>
@@ -144,19 +154,21 @@
                 <dl class="row">
 
                     <dt class="@if($fails->contains('field', 'trade_id')) bg-danger text-white @endif col-sm-4 text-left text-sm-right">@lang('site::repair.trade_id')</dt>
-                    <dd class="col-sm-8"><a
-                                href="{{route('trades.show', $repair->trade)}}">{{ $repair->trade->name }}</a></dd>
+                    <dd class="col-sm-8">
+                        <a href="{{route('trades.edit', $repair->trade)}}">{{ $repair->trade->name }}</a>
+                    </dd>
 
                     <dt class="@if($fails->contains('field', 'date_trade')) bg-danger text-white @endif col-sm-4 text-left text-sm-right">@lang('site::repair.date_trade')</dt>
-                    <dd class="col-sm-8">{{ $repair->date_trade() }}</dd>
+                    <dd class="col-sm-8">{{ $repair->date_trade->format('d.m.Y') }}</dd>
 
 
                     <dt class="@if($fails->contains('field', 'launch_id')) bg-danger text-white @endif col-sm-4 text-left text-sm-right">@lang('site::repair.launch_id')</dt>
-                    <dd class="col-sm-8"><a
-                                href="{{route('launches.show', $repair->launch)}}">{{ $repair->launch->name }}</a></dd>
+                    <dd class="col-sm-8">
+                        <a href="{{route('launches.edit', $repair->launch)}}">{{ $repair->launch->name }}</a>
+                    </dd>
 
                     <dt class="@if($fails->contains('field', 'date_launch')) bg-danger text-white @endif col-sm-4 text-left text-sm-right">@lang('site::repair.date_launch')</dt>
-                    <dd class="col-sm-8">{{ $repair->date_launch() }}</dd>
+                    <dd class="col-sm-8">{{ $repair->date_launch->format('d.m.Y') }}</dd>
 
 
                 </dl>
@@ -168,12 +180,12 @@
                 <dl class="row">
 
                     <dt class="@if($fails->contains('field', 'engineer_id')) bg-danger text-white @endif col-sm-4 text-left text-sm-right">@lang('site::repair.engineer_id')</dt>
-                    <dd class="col-sm-8"><a
-                                href="{{route('engineers.show', $repair->engineer)}}">{{ $repair->engineer->name }}</a>
+                    <dd class="col-sm-8">
+                        <a href="{{route('engineers.edit', $repair->engineer)}}">{{ $repair->engineer->name }}</a>
                     </dd>
 
                     <dt class="@if($fails->contains('field', 'date_call')) bg-danger text-white @endif col-sm-4 text-left text-sm-right">@lang('site::repair.date_call')</dt>
-                    <dd class="col-sm-8">{{ $repair->date_call() }}</dd>
+                    <dd class="col-sm-8">{{ $repair->date_call->format('d.m.Y') }}</dd>
 
                     <dt class="@if($fails->contains('field', 'reason_call')) bg-danger text-white @endif col-sm-4 text-left text-sm-right">@lang('site::repair.reason_call')</dt>
                     <dd class="col-sm-8">{!! $repair->reason_call !!}</dd>
@@ -185,77 +197,19 @@
                     <dd class="col-sm-8">{!! $repair->works !!}</dd>
 
                     <dt class="@if($fails->contains('field', 'date_repair')) bg-danger text-white @endif col-sm-4 text-left text-sm-right">@lang('site::repair.date_repair')</dt>
-                    <dd class="col-sm-8">{{ $repair->date_repair() }}</dd>
+                    <dd class="col-sm-8">{{ $repair->date_repair->format('d.m.Y') }}</dd>
 
                 </dl>
             </div>
         </div>
         <div class="card mb-4">
             <div class="card-body">
-                <h5 class="card-title">@lang('site::image.images')</h5>
-                <dl class="row">
-                    <dd class="col">@include('site::repair.files')</dd>
-                </dl>
+                <h5 class="card-title">@lang('site::repair.header.files')</h5>
+                @include('site::file.files')
             </div>
         </div>
 
-        <hr id="messages-list"/>
-        <div class="card mt-5 mb-4">
-            <div class="card-body flex-grow-1 position-relative overflow-hidden">
-                <h5 class="card-title">@lang('site::message.messages')</h5>
-                @if($repair->messages->isNotEmpty())
-                    <div class="row no-gutters h-100">
-                        <div class="d-flex col flex-column">
-                            <div class="flex-grow-1 position-relative">
-
-                                <!-- Remove `.chat-scroll` and add `.flex-grow-1` if you don't need scroll -->
-                                <div class="chat-messages p-4 ps">
-                                    @foreach($repair->messages as $message)
-                                        <div class="@if($message->user_id == Auth::user()->id) chat-message-right @else chat-message-left @endif mb-4">
-                                            <div>
-                                                <img src="{{$message->user->logo}}" style="width: 40px!important;"
-                                                     class="rounded-circle" alt="">
-                                                <div class="text-muted small text-nowrap mt-2">{{ $message->created_at(true) }}</div>
-                                            </div>
-                                            <div class="flex-shrink-1 bg-lighter rounded py-2 px-3 @if($message->user_id == Auth::user()->id) mr-3 @else ml-3 @endif">
-                                                <div class="mb-1"><b>{{$message->user->name}}</b></div>
-                                                <span class="text-big">{!! $message->text !!}</span>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
-                                <!-- / .chat-messages -->
-                            </div>
-                        </div>
-                    </div>
-                    <hr/>
-                @endif
-                <form action="{{route('repairs.message', $repair)}}" method="post">
-                    @csrf
-
-                    <div class="row no-gutters">
-                        <div class="d-flex col flex-column">
-                            <div class="flex-grow-1 position-relative">
-                                <div class="form-group">
-                                    <input type="hidden" name="message[receiver_id]" value="1">
-                                    <textarea name="message[text]"
-                                              id="message_text"
-                                              rows="3"
-                                              placeholder="@lang('site::message.placeholder.text')"
-                                              class="form-control{{  $errors->has('message.text') ? ' is-invalid' : '' }}"></textarea>
-                                    <span class="invalid-feedback">{{ $errors->first('message.text') }}</span>
-                                </div>
-                                <button type="submit"
-                                        class="btn btn-success d-block d-sm-inline-block">
-                                    <i class="fa fa-check"></i>
-                                    <span>@lang('site::messages.send')</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
+        @include('site::message.create')
 
     </div>
 @endsection

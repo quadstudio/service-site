@@ -77,8 +77,6 @@
                         </div>
 
                     @endforeach
-
-                    {{--{{$repair->created_at()}}--}}
                 </div>
             </div>
 

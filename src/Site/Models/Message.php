@@ -34,11 +34,6 @@ class Message extends Model
         return $this->morphTo();
     }
 
-    public function created_at($time = false)
-    {
-        return !is_null($this->created_at) ? Carbon::instance($this->created_at)->format('d.m.Y' . ($time === true ? ' H:i' : '')) : '';
-    }
-
     /**
      * Автор сообщения
      *

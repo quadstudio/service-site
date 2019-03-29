@@ -45,7 +45,7 @@ class RepairPdf extends Pdf
         $this->SetFont('Verdana', 'B', $font_size);
         $this->Cell(38, $line_height, w1251(trans('site::repair.pdf.phone')), 0, 0, 'L');
         $this->SetFont('Verdana', '', $font_size);
-        $this->Cell(162, $line_height, w1251($this->model->country->phone . $this->model->phone_primary), 0, 1, 'L');
+        $this->Cell(162, $line_height, w1251($this->model->country->phone .' '. $this->model->phone_primary), 0, 1, 'L');
         //
         $this->ln(2);
         $this->Line(10, $this->GetY(), 200, $this->GetY());
@@ -64,12 +64,12 @@ class RepairPdf extends Pdf
         $this->SetFont('Verdana', 'B', $font_size);
         $this->Cell(28, $line_height, w1251(trans('site::repair.pdf.date_trade')), 0, 0, 'L');
         $this->SetFont('Verdana', '', $font_size);
-        $this->Cell(164, $line_height, \Carbon\Carbon::instance(\DateTime::createFromFormat('Y-m-d', $this->model->date_trade))->format('d.m.Y'), 0, 1, 'L');
+        $this->Cell(164, $line_height, $this->model->date_trade->format('d.m.Y'), 0, 1, 'L');
         // Дата продажи
         $this->SetFont('Verdana', 'B', $font_size);
         $this->Cell(53, $line_height, w1251(trans('site::repair.pdf.date_launch')), 0, 0, 'L');
         $this->SetFont('Verdana', '', $font_size);
-        $this->Cell(137, $line_height, \Carbon\Carbon::instance(\DateTime::createFromFormat('Y-m-d', $this->model->date_launch))->format('d.m.Y'), 0, 1, 'L');
+        $this->Cell(137, $line_height,$this->model->date_launch->format('d.m.Y'), 0, 1, 'L');
         //
         $this->ln(2);
         $this->Line(10, $this->GetY(), 200, $this->GetY());
@@ -78,12 +78,12 @@ class RepairPdf extends Pdf
         $this->SetFont('Verdana', 'B', $font_size);
         $this->Cell(40, $line_height, w1251(trans('site::repair.pdf.date_call')), 0, 0, 'L');
         $this->SetFont('Verdana', '', $font_size);
-        $this->Cell(150, $line_height, \Carbon\Carbon::instance(\DateTime::createFromFormat('Y-m-d', $this->model->date_call))->format('d.m.Y'), 0, 1, 'L');
+        $this->Cell(150, $line_height, $this->model->date_call->format('d.m.Y'), 0, 1, 'L');
         // Дата выполенния работ
         $this->SetFont('Verdana', 'B', $font_size);
         $this->Cell(37, $line_height, w1251(trans('site::repair.pdf.date_repair')), 0, 0, 'L');
         $this->SetFont('Verdana', '', $font_size);
-        $this->Cell(153, $line_height, \Carbon\Carbon::instance(\DateTime::createFromFormat('Y-m-d', $this->model->date_repair))->format('d.m.Y'), 0, 1, 'L');
+        $this->Cell(153, $line_height, $this->model->date_repair->format('d.m.Y'), 0, 1, 'L');
         $this->SetFont('Verdana', 'B', $font_size);
         // Неисправности
         $this->Cell(0, $line_height, w1251(trans('site::repair.pdf.diagnostics')), 0, 1, 'L');

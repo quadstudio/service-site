@@ -4,10 +4,18 @@ namespace QuadStudio\Service\Site\Traits\Controllers\Auth;
 
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 trait LoginControllerTrait
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     */
+    public function __construct()
+    {
+        $this->middleware('guest')->except('logout');
+    }
 
     /**
      * Show the application's login form.
@@ -29,17 +37,26 @@ trait LoginControllerTrait
         return app('site')->isAdmin() ? route('admin') : route('home');
     }
 
-    protected function credentials(Request $request) {
-        return array_merge($request->only($this->username(), 'password'), ['active' => 1, 'verified' => 1]);
+    /**
+     * Validate the user login request.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return void
+     */
+    protected function validateLogin(Request $request)
+    {
+        $this->validate($request, [
+            $this->username() => 'required|string',
+            'password'        => 'required|string',
+            'captcha'         => 'required|captcha',
+        ], [
+            'captcha' => trans('site::register.error.captcha')
+        ]);
     }
 
-    /**
-     * Create a new controller instance.
-     *
-     */
-    public function __construct()
+    protected function credentials(Request $request)
     {
-        $this->middleware('guest')->except('logout');
+        return array_merge($request->only($this->username(), 'password'), ['active' => 1, 'verified' => 1]);
     }
 
 }

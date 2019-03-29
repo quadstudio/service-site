@@ -20,6 +20,21 @@ class Launch extends Model
         'document_who',
     ];
 
+    protected $casts = [
+        'name'            => 'string',
+        'country_id'      => 'integer',
+        'phone'           => 'string',
+        'address'         => 'string',
+        'document_name'   => 'string',
+        'document_number' => 'string',
+        'document_date'   => 'date:Y-m-d',
+        'document_who'    => 'string',
+    ];
+
+    protected $dates = [
+        'document_date'
+    ];
+
     /**
      * @param array $attributes
      */
@@ -33,12 +48,39 @@ class Launch extends Model
     {
         static::creating(function ($model) {
 
-            $model->address = empty($model->address) ? "" : $model->address ;
+            $model->address = empty($model->address) ? "" : $model->address;
         });
 
         static::updating(function ($model) {
-            $model->address = empty($model->address) ? "" : $model->address ;
+            $model->address = empty($model->address) ? "" : $model->address;
         });
+    }
+
+    /**
+     * @param $value
+     * @return mixed|null
+     */
+    public function getPhoneAttribute($value)
+    {
+        return $value ? preg_replace(config('site.phone.get.pattern'), config('site.phone.get.replacement'), $value) : null;
+    }
+
+    /**
+     * @param $value
+     */
+    public function setPhoneAttribute($value)
+    {
+        $this->attributes['phone'] = $value ? preg_replace(config('site.phone.set.pattern'), config('site.phone.set.replacement'), $value) : null;
+    }
+
+    public function getDocumentDateAttribute($value)
+    {
+        return $value ? Carbon::parse($value)->format('d.m.Y') : null;
+    }
+
+    public function setDocumentDateAttribute($value)
+    {
+        $this->attributes['document_date'] = $value ? Carbon::createFromFormat('d.m.Y', $value) : null;
     }
 
     /**
@@ -69,36 +111,6 @@ class Launch extends Model
     public function repairs()
     {
         return $this->hasMany(Repair::class);
-    }
-
-    public function document_date()
-    {
-        return !is_null($this->document_date) ? Carbon::instance(\DateTime::createFromFormat('Y-m-d', $this->document_date))->format('d.m.Y') : '';
-    }
-
-    /**
-     * @return bool
-     */
-    public function canDelete()
-    {
-        return $this->repairs()->count() == 0;
-    }
-
-    /**
-     * Отформатированный номер телефона
-     * @return string
-     */
-    public function format()
-    {
-        $result = [$this->country->getAttribute('phone')];
-        if (preg_match('/^(\d{3})(\d{3})(\d{2})(\d{2})$/', $this->getAttribute('phone'), $matches)) {
-            $result[] = '(' . $matches[1] . ') ' . $matches[2] . '-' . $matches[3] . '-' . $matches[4];
-        } else {
-            $result[] = $this->getAttribute('phone');
-        }
-
-
-        return implode(' ', $result);
     }
 
 }

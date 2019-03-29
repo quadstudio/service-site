@@ -51,16 +51,6 @@ class Item extends Model
         ]);
     }
 
-    /**
-     * Желаемая дата С
-     *
-     * @return string
-     */
-    public function date()
-    {
-        return \Carbon\Carbon::instance($this->getAttribute('date'))->format('d.m.Y');
-    }
-
     public function hasDescription()
     {
         return mb_strlen($this->getAttribute('description'), "UTF-8") > 0;

@@ -122,7 +122,7 @@ trait ProductControllerTrait
 
     public function part(Product $product)
     {
-        return view('site::part.repair.row', collect([
+        return view('site::part.card', collect([
             'product_id' => $product->id,
             'sku'        => $product->sku,
             'image'      => $product->image()->src(),

@@ -19,7 +19,7 @@ class ActPdf extends Pdf
         $this->SetFont('Verdana', '', $font_size);
         $this->Cell(0, $line_height, w1251(trans('site::act.pdf.number', [
             'number' => $this->model->number(),
-            'date'   => \Carbon\Carbon::instance($this->model->created_at)->format('d.m.Y')
+            'date'   => $this->model->created_at->format('d.m.Y')
         ])), 0, 1, 'C');
         $this->SetFont('Verdana', 'B', $font_size);
         $this->Cell(0, $line_height, w1251(trans('site::act.pdf.contract') . ' ' . $contragent->contract), 0, 1, 'C');
@@ -48,7 +48,7 @@ class ActPdf extends Pdf
             $this->Cell(10, $line_height, $key + 1, 1, 0, 'C');
             $this->Cell(110, $line_height, w1251(trans('site::act.pdf.table.text', [
                 'repair_id' => $repair->id,
-                'repair_date' => \Carbon\Carbon::instance($this->model->created_at)->format('d.m.Y')
+                'repair_date' => $this->model->created_at->format('d.m.Y')
             ])), 1, 0, 'L');
             $this->Cell(20, $line_height, 1, 1, 0, 'C');
             $this->Cell(10, $line_height, w1251(trans('site::act.pdf.table.unit_row')), 1, 0, 'C');

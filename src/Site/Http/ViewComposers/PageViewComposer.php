@@ -13,8 +13,7 @@ class PageViewComposer
         $page_title = null;
         $page_description = null;
         $page_h1 = null;
-        if (($page = Page::query()->where('route', request()->route()->getName()))->exists()) {
-
+        if (!is_null(request()->route()) && ($page = Page::query()->where('route', request()->route()->getName()))->exists()) {
             $page_title = $page->first()->title;
             $page_description = $page->first()->description;
             $page_h1 = $page->first()->h1;

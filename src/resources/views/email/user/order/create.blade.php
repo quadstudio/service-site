@@ -1,15 +1,15 @@
 @extends('layouts.email')
 
 @section('title')
-    FERROLI. Заказ № {{$order->id }} от {{ $order->created_at(true) }} {{$order->user->name }}
+    FERROLI. Заказ № {{$order->id }} от {{ $order->created_at->format('d.m.Y H:i') }} {{$order->user->name }}
 @endsection
 
 @section('h1')
-    Заказ № {{$order->id }} от {{ $order->created_at(true) }} {{$order->user->name }}
+    Заказ № {{$order->id }} от {{ $order->created_at->format('d.m.Y H:i') }} {{$order->user->name }}
 @endsection
 
 @section('body')
-    <p><b>№ заказа</b>: {{$order->id }} от {{ $order->created_at(true) }}</p>
+    <p><b>№ заказа</b>: {{$order->id }} от {{ $order->created_at->format('d.m.Y H:i') }}</p>
     <p><b>Компания</b>: {{$order->user->name }} &nbsp; ({{$order->user->email }}
         @foreach($order->user->addresses as $address)
             @foreach($address->phones as $phone)
@@ -47,9 +47,9 @@
         <hr/>
         <div class="chat-messages p-4 ps">
             @foreach($order->messages as $message)
-                <div class="@if($message->user_id == Auth::user()->id) chat-message-right @else chat-message-left @endif mb-4">
+                <div class="@if($message->user_id == auth()->user()->getAuthIdentifier()) chat-message-right @else chat-message-left @endif mb-4">
 
-                    <div class="flex-shrink-1 bg-lighter rounded py-2 px-3 @if($message->user_id == Auth::user()->id) mr-3 @else ml-3 @endif">
+                    <div class="flex-shrink-1 bg-lighter rounded py-2 px-3 @if($message->user_id == auth()->user()->getAuthIdentifier()) mr-3 @else ml-3 @endif">
                         <div class="mb-1"><b>Комментарий {{$message->user->name}}</b></div>
                         <span class="text-big">{!! $message->text !!}</span>
                     </div>

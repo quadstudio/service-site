@@ -12,20 +12,15 @@
             <li class="breadcrumb-item active">@lang('site::messages.add')</li>
         </ol>
         <h1 class="header-title mb-4">@lang('site::messages.add') @lang('site::launch.launch')</h1>
-
         @alert()@endalert
-        <div class="card mb-4">
+        <div class="card mt-2 mb-2">
             <div class="card-body">
-                @include('site::launch.form')
+
+                @include('site::launch.form.create')
+
                 <div class="form-row">
                     <div class="col text-right">
-                        <button name="_create" form="form-content" value="1" type="submit"
-                                class="btn btn-ferroli mb-1">
-                            <i class="fa fa-check"></i>
-                            <span>@lang('site::messages.save_add')</span>
-                        </button>
-                        <button name="_create" form="form-content" value="0" type="submit"
-                                class="btn btn-ferroli mb-1">
+                        <button form="form-content" type="submit" class="btn btn-ferroli mb-1">
                             <i class="fa fa-check"></i>
                             <span>@lang('site::messages.save')</span>
                         </button>
@@ -38,6 +33,5 @@
                 </div>
             </div>
         </div>
-
     </div>
 @endsection

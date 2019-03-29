@@ -22,27 +22,29 @@ class SiteServiceProvider extends ServiceProvider
     ];
 
     protected $policies = [
-        Models\Trade::class      => Policies\TradePolicy::class,
-        Models\Launch::class     => Policies\LaunchPolicy::class,
-        Models\Engineer::class   => Policies\EngineerPolicy::class,
-        Models\Repair::class     => Policies\RepairPolicy::class,
-        Models\File::class       => Policies\FilePolicy::class,
-        Models\Catalog::class    => Policies\CatalogPolicy::class,
-        Models\Equipment::class  => Policies\EquipmentPolicy::class,
-        Models\Image::class      => Policies\ImagePolicy::class,
-        Models\Order::class      => Policies\OrderPolicy::class,
-        Models\Product::class    => Policies\ProductPolicy::class,
-        Models\Contact::class    => Policies\ContactPolicy::class,
-        Models\Address::class    => Policies\AddressPolicy::class,
-        Models\Contragent::class => Policies\ContragentPolicy::class,
-        Models\User::class       => Policies\UserPolicy::class,
-        Models\Act::class        => Policies\ActPolicy::class,
-        Models\Datasheet::class  => Policies\DatasheetPolicy::class,
-        Models\Distance::class   => Policies\DistancePolicy::class,
-        Models\Difficulty::class => Policies\DifficultyPolicy::class,
-        Models\Phone::class      => Policies\PhonePolicy::class,
-        Models\OrderItem::class  => Policies\OrderItemPolicy::class,
-        Models\Member::class     => Policies\MemberPolicy::class,
+        Models\Trade::class       => Policies\TradePolicy::class,
+        Models\Launch::class      => Policies\LaunchPolicy::class,
+        Models\Engineer::class    => Policies\EngineerPolicy::class,
+        Models\Repair::class      => Policies\RepairPolicy::class,
+        Models\File::class        => Policies\FilePolicy::class,
+        Models\Catalog::class     => Policies\CatalogPolicy::class,
+        Models\Equipment::class   => Policies\EquipmentPolicy::class,
+        Models\Image::class       => Policies\ImagePolicy::class,
+        Models\Order::class       => Policies\OrderPolicy::class,
+        Models\Product::class     => Policies\ProductPolicy::class,
+        Models\Contact::class     => Policies\ContactPolicy::class,
+        Models\Address::class     => Policies\AddressPolicy::class,
+        Models\AddressType::class => Policies\AddressTypePolicy::class,
+        Models\Contragent::class  => Policies\ContragentPolicy::class,
+        Models\User::class        => Policies\UserPolicy::class,
+        Models\Act::class         => Policies\ActPolicy::class,
+        Models\Datasheet::class   => Policies\DatasheetPolicy::class,
+        Models\Distance::class    => Policies\DistancePolicy::class,
+        Models\Difficulty::class  => Policies\DifficultyPolicy::class,
+        Models\Phone::class       => Policies\PhonePolicy::class,
+        Models\OrderItem::class   => Policies\OrderItemPolicy::class,
+        Models\Member::class      => Policies\MemberPolicy::class,
+        Models\Mounting::class    => Policies\MountingPolicy::class,
     ];
 
     /**
@@ -220,16 +222,18 @@ class SiteServiceProvider extends ServiceProvider
     private function loadMorphMap()
     {
         Relation::morphMap([
-            'users'       => Models\User::class,
-            'contragents' => Models\Contragent::class,
-            'equipments'  => Models\Equipment::class,
-            'products'    => Models\Product::class,
-            'catalogs'    => Models\Catalog::class,
-            'repairs'     => Models\Repair::class,
-            'orders'      => Models\Order::class,
-            'acts'        => Models\Act::class,
-            'contacts'    => Models\Contact::class,
-            'addresses'   => Models\Address::class,
+            'users'          => Models\User::class,
+            'contragents'    => Models\Contragent::class,
+            'equipments'     => Models\Equipment::class,
+            'products'       => Models\Product::class,
+            'catalogs'       => Models\Catalog::class,
+            'repairs'        => Models\Repair::class,
+            'orders'         => Models\Order::class,
+            'acts'           => Models\Act::class,
+            'contacts'       => Models\Contact::class,
+            'addresses'      => Models\Address::class,
+            'mountings'      => Models\Mounting::class,
+            'authorizations' => Models\Authorization::class,
         ]);
 
         return $this;
@@ -286,6 +290,9 @@ class SiteServiceProvider extends ServiceProvider
         Event::subscribe(new Listeners\RepairListener());
         Event::subscribe(new Listeners\FeedbackListener());
         Event::subscribe(new Listeners\MemberListener());
+        Event::subscribe(new Listeners\AuthorizationListener());
+        Event::subscribe(new Listeners\MessageListener());
+        Event::subscribe(new Listeners\MountingListener());
     }
 
     /**

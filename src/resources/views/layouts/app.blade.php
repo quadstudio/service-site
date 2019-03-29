@@ -130,6 +130,7 @@
 @stack('scripts')
 
 @include('site::modal.form')
+@include('site::modal.toast')
 
 @if($current_route == 'index' OR substr($current_route,0,7) == 'product' OR substr($current_route,0,8) == 'catalogs' OR substr($current_route,0,10) == 'datasheets')
     {{$current_route}}

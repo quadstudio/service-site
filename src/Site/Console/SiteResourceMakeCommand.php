@@ -49,13 +49,8 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
         'auth/ResetPasswordController.stub'       => 'Auth/ResetPasswordController',
         //
         'IndexController.stub'                    => 'IndexController',
-        'HomeController.stub'                     => 'HomeController',
         'StaticPageController.stub'               => 'StaticPageController',
-        'RepairController.stub'                   => 'RepairController',
-        'EngineerController.stub'                 => 'EngineerController',
         'LaunchController.stub'                   => 'LaunchController',
-        'TradeController.stub'                    => 'TradeController',
-        'FileController.stub'                     => 'FileController',
         'OrderController.stub'                    => 'OrderController',
         'ProductController.stub'                  => 'ProductController',
         'ActController.stub'                      => 'ActController',
@@ -64,9 +59,7 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
         'CatalogController.stub'                  => 'CatalogController',
         'EquipmentController.stub'                => 'EquipmentController',
         'CartController.stub'                     => 'CartController',
-        'MessageController.stub'                  => 'MessageController',
         'ContactController.stub'                  => 'ContactController',
-        'AddressController.stub'                  => 'AddressController',
         'ContragentController.stub'               => 'ContragentController',
         'SchemeController.stub'                   => 'SchemeController',
         'PhoneController.stub'                    => 'PhoneController',
@@ -105,9 +98,7 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
         'admin/LaunchController.stub'             => 'Admin/LaunchController',
         'admin/SerialController.stub'             => 'Admin/SerialController',
         'admin/CurrencyController.stub'           => 'Admin/CurrencyController',
-        'admin/RepairController.stub'             => 'Admin/RepairController',
         'admin/ActController.stub'                => 'Admin/ActController',
-        'admin/IndexController.stub'              => 'Admin/IndexController',
         'admin/ContragentController.stub'         => 'Admin/ContragentController',
         'admin/UserController.stub'               => 'Admin/UserController',
         'admin/ServiceController.stub'            => 'Admin/ServiceController',
@@ -174,7 +165,8 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
      * @var array
      */
     protected $routes = [
-        'web.stub' => 0 //FILE_APPEND
+        'web' => 0, //FILE_APPEND
+        'api' => 0 //FILE_APPEND
     ];
 
     public function getAsset()

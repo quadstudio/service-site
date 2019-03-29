@@ -60,7 +60,7 @@ class FilePolicy
      */
     public function delete(User $user, File $file)
     {
-        return false;
+        return true;
     }
 
 

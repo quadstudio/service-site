@@ -2,7 +2,6 @@
 
 namespace QuadStudio\Service\Site\Models;
 
-use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
@@ -24,7 +23,7 @@ class User extends Authenticatable implements Addressable
      */
     protected $fillable = [
         'name', 'email', 'password', 'dealer',
-        'display', 'type_id', 'active', 'image_id',
+        'display', 'active', 'image_id',
         'warehouse_id', 'currency_id', 'region_id'
     ];
 
@@ -35,6 +34,10 @@ class User extends Authenticatable implements Addressable
      */
     protected $hidden = [
         'password', 'remember_token',
+    ];
+
+    protected $dates = [
+        'logged_at'
     ];
 
     public static function boot()
@@ -81,17 +84,6 @@ class User extends Authenticatable implements Addressable
     }
 
 
-    public function created_at($time = false)
-    {
-        return !is_null($this->created_at) ? Carbon::instance($this->created_at)->format('d.m.Y' . ($time === true ? ' H:i' : '')) : '';
-    }
-
-    public function logged_at()
-    {
-        //dd($this->logged_at);
-        return !is_null($this->logged_at) ? Carbon::instance(\DateTime::createFromFormat('Y-m-d H:i:s', $this->logged_at))->format('d.m.Y H:i') : '';
-    }
-
     public function addresses_count()
     {
         return $this->addresses()->count() + Address::where(function ($query) {
@@ -136,6 +128,26 @@ class User extends Authenticatable implements Addressable
     }
 
     /**
+     * Авторизации
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function authorizations()
+    {
+        return $this->hasMany(Authorization::class);
+    }
+
+    /**
+     * Подтвержденные авторизации
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function authorization_accepts()
+    {
+        return $this->hasMany(AuthorizationAccept::class);
+    }
+
+    /**
      * Акты выполненных работ
      *
      * @return \Illuminate\Database\Eloquent\Relations\hasMany
@@ -153,16 +165,6 @@ class User extends Authenticatable implements Addressable
         }
 
         return $phones;
-    }
-
-    /**
-     * Организационно-правовая форма
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function type()
-    {
-        return $this->belongsTo(ContragentType::class);
     }
 
     /**
@@ -185,10 +187,12 @@ class User extends Authenticatable implements Addressable
         return $this->belongsTo(Currency::class);
     }
 
-    public function storehouses(){
-        if($this->hasRole('gendistr')){
+    public function storehouses()
+    {
+        if ($this->hasRole('gendistr')) {
             return User::query()->find(1)->addresses()->where('type_id', 6)->get();
         }
+
         return $this->region->storehouses;
     }
 
@@ -218,7 +222,7 @@ class User extends Authenticatable implements Addressable
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
 
-	 public function prices()
+    public function prices()
     {
         return $this->hasMany(UserPrice::class);
     }
@@ -295,6 +299,16 @@ class User extends Authenticatable implements Addressable
     public function repairs()
     {
         return $this->hasMany(Repair::class);
+    }
+
+    /**
+     * Отчеты по монтажу
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function mountings()
+    {
+        return $this->hasMany(Mounting::class);
     }
 
     /**

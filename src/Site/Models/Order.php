@@ -4,9 +4,7 @@ namespace QuadStudio\Service\Site\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 use QuadStudio\Service\Site\Contracts\Messagable;
-use QuadStudio\Service\Site\Events\OrderCreateEvent;
 use QuadStudio\Service\Site\Traits\Models\ScheduleTrait;
 
 class Order extends Model implements Messagable
@@ -18,7 +16,7 @@ class Order extends Model implements Messagable
      */
     protected $table;
 
-    protected $fillable = ['status_id', 'contragent_id','address_id'];
+    protected $fillable = ['status_id', 'contragent_id', 'address_id'];
 
     /**
      * @param array $attributes
@@ -27,11 +25,6 @@ class Order extends Model implements Messagable
     {
         parent::__construct($attributes);
         $this->table = 'orders';
-    }
-
-    public function created_at($time = false)
-    {
-        return !is_null($this->created_at) ? Carbon::instance($this->created_at)->format('d.m.Y' . ($time === true ? ' H:i' : '')) : '';
     }
 
     /**
@@ -51,7 +44,6 @@ class Order extends Model implements Messagable
     {
         return $this->items->sum('quantity');
     }
-
 
 
     /**
@@ -79,12 +71,13 @@ class Order extends Model implements Messagable
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-	public function address()
+    public function address()
     {
         return $this->belongsTo(Address::class);
     }
 
-    public function hasGuid(){
+    public function hasGuid()
+    {
         return !is_null($this->getAttribute('guid'));
     }
 
@@ -118,19 +111,27 @@ class Order extends Model implements Messagable
         return $this->belongsTo(OrderStatus::class);
     }
 
-    function name()
+    /**
+     * @return string
+     */
+    function messageSubject()
     {
-        return trans('site::order.order') . ' ' . $this->id();
+        return trans('site::order.order') . ' ' . $this->id;
     }
 
-//    public function id()
-//    {
-//        return str_pad($this->id, 8, '0', STR_PAD_LEFT);
-//    }
-
-    function route()
+    /**
+     * @return \Illuminate\Routing\Route
+     */
+    function messageRoute()
     {
-        //return '';
-        return route((Auth::user()->admin == 1 ? 'admin.' : '') . 'orders.show', [$this, '#messages-list']);
+        return route((auth()->user()->admin == 1 ? 'admin.' : '') . 'orders.show', [$this, '#messages-list']);
+    }
+
+    /**
+     * @return \Illuminate\Routing\Route
+     */
+    function messageMailRoute()
+    {
+        return route((auth()->user()->admin == 1 ? '' : 'admin.') . 'orders.show', [$this, '#messages-list']);
     }
 }

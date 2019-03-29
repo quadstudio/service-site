@@ -1,7 +1,8 @@
 <dl class="row">
     @foreach($types as $type)
 
-        <dt class="col-sm-4 text-left text-sm-right @if($fails->contains('field', 'file_'.$type->id)) bg-danger text-white @endif">
+        <dt class="col-sm-4 text-left text-sm-right
+            @if($fails->contains('field', 'file_'.$type->id)) bg-danger text-white @endif">
             <label for="file_{{$type->id}}"
                    class="pointer control-label"><i class="fa text-danger fa-hand-pointer-o"></i> {{$type->name}}
             </label>

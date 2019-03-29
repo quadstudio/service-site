@@ -91,11 +91,11 @@
 
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <div class="text-muted">@lang('site::messages.created_at')</div>
-                            <div>{{ $product->created_at(true) }}</div>
+                            <div>{{ $product->created_at->format('d.m.Y H:i') }}</div>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <div class="text-muted">@lang('site::messages.updated_at')</div>
-                            <div>{{ $product->updated_at(true) }}</div>
+                            <div>{{ $product->updated_at->format('d.m.Y H:i') }}</div>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <div class="text-muted">@lang('site::order.orders')</div>

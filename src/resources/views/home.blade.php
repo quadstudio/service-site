@@ -9,66 +9,6 @@
             <li class="breadcrumb-item active">@lang('site::messages.home')</li>
         </ol>
         <h1 class="header-title mb-4"><i class="fa fa-desktop"></i> @lang('site::messages.home')</h1>
-        <div class=" border p-3 mb-4">
-            @permission('repairs')
-            <a href="{{ route('repairs.index') }}"
-               class="d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-ferroli">
-                <i class="fa fa-@lang('site::repair.icon')"></i>
-                <span>@lang('site::repair.repairs') <span class="badge badge-light">{{$user->repairs()->count()}}</span></span>
-            </a>
-            @endpermission()
-            @permission('acts')
-            <a href="{{ route('acts.index') }}"
-               class="d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-ferroli">
-                <i class="fa fa-@lang('site::order.icon')"></i>
-                <span>@lang('site::act.acts') <span
-                            class="badge badge-light">{{$user->acts()->count()}}</span></span>
-            </a>
-            @endpermission()
-
-            @permission('orders')
-            <a href="{{ route('orders.index') }}"
-               class="d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-ferroli">
-                <i class="fa fa-@lang('site::order.icon')"></i>
-                <span>@lang('site::order.orders') <span
-                            class="badge badge-light">{{$user->orders()->count()}}</span></span>
-            </a>
-            @endpermission()
-
-            @permission('distributors')
-            <a href="{{ route('distributors.index') }}"
-               class="d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-ferroli">
-                <i class="fa fa-@lang('site::order.icon')"></i>
-                <span>@lang('site::order.distributors') <span
-                            class="badge badge-light"> {{$user->distributors()->count()}}</span></span>
-            </a>
-            @endpermission()
-            <hr />
-            @permission('contragents')
-            <a href="{{ route('contragents.index') }}"
-               class="d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-ferroli">
-                <i class="fa fa-@lang('site::contragent.icon')"></i>
-                <span>@lang('site::contragent.contragents_user') <span
-                            class="badge badge-light">{{$user->contragents()->count()}}</span></span>
-            </a>
-            @endpermission()
-            @permission('contacts')
-            <a href="{{ route('contacts.index') }}"
-               class="d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-ferroli">
-                <i class="fa fa-@lang('site::contact.icon')"></i>
-                <span>@lang('site::contact.contacts') <span
-                            class="badge badge-light">{{$user->contacts()->count()}}</span></span>
-            </a>
-            @endpermission()
-            @permission('addresses')
-            <a href="{{ route('addresses.index') }}"
-               class="d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-ferroli">
-                <i class="fa fa-@lang('site::address.icon')"></i>
-                <span>@lang('site::address.addresses') <span
-                            class="badge badge-light">{{$user->addresses()->count()}}</span></span>
-            </a>
-            @endpermission()
-        </div>
         <div class="row">
             <div class="col-xl-4">
                 <!-- Side info -->
@@ -79,7 +19,7 @@
                                  class="rounded-circle">
                             <div class="media-body pt-2 ml-3">
                                 <h5 class="mb-2">{{ $user->name }}</h5>
-                                <div class="text-muted small">{{ $user->type->name }}</div>
+                                {{--<div class="text-muted small">{{ $user->type->name }}</div>--}}
 
                                 {{--<div class="mt-2">--}}
                                 {{--<a href="javascript:void(0)" class="text-twitter">--}}
@@ -118,31 +58,192 @@
                     <div class="card-body">
                         <div class="mb-2">
                             <span class="text-muted">@lang('site::user.created_at')
-                                :</span>&nbsp;&nbsp;{{ $user->created_at() }}
+                                :</span>&nbsp;&nbsp;{{ $user->created_at->format('d.m.Y H:i') }}
                         </div>
+
                         {{--<div class="mb-2">--}}
-                            {{--<span class="text-muted">@lang('site::address.country_id'):</span>&nbsp;--}}
-                            {{--<span class="text-dark">--}}
-                                {{--<img style="width: 30px;" class="img-fluid border"--}}
-                                     {{--src="{{ asset($user->address()->country->flag) }}"--}}
-                                     {{--alt=""> {{ $user->address()->country->name }}--}}
-                            {{--</span>--}}
+                        {{--<span class="text-muted">@lang('site::address.country_id'):</span>&nbsp;--}}
+                        {{--<span class="text-dark">--}}
+                        {{--<img style="width: 30px;" class="img-fluid border"--}}
+                        {{--src="{{ asset($user->address()->country->flag) }}"--}}
+                        {{--alt=""> {{ $user->address()->country->name }}--}}
+                        {{--</span>--}}
                         {{--</div>--}}
                         <div class="mb-2">
                             <span class="text-muted">@lang('site::user.email'):</span>&nbsp;
                             <span class="text-dark">{{ $user->email }}</span>
                         </div>
                         {{--<div class="mb-2">--}}
-                            {{--<span class="text-muted">@lang('site::address.locality'):</span>&nbsp;--}}
-                            {{--<span class="text-dark">{{ $user->address()->locality }}</span>--}}
+                        {{--<span class="text-muted">@lang('site::address.locality'):</span>&nbsp;--}}
+                        {{--<span class="text-dark">{{ $user->address()->locality }}</span>--}}
                         {{--</div>--}}
+                    </div>
+                    <div class="list-group list-group-flush">
+                        @permission('orders')
+                        <a href="{{ route('orders.index') }}"
+                           class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="fa fa-@lang('site::order.icon')"></i>
+                                @lang('site::order.orders')
+                            </span>
+                            <span class="badge text-big @if($user->orders()->exists()) badge-ferroli @else badge-light @endif">{{$user->orders()->count()}}</span>
+                        </a>
+                        @endpermission()
+                        @permission('repairs')
+                        <a href="{{ route('repairs.index') }}"
+                           class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="fa fa-@lang('site::repair.icon')"></i>
+                                @lang('site::repair.repairs')
+                            </span>
+                            <span class="badge text-big @if($user->repairs()->exists()) badge-ferroli @else badge-light @endif">
+                                {{$user->repairs()->count()}}
+                            </span>
+                        </a>
+                        @endpermission()
+                        @permission('mountings')
+                        <a href="{{ route('mountings.index') }}"
+                           class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="fa fa-@lang('site::mounting.icon')"></i>
+                                @lang('site::mounting.mountings')
+                            </span>
+                            <span class="badge text-big @if($user->mountings()->exists()) badge-ferroli @else badge-light @endif">
+                                {{$user->mountings()->count()}}
+                            </span>
+                        </a>
+                        @endpermission()
+                        @permission('acts')
+                        <a href="{{ route('acts.index') }}"
+                           class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="fa fa-@lang('site::act.icon')"></i>
+                                @lang('site::act.acts')
+                            </span>
+                            <span class="badge text-big @if($user->acts()->exists()) badge-ferroli @else badge-light @endif">
+                                {{$user->acts()->count()}}
+                            </span>
+                        </a>
+                        @endpermission()
+                        @permission('authorizations')
+                        <a href="{{ route('authorizations.index') }}"
+                           class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="fa fa-@lang('site::authorization.icon')"></i>
+                                @lang('site::authorization.authorizations')
+                            </span>
+                            <span class="badge text-big @if($user->authorizations()->exists()) badge-ferroli @else badge-light @endif">
+                                {{$user->authorizations()->count()}}
+                            </span>
+                        </a>
+                        @endpermission()
+                        @permission('messages')
+                        <a href="{{ route('messages.index') }}"
+                           class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="fa fa-@lang('site::message.icon')"></i>
+                                @lang('site::message.messages')
+                            </span>
+                            <span class="badge text-big @if($user->inbox()->exists()) badge-ferroli @else badge-light @endif">
+                                {{$user->inbox()->count()}}
+                            </span>
+                        </a>
+                        @endpermission()
+                        @permission('distributors')
+                        <a href="{{ route('distributors.index') }}"
+                           class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="fa fa-@lang('site::order.icon')"></i>
+                                @lang('site::order.distributors')
+                            </span>
+                            <span class="badge text-big @if($user->distributors()->exists()) badge-ferroli @else badge-light @endif">{{$user->distributors()->count()}}</span>
+                        </a>
+                        @endpermission()
+                        @permission('engineers')
+                        <a href="{{ route('engineers.index') }}"
+                           class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="fa fa-@lang('site::engineer.icon')"></i>
+                                @lang('site::engineer.engineers')
+                            </span>
+                            <span class="badge text-big @if($user->engineers()->exists()) badge-ferroli @else badge-light @endif">
+                                {{$user->engineers()->count()}}
+                            </span>
+                        </a>
+                        @endpermission
+                        @permission('launches')
+                        <a href="{{ route('launches.index') }}"
+                           class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="fa fa-@lang('site::launch.icon')"></i>
+                                @lang('site::launch.launches')
+                            </span>
+                            <span class="badge text-big @if($user->launches()->exists()) badge-ferroli @else badge-light @endif">
+                                {{$user->launches()->count()}}
+                            </span>
+                        </a>
+                        @endpermission
+                        @permission('trades')
+                        <a href="{{ route('trades.index') }}"
+                           class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="fa fa-@lang('site::trade.icon')"></i>
+                                @lang('site::trade.trades')
+                            </span>
+                            <span class="badge text-big @if($user->trades()->exists()) badge-ferroli @else badge-light @endif">
+                                {{$user->trades()->count()}}
+                            </span>
+                        </a>
+                        @endpermission
+                        @permission('contragents')
+                        <a href="{{ route('contragents.index') }}"
+                           class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="fa fa-@lang('site::contragent.icon')"></i>
+                                @lang('site::contragent.contragents')
+                            </span>
+                            <span class="badge text-big @if($user->contragents()->exists()) badge-ferroli @else badge-light @endif">
+                                {{$user->contragents()->count()}}
+                            </span>
+                        </a>
+                        @endpermission
+                        @permission('contacts')
+                        <a href="{{ route('contacts.index') }}"
+                           class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="fa fa-@lang('site::contact.icon')"></i>
+                                @lang('site::contact.contacts')
+                            </span>
+                            <span class="badge text-big @if($user->contacts()->exists()) badge-ferroli @else badge-light @endif">{{$user->contacts()->count()}}</span>
+                        </a>
+                        @endpermission()
+                        @permission('addresses')
+                        <a href="{{ route('addresses.index') }}"
+                           class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="fa fa-@lang('site::address.icon')"></i>
+                                @lang('site::address.addresses')
+                            </span>
+                            <span class="badge text-big @if($user->addresses()->exists()) badge-ferroli @else badge-light @endif">{{$user->addresses()->count()}}</span>
+                        </a>
+                        @endpermission()
                     </div>
                 </div>
             </div>
             <div class="col">
-                <div class="row no-gutters text-center mb-4">
-
+                @permission('authorizations')
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">@lang('site::authorization.request.title')</h5>
+                        <p class="card-text">@lang('site::authorization.request.text')</p>
+                        @foreach($authorization_roles as $authorization_role)
+                            <a href="{{route('authorizations.create', $authorization_role->role)}}"
+                               class="btn btn-ferroli">{{$authorization_role->name}}</a>
+                        @endforeach
+                    </div>
                 </div>
+                @endpermission()
+
             </div>
         </div>
     </div>

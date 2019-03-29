@@ -20,7 +20,7 @@
                 </div>
                 <div class="col-12 col-md-3">
                     @if($currency->updated_at)
-                        {{ \Carbon\Carbon::instance($currency->updated_at)->format('d.m.Y H:i') }}
+                        {{ $currency->updated_at->format('d.m.Y H:i') }}
                     @endif
                 </div>
             </div>

@@ -51,7 +51,7 @@
                     <div class="card-body">
                         <div class="mb-2">
                             <span class="text-muted">@lang('site::act.created_at'):</span>&nbsp;
-                            <span class="text-dark">{{\Carbon\Carbon::instance($act->created_at)->format('d.m.Y H:i' )}}</span>
+                            <span class="text-dark">{{$act->created_at->format('d.m.Y H:i' )}}</span>
                         </div>
                         <div class="mb-2">
                             <span class="text-muted">@lang('site::act.user_id'):</span>&nbsp;
@@ -118,7 +118,7 @@
                             @foreach($act->schedules as $schedule)
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     <div class="text-muted">
-                                        {{\Carbon\Carbon::instance($schedule->status == 0 ? $schedule->created_at : $schedule->updated_at)->format('d.m.Y H:i' )}}
+                                        {{$schedule->status == 0 ? $schedule->created_at->format('d.m.Y H:i') : $schedule->updated_at->format('d.m.Y H:i')}}
                                     </div>
                                     <div @if($schedule->status == 2)
                                          data-toggle="tooltip" data-placement="top" title="{!!$schedule->message!!}"
@@ -175,7 +175,7 @@
                         @foreach($act->repairs as $repair)
                             <div class="row border-bottom">
                                 <div class="col"><a href="{{route('admin.repairs.show', $repair)}}">{{$repair->id}}</a></div>
-                                <div class="col">{{\Carbon\Carbon::instance(\DateTime::createFromFormat('Y-m-d', $repair->date_repair))->format('d.m.Y')}}</div>
+                                <div class="col">{{$repair->date_repair->format('d.m.Y')}}</div>
                                 <div class="col">
                                     <a href="{{route('admin.products.show', $repair->product)}}">{{$repair->product->name}}</a>
                                 </div>

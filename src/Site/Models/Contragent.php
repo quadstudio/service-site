@@ -36,11 +36,6 @@ class Contragent extends Model implements Addressable
         });
     }
 
-    public function created_at()
-    {
-        return !is_null($this->created_at) ? Carbon::instance($this->created_at)->format('d.m.Y H:i') : '';
-    }
-
     /**
      * Расписание экспортов контрагента в 1С
      *

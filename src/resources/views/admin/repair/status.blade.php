@@ -92,7 +92,7 @@
                 <dl class="row">
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::repair.created_at')</dt>
-                    <dd class="col-sm-8">{{ $repair->created_at(true) }}</dd>
+                    <dd class="col-sm-8">{{ $repair->created_at->format('d.m.Y H:i') }}</dd>
 
 
                     <dt class="col-sm-4 text-left text-sm-right ">@lang('site::repair.status_id')</dt>

@@ -62,7 +62,11 @@ trait AddressControllerTrait
         ]);
     }
 
-    public function create()
+    /**
+     * @param AddressRequest $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function create(AddressRequest $request)
     {
         $types = AddressType::find([2,5]);
         $countries = Country::enabled()->orderBy('sort_order')->get();
@@ -70,9 +74,10 @@ trait AddressControllerTrait
         if (old('country_id')) {
             $regions = Region::where('country_id', old('country_id'))->orderBy('name')->get();
         }
-
         return view('site::address.create', compact('countries', 'regions', 'types'));
     }
+
+
 
     public function store(AddressRequest $request)
     {

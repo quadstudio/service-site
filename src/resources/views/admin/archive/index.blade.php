@@ -33,11 +33,16 @@
             </a>
 
         </div>
-        @filter(['repository' => $repository])@endfilter
-        @pagination(['pagination' => $archives])@endpagination
-        {{$archives->render()}}
 
-        @foreach($archives->groupBy('date') as $date => $rows)
+        @filter(['repository' => $repository])@endfilter
+
+        @pagination(['pagination' => $archives])@endpagination
+
+        {{$archives->render()}}
+        @foreach($archives->groupBy(function($item){
+            return $item->date->format('Y-m-d');
+        }) as $date => $rows)
+
             <div class="card mb-1">
                 <div class="card-body">
                     <h5 class="card-title">{{\Carbon\Carbon::createFromFormat('Y-m-d', $date)->format('d.m.Y')}}</h5>

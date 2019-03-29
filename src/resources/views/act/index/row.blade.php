@@ -6,7 +6,7 @@
                     <a href="{{ route('acts.show', $act) }}" class="text-large text-dark">№ {{$act->id}}</a>
                 </div>
                 <div class="col-6 col-md-2 col-xl-3 text-right text-sm-left">
-                    {{\Carbon\Carbon::instance($act->created_at)->format('d.m.Y H:i' )}}
+                    {{$act->created_at->format('d.m.Y H:i' )}}
                 </div>
                 <div class="col-12 col-md-5 col-xl-3">
 

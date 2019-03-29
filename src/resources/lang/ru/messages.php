@@ -14,6 +14,10 @@ return [
     'home'             => 'Личный кабинет',
     'yes'              => 'Да',
     'no'               => 'Нет',
+    'on'               => 'Включить',
+    'off'              => 'Выключить',
+    'enabled_0'        => 'Выключено',
+    'enabled_1'        => 'Включено',
     'not_found'        => 'Ничего не найдено',
     'not_indicated'    => 'Не указано',
     'not_indicated_m'  => 'Не указан',
@@ -26,6 +30,7 @@ return [
     'not_selected_m'   => 'Не выбран',
     'not_selected_f'   => 'Не выбрана',
     //
+    'toast'            => 'Уведомление',
     'edit'             => 'Изменить',
     'change'           => 'Сменить',
     'add'              => 'Добавить',
@@ -81,9 +86,12 @@ return [
     'success'          => 'Успех',
     'error'            => 'Ошибка',
     'with_error'       => 'Заполнено с ошибкой',
+    'has_error'        => 'Найдены ошибки',
     'created_at'       => 'Дата создания',
     'updated_at'       => 'Дата обновления',
     'status_1c'        => 'Статус 1С',
+    'date_from'       => 'С...',
+    'date_to'         => 'По...',
     'symbol'           => [
         '\t'   => '[ ___ ] Табуляция',
         '\s'   => '[ &nbsp;&nbsp;&nbsp; ] Пробел',
@@ -109,4 +117,5 @@ return [
     'select_from_list' => '- выбрать -',
     'select_no_matter' => '- не важно -',
     'pagination'       => 'Показано с :from по :to из :total :of',
+    'per_page'         => 'Показывать по',
 ];

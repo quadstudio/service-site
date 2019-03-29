@@ -35,17 +35,19 @@
     <td class="text-center">
         <span class="text-normal @if($user->display) text-success @else text-danger @endif"> @lang('site::user.display_ico_'.($user->display))</span>
     </td>
-
-    <td>@if($user->created_at())
-            {{\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$user->created_at)->format('d.m.Y')}}
-        @endif </td>
-
-    <td>@if($user->logged_at())
-            {{\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$user->logged_at)->format('d.m.Y')}}</td>
-    @endif
+    <td>
+        @if($user->created_at)
+            {{$user->created_at->format('d.m.Y')}}
+        @endif
+    </td>
+    <td>
+        @if($user->logged_at)
+            {{$user->logged_at->format('d.m.Y')}}
+        @endif
+    </td>
     <td>
         @if($order = $user->orders()->latest()->first())
-            {{\Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $order->created_at)->format('d.m.Y')}}
+            {{$order->created_at->format('d.m.Y')}}
         @endif
     </td>
 </tr>

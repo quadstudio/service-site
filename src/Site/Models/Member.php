@@ -118,26 +118,6 @@ class Member extends Model
     }
 
     /**
-     * Желаемая дата С
-     *
-     * @return string
-     */
-    public function date_from()
-    {
-        return \Carbon\Carbon::instance($this->getAttribute('date_from'))->format('d.m.Y');
-    }
-
-    /**
-     * Желаемая дата По
-     *
-     * @return string
-     */
-    public function date_to()
-    {
-        return \Carbon\Carbon::instance($this->getAttribute('date_to'))->format('d.m.Y');
-    }
-
-    /**
      * Участники
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

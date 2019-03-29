@@ -88,26 +88,6 @@ class Event extends Model
         return $this->belongsTo(EventStatus::class);
     }
 
-    /**
-     * Желаемая дата С
-     *
-     * @return string
-     */
-    public function date_from()
-    {
-        return \Carbon\Carbon::instance($this->getAttribute('date_from'))->format('d.m.Y');
-    }
-
-    /**
-     * Желаемая дата По
-     *
-     * @return string
-     */
-    public function date_to()
-    {
-        return \Carbon\Carbon::instance($this->getAttribute('date_to'))->format('d.m.Y');
-    }
-
     public function hasDescription()
     {
         return mb_strlen($this->getAttribute('description'), "UTF-8") > 0;

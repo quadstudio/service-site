@@ -14,4 +14,13 @@ window.Summernote = require('summernote/dist/summernote-bs4');
 require('summernote/lang/summernote-ru-RU');
 window.moment = require('moment');
 window.datetimepicker = require('tempusdominus-bootstrap-4');
+window.IMask = require('imask/dist/imask.min');
+
+window.mask_phones = function () {
+    let phones = document.querySelectorAll('.phone-mask');
+    for (let i = 0; i < phones.length; i++) {
+        new IMask(phones[i], {mask: phones[i].getAttribute('data-mask')});
+    }
+};
+
 require('./site');

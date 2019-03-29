@@ -10,7 +10,6 @@
 
 @section('body')
     <p><b>Компания</b>: {{$user->name }}</p>
-    <p><b>Адрес сервисного центра</b>: {{$user->addresses()->where('type_id', 2)->first()->name }}</p>
     <p><b>Юридический адрес</b>: {{ $user->contragents()->first()->addresses()->where('type_id', 1)->first()->name }}
     </p>
     <p>

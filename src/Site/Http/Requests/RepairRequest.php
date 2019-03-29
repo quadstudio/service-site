@@ -26,7 +26,11 @@ class RepairRequest extends FormRequest
      */
     public function rules()
     {
-        $types = FileType::enabled()->required()->get();
+        $file_types = FileType::query()
+            ->where('group_id', 1)
+            ->where('enabled', 1)
+            ->where('required', 1)
+            ->get();
         switch ($this->method()) {
             case 'GET':
             case 'DELETE': {
@@ -34,51 +38,51 @@ class RepairRequest extends FormRequest
             }
             case 'POST': {
                 $rules = [
-                    'contragent_id' => [
+                    'repair.contragent_id' => [
                         'required',
                         'exists:contragents,id',
                         Rule::exists('contragents', 'id')->where(function ($query) {
                             $query->where('contragents.user_id', $this->user()->id);
                         }),
                     ],
-                    'product_id'    => 'required|exists:products,id',
-                    'client'        => 'required|string|max:255',
-                    'country_id'    => 'required|exists:countries,id',
-                    'address'       => 'required|string|max:255',
-                    'phone_primary' => 'required|numeric|digits:10',
-                    'trade_id'      => [
+                    'repair.product_id'    => 'required|exists:products,id',
+                    'repair.client'        => 'required|string|max:255',
+                    'repair.country_id'    => 'required|exists:countries,id',
+                    'repair.address'       => 'required|string|max:255',
+                    'repair.phone_primary' => 'required|string|size:14',
+                    'repair.trade_id'      => [
                         'required',
                         'exists:trades,id',
                         Rule::exists('trades', 'id')->where(function ($query) {
                             $query->where('trades.user_id', $this->user()->id);
                         }),
                     ],
-                    'date_trade'    => 'required|date_format:"Y-m-d"',
-                    'launch_id'     => [
+                    'repair.date_trade'    => 'required|date_format:"d.m.Y"',
+                    'repair.launch_id'     => [
                         'required',
                         'exists:launches,id',
                         Rule::exists('launches', 'id')->where(function ($query) {
                             $query->where('launches.user_id', $this->user()->id);
                         }),
                     ],
-                    'date_launch'   => 'required|date_format:"Y-m-d"',
-                    'engineer_id'   => [
+                    'repair.date_launch'   => 'required|date_format:"d.m.Y"',
+                    'repair.engineer_id'   => [
                         'required',
                         'exists:engineers,id',
                         Rule::exists('engineers', 'id')->where(function ($query) {
                             $query->where('engineers.user_id', $this->user()->id);
                         }),
                     ],
-                    'date_call'     => 'required|date_format:"Y-m-d"',
-                    'reason_call'   => 'required|string',
-                    'diagnostics'   => 'required|string',
-                    'works'         => 'required|string',
-                    'date_repair'   => 'required|date_format:"Y-m-d"',
-                    'distance_id'   => 'required|exists:distances,id',
-                    'difficulty_id' => 'required|exists:difficulties,id',
+                    'repair.date_call'     => 'required|date_format:"d.m.Y"',
+                    'repair.reason_call'   => 'required|string',
+                    'repair.diagnostics'   => 'required|string',
+                    'repair.works'         => 'required|string',
+                    'repair.date_repair'   => 'required|date_format:"d.m.Y"',
+                    'repair.distance_id'   => 'required|exists:distances,id',
+                    'repair.difficulty_id' => 'required|exists:difficulties,id',
 
                 ];
-                foreach ($types as $type) {
+                foreach ($file_types as $type) {
                     $rules['file.' . $type->id] = 'required|array';
                 }
 
@@ -151,7 +155,7 @@ class RepairRequest extends FormRequest
                 if ($fails->contains('field', 'difficulty_id')) {
                     $rules->put('difficulty_id', 'required|exists:difficulties,id');
                 }
-                foreach ($types as $type) {
+                foreach ($file_types as $type) {
                     $rules->put('file.' . $type->id, 'required|array');
                 }
 
@@ -180,33 +184,32 @@ class RepairRequest extends FormRequest
     public function attributes()
     {
         $attributes = [
-            'contragent_id'   => trans('site::repair.contragent_id'),
-            'client'          => trans('site::repair.client'),
-            'country_id'      => trans('site::repair.country_id'),
-            'address'         => trans('site::repair.address'),
-            'phone_primary'   => trans('site::repair.phone_primary'),
-            'phone_secondary' => trans('site::repair.phone_secondary'),
-            'trade_id'        => trans('site::repair.trade_id'),
-            'date_trade'      => trans('site::repair.date_trade'),
-            'launch_id'       => trans('site::repair.launch_id'),
-            'date_launch'     => trans('site::repair.date_launch'),
-            'engineer_id'     => trans('site::repair.engineer_id'),
-            'date_call'       => trans('site::repair.date_call'),
-            'reason_call'     => trans('site::repair.reason_call'),
-            'diagnostics'     => trans('site::repair.diagnostics'),
-            'works'           => trans('site::repair.works'),
-            'date_repair'     => trans('site::repair.date_repair'),
-            'distance_id'     => trans('site::repair.distance_id'),
-            'difficulty_id'   => trans('site::repair.difficulty_id'),
-            'file.1'          => trans('site::repair.file_1'),
-            'file.2'          => trans('site::repair.file_2'),
-            'file.3'          => trans('site::repair.file_3'),
-            'file.5'          => trans('site::repair.file_5'),
+            'repair.contragent_id'   => trans('site::repair.contragent_id'),
+            'repair.client'          => trans('site::repair.client'),
+            'repair.country_id'      => trans('site::repair.country_id'),
+            'repair.address'         => trans('site::repair.address'),
+            'repair.phone_primary'   => trans('site::repair.phone_primary'),
+            'repair.phone_secondary' => trans('site::repair.phone_secondary'),
+            'repair.trade_id'        => trans('site::repair.trade_id'),
+            'repair.date_trade'      => trans('site::repair.date_trade'),
+            'repair.launch_id'       => trans('site::repair.launch_id'),
+            'repair.date_launch'     => trans('site::repair.date_launch'),
+            'repair.engineer_id'     => trans('site::repair.engineer_id'),
+            'repair.date_call'       => trans('site::repair.date_call'),
+            'repair.reason_call'     => trans('site::repair.reason_call'),
+            'repair.diagnostics'     => trans('site::repair.diagnostics'),
+            'repair.works'           => trans('site::repair.works'),
+            'repair.date_repair'     => trans('site::repair.date_repair'),
+            'repair.distance_id'     => trans('site::repair.distance_id'),
+            'repair.difficulty_id'   => trans('site::repair.difficulty_id'),
         ];
 
-        $types = FileType::enabled()->whereGroupId(1)->get();
-        foreach ($types as $type) {
-            $attributes['file.' . $type->id] = trans('site::repair.file_' . $type->id);
+        $file_types = FileType::query()
+            ->where('group_id', 1)
+            ->where('enabled', 1)
+            ->get();
+        foreach ($file_types as $type) {
+            $attributes['file.' . $type->id] = $type->name;
         }
 
         return $attributes;

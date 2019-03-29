@@ -201,6 +201,16 @@ class Product extends Model implements Imageable
     }
 
     /**
+     * Премия за отчет по мнтажу
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function mounting_bonus()
+    {
+        return $this->hasOne(MountingBonus::class);
+    }
+
+    /**
      * @return \Illuminate\Config\Repository|mixed
      */
     public function getPriceTypeAttribute()
@@ -255,16 +265,6 @@ class Product extends Model implements Imageable
             && $this->getAttribute('enabled') == 1
             && $this->getAttribute('service') == 0;
         //return $this->hasPrice && $this->getAttribute('active') == 1;
-    }
-
-    public function created_at($time = false)
-    {
-        return !is_null($this->created_at) ? Carbon::instance($this->created_at)->format('d.m.Y' . ($time === true ? ' H:i' : '')) : '';
-    }
-
-    public function updated_at($time = false)
-    {
-        return !is_null($this->updated_at) ? Carbon::instance($this->updated_at)->format('d.m.Y' . ($time === true ? ' H:i' : '')) : '';
     }
 
     /**
@@ -325,6 +325,16 @@ class Product extends Model implements Imageable
     public function repairs()
     {
         return $this->hasMany(Repair::class, 'product_id');
+    }
+
+    /**
+     * Отчеты по монтажу
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function mountings()
+    {
+        return $this->hasMany(Mounting::class);
     }
 
     /**

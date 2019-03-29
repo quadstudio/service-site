@@ -8,7 +8,7 @@
                                 class="fa fa-{{ $order->status->icon }}"></i> {{ $order->status->name }}</div>
                 </div>
                 <div class="col-sm-6 col-md-3 col-xl-2 text-right">
-                    {{$order->created_at(true)}}
+                    {{$order->created_at->format('d.m.Y H:i')}}
                 </div>
                 <div class="col-sm-6 col-md-3 col-xl-4 text-right">
                     <div class="">{{ $order->address->name }}</div>

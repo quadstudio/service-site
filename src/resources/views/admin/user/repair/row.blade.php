@@ -7,7 +7,7 @@
                     <div class="p-1" style="font-weight:normal;color: {{ $repair->status->color }}"><i class="fa fa-{{ $repair->status->icon }}"></i> {{ $repair->status->name }} @if($repair->fails()->count()) <span class="badge badge-danger text-big">{{$repair->fails()->count()}}</span> @endif</div>
                 </div>
                 <div class="col-6 col-md-4 col-xl-3">
-                    {{$repair->created_at()}}
+                    {{$repair->created_at->format('d.m.Y H:i')}}
 
                 </div>
                 <div class="col-12 col-md-4 col-xl-6">
@@ -19,10 +19,3 @@
         </div>
     </div>
 </div>
-{{--<tr>--}}
-
-    {{--<td>{{ $repair->created_at() }}</td>--}}
-    {{--<td><a href="{{route('admin.repairs.show', $repair)}}">{{ $repair->number }}</a></td>--}}
-    {{--<td><a href="{{route('admin.users.show', $repair->user)}}">{{ $repair->user->name }}</a></td>--}}
-    {{--<td class="text-right"><span class="badge text-big" style="font-weight:normal;color:#fff;background-color: {{ $repair->status->color }}"><i class="fa fa-{{ $repair->status->icon }}"></i> {{ $repair->status->name }}</span></td>--}}
-{{--</tr>--}}

@@ -6,7 +6,7 @@
         <div class="news-meta">
             {{--<a href="#" class="post-auth"><i class="fa fa-user"></i>Puffintheme</a>--}}
             <time datetime="{{$item->date}}">
-                <i class="fa fa-@lang('site::news.icon')"></i> {{$item->date()}}
+                <i class="fa fa-@lang('site::news.icon')"></i> {{$item->date->format('d.m.Y H:i')}}
             </time>
         </div>
         <h4 class="news-title mb-3 text-ferroli">{{$item->title }}</h4>
