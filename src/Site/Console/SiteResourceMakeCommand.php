@@ -166,7 +166,6 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
      */
     protected $routes = [
         'web' => 0, //FILE_APPEND
-        'api' => 0 //FILE_APPEND
     ];
 
     public function getAsset()

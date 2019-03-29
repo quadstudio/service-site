@@ -1,4 +1,4 @@
 <?php
 
 Auth::routes();
-Site::webRoutes();
+Site::routes();

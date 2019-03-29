@@ -68,25 +68,9 @@ class Site
     }
 
     /**
-     * Service Api Routes
-     */
-    public function apiRoutes()
-    {
-        ($router = $this->app->make('router'))
-            ->group([
-                'middleware' => ['auth:api'],
-                'namespace'  => 'Api',
-            ],
-                function () use ($router) {
-
-                });
-    }
-
-
-    /**
      * Service Web Routes
      */
-    public function webRoutes()
+    public function routes()
     {
 
         ($router = $this->app->make('router'))
