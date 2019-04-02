@@ -34,7 +34,7 @@
 
         </div>
 
-        @include('site::message.create')
+        @include('site::message.create', ['messagable' => $repair])
 
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
             <h4 class="alert-heading">Обратите внимание</h4>

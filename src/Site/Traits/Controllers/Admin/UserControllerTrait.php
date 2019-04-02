@@ -537,9 +537,9 @@ trait UserControllerTrait
             }
             /** @var Address $address */
             foreach ($user->addresses()->get() as $address) {
-                if ($address->hasEmail() && $duplicates->search($address->getAttribute('emailaddress')) === false) {
+                if ($address->hasEmail() && $duplicates->search($address->getAttribute('email')) === false) {
                     $emails->push([
-                        'email'    => $address->getAttribute('emailaddress'),
+                        'email'    => $address->getAttribute('email'),
                         'verified' => false,
                         'extra'    => [
                             'name'    => $user->getAttribute('name'),
@@ -547,7 +547,7 @@ trait UserControllerTrait
                         ]
                     ]);
                 }
-                $duplicates->push($address->getAttribute('emailaddress'));
+                $duplicates->push($address->getAttribute('email'));
             }
         }
         $route = route('admin.users.index');

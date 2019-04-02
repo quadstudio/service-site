@@ -4,16 +4,9 @@ namespace QuadStudio\Service\Site\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use QuadStudio\Rbac\Models\Role;
-use QuadStudio\Service\Site\Filters\Address\ActiveFilter;
-use QuadStudio\Service\Site\Filters\Address\IsEShopFilter;
-use QuadStudio\Service\Site\Filters\Address\TypeFilter;
-use QuadStudio\Service\Site\Filters\Address\UserActiveFilter;
-use QuadStudio\Service\Site\Filters\Address\UserDisplayFilter;
+use Illuminate\Support\Facades\Session;
 use QuadStudio\Service\Site\Filters\AddressableFilter;
-use QuadStudio\Service\Site\Filters\User\UserIsEShopFilter;
 use QuadStudio\Service\Site\Http\Requests\AddressRequest;
-use QuadStudio\Service\Site\Http\Requests\PhoneRequest;
 use QuadStudio\Service\Site\Models\Address;
 use QuadStudio\Service\Site\Models\AddressType;
 use QuadStudio\Service\Site\Models\Country;
@@ -21,7 +14,7 @@ use QuadStudio\Service\Site\Models\Phone;
 use QuadStudio\Service\Site\Models\Region;
 use QuadStudio\Service\Site\Repositories\AddressRepository;
 use QuadStudio\Service\Site\Repositories\RegionRepository;
-use Illuminate\Support\Facades\Session;
+
 
 class AddressController extends Controller
 {
@@ -178,25 +171,6 @@ class AddressController extends Controller
         return view('site::address.show', compact('address'));
     }
 
-    /**
-     * @param PhoneRequest $request
-     * @param Address $address
-     * @return \Illuminate\Http\Response
-     */
-    public function phone(PhoneRequest $request, Address $address)
-    {
-        if ($request->isMethod('post')) {
-            $address->phones()->save(Phone::create($request->except(['_token', '_method'])));
-
-            return redirect()->route('addresses.show', $address)->with('success', trans('site::phone.created'));
-        } else {
-            $countries = Country::enabled()->orderBy('sort_order')->get();
-
-            return view('site::address.phone', compact('countries', 'address'));
-        }
-
-    }
-
     public function destroy(Address $address)
     {
         $this->authorize('delete', $address);
@@ -209,28 +183,5 @@ class AddressController extends Controller
 
         return response()->json($json);
     }
-
-    /**
-     * Show the eshop's list
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function eshop()
-    {
-
-        $addresses = $this->addresses
-            ->trackFilter()
-            ->applyFilter((new TypeFilter())->setTypeId(5))
-            ->applyFilter(new IsEShopFilter())
-            ->applyFilter(new ActiveFilter())
-            ->applyFilter(new UserDisplayFilter())
-            ->applyFilter(new UserIsEShopFilter())
-            ->applyFilter(new UserActiveFilter())
-            ->all();
-        $roles = Role::query()->where('display', 1)->get();
-
-        return view('site::dealer.eshop', compact('addresses', 'roles'));
-    }
-
 
 }

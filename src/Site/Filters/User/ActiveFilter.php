@@ -11,7 +11,7 @@ class ActiveFilter extends Filter
     function apply($builder, RepositoryInterface $repository)
     {
 
-        $builder = $builder->where('active', 1);
+        $builder = $builder->where('users.active', 1);
 
         return $builder;
     }

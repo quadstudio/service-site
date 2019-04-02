@@ -293,7 +293,7 @@
                                     @if(($phones = $contact->phones)->isNotEmpty())
                                         <ul>
                                             @foreach($phones as $phone)
-                                                <li>{{$phone->format()}}</li>
+                                                <li>{{$phone->country->phone}} {{$phone->number}}</li>
                                             @endforeach
                                         </ul>
                                     @endif
@@ -324,7 +324,7 @@
                                     @if(($phones = $address->phones)->isNotEmpty())
                                         <ul>
                                             @foreach($phones as $phone)
-                                                <li>{{$phone->format()}}</li>
+                                                <li>{{$phone->country->phone}} {{$phone->number}}</li>
                                             @endforeach
                                         </ul>
                                     @endif

@@ -27,11 +27,67 @@
                 <span>@lang('site::messages.back_home')</span>
             </a>
         </div>
+        @filter(['repository' => $repository])@endfilter
         @pagination(['pagination' => $contragents])@endpagination
         {{$contragents->render()}}
-        <div class="row items-row-view">
-            @each('site::contragent.index.row', $contragents, 'contragent')
-        </div>
+
+        @foreach($contragents as $contragent)
+            <div class="card my-4" id="contragent-{{$contragent->id}}">
+
+                <div class="card-header with-elements">
+                    <div class="card-header-elements">
+                        <a href="{{route('contragents.show', $contragent)}}" class="mr-3">
+                            {{$contragent->name}}
+                        </a>
+                    </div>
+                    @if($contragent->contract)
+                        <div class="card-header-elements ml-md-auto">
+                            <span class="badge text-normal badge-pill badge-light">
+                                @lang('site::contragent.contract'): {{$contragent->contract}}
+                            </span>
+                        </div>
+                    @endif
+                </div>
+                <div class="row">
+                    <div class="col-xl-4 col-sm-6">
+                        <dl class="dl-horizontal my-sm-2 my-0">
+                            @foreach ($contragent->addresses()->where('type_id', 1)->with('type')->get() as $address)
+                                <dt class="col-12">{{$address->type->name}}</dt>
+                                <dd class="col-12">{{$address->full}}</dd>
+                            @endforeach
+                        </dl>
+                    </div>
+                    <div class="col-xl-2 col-sm-6">
+                        <dl class="dl-horizontal my-sm-2 my-0">
+                            <dt class="col-12">@lang('site::contragent.inn')</dt>
+                            <dd class="col-12">{{$contragent->inn}}</dd>
+                            <dt class="col-12">@lang('site::contragent.ogrn')</dt>
+                            <dd class="col-12">{{$contragent->ogrn}}</dd>
+                        </dl>
+                    </div>
+                    <div class="col-xl-3 col-sm-6">
+                        <dl class="dl-horizontal my-sm-2 my-0">
+                            <dt class="col-12">@lang('site::contragent.type_id')</dt>
+                            <dd class="col-12">{{ $contragent->type->name }}</dd>
+                            <dt class="col-12">@lang('site::contragent.organization_id')</dt>
+                            <dd class="col-12">{{$contragent->organization->name}}</dd>
+                        </dl>
+                    </div>
+                    <div class="col-xl-3 col-sm-6">
+                        <dl class="dl-horizontal my-sm-2 my-0">
+                            <dt class="col-12">@lang('site::contragent.nds')</dt>
+                            <dd class="col-12">
+                                @bool(['bool' => $contragent->nds])@endbool
+                            </dd>
+                            <dt class="col-12">@lang('site::contragent.nds_act')</dt>
+                            <dd class="col-12">
+                                @bool(['bool' => $contragent->nds_act])@endbool
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        @endforeach
         {{$contragents->render()}}
     </div>
 @endsection

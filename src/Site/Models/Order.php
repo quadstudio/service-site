@@ -2,7 +2,6 @@
 
 namespace QuadStudio\Service\Site\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use QuadStudio\Service\Site\Contracts\Messagable;
 use QuadStudio\Service\Site\Traits\Models\ScheduleTrait;
@@ -16,7 +15,7 @@ class Order extends Model implements Messagable
      */
     protected $table;
 
-    protected $fillable = ['status_id', 'contragent_id', 'address_id'];
+    protected $fillable = ['status_id', 'contragent_id', 'address_id', 'contacts_comment'];
 
     /**
      * @param array $attributes
@@ -124,7 +123,15 @@ class Order extends Model implements Messagable
      */
     function messageRoute()
     {
-        return route((auth()->user()->admin == 1 ? 'admin.' : '') . 'orders.show', [$this, '#messages-list']);
+        if (auth()->user()->admin == 1) {
+            $route = 'admin.orders.show';
+        } elseif ($this->address->addressable->id == auth()->user()->getAuthIdentifier()) {
+            $route = 'orders.show';
+        } else {
+            $route = 'distributors.show';
+        }
+
+        return route($route, $this);
     }
 
     /**
@@ -132,6 +139,37 @@ class Order extends Model implements Messagable
      */
     function messageMailRoute()
     {
-        return route((auth()->user()->admin == 1 ? '' : 'admin.') . 'orders.show', [$this, '#messages-list']);
+        if (auth()->user()->admin == 1 || $this->address->addressable->id == auth()->user()->getAuthIdentifier()) {
+            $route = 'orders.show';
+        } elseif ($this->address->addressable->admin == 1) {
+            $route = 'admin.orders.show';
+        } else {
+            $route = 'distributors.show';
+        }
+
+        return route($route, $this);
+
+    }
+
+    /**
+     * @return \Illuminate\Routing\Route
+     */
+    function messageStoreRoute()
+    {
+        if ($this->address->addressable->id == auth()->user()->getAuthIdentifier()) {
+            $route = 'distributors.message';
+        } else {
+            $route = 'orders.message';
+        }
+
+        return route($route, $this);
+    }
+
+    /** @return User */
+    function messageReceiver()
+    {
+        return $this->address->addressable->id == auth()->user()->getAuthIdentifier()
+            ? $this->user
+            : $this->address->addressable;
     }
 }

@@ -21,13 +21,6 @@
                     <span>@lang('site::messages.edit') @lang('site::repair.repair')</span>
                 </a>
             @endif
-            @if($repair->messages->isNotEmpty())
-                <a href="#messages-list" class="d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-ferroli">
-                    <i class="fa fa-@lang('site::message.icon')"></i>
-                    <span>@lang('site::messages.show') @lang('site::message.messages') <span
-                                class="badge badge-light">{{$repair->messages()->count()}}</span></span>
-                </a>
-            @endif
             <a href="{{ route('repairs.pdf', $repair) }}"
                class="@cannot('pdf', $repair) disabled @endcannot d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-primary">
                 <i class="fa fa-print"></i>
@@ -39,6 +32,7 @@
             </a>
 
         </div>
+        @include('site::message.create', ['messagable' => $repair])
         <div class="card mb-2">
             <div class="card-body">
                 <h5 class="card-title">@lang('site::repair.header.repair')</h5>
@@ -208,8 +202,6 @@
                 @include('site::file.files')
             </div>
         </div>
-
-        @include('site::message.create')
 
     </div>
 @endsection

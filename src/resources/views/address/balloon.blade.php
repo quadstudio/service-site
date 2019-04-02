@@ -11,7 +11,7 @@
             <dt class="col-sm-4">@lang('site::phone.phones')</dt>
             <dd class="col-sm-8">
                 @foreach($phones as $phone)
-                    <div>{{$phone->format()}}</div>
+                    <div>{{$phone->country->phone}}{{$phone->number}}</div>
                 @endforeach
             </dd>
             <dt class="col-sm-4">@lang('site::user.email')</dt>

@@ -35,7 +35,7 @@ class YandexMapResource extends JsonResource
                     'roles'      => $roles,
                     'web'      => $this->addressable->web,
                     'phones'     => $this->phones,
-                    'email'   => $this->emailaddress,
+                    'email'   => $this->email,
                     'address' => $this->full,
                 ])->render(),
                 'balloonMaxWidth'    => 700

@@ -25,10 +25,6 @@ class ContactRequest extends FormRequest
     public function rules()
     {
         switch ($this->method()) {
-            case 'GET':
-            case 'DELETE': {
-                return [];
-            }
             case 'POST': {
                 $rules = [
                     'contact.name'     => 'required|string|max:255',
@@ -36,20 +32,7 @@ class ContactRequest extends FormRequest
                     'contact.type_id'  => 'required|exists:contact_types,id',
                     //
                     'phone.country_id' => 'required|exists:countries,id',
-
-                    'phone.number'           => array(
-                        'required',
-                        'numeric',
-                        function ($attribute, $value, $fail) {
-
-                            if ($this->input('phone.country_id') == 643 && strlen($value) != 10) {
-                                return $fail(trans('site::phone.error.length_10'));
-                            }
-                            if ($this->input('phone.country_id') == 112 && strlen($value) != 9) {
-                                return $fail(trans('site::phone.error.length_9'));
-                            }
-                        }
-                    ),
+                    'phone.number'     => 'required|string|size:' . config('site.phone.maxlength'),
                     'phone.extra'      => 'max:20',
                 ];
 

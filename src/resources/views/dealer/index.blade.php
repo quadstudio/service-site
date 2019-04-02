@@ -8,7 +8,7 @@
     @include('site::header.front',[
         'h1' => '<i class="fa fa-'.__('site::dealer.icon').'"></i> '.__('site::dealer.dealers'),
         'breadcrumbs' => [
-            ['url' => route('addresses.eshop'), 'name' => __('site::address.eshops')],
+            ['url' => route('addresses.web'), 'name' => __('site::address.eshops')],
             ['url' => route('index'), 'name' => __('site::messages.index')],
             ['name' => __('site::dealer.dealers')]
         ]

@@ -52,14 +52,14 @@
                     <div class="list-group">
                         @foreach($address->phones as $phone)
                             <a href="{{route('admin.phones.edit', $phone)}}"
-                               class="list-group-item list-group-item-action">{{$phone->format()}}</a>
+                               class="list-group-item list-group-item-action">{{$phone->country->phone}} {{$phone->number}}</a>
                         @endforeach
                     </div>
                     <hr class="border-light">
                     <div>
                         @lang('site::address.name'): <b>{{$address->name}}</b><br />
-                        @lang('site::address.eshop'): <b>{{$address->eshop}}</b><br />
-			@lang('site::address.email'): <b>{{$address->emailaddress}}</b><br />
+                        @lang('site::address.web'): <b>{{$address->web}}</b><br />
+			@lang('site::address.email'): <b>{{$address->email}}</b><br />
 			@if(( $address->is_service ))<span class="badge text-normal mb-0 mb-sm-1 badge-ferroli">Сервис</span> @endif
 			@if(( $address->is_shop ))<span class="badge text-normal mb-0 mb-sm-1 badge-ferroli">Торговая точка</span> @endif
 			@if(( $address->is_eshop ))<span class="badge text-normal mb-0 mb-sm-1 badge-ferroli">Интернет-магазин</span> @endif

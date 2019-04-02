@@ -53,7 +53,7 @@
 
                     <div class="list-group">
                         @foreach($address->phones as $phone)
-                              {{$phone->format()}} &nbsp;
+                            {{$phone->country->phone}} {{$phone->number}} &nbsp;
                         @endforeach
                     </div>
                     <hr class="border-light">

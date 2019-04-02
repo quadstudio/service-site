@@ -163,10 +163,8 @@ class RepairController extends Controller
         $this->types->applyFilter((new ModelHasFilesFilter())->setId($repair->getAttribute('id'))->setMorph('repairs'));
         $file_types = $this->types->all();
         $files = $repair->files()->get();
-        $messages = $repair->messages;
-        $route = route('repairs.message', $repair);
 
-        return view('site::repair.show', compact('repair', 'route', 'messages', 'fails', 'file_types', 'files', 'statuses'));
+        return view('site::repair.show', compact('repair', 'fails', 'file_types', 'files', 'statuses'));
     }
 
     /**

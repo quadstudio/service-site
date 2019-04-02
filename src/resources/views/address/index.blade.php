@@ -16,20 +16,16 @@
 
         @alert()@endalert
         <div class="border p-3 mb-2">
-            {{--<a class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0"--}}
-               {{--href="{{ route('addresses.create') }}"--}}
-               {{--role="button">--}}
-                {{--<i class="fa fa-plus"></i>--}}
-                {{--<span>@lang('site::messages.add') @lang('site::address.address')</span>--}}
-            {{--</a>--}}
             <div class="dropdown d-inline-block">
-                <button class="btn btn-ferroli dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn btn-ferroli dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-plus"></i>
                     <span>@lang('site::messages.add') @lang('site::address.address')</span>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     @foreach($address_types as $address_type)
-                        <a class="dropdown-item" href="{{ route('addresses.create', $address_type) }}">{{$address_type->name}}</a>
+                        <a class="dropdown-item"
+                           href="{{ route('addresses.create', $address_type) }}">{{$address_type->name}}</a>
                     @endforeach
                 </div>
             </div>
@@ -38,11 +34,67 @@
                 <span>@lang('site::messages.back_home')</span>
             </a>
         </div>
+        @filter(['repository' => $repository])@endfilter
         @pagination(['pagination' => $addresses])@endpagination
         {{$addresses->render()}}
-        <div class="row items-row-view">
-            @each('site::address.index.row', $addresses, 'address')
-        </div>
+
+        @foreach($addresses as $address)
+            <div class="card my-4" id="address-{{$address->id}}">
+
+                <div class="card-header with-elements">
+                    <div class="card-header-elements">
+                        <a href="{{route('addresses.show', $address)}}" class="mr-3">
+                            {{$address->name}}
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-3 col-sm-6">
+                        <dl class="dl-horizontal my-sm-2 my-0">
+                            <dt class="col-12">@lang('site::phone.phones')</dt>
+                            <dd class="col-12">
+                                <ul class="list-group"></ul>
+                                @foreach ($address->phones()->with('country')->get() as $phone)
+                                    <li class="list-group-item border-0 p-0">
+                                        {{$phone->country->phone}}
+                                        {{$phone->number}}
+                                        @if($phone->extra)
+                                            (@lang('site::phone.help.extra') {{$phone->extra}})
+                                        @endif
+                                    </li>
+                                @endforeach
+                            </dd>
+
+                        </dl>
+                    </div>
+                    <div class="col-xl-3 col-sm-6">
+                        <dl class="dl-horizontal my-sm-2 my-0">
+                            <dt class="col-12">@lang('site::address.type_id')</dt>
+                            <dd class="col-12">{{$address->type->name}}</dd>
+                        </dl>
+                    </div>
+
+                    <div class="col-xl-3 col-sm-6">
+                        <dl class="dl-horizontal my-sm-2 my-0">
+                            <dt class="col-12">@lang('site::address.full')</dt>
+                            <dd class="col-12">{{$address->full}}</dd>
+                        </dl>
+                    </div>
+                    <div class="col-xl-3 col-sm-6">
+                        <dl class="dl-horizontal my-sm-2 my-0">
+                            @if($address->email)
+                                <dt class="col-12">@lang('site::address.email')</dt>
+                                <dd class="col-12">{{$address->email}}</dd>
+                            @endif
+                            @if($address->web)
+                                <dt class="col-12">@lang('site::address.web')</dt>
+                                <dd class="col-12">{{$address->web}}</dd>
+                            @endif
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        @endforeach
         {{$addresses->render()}}
     </div>
 @endsection

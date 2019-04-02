@@ -24,7 +24,7 @@
                     <button class="btn btn-outline-ferroli dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img id="user-logo" src="{{$current_user->logo}}" style="width:25px!important;height: 25px"
                              class="rounded-circle mr-2">
-                        {{ str_limit(Auth::user()->name, 25) }}
+                        {{ str_limit(auth()->user()->name, 25) }}
 
                     </button>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
@@ -200,22 +200,22 @@
                                 Каталог и прайс (PDF)
                             </a>
                         </li>
-			<li class="nav-item">
-                            <a class="nav-link" href="{{ route('services.index') }}">
-                                <i class="fa fa-@lang('site::service.icon')"></i>
-                                @lang('site::service.services')
+			            <li class="nav-item">
+                            <a class="nav-link" href="{{ route('service-centers') }}">
+                                <i class="fa fa-@lang('site::shop.service_center.icon')"></i>
+                                @lang('site::shop.service_center.menu')
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('dealers.index') }}">
-                                <i class="fa fa-@lang('site::dealer.icon')"></i>
-                                @lang('site::dealer.dealers')
+                            <a class="nav-link" href="{{ route('where-to-buy') }}">
+                                <i class="fa fa-@lang('site::shop.where_to_buy.icon')"></i>
+                                @lang('site::shop.where_to_buy.menu')
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('addresses.eshop') }}">
-                                <i class="fa fa-internet-explorer"></i>
-                                @lang('site::address.eshopxs')
+                            <a class="nav-link" href="{{ route('online-stores') }}">
+                                <i class="fa fa-@lang('site::shop.online_store.icon')"></i>
+                                @lang('site::shop.online_store.menu')
                             </a>
                         </li>
                         <li class="nav-item">
@@ -245,16 +245,14 @@
                     <a href="{{route('register')}}">Регистрация</a>
                     @endguest
                 </li>
-                <li><a href="{{ route('products.index') }}" class="menuprinc">@lang('site::product.products')</a></li>
-                <li><a href="{{ route('catalogs.index') }}" class="menuprinc">@lang('site::catalog.catalogs')</a></li>
-                <li><a href="https://yadi.sk/d/7CXTYatd-Xp4bw">Каталог и прайс (PDF)</a></li>
-                <li><a href="{{ route('datasheets.index') }}" class="menuprinc">@lang('site::datasheet.datasheets')</a></li>
-                <li><a href="{{ route('services.index') }}">@lang('site::service.services')</a></li>
-                <li><a href="{{ route('dealers.index') }}">@lang('site::dealer.dealers')</a></li>
-                <li><a href="{{ route('addresses.eshop') }}">@lang('site::address.eshopxs')</a></li>
+                <li><a href="{{ route('products.index') }}">@lang('site::product.products')</a></li>
+                <li><a href="{{ route('catalogs.index') }}">@lang('site::catalog.catalogs')</a></li>
+                <li><a href="{{config('catalog_price_pdf')}}">Каталог и прайс (PDF)</a></li>
+                <li><a href="{{ route('datasheets.index') }}">@lang('site::datasheet.datasheets')</a></li>
+                <li><a href="{{ route('service-centers') }}">@lang('site::shop.service_center.menu')</a></li>
+                <li><a href="{{ route('where-to-buy') }}">@lang('site::shop.where_to_buy.menu')</a></li>
+                <li><a href="{{ route('online-stores') }}">@lang('site::shop.online_store.menu')</a></li>
                 <li><a href="{{ route('feedback') }}">@lang('site::messages.feedback')</a></li>
-
-
             </ul>
         </div>
 

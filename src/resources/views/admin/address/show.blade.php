@@ -101,11 +101,11 @@
                         </ul>
                     </dd>
 
-                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.emailaddress')</dt>
-                    <dd class="col-sm-8"> {{ $address->emailaddress }}</dd>
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.email')</dt>
+                    <dd class="col-sm-8"> {{ $address->email }}</dd>
 
-                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.eshop')</dt>
-                    <dd class="col-sm-8"> {{ $address->eshop }}</dd>
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.web')</dt>
+                    <dd class="col-sm-8"> {{ $address->web }}</dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.active')</dt>
                     <dd class="col-sm-8">@bool(['bool' => $address->active])@endbool</dd>
@@ -164,7 +164,7 @@
                                             </form>
                                         </div>
                                     </div>
-                                    {{$phone->format()}}
+                                    {{$phone->country->phone}} {{$phone->number}}
                                 </div>
                             </div>
 

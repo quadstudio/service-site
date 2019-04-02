@@ -47,29 +47,6 @@ trait DealerControllerTrait
         $this->roles = $roles;
     }
 
-    /**
-     * Show the user profile
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
-    {
 
-        $this->addresses
-            ->trackFilter()
-            ->applyFilter((new TypeFilter())->setTypeId(2))
-            ->applyFilter(new IsShopFilter())
-            ->applyFilter(new ActiveFilter())
-            ->applyFilter(new UserDisplayFilter())
-            ->applyFilter(new UserActiveFilter())
-        ;
-        $regions = $this->regions
-            ->trackFilter()
-            ->applyFilter((new RegionsSelectedFilter())->setRegions($this->addresses->all()->pluck('region_id')->unique()->toArray()))
-            ->all();
-        $region_id = $request->input('filter.region_id');
-        return view('site::dealer.index', compact('regions', 'region_id'));
-    }
 
 }

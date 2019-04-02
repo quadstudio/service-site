@@ -56,7 +56,7 @@
             <input type="hidden" name="mounting[status_id]" value="{{$mounting->status_id}}"/>
         </form>
 
-        @include('site::message.create')
+        @include('site::message.create', ['messagable' => $mounting])
 
         <div class="card mb-2">
             <div class="card-body">

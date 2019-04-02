@@ -1193,6 +1193,7 @@ footer .sub {
 
 .custom-control-input:checked ~ .custom-control-label::before {
   color: #fff;
+  border-color: $ferroli-color;
   background-color: $ferroli-color;
 }
 

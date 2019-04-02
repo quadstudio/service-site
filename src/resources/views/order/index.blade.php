@@ -25,12 +25,75 @@
             </a>
         </div>
         @alert()@endalert()
+        @alert()@endalert()
         @filter(['repository' => $repository])@endfilter
         @pagination(['pagination' => $orders])@endpagination
         {{$orders->render()}}
-        <div class="row items-row-view">
-            @each('site::order.index.row', $orders, 'order')
-        </div>
+
+        @foreach($orders as $order)
+            <div class="card my-4" id="order-{{$order->id}}">
+
+                <div class="card-header with-elements">
+                    <div class="card-header-elements">
+                        <span class="badge text-normal badge-pill badge-{{ $order->status->color }}">
+                            <i class="fa fa-{{ $order->status->icon }}"></i> {{ $order->status->name }}
+                        </span>
+                        <a href="{{route('orders.show', $order)}}" class="mr-3">
+                            @lang('site::order.header.order') № {{$order->id}}
+                        </a>
+                    </div>
+
+                    <div class="card-header-elements ml-md-auto">
+                        @if( $order->messages()->exists())
+                            <span class="badge badge-secondary text-normal badge-pill">
+                                <i class="fa fa-comment"></i> {{ $order->messages()->count() }}
+                            </span>
+                        @endif
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-2 col-sm-6">
+                        <dl class="dl-horizontal mt-2">
+                            <dt class="col-12">@lang('site::messages.created_at')</dt>
+                            <dd class="col-12">{{$order->created_at->format('d.m.Y H:i')}}</dd>
+
+                        </dl>
+                    </div>
+                    <div class="col-xl-4 col-sm-6">
+                        <dl class="dl-horizontal mt-2">
+                            <dt class="col-12">@lang('site::order.address_id')</dt>
+                            <dd class="col-12">{{ $order->address->name }}</dd>
+                        </dl>
+                    </div>
+                    <div class="col-xl-4 col-sm-6">
+                        <dl class="dl-horizontal mt-2">
+                            <dt class="col-12">@lang('site::order.items')</dt>
+                            <dd class="col-12">
+                                <ul class="list-group"></ul>
+                                @foreach($order->items()->with('product')->get() as $item)
+                                    <li class="list-group-item border-0 px-0 py-1">
+                                        <a href="{{route('products.show', $item->product)}}">
+                                            {!!$item->product->name!!} ({{$item->product->sku}})
+                                        </a>
+
+                                        x {{$item->quantity}} {{$item->product->unit}}
+                                    </li>
+                                @endforeach
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="col-xl-2 col-sm-6">
+                        <dl class="dl-horizontal mt-2">
+                            <dt class="col-12">@lang('site::order.total')</dt>
+                            <dd class="col-12">
+                                {{number_format($order->total(), 0, '.', ' ')}}
+                                {{ $order->user->currency->symbol_right }}
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        @endforeach
         {{$orders->render()}}
     </div>
 @endsection

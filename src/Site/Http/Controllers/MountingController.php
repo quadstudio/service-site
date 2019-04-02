@@ -127,15 +127,11 @@ class MountingController extends Controller
         $this->types->applyFilter((new ModelHasFilesFilter())->setId($mounting->id)->setMorph('mountings'));
         $file_types = $this->types->all();
         $files = $mounting->files;
-        $messages = $mounting->messages;
-        $route = route('mountings.message', $mounting);
 
         return view('site::mounting.show', compact(
             'mounting',
             'file_types',
-            'files',
-            'messages',
-            'route'
+            'files'
         ));
     }
 

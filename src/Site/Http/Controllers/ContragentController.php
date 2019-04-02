@@ -1,7 +1,9 @@
 <?php
 
-namespace QuadStudio\Service\Site\Traits\Controllers;
+namespace QuadStudio\Service\Site\Http\Controllers;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Routing\Controller;
 use QuadStudio\Service\Site\Filters\BelongsUserFilter;
 use QuadStudio\Service\Site\Http\Requests\ContragentRequest;
 use QuadStudio\Service\Site\Models\Address;
@@ -11,8 +13,10 @@ use QuadStudio\Service\Site\Models\Country;
 use QuadStudio\Service\Site\Models\Region;
 use QuadStudio\Service\Site\Repositories\ContragentRepository;
 
-trait ContragentControllerTrait
+class ContragentController extends Controller
 {
+
+    use AuthorizesRequests;
 
     protected $contragents;
 
@@ -49,17 +53,18 @@ trait ContragentControllerTrait
     public function create()
     {
         $this->authorize('create', Contragent::class);
-        $address_legal_regions = $address_postal_regions = collect([]);
-        $countries = Country::enabled()->orderBy('sort_order')->get();
-        if (old('address.legal.country_id', false)) {
-            $address_legal_regions = Region::where('country_id', old('address.legal.country_id'))->orderBy('name')->get();
-        }
-        if (old('address.postal.country_id', false)) {
-            $address_postal_regions = Region::where('country_id', old('address.postal.country_id'))->orderBy('name')->get();
-        }
+        $countries = Country::query()->where('enabled', 1)->orderBy('sort_order')->get();
+        $regions = Region::query()->whereHas('country', function ($query) {
+            $query->where('enabled', 1);
+        })->orderBy('name')->get();
+
         $types = ContragentType::all();
 
-        return view('site::contragent.create', compact('countries', 'types', 'address_legal_regions', 'address_postal_regions'));
+        return view('site::contragent.create', compact(
+            'countries',
+            'types',
+            'regions'
+        ));
     }
 
     /**
@@ -70,10 +75,10 @@ trait ContragentControllerTrait
     {
 
         /** @var Contragent $contragent */
-        $request->user()->contragents()->save($contragent = Contragent::create($request->input('contragent')));
+        $request->user()->contragents()->save($contragent = Contragent::query()->create($request->input('contragent')));
         $contragent->addresses()->saveMany([
-            Address::create($request->input('address.legal')),
-            Address::create($request->input('address.postal')),
+            Address::query()->create($request->input('address.legal')),
+            Address::query()->create($request->input('address.postal')),
         ]);
         if ($request->input('_create') == 1) {
             $redirect = redirect()->route('contragents.create')->with('success', trans('site::contragent.created'));
@@ -105,7 +110,7 @@ trait ContragentControllerTrait
      */
     public function update(ContragentRequest $request, Contragent $contragent)
     {
-        $this->contragents->update($request->input('contragent'), $contragent->id);
+        $this->contragents->update($request->input('contragent'), $contragent->getAttribute('id'));
 
         return redirect()->route('contragents.show', $contragent)->with('success', trans('site::contragent.updated'));
     }

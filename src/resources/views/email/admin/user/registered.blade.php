@@ -10,7 +10,7 @@
 
 @section('body')
     <p><b>Компания</b>: {{$user->name }}</p>
-    <p><b>Юридический адрес</b>: {{ $user->contragents()->first()->addresses()->where('type_id', 1)->first()->name }}
+    <p><b>Юридический адрес</b>: {{ $user->contragents()->first()->addresses()->where('type_id', 1)->first()->full }}
     </p>
     <p>
         <a class="btn btn-ferroli btn-lg" href="{{ route('admin.users.show', $user) }}">

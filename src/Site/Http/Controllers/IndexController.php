@@ -1,7 +1,8 @@
 <?php
 
-namespace QuadStudio\Service\Site\Traits\Controllers;
+namespace QuadStudio\Service\Site\Http\Controllers;
 
+use Illuminate\Routing\Controller;
 use QuadStudio\Service\Site\Filters;
 use QuadStudio\Service\Site\Filters\Event\EventRunnedFilter;
 use QuadStudio\Service\Site\Filters\Event\SortDateFromFilter;
@@ -9,7 +10,7 @@ use QuadStudio\Service\Site\Repositories\EventRepository;
 use QuadStudio\Service\Site\Repositories\EventTypeRepository;
 use QuadStudio\Service\Site\Repositories\NewsRepository;
 
-trait IndexControllerTrait
+class IndexController extends Controller
 {
 
     /**

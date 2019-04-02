@@ -34,16 +34,17 @@ class OrderRequest extends FormRequest
             }
             case 'POST': {
                 return [
-                    'status_id'     => 'required|in:1',
-                    'comment'       => 'max:5000',
-                    'contragent_id' => [
+                    'order.status_id'        => 'required|in:1',
+                    'comment'                => 'max:5000',
+                    'order.contacts_comment' => 'required|max:255',
+                    'order.contragent_id'    => [
                         'required',
                         'exists:contragents,id',
                         Rule::exists('contragents', 'id')->where(function ($query) {
                             $query->where('contragents.user_id', $this->user()->id);
                         }),
                     ],
-                    'address_id'    => 'required|exists:addresses,id',
+                    'order.address_id'       => 'required|exists:addresses,id',
                 ];
             }
             case 'PUT':
@@ -75,9 +76,11 @@ class OrderRequest extends FormRequest
     public function attributes()
     {
         return [
-            'products'   => trans('site::messages.products'),
-            'comments'   => trans('site::messages.comments'),
-            'address_id' => trans('site::order.address_id'),
+            'products'               => trans('site::messages.products'),
+            'order.comments'         => trans('site::messages.comments'),
+            'order.address_id'       => trans('site::order.address_id'),
+            'order.contragent_id'    => trans('site::order.contragent_id'),
+            'order.contacts_comment' => trans('site::order.contacts_comment'),
         ];
     }
 }

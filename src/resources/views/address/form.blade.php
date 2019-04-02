@@ -140,14 +140,14 @@
 
     <div class="form-row">
         <div class="col mb-3">
-            <label class="control-label" for="email">@lang('site::address.emailaddress')</label>
+            <label class="control-label" for="email">@lang('site::address.email')</label>
             <input type="email"
-                   name="address[emailaddress]"
-                   id="address[emailaddress]"
-                   class="form-control{{ $errors->has('address.emailaddress') ? ' is-invalid' : '' }}"
-                   placeholder="@lang('site::address.placeholder.emailaddress')"
-                   value="{{ old('address.emailaddress') }}">
-            <span class="invalid-feedback">{{ $errors->first('address.emailaddress') }}</span>
+                   name="address[email]"
+                   id="address[email]"
+                   class="form-control{{ $errors->has('address.email') ? ' is-invalid' : '' }}"
+                   placeholder="@lang('site::address.placeholder.email')"
+                   value="{{ old('address.email') }}">
+            <span class="invalid-feedback">{{ $errors->first('address.email') }}</span>
         </div>
     </div>
 
@@ -155,14 +155,14 @@
 
     <div class="form-row">
         <div class="col mb-3">
-            <label class="control-label" for="email">@lang('site::address.eshop')</label>
+            <label class="control-label" for="email">@lang('site::address.web')</label>
             <input type="text"
-                   name="address[eshop]"
-                   id="address[eshop]"
-                   class="form-control{{ $errors->has('address.eshop') ? ' is-invalid' : '' }}"
-                   placeholder="@lang('site::address.placeholder.eshop')"
-                   value="{{ old('address.eshop') }}">
-            <span class="invalid-feedback">{{ $errors->first('address.eshop') }}</span>
+                   name="address[web]"
+                   id="address_web"
+                   class="form-control{{ $errors->has('address.web') ? ' is-invalid' : '' }}"
+                   placeholder="@lang('site::address.placeholder.web')"
+                   value="{{ old('address.web') }}">
+            <span class="invalid-feedback">{{ $errors->first('address.web') }}</span>
         </div>
     </div>
 

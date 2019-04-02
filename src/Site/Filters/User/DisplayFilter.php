@@ -11,7 +11,7 @@ class DisplayFilter extends Filter
     function apply($builder, RepositoryInterface $repository)
     {
 
-        $builder = $builder->where('display', 1);
+        $builder = $builder->where('users.display', 1);
 
         return $builder;
     }

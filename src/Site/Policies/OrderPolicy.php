@@ -58,16 +58,33 @@ class OrderPolicy
     }
 
     /**
-     * Determine whether the user can delete the post.
-     *
      * @param  User $user
      * @param  Order $order
      * @return bool
      */
     public function delete(User $user, Order $order)
     {
-        return !$order->hasGuid();
+        return !$order->hasGuid()
+            && $order->getAttribute('status_id') == 1
+            && (
+                $user->getAttribute('id') == $order->getAttribute('user_id')
+                || (
+                    $user->getAttribute('admin') == 1
+                    && $order->address->addressable->id == $user->getAttribute('id')
+                )
+            );
     }
 
+    /**
+     * @param  User $user
+     * @param  Order $order
+     * @return bool
+     */
+    public function message(User $user, Order $order)
+    {
+        return
+            $user->getAttribute('id') == $order->getAttribute('user_id')
+            || $order->address->addressable->id == $user->getAttribute('id');
+    }
 
 }

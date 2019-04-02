@@ -76,15 +76,31 @@ class Site
         ($router = $this->app->make('router'))
             ->group(['middleware' => ['online']],
                 function () use ($router) {
-                    $router->get('/', 'IndexController@index')->name('index');
+
+                    // Главная страница
+                    $router->get('/',
+                        '\QuadStudio\Service\Site\Http\Controllers\IndexController@index')
+                        ->name('index');
+
+                    // Интернет-магазины
+                    $router->match(['get', 'post'], '/eshop',
+                        '\QuadStudio\Service\Site\Http\Controllers\ShopController@online_stores')
+                        ->name('online-stores');
+
+                    // Где купить
+                    $router->match(['get', 'post'], '/dealers',
+                        '\QuadStudio\Service\Site\Http\Controllers\ShopController@where_to_buy')
+                        ->name('where-to-buy');
+
+                    // Сервисные центры
+                    $router->match(['get', 'post'], '/services',
+                        '\QuadStudio\Service\Site\Http\Controllers\ShopController@service_centers')
+                        ->name('service-centers');
+
 
                     $router->resource('/files',
                         '\QuadStudio\Service\Site\Http\Controllers\FileController')
                         ->only(['index', 'store', 'show', 'destroy']);
-
-                    /* Интернет-магазины */
-                    $router->get('/eshop', '\QuadStudio\Service\Site\Http\Controllers\AddressController@eshop')->name('addresses.eshop');
-
 
                     /* Новости */
                     $router->resource('/news', 'NewsController')->only(['index']);
@@ -100,8 +116,6 @@ class Site
                     /* Участники */
                     $router->resource('/participants', 'ParticipantController')->only(['create']);
 
-                    $router->match(['get', 'post'], '/services', 'ServiceController@index')->name('services.index');
-                    $router->match(['get', 'post'], '/dealers', 'DealerController@index')->name('dealers.index');
 
                     $router->get('/products/list', 'ProductController@list')->name('products.list');
                     $router->resource('/products', 'ProductController')->only(['index', 'show']);
@@ -117,7 +131,7 @@ class Site
                     // Static pages
                     $router->get('/feedback', 'StaticPageController@feedback')->name('feedback');
                     $router->post('/feedback', 'StaticPageController@message')->name('message');
-                    $router->get('/where-to-buy', 'StaticPageController@whereToBuy')->name('whereToBuy');
+                    //$router->get('/where-to-buy', 'StaticPageController@whereToBuy')->name('whereToBuy');
 
                     $router->group(['middleware' => ['auth']],
                         function () use ($router) {
@@ -152,14 +166,17 @@ class Site
                                 '\QuadStudio\Service\Site\Http\Controllers\AddressController@create')
                                 ->middleware('permission:addresses')
                                 ->name('addresses.create');
-                            $router->get('/addresses/{address}/phone',
-                                '\QuadStudio\Service\Site\Http\Controllers\AddressController@phone')
+                            $router->resource('/addresses/{address}/phones',
+                                '\QuadStudio\Service\Site\Http\Controllers\AddressPhoneController')
                                 ->middleware('permission:addresses')
-                                ->name('addresses.phone');
-                            $router->post('/addresses/{address}/phone',
-                                '\QuadStudio\Service\Site\Http\Controllers\AddressController@phone')
-                                ->middleware('permission:addresses')
-                                ->name('addresses.phone.store');
+                                ->except(['index'])
+                                ->names([
+                                    'create'  => 'addresses.phones.create',
+                                    'store'   => 'addresses.phones.store',
+                                    'edit'    => 'addresses.phones.edit',
+                                    'update'  => 'addresses.phones.update',
+                                    'destroy' => 'addresses.phones.destroy',
+                                ]);
 
                             // Инженеры
                             $router->resource('/engineers',
@@ -210,24 +227,84 @@ class Site
                             $router->get('/repairs/{repair}/pdf', function (Repair $repair) {
                                 return (new RepairPdf())->setModel($repair)->render();
                             })->middleware('can:pdf,repair')->name('repairs.pdf');
-                            //
+
+                            // Контрагенты
+                            $router->resource('/contragents',
+                                '\QuadStudio\Service\Site\Http\Controllers\ContragentController')
+                                ->middleware('permission:contragents');
+                            $router->resource('/contragents/{contragent}/addresses',
+                                '\QuadStudio\Service\Site\Http\Controllers\ContragentAddressController')
+                                ->middleware('permission:addresses')
+                                ->only(['edit', 'update'])
+                                ->names([
+                                    'edit'   => 'contragents.addresses.edit',
+                                    'update' => 'contragents.addresses.update',
+                                ]);
+
+                            // Контакты
+                            $router->resource('/contacts',
+                                '\QuadStudio\Service\Site\Http\Controllers\ContactController')
+                                ->middleware('permission:contacts');
+
+                            // Контакты
+                            $router->resource('/contacts/{contact}/phones',
+                                '\QuadStudio\Service\Site\Http\Controllers\ContactPhoneController')
+                                ->middleware('permission:phones')
+                                ->except(['index'])
+                                ->names([
+                                    'create'  => 'contacts.phones.create',
+                                    'store'   => 'contacts.phones.store',
+                                    'edit'    => 'contacts.phones.edit',
+                                    'update'  => 'contacts.phones.update',
+                                    'destroy' => 'contacts.phones.destroy',
+                                ]);
+
+                            // Входящие заказы
+                            $router
+                                ->group(['middleware' => ['permission:distributors']],
+                                    function () use ($router) {
+                                        $router->get('/distributors',
+                                            '\QuadStudio\Service\Site\Http\Controllers\DistributorController@index')
+                                            ->name('distributors.index');
+                                        $router->get('/distributors/{order}',
+                                            '\QuadStudio\Service\Site\Http\Controllers\DistributorController@show')
+                                            ->name('distributors.show');
+                                        $router->put('/distributors/{order}',
+                                            '\QuadStudio\Service\Site\Http\Controllers\DistributorController@update')
+                                            ->name('distributors.update');
+                                        $router->post('/distributors/{order}/message',
+                                            '\QuadStudio\Service\Site\Http\Controllers\DistributorController@message')
+                                            ->name('distributors.message');
+                                        $router->get('/distributors/{order}/excel', function (Order $order) {
+                                            return (new OrderExcel())->setModel($order)->render();
+                                        })->name('distributors.excel');
+                                    });
+
+
+                            // Заказы
+                            $router->post('/orders/load',
+                                '\QuadStudio\Service\Site\Http\Controllers\OrderController@load')
+                                ->middleware('permission:orders')
+                                ->name('orders.load');
+                            $router->resource('/orders',
+                                '\QuadStudio\Service\Site\Http\Controllers\OrderController')
+                                ->except(['edit', 'update'])->middleware('permission:orders');
+                            $router->post('/orders/{order}/message',
+                                '\QuadStudio\Service\Site\Http\Controllers\OrderController@message')
+                                ->middleware('permission:messages')
+                                ->name('orders.message');
                             //
                             //
                             $router->resource('/acts', 'ActController')->middleware('permission:acts');
                             $router->get('/acts/{act}/pdf', function (Act $act) {
                                 return (new ActPdf())->setModel($act)->render();
                             })->middleware('can:pdf,act')->name('acts.pdf');
-                            $router->resource('/distributors', 'DistributorController')->only(['index', 'show'])->middleware('permission:distributors');
-                            $router->get('/distributors/{order}/excel', function (Order $order) {
-                                return (new OrderExcel())->setModel($order)->render();
-                            })->middleware('can:distributor,order')->name('distributors.excel');
-                            $router->post('/orders/load', 'OrderController@load')->middleware('permission:orders')->name('orders.load');
-                            $router->resource('/orders', 'OrderController')->except(['edit', 'update'])->middleware('permission:orders');
-                            $router->post('/orders/{order}/message', 'OrderController@message')->middleware('permission:messages')->name('orders.message');
+
+
                             $router->delete('/order-items/{item}', 'OrderItemController@destroy')->name('orders.items.destroy');
-                            $router->resource('/phones', 'PhoneController')->middleware('permission:phones')->except(['index', 'show']);
-                            $router->resource('/contragents', 'ContragentController')->middleware('permission:contragents');
-                            $router->resource('/contacts', 'ContactController')->middleware('permission:contacts');
+                            //$router->resource('/phones', 'PhoneController')->middleware('permission:phones')->except(['index', 'show']);
+
+
                             // Cart
                             $router->get('/cart', 'CartController@index')->name('cart');
                             $router->post('/cart/{product}/add', 'CartController@add')->name('buy');

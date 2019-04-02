@@ -74,7 +74,7 @@
             </tbody>
         </table>
 
-        @include('site::message.create')
+        @include('site::message.create', ['messagable' => $authorization])
 
         <div class="card mb-4">
             <div class="card-body">

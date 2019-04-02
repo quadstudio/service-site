@@ -13,7 +13,7 @@
                 <a href="{{ route('contacts.index') }}">@lang('site::contact.contacts')</a>
             </li>
             <li class="breadcrumb-item">
-                {{$contact->name}}
+                <a href="{{ route('contacts.show', $contact) }}">{{$contact->name}}</a>
             </li>
             <li class="breadcrumb-item active">@lang('site::messages.edit')</li>
         </ol>
@@ -29,30 +29,35 @@
                     @csrf
                     @method('PUT')
 
-                    <div class="form-row required">
-                        <div class="col mb-3">
-                            <label class="control-label" for="name">@lang('site::contact.name')</label>
-                            <input type="text"
-                                   name="contact[name]"
-                                   id="name"
-                                   required
-                                   class="form-control{{ $errors->has('contact.name') ? ' is-invalid' : '' }}"
-                                   placeholder="@lang('site::contact.placeholder.name')"
-                                   value="{{ old('contact.name',$contact->name) }}">
-                            <span class="invalid-feedback">{{ $errors->first('contact.name') }}</span>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-row required">
+                                <div class="col mb-3">
+                                    <label class="control-label" for="name">@lang('site::contact.name')</label>
+                                    <input type="text"
+                                           name="contact[name]"
+                                           id="name"
+                                           required
+                                           class="form-control{{ $errors->has('contact.name') ? ' is-invalid' : '' }}"
+                                           placeholder="@lang('site::contact.placeholder.name')"
+                                           value="{{ old('contact.name',$contact->name) }}">
+                                    <span class="invalid-feedback">{{ $errors->first('contact.name') }}</span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="col mb-3">
-                            <label class="control-label" for="position">@lang('site::contact.position')</label>
-                            <input type="text"
-                                   name="contact[position]"
-                                   id="position"
-                                   class="form-control{{ $errors->has('contact.position') ? ' is-invalid' : '' }}"
-                                   placeholder="@lang('site::contact.placeholder.position')"
-                                   value="{{ old('contact.position',$contact->position) }}">
-                            <span class="invalid-feedback">{{ $errors->first('contact.position') }}</span>
+                        <div class="col-md-6">
+                            <div class="form-row">
+                                <div class="col mb-3">
+                                    <label class="control-label" for="position">@lang('site::contact.position')</label>
+                                    <input type="text"
+                                           name="contact[position]"
+                                           id="position"
+                                           class="form-control{{ $errors->has('contact.position') ? ' is-invalid' : '' }}"
+                                           placeholder="@lang('site::contact.placeholder.position')"
+                                           value="{{ old('contact.position',$contact->position) }}">
+                                    <span class="invalid-feedback">{{ $errors->first('contact.position') }}</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -64,7 +69,7 @@
                         <i class="fa fa-check"></i>
                         <span>@lang('site::messages.save')</span>
                     </button>
-                    <a href="{{ route('contacts.index') }}" class="btn btn-secondary mb-1">
+                    <a href="{{ route('contacts.show', $contact) }}" class="btn btn-secondary mb-1">
                         <i class="fa fa-close"></i>
                         <span>@lang('site::messages.cancel')</span>
                     </a>

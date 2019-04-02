@@ -52,32 +52,34 @@
 
                                 <div class="form-group required">
                                     <label class="control-label"
-                                           for="contragent_id">@lang('site::repair.contragent_id')</label>
-                                    <select class="form-control{{  $errors->has('contragent_id') ? ' is-invalid' : '' }}"
+                                           for="contragent_id">@lang('site::order.contragent_id')</label>
+                                    <select class="form-control{{  $errors->has('order.contragent_id') ? ' is-invalid' : '' }}"
                                             required
-                                            name="contragent_id"
+                                            name="order[contragent_id]"
                                             id="contragent_id">
                                         @if($contragents->count() == 0 || $contragents->count() > 1)
                                             <option value="">@lang('site::messages.select_from_list')</option>
                                         @endif
                                         @foreach($contragents as $contragent)
                                             <option
-                                                    @if(old('contragent_id') == $contragent->id) selected
+                                                    @if(old('order.contragent_id') == $contragent->id) selected
                                                     @endif
                                                     value="{{ $contragent->id }}">{{ $contragent->name }}</option>
                                         @endforeach
                                     </select>
-                                    <span class="invalid-feedback">{{ $errors->first('contragent_id') }}</span>
+                                    <span class="invalid-feedback">{{ $errors->first('order.contragent_id') }}</span>
                                 </div>
 								
 								 <div class="form-group required">
                                     <label class="control-label"
                                            for="address_id">@lang('site::order.address_id')</label>
-                                    <select class="form-control{{  $errors->has('address_id') ? ' is-invalid' : '' }}"
+                                    <select class="form-control{{  $errors->has('order.address_id') ? ' is-invalid' : '' }}"
                                             required
-                                            name="address_id"
+                                            name="order[address_id]"
                                             id="address_id">
+                                        @if($storehouses->count() != 1)
                                             <option value="">@lang('site::messages.select_from_list')</option>
+                                        @endif
                                         @foreach($storehouses as $storehouse)
                                             <option
                                                 @if(old('address_id') == $storehouse->id) selected
@@ -85,7 +87,21 @@
                                                 value="{{ $storehouse->id }}">{{ $storehouse->name }}</option>
                                         @endforeach
                                     </select>
-                                    <span class="invalid-feedback">{{ $errors->first('address_id') }}</span>
+                                    <span class="invalid-feedback">{{ $errors->first('order.address_id') }}</span>
+                                </div>
+
+                                <div class="form-group required">
+                                    <label class="control-label" for="contacts_comment">
+                                        @lang('site::order.contacts_comment')
+                                    </label>
+                                    <input required
+                                           type="text"
+                                           id="contacts_comment"
+                                           name="order[contacts_comment]"
+                                           class="form-control"
+                                           value="{{ old('order.contacts_comment') }}"
+                                           placeholder="@lang('site::order.placeholder.contacts_comment')">
+                                    <span class="invalid-feedback">{{ $errors->first('order.contacts_comment') }}</span>
                                 </div>
 				
                                 <div class="form-group text-right">
@@ -93,7 +109,7 @@
                                               name="message[text]" maxlength="5000" rows="3"></textarea>
                                     <input type="hidden" name="message[receiver_id]"
                                            value="{{config('site.receiver_id')}}">
-                                    <input type="hidden" name="status_id" value="1">
+                                    <input type="hidden" name="order[status_id]" value="1">
                                 </div>
                                 <h5 class="text-right">@lang('site::cart.total'):</h5>
                                 <h2 class="text-right">

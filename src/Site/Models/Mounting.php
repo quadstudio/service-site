@@ -270,4 +270,20 @@ class Mounting extends Model implements Messagable
     {
         return route((auth()->user()->admin == 1 ? '' : 'admin.') . 'mountings.show', $this);
     }
+
+    /**
+     * @return \Illuminate\Routing\Route
+     */
+    function messageStoreRoute()
+    {
+        return route('mountings.message', $this);
+    }
+
+    /** @return User */
+    function messageReceiver()
+    {
+        return $this->user->id == auth()->user()->getAuthIdentifier()
+            ? User::query()->findOrFail(config('site.receiver_id'))
+            : $this->user;
+    }
 }

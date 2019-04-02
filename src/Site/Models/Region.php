@@ -51,6 +51,16 @@ class Region extends Model
     }
 
     /**
+     * Страна
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
+
+    /**
      * Заявки
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

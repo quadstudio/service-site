@@ -4,9 +4,11 @@ namespace QuadStudio\Service\Site\Listeners;
 
 use Illuminate\Events\Dispatcher;
 use Illuminate\Support\Facades\Mail;
+use QuadStudio\Service\Site\Events\OrderStatusChangeEvent;
 use QuadStudio\Service\Site\Events\OrderCreateEvent;
 use QuadStudio\Service\Site\Events\OrderScheduleEvent;
 use QuadStudio\Service\Site\Mail\Admin\Order\OrderCreateEmail as AdminOrderCreateEmail;
+use QuadStudio\Service\Site\Mail\User\Order\OrderStatusChangeEmail;
 use QuadStudio\Service\Site\Mail\User\Order\OrderCreateEmail as UserOrderCreateEmail;
 use QuadStudio\Service\Site\Mail\User\Order\OrderScheduleEmail as UserOrderScheduleEmail;
 
@@ -39,7 +41,20 @@ class OrderListener
 
         // Отправка пользователю письма об оформлении нового заказа
         Mail::to($event->order->user->email)->send(new UserOrderCreateEmail($event->order));
-        Mail::to($event->order->address->emailaddress)->send(new UserOrderCreateEmail($event->order));
+
+        // Отправка на email склада дистрибьютора письма об оформлении нового заказа
+        Mail::to($event->order->address->email)->send(new UserOrderCreateEmail($event->order));
+    }
+
+    /**
+     * @param OrderStatusChangeEvent $event
+     */
+    public function onOrderStatusChange(OrderStatusChangeEvent $event)
+    {
+
+        // Отправка пользователю уведомления о смене статуса заказа
+        Mail::to($event->order->user->email)->send(new OrderStatusChangeEmail($event->order));
+
     }
 
 
@@ -52,6 +67,10 @@ class OrderListener
         $events->listen(
             OrderCreateEvent::class,
             'QuadStudio\Service\Site\Listeners\OrderListener@onOrderCreate'
+        );
+        $events->listen(
+            OrderStatusChangeEvent::class,
+            'QuadStudio\Service\Site\Listeners\OrderListener@onOrderStatusChange'
         );
 
         $events->listen(

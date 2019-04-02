@@ -49,7 +49,7 @@
                     <div class="list-group">
                         @foreach($address->phones as $phone)
                             <a href="{{route('admin.phones.edit', $phone)}}"
-                               class="list-group-item list-group-item-action">{{$phone->format()}}</a>
+                               class="list-group-item list-group-item-action">{{$phone->country->phone}} {{$phone->number}}</a>
                         @endforeach
                     </div>
                     <hr class="border-light">

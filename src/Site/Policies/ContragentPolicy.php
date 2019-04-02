@@ -14,8 +14,6 @@ class ContragentPolicy
     }
 
     /**
-     * Determine whether the user can view the contragent.
-     *
      * @param User $user
      * @param Contragent $contragent
      * @return bool
@@ -26,8 +24,15 @@ class ContragentPolicy
     }
 
     /**
-     * Determine whether the user can create contragents.
-     *
+     * @param User $user
+     * @param Contragent $contragent
+     * @return bool
+     */
+    public function address(User $user, Contragent $contragent){
+        return $user->id == $contragent->user_id;
+    }
+
+    /**
      * @param  User $user
      * @return bool
      */
@@ -37,8 +42,6 @@ class ContragentPolicy
     }
 
     /**
-     * Determine whether the user can update the contragent.
-     *
      * @param  User $user
      * @param  Contragent $contragent
      * @return bool
@@ -49,8 +52,6 @@ class ContragentPolicy
     }
 
     /**
-     * Determine whether the user can delete the contragent.
-     *
      * @param  User $user
      * @param  Contragent $contragent
      * @return bool

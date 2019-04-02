@@ -1,7 +1,10 @@
 <?php
 
-namespace QuadStudio\Service\Site\Traits\Controllers;
+namespace QuadStudio\Service\Site\Http\Controllers;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Session;
 use QuadStudio\Service\Site\Filters\BelongsUserFilter;
 use QuadStudio\Service\Site\Http\Requests\ContactRequest;
 use QuadStudio\Service\Site\Models\Contact;
@@ -10,8 +13,10 @@ use QuadStudio\Service\Site\Models\Country;
 use QuadStudio\Service\Site\Models\Phone;
 use QuadStudio\Service\Site\Repositories\ContactRepository;
 
-trait ContactControllerTrait
+class ContactController extends Controller
 {
+
+    use AuthorizesRequests;
 
     protected $contacts;
 
@@ -35,31 +40,49 @@ trait ContactControllerTrait
         $this->authorize('index', Contact::class);
         $this->contacts->trackFilter();
         $this->contacts->applyFilter(new BelongsUserFilter());
+
         return view('site::contact.index', [
             'repository' => $this->contacts,
-            'contacts'      => $this->contacts->paginate(config('site.per_page.contact', 10), ['contacts.*'])
+            'contacts'   => $this->contacts->paginate(config('site.per_page.contact', 10), ['contacts.*'])
         ]);
     }
 
-    public function create()
+    /**
+     * @param Contact $contact
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Contact $contact)
     {
-        $types = ContactType::find([2,3,4]);
-        $countries = Country::enabled()->orderBy('sort_order')->get();
-        return view('site::contact.create', compact('types', 'countries'));
-    }
+        $this->authorize('view', $contact);
 
-    public function store(ContactRequest $request)
-    {
-        /** @var $contact Contact */
-        $request->user()->contacts()->save($contact = Contact::create($request->input('contact')));
-        $contact->phones()->save(Phone::create($request->input('phone')));
-
-        return redirect()->route('contacts.index')->with('success', trans('site::contact.created'));
+        return view('site::contact.show', compact('contact'));
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $types = ContactType::query()->where('enabled', 1)->get();
+        $countries = Country::query()->where('enabled', 1)->orderBy('sort_order')->get();
+
+        return view('site::contact.create', compact('types', 'countries'));
+    }
+
+    /**
+     * @param ContactRequest $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(ContactRequest $request)
+    {
+        /** @var $contact Contact */
+        $request->user()->contacts()->save($contact = Contact::query()->create($request->input('contact')));
+        $contact->phones()->save(Phone::query()->create($request->input('phone')));
+
+        return redirect()->route('contacts.show', $contact)->with('success', trans('site::contact.created'));
+    }
+
+    /**
      * @param  Contact $contact
      * @return \Illuminate\Http\Response
      */
@@ -67,13 +90,13 @@ trait ContactControllerTrait
     {
         $this->authorize('edit', $contact);
         $types = ContactType::all();
+        $countries = Country::query()->where('enabled', 1)->orderBy('sort_order')->get();
+        $phones = $contact->phones;
 
-        return view('site::contact.edit', compact('types', 'contact'));
+        return view('site::contact.edit', compact('types', 'contact', 'countries', 'phones'));
     }
 
     /**
-     * Update the specified resource in storage.
-     *
      * @param  ContactRequest $request
      * @param  Contact $contact
      * @return \Illuminate\Http\Response
@@ -83,24 +106,23 @@ trait ContactControllerTrait
         $this->authorize('update', $contact);
         $contact->update($request->input(['contact']));
 
-        if ($request->input('_stay') == 1) {
-            $redirect = redirect()->route('contacts.edit', $contact)->with('success', trans('site::contact.updated'));
-        } else {
-            $redirect = redirect()->route('contacts.index')->with('success', trans('site::contact.updated'));
-        }
-
-        return $redirect;
+        return redirect()->route('contacts.show', $contact)->with('success', trans('site::contact.updated'));
     }
 
+    /**
+     * @param Contact $contact
+     * @return \Illuminate\Http\Response
+     */
     public function destroy(Contact $contact)
     {
+
         $this->authorize('delete', $contact);
-        $contact->phones()->delete();
         if ($contact->delete()) {
-            $json['remove'][] = '#contact-' . $contact->id;
+            Session::flash('success', trans('site::contact.deleted'));
         } else {
-            $json['error'][] = 'error';
+            Session::flash('error', trans('site::contact.error.deleted'));
         }
+        $json['redirect'] = route('contacts.index');
 
         return response()->json($json);
     }

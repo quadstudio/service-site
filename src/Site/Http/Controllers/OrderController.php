@@ -1,9 +1,12 @@
 <?php
 
-namespace QuadStudio\Service\Site\Traits\Controllers;
+namespace QuadStudio\Service\Site\Http\Controllers;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Routing\Controller;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\BaseReader;
+use QuadStudio\Service\Site\Concerns\StoreMessages;
 use QuadStudio\Service\Site\Events\OrderCreateEvent;
 use QuadStudio\Service\Site\Facades\Cart;
 use QuadStudio\Service\Site\Filters\BelongsUserFilter;
@@ -16,8 +19,10 @@ use QuadStudio\Service\Site\Models\Product;
 use QuadStudio\Service\Site\Repositories\OrderRepository;
 use QuadStudio\Service\Site\Support\OrderLoadFilter;
 
-trait OrderControllerTrait
+class OrderController extends Controller
 {
+
+    use  AuthorizesRequests, StoreMessages;
     /**
      * @var OrderRepository
      */
@@ -60,10 +65,12 @@ trait OrderControllerTrait
      */
     public function store(OrderRequest $request)
     {
-
-        $request->user()->orders()->save($order = $this->orders->create($request->only(['status_id', 'contragent_id', 'address_id'])));
+        //dd($request->all());
+        $request->user()->orders()->save($order = $this->orders->create($request->input('order')));
         if ($request->filled('message.text')) {
-            $order->messages()->save($request->user()->outbox()->create($request->input('message')));
+            $message = $request->input('message');
+            $message['receiver_id'] = $order->address->addressable->id;
+            $order->messages()->save($request->user()->outbox()->create($message));
         }
         $order->items()->createMany(Cart::toArray());
         Cart::clear();
@@ -73,11 +80,14 @@ trait OrderControllerTrait
         return redirect()->route('orders.show', $order)->with('success', trans('site::order.created'));
     }
 
+    /**
+     * @param \QuadStudio\Service\Site\Http\Requests\MessageRequest $request
+     * @param \QuadStudio\Service\Site\Models\Order $order
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function message(MessageRequest $request, Order $order)
     {
-        $order->messages()->save($request->user()->outbox()->create($request->input('message')));
-
-        return redirect()->route('orders.show', $order)->with('success', trans('site::message.created'));
+        return $this->storeMessage($request, $order);
     }
 
     /**

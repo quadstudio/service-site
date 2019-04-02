@@ -34,7 +34,7 @@ class OrderCreateEmail extends Mailable implements ShouldQueue
     public function build()
     {
         return $this
-            ->subject('Уведомление от service.ferroli.ru')
+            ->subject(trans('site::order.email.create.title'))
             ->view('site::email.user.order.create');
     }
 }

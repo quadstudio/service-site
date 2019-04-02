@@ -125,7 +125,12 @@ class ContragentRequest extends FormRequest
                     ),
                     'contragent.kpp'     => array(
                         'required_if:contragent.type_id,1',
-                        'regex:/^(([0-9]){9})?$/'
+//                        'regex:/^$|^\d{9}$/',
+                        function ($attribute, $value, $fail) {
+                            if ($this->input('contragent.type_id') == 1 && strlen($value) != 9) {
+                                return $fail(trans('site::contragent.placeholder.kpp'));
+                            }
+                        }
                     ),
                     'contragent.ks'      => 'required|numeric|digits:20',
                     'contragent.rs'      => 'required|numeric|digits:20',

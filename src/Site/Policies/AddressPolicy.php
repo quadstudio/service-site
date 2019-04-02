@@ -14,8 +14,6 @@ class AddressPolicy
     }
 
     /**
-     * Determine whether the user can view the address.
-     *
      * @param User $user
      * @param Address $address
      * @return bool
@@ -30,8 +28,6 @@ class AddressPolicy
     }
 
     /**
-     * Determine whether the user can create addresses.
-     *
      * @param  User $user
      * @return bool
      */
@@ -41,8 +37,16 @@ class AddressPolicy
     }
 
     /**
-     * Determine whether the user can update the address.
-     *
+     * @param User $user
+     * @param Address $address
+     * @return bool
+     */
+    public function phone(User $user, Address $address)
+    {
+        return $this->belongsUser($user, $address);
+    }
+
+    /**
      * @param  User $user
      * @param  Address $address
      * @return bool
@@ -53,8 +57,6 @@ class AddressPolicy
     }
 
     /**
-     * Determine whether the user can delete the address.
-     *
      * @param  User $user
      * @param  Address $address
      * @return bool

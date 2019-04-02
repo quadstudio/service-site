@@ -2,14 +2,13 @@
 
 namespace QuadStudio\Service\Site\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use QuadStudio\Service\Site\Contracts\Addressable;
 
 class Contragent extends Model implements Addressable
 {
     protected $fillable = [
-        'type_id', 'name', 'nds', 'inn', 'ogrn',
+        'type_id', 'name', 'nds', 'nds_act', 'inn', 'ogrn',
         'okpo', 'kpp', 'rs', 'ks', 'bik', 'bank',
         'organization_id', 'contract'
     ];
@@ -117,7 +116,7 @@ class Contragent extends Model implements Addressable
             'ks'        => $this->getAttribute('ks'),
             'bik'       => $this->getAttribute('bik'),
             'bank'      => $this->getAttribute('bank'),
-            'address'   => $this->addresses()->whereTypeId(1)->first()->full,
+            'address'   => $this->addresses()->where('type_id', 1)->first()->full,
             'contract'  => $this->getAttribute('contract'),
             'nds_value' => config('site.nds', 18),
             'nds'       => $this->getAttribute('nds'),

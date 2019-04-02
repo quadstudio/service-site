@@ -90,10 +90,8 @@ class RepairController
         $files = $repair->files;
         $this->types->applyFilter((new ModelHasFilesFilter())->setId($repair->id)->setMorph('repairs'));
         $file_types = $this->types->all();
-        $messages = $repair->messages;
-        $route = route('admin.repairs.message', $repair);
 
-        return view('site::admin.repair.show', compact('repair', 'route', 'messages', 'statuses', 'fails', 'files', 'file_types'));
+        return view('site::admin.repair.show', compact('repair', 'statuses', 'fails', 'files', 'file_types'));
     }
 
     /**

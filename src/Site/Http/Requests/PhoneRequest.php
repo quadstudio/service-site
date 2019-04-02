@@ -26,29 +26,13 @@ class PhoneRequest extends FormRequest
     {
         switch ($this->method()) {
 
-            case 'POST': {
-                return [
-                    'country_id'   => 'required|exists:countries,id',
-                    'number'           => array(
-                        'required',
-                        'numeric',
-                        function ($attribute, $value, $fail) {
-
-                            if ($this->input('country_id') == 643 && strlen($value) != 10) {
-                                return $fail(trans('site::phone.error.length_10'));
-                            }
-                            if ($this->input('country_id') == 112 && strlen($value) != 9) {
-                                return $fail(trans('site::phone.error.length_9'));
-                            }
-                        }
-                    ),
-                    'extra'        => 'max:20',
-                ];
-            }
+            case 'POST':
             case 'PUT':
             case 'PATCH': {
                 return [
-
+                    'phone.country_id' => 'required|exists:countries,id',
+                    'phone.number'     => 'required|string|size:' . config('site.phone.maxlength'),
+                    'phone.extra'      => 'max:20',
                 ];
             }
             default:
@@ -74,9 +58,9 @@ class PhoneRequest extends FormRequest
     public function attributes()
     {
         return [
-            'country_id'   => trans('site::phone.country_id'),
-            'number'       => trans('site::phone.number'),
-            'extra'        => trans('site::phone.extra'),
+            'phone.country_id' => trans('site::phone.country_id'),
+            'phone.number'     => trans('site::phone.number'),
+            'phone.extra'      => trans('site::phone.extra'),
         ];
     }
 }

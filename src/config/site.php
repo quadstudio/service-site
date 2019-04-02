@@ -17,6 +17,9 @@ return [
         'login',
         'register',
         'feedback',
+        'service-centers',
+        'where-to-buy',
+        'online-stores',
         'news.index',
         'news.show',
         'events.index',
@@ -24,9 +27,6 @@ return [
         'events_fsf.index',
         'events_fsf.show',
         'members.index',
-        'services.index',
-        'dealers.index',
-        'addresses.eshop',
         'datasheets.index',
         'datasheets.show',
         'catalogs.index',
@@ -255,12 +255,12 @@ return [
     'phone'    => [
 
         // Правило для валидации формы
-        'pattern'   => '^(\(([0-9]{3})\)([0-9]{3})-([0-9]{2})-([0-9]{2}))$',
+        'pattern'   => '^(\(([0-9]{3})\)\s([0-9]{3})-([0-9]{2})-([0-9]{2}))$',
 
         // Геттер (преобразование телефона из базы для отображения в форме)
         'get'       => [
             'pattern'     => '/^([0-9]{3})([0-9]{3})([0-9]{2})([0-9]{2})$/',
-            'replacement' => '($1)$2-$3-$4',
+            'replacement' => '($1) $2-$3-$4',
         ],
 
         // Сеттер (преобразование телефона из формы для сохранения в базе)
@@ -270,12 +270,13 @@ return [
         ],
 
         // Маска ввода для формы
-        'mask'      => '(000)000-00-00',
+        'mask'      => '(000) 000-00-00',
 
         // Формат, отображаемый при ошибке валидации в форме
-        'format'    => '(XXX)XXX-XX-XX',
+        'format'    => '(XXX) XXX-XX-XX',
 
         // Длина номера телефона
-        'maxlength' => 14
-    ]
+        'maxlength' => 15
+    ],
+    'catalog_price_pdf' => 'https://yadi.sk/d/7CXTYatd-Xp4bw'
 ];

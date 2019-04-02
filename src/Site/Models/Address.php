@@ -15,7 +15,7 @@ class Address extends Model
         'locality', 'street', 'building',
         'apartment', 'postal', 'name', 'active',
         'is_shop', 'is_service', 'is_eshop', 'sort_order',
-        'emailaddress', 'eshop'
+        'email', 'eshop'
     ];
 
     /**
@@ -135,7 +135,7 @@ class Address extends Model
 
     public function hasEmail()
     {
-        return !is_null($this->getAttribute('emailaddress'));
+        return !is_null($this->getAttribute('email'));
     }
 
     /**

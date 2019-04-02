@@ -70,16 +70,12 @@ class MountingController extends Controller
         $this->types->applyFilter((new ModelHasFilesFilter())->setId($mounting->id)->setMorph('mountings'));
         $file_types = $this->types->all();
         $files = $mounting->files;
-        $messages = $mounting->messages;
-        $route = route('mountings.message', $mounting);
         $mounting_statuses = MountingStatus::query()->where('id', '!=', $mounting->getAttribute('status_id'))->orderBy('sort_order')->get();
 
         return view('site::admin.mounting.show', compact(
             'mounting',
             'file_types',
             'files',
-            'messages',
-            'route',
             'mounting_statuses'
         ));
     }

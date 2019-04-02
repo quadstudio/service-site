@@ -5,25 +5,27 @@
             <div class="d-flex col flex-column">
                 <div class="flex-grow-1 position-relative">
                     <div id="messages" class="chat-messages p-2 ps">
-                        @if($messages->isNotEmpty())
-                            @each('site::message.create.row', $messages, 'message')
+                        @if($messagable->messages->isNotEmpty())
+                            @each('site::message.create.row', $messagable->messages, 'message')
                         @endif
                     </div>
                 </div>
             </div>
         </div>
-        <form id="form-content" action="{{$route}}" method="post">
+        <form id="form-content" action="{{$messagable->messageStoreRoute()}}" method="post">
             @csrf
             <div class="row no-gutters">
                 <div class="d-flex col flex-column">
                     <div class="flex-grow-1 position-relative">
                         <div class="form-group required">
-                            <input type="hidden" name="message[receiver_id]" value="1">
-                            <textarea name="message[text]"
+                            <input type="hidden"
+                                   name="message[receiver_id]"
+                                   value="{{$messagable->messageReceiver()->getAttribute('id')}}">
+                            <textarea required
+                                      name="message[text]"
                                       id="message_text"
                                       rows="3"
-                                      required
-                                      placeholder="@lang('site::message.placeholder.text')"
+                                      placeholder="@lang('site::message.placeholder.text_to') {{$messagable->messageReceiver()->getAttribute('name')}}"
                                       class="form-control{{  $errors->has('message.text') ? ' is-invalid' : '' }}"></textarea>
                             <span class="invalid-feedback">{{ $errors->first('message.text') }}</span>
                         </div>

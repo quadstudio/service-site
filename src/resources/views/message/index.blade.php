@@ -45,13 +45,13 @@
                                         <div class="flex-shrink-1 bg-lighter rounded py-2 px-3 @if($message->user_id == auth()->user()->getAuthIdentifier()) mr-3 @else ml-3 @endif">
                                             <div class="mb-2"><b>{{$message->user->name}}</b></div>
                                             <span class="text-big">{!! $message->text !!}</span>
-                                            @if(!is_null($messagable = $message->messagable))
+                                            @if($message->messagable)
                                                 <hr/>
                                                 <div class="">
 
                                                     <a class="d-block text-muted"
-                                                       href="{{$messagable->messageRoute()}}">
-                                                        @lang('site::message.help.messagable'): {{$messagable->messageSubject()}}
+                                                       href="{{$message->messagable->messageRoute()}}">
+                                                        @lang('site::message.help.messagable'): {{$message->messagable->messageSubject()}}
                                                     </a>
 
                                                 </div>
@@ -60,16 +60,11 @@
                                     </div>
                                 @endforeach
                             </div>
-                            <!-- / .chat-messages -->
                         </div>
                     </div>
                 </div>
                 {{$messages->render()}}
             </div>
         </div>
-
-        {{--<div class="row items-row-view">--}}
-        {{--@each('site::message.index.row', $messages, 'message')--}}
-        {{--</div>--}}
     </div>
 @endsection

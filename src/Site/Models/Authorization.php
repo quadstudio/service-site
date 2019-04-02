@@ -7,7 +7,7 @@ use QuadStudio\Rbac\Models\Role;
 use QuadStudio\Service\Site\Contracts\Messagable;
 use QuadStudio\Service\Site\Traits\Models\AuthorizationTypeTrait;
 
-class Authorization extends Model  implements Messagable
+class Authorization extends Model implements Messagable
 {
 
     use AuthorizationTypeTrait;
@@ -116,5 +116,22 @@ class Authorization extends Model  implements Messagable
     function messageMailRoute()
     {
         return route((auth()->user()->admin == 1 ? '' : 'admin.') . 'authorizations.show', $this);
+    }
+
+    /**
+     * @return \Illuminate\Routing\Route
+     */
+    function messageStoreRoute()
+    {
+        return route('authorizations.message', $this);
+    }
+
+    /** @return User */
+    /** @return User */
+    function messageReceiver()
+    {
+        return $this->user->id == auth()->user()->getAuthIdentifier()
+            ? User::query()->findOrFail(config('site.receiver_id'))
+            : $this->user;
     }
 }

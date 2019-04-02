@@ -29,7 +29,7 @@
             @endif
             <li class="breadcrumb-item active">@lang('site::messages.edit') @lang('site::phone.phone')</li>
         </ol>
-        <h1 class="header-title mb-4">@lang('site::messages.edit')  @lang('site::phone.phone') {{ $phone->format() }}</h1>
+        <h1 class="header-title mb-4">@lang('site::messages.edit')  @lang('site::phone.phone') {{$phone->country->phone}} {{$phone->number}}</h1>
 
         @alert()@endalert()
 

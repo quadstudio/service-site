@@ -25,6 +25,23 @@ class Phone extends Model
     }
 
     /**
+     * @param $value
+     * @return mixed|null
+     */
+    public function getNumberAttribute($value)
+    {
+        return $value ? preg_replace(config('site.phone.get.pattern'), config('site.phone.get.replacement'), $value) : null;
+    }
+
+    /**
+     * @param $value
+     */
+    public function setNumberAttribute($value)
+    {
+        $this->attributes['number'] = $value ? preg_replace(config('site.phone.set.pattern'), config('site.phone.set.replacement'), $value) : null;
+    }
+
+    /**
      * Международный код
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -32,25 +49,6 @@ class Phone extends Model
     public function country()
     {
         return $this->belongsTo(Country::class);
-    }
-
-    /**
-     * Отформатированный номер телефона
-     * @return string
-     */
-    public function format()
-    {
-        $result = [$this->country->getAttribute('phone')];
-        if (preg_match('/^(\d{3})(\d{3})(\d{2})(\d{2})$/', $this->getAttribute('number'), $matches)) {
-            $result[] = '(' . $matches[1] . ') ' . $matches[2] . '-' . $matches[3] . '-' . $matches[4];
-        } else {
-            $result[] = $this->getAttribute('number');
-        }
-        if (mb_strlen($this->getAttribute('extra'), 'UTF-8') > 0) {
-            $result[] = "(" . trans('site::phone.extra_short') . " {$this->getAttribute('extra')})";
-        }
-
-        return implode(' ', $result);
     }
 
     /**

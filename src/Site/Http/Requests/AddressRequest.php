@@ -36,7 +36,7 @@ class AddressRequest extends FormRequest
                     'address.street'       => 'sometimes|max:255',
                     'address.building'     => 'sometimes|max:255',
                     'address.apartment'    => 'sometimes|max:255',
-                    'address.emailaddress' => 'sometimes|nullable|email',
+                    'address.email' => 'sometimes|nullable|email',
                     //
                     'phone.country_id'     => 'required|exists:countries,id',
                     'phone.number'         => array(
@@ -67,7 +67,7 @@ class AddressRequest extends FormRequest
                     'address.building'     => 'sometimes|max:255',
                     'address.apartment'    => 'sometimes|max:255',
                     'address.sort_order'   => 'numeric|min:0|max:200',
-                    'address.emailaddress' => 'sometimes|email',
+                    'address.email' => 'sometimes|email',
                 ];
             }
             default:
@@ -103,7 +103,7 @@ class AddressRequest extends FormRequest
             'address.building'     => trans('site::address.building'),
             'address.apartment'    => trans('site::address.apartment'),
             'address.sort_order'   => trans('site::address.sort_order'),
-            'address.emailaddress' => trans('site::address.emailaddress'),
+            'address.email' => trans('site::address.email'),
             //
             'phone.country_id'     => trans('site::phone.country_id'),
             'phone.number'         => trans('site::phone.number'),

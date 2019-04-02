@@ -12,6 +12,16 @@
 
 @section('content')
     <div class="container">
+        @if ($errors->any())
+            <div class="alert alert-danger" role="alert">
+                <h4 class="alert-heading">@lang('site::messages.has_error')</h4>
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="row pt-5 pb-5">
             <div class="col">
                 <form id="register-form" method="POST" action="{{ route('register') }}">
@@ -85,7 +95,7 @@
 
                                     <label class="control-label"
                                            for="phone_contact_country_id">@lang('site::phone.country_id')</label>
-                                    <select class="form-control{{  $errors->has('phone.contact.country_id') ? ' is-invalid' : '' }}"
+                                    <select class="form-control{{  $errors->has('phone.contact.country_id') ? ' is-invalid' : (old('phone.contact.country_id') ? ' is-valid' : '') }}"
                                             required
                                             name="phone[contact][country_id]"
                                             id="phone_contact_country_id">
@@ -109,22 +119,19 @@
                                 <div class="col">
                                     <label class="control-label"
                                            for="phone_contact_number">@lang('site::phone.number')</label>
-                                    <input type="text"
+                                    <input required
+                                           type="tel"
                                            name="phone[contact][number]"
                                            id="phone_contact_number"
-                                           title="@lang('site::phone.placeholder.number')"
-                                           required
-                                           pattern="^\d{9,10}$"
-                                           maxlength="10"
-                                           class="form-control{{ $errors->has('phone.contact.number') ? ' is-invalid' : '' }}"
+                                           oninput="mask_phones()"
+                                           pattern="{{config('site.phone.pattern')}}"
+                                           maxlength="{{config('site.phone.maxlength')}}"
+                                           title="{{config('site.phone.format')}}"
+                                           data-mask="{{config('site.phone.mask')}}"
+                                           class="phone-mask form-control{{ $errors->has('phone.contact.number') ? ' is-invalid' : (old('phone.contact.number') ? ' is-valid' : '') }}"
                                            placeholder="@lang('site::phone.placeholder.number')"
                                            value="{{ old('phone.contact.number') }}">
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('phone.contact.number') }}</strong>
-                                    </span>
-                                    <small id="contact_phone_numberHelp" class="mb-4 form-text text-success">
-                                        @lang('site::phone.help.number')
-                                    </small>
+                                    <span class="invalid-feedback">{{ $errors->first('phone.contact.number') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -158,7 +165,7 @@
                                    required
                                    name="contragent[name]"
                                    id="contragent_name"
-                                   class="form-control{{ $errors->has('contragent.name') ? ' is-invalid' : '' }}"
+                                   class="form-control{{ $errors->has('contragent.name') ? ' is-invalid' : (old('contragent.name') ? ' is-valid' : '') }}"
                                    placeholder="@lang('site::contragent.placeholder.name')"
                                    value="{{ old('contragent.name') }}">
                             <span class="invalid-feedback">{{ $errors->first('contragent.name') }}</span>
@@ -193,35 +200,73 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-row required">
-                                <div class="col mb-3">
-                                    <label class="control-label"
-                                           for="contragent_nds">@lang('site::contragent.nds')</label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-row required">
+                                        <div class="col mb-3">
+                                            <label class="control-label"
+                                                   for="contragent_nds">@lang('site::contragent.nds')</label>
 
-                                    <div class="custom-control custom-radio">
-                                        <input class="custom-control-input
+                                            <div class="custom-control custom-radio">
+                                                <input class="custom-control-input
                                             {{$errors->has('contragent.nds') ? ' is-invalid' : ''}}"
-                                               type="radio"
-                                               name="contragent[nds]"
-                                               required
-                                               @if(old('contragent.nds') == 1) checked @endif
-                                               id="contragent_nds_1"
-                                               value="1">
-                                        <label class="custom-control-label"
-                                               for="contragent_nds_1">@lang('site::messages.yes')</label>
+                                                       type="radio"
+                                                       name="contragent[nds]"
+                                                       required
+                                                       @if(old('contragent.nds') == 1) checked @endif
+                                                       id="contragent_nds_1"
+                                                       value="1">
+                                                <label class="custom-control-label"
+                                                       for="contragent_nds_1">@lang('site::messages.yes')</label>
+                                            </div>
+                                            <div class="custom-control custom-radio">
+                                                <input class="custom-control-input
+                                            {{$errors->has('contragent.nds') ? ' is-invalid' : ''}}"
+                                                       type="radio"
+                                                       name="contragent[nds]"
+
+                                                       @if(old('contragent.nds') == 0) checked @endif
+                                                       id="contragent_nds_0"
+                                                       value="0">
+                                                <label class="custom-control-label"
+                                                       for="contragent_nds_0">@lang('site::messages.no')</label>
+                                                <span class="invalid-feedback">{{ $errors->first('contragent.nds') }}</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="custom-control custom-radio">
-                                        <input class="custom-control-input
-                                            {{$errors->has('contragent.nds') ? ' is-invalid' : ''}}"
-                                               type="radio"
-                                               name="contragent[nds]"
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-row required">
+                                        <div class="col mb-3">
+                                            <label class="control-label"
+                                                   for="contragent_nds_act">@lang('site::contragent.nds_act')</label>
 
-                                               @if(old('contragent.nds') == 0) checked @endif
-                                               id="contragent_nds_0"
-                                               value="0">
-                                        <label class="custom-control-label"
-                                               for="contragent_nds_0">@lang('site::messages.no')</label>
-                                        <span class="invalid-feedback">{{ $errors->first('contragent.nds') }}</span>
+                                            <div class="custom-control custom-radio">
+                                                <input class="custom-control-input
+                                                        {{$errors->has('contragent.nds_act') ? ' is-invalid' : ''}}"
+                                                       type="radio"
+                                                       name="contragent[nds_act]"
+                                                       required
+                                                       @if(old('contragent.nds_act') == 1) checked @endif
+                                                       id="contragent_nds_act_1"
+                                                       value="1">
+                                                <label class="custom-control-label"
+                                                       for="contragent_nds_act_1">@lang('site::messages.yes')</label>
+                                            </div>
+                                            <div class="custom-control custom-radio">
+                                                <input class="custom-control-input
+                                                        {{$errors->has('contragent.nds_act') ? ' is-invalid' : ''}}"
+                                                       type="radio"
+                                                       name="contragent[nds_act]"
+
+                                                       @if(old('contragent.nds_act') == 0) checked @endif
+                                                       id="contragent_nds_act_0"
+                                                       value="0">
+                                                <label class="custom-control-label"
+                                                       for="contragent_nds_act_0">@lang('site::messages.no')</label>
+                                                <span class="invalid-feedback">{{ $errors->first('contragent.nds_act') }}</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -451,7 +496,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-8">
                                     <div class="form-row required">
                                         <div class="col mb-3">
                                             <label class="control-label"
@@ -467,7 +512,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-row">
                                         <div class="col mb-3">
                                             <label class="control-label"
@@ -564,7 +609,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-8">
                                     <div class="form-row required">
                                         <div class="col mb-3">
                                             <label class="control-label"
@@ -580,7 +625,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-row">
                                         <div class="col mb-3">
                                             <label class="control-label"
@@ -669,7 +714,9 @@
                                 </div>
                                 <div class="col-md-9 captcha">
                                     <span>{!! captcha_img('flat') !!}</span>
-                                    <button  data-toggle="tooltip" data-placement="top" title="@lang('site::messages.refresh')" type="button" class="btn btn-outline-secondary" id="captcha-refresh">
+                                    <button data-toggle="tooltip" data-placement="top"
+                                            title="@lang('site::messages.refresh')" type="button"
+                                            class="btn btn-outline-secondary" id="captcha-refresh">
                                         <i class="fa fa-refresh"></i>
                                     </button>
                                 </div>
@@ -681,8 +728,10 @@
                     <div class="form-row required">
                         <div class="col mb-3">
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" required value="1" class="custom-control-input" id="accept">
-                                <label class="custom-control-label" for="accept"><span style="color:red;margin-right: 2px;">*</span>@lang('site::register.accept')</label>
+                                <input type="checkbox" name="accept" required value="1" class="custom-control-input" id="accept">
+                                <label class="custom-control-label" for="accept"><span
+                                            style="color:red;margin-right: 2px;">*</span>@lang('site::register.accept')
+                                </label>
                             </div>
                         </div>
                     </div>

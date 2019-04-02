@@ -313,7 +313,9 @@
                                             required
                                             name="address[legal][country_id]"
                                             id="address_legal_country_id">
-                                        <option value="">@lang('site::messages.select_from_list')</option>
+                                        @if($countries->count() == 0 || $countries->count() > 1)
+                                            <option value="">@lang('site::messages.select_from_list')</option>
+                                        @endif
                                         @foreach($countries as $country)
                                             <option
                                                     @if(old('address.legal.country_id') == $country->id) selected
@@ -336,8 +338,10 @@
                                             name="address[legal][region_id]"
                                             required
                                             id="address_legal_region_id">
-                                        <option value="">@lang('site::address.help.select_country')</option>
-                                        @foreach($address_legal_regions as $region)
+                                        @if($regions->count() == 0 || $regions->count() > 1)
+                                            <option value="">@lang('site::messages.select_from_list')</option>
+                                        @endif
+                                        @foreach($regions as $region)
                                             <option
                                                     @if(old('address.legal.region_id') == $region->id) selected
                                                     @endif
@@ -381,9 +385,9 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="row required">
+                            <div class="row ">
                                 <div class="col-md-6">
-                                    <div class="form-row ">
+                                    <div class="form-row required">
                                         <div class="col mb-3">
                                             <label class="control-label"
                                                    for="address_legal_building">@lang('site::address.building')</label>
@@ -439,7 +443,9 @@
                                             data-regions="#address_postal_region_id"
                                             data-empty="@lang('site::messages.select_from_list')"
                                             id="address_postal_country_id">
-                                        <option value="">@lang('site::messages.select_from_list')</option>
+                                        @if($countries->count() == 0 || $countries->count() > 1)
+                                            <option value="">@lang('site::messages.select_from_list')</option>
+                                        @endif
                                         @foreach($countries as $country)
                                             <option
                                                     @if(old('address.postal.country_id') == $country->id) selected
@@ -462,8 +468,10 @@
                                             name="address[postal][region_id]"
                                             required
                                             id="address_postal_region_id">
-                                        <option value="">@lang('site::address.help.select_country')</option>
-                                        @foreach($address_postal_regions as $region)
+                                        @if($regions->count() == 0 || $regions->count() > 1)
+                                            <option value="">@lang('site::messages.select_from_list')</option>
+                                        @endif
+                                        @foreach($regions as $region)
                                             <option
                                                     @if(old('address.postal.region_id') == $region->id) selected
                                                     @endif

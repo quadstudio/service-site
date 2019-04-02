@@ -65,8 +65,6 @@ class AuthorizationController extends Controller
         return view('site::admin.authorization.show', compact(
             'authorization',
             'statuses',
-            'messages',
-            'route',
             'authorization_accepts',
             'authorization_roles',
             'authorization_types'

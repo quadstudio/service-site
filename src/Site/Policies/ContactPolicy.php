@@ -42,6 +42,11 @@ class ContactPolicy
         return $user->id == $contact->getAttribute('user_id');
     }
 
+    public function phone(User $user, Contact $contact)
+    {
+        return $this->belongsUser($user, $contact);
+    }
+
     /**
      * Determine whether the user can create contacts.
      *
@@ -74,7 +79,7 @@ class ContactPolicy
      */
     public function delete(User $user, Contact $contact)
     {
-        return $user->hasPermission('contacts') && $this->belongsUser($user, $contact) && in_array($contact->getAttribute('type_id'), [2,3,4]);
+        return $user->hasPermission('contacts') && $this->belongsUser($user, $contact) && $contact->type->getAttribute('enabled') == 1;
     }
 
 }

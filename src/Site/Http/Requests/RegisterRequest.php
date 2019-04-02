@@ -46,19 +46,7 @@ class RegisterRequest extends FormRequest
                     'contact.position'          => 'max:255',
                     //
                     'phone.contact.country_id'  => 'required|exists:countries,id',
-                    'phone.contact.number'      => array(
-                        'required',
-                        'numeric',
-                        function ($attribute, $value, $fail) {
-
-                            if ($this->input('phone.contact.country_id') == 643 && strlen($value) != 10) {
-                                return $fail(trans('site::phone.error.length_10'));
-                            }
-                            if ($this->input('phone.contact.country_id') == 112 && strlen($value) != 9) {
-                                return $fail(trans('site::phone.error.length_9'));
-                            }
-                        }
-                    ),
+                    'phone.contact.number'      => 'required|string|size:' . config('site.phone.maxlength'),
                     'phone.contact.extra'       => 'max:20',
 
                     //
@@ -152,6 +140,7 @@ class RegisterRequest extends FormRequest
                     ),
                     'contragent.bank'           => 'required|string|max:255',
                     'contragent.nds'            => 'required|boolean',
+                    'contragent.nds_act'        => 'required|boolean',
                     //
 
                 ];
@@ -190,6 +179,7 @@ class RegisterRequest extends FormRequest
     public function attributes()
     {
         return [
+            'accept'                    => trans('site::register.help.accept'),
             'name'                      => trans('site::user.name'),
             'email'                     => trans('site::user.email'),
             'password'                  => trans('site::user.password'),
@@ -220,6 +210,7 @@ class RegisterRequest extends FormRequest
             'contragent.bik'            => trans('site::contragent.bik'),
             'contragent.bank'           => trans('site::contragent.bank'),
             'contragent.nds'            => trans('site::contragent.nds'),
+            'contragent.nds_act'        => trans('site::contragent.nds_act'),
             //
 //            'address.sc.name'           => trans('site::address.name'),
 //            'address.sc.country_id'     => trans('site::address.country_id'),

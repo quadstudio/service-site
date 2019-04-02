@@ -29,7 +29,7 @@
             </a>
 
         </div>
-        @include('site::message.create')
+        @include('site::message.create', ['messagable' => $mounting])
         <div class="card mb-2">
             <div class="card-body">
                 <h5 class="card-title">@lang('site::mounting.header.mounting')</h5>
