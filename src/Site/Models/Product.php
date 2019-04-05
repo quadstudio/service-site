@@ -3,7 +3,6 @@
 namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use QuadStudio\Service\Site\Contracts\Imageable;
 use QuadStudio\Service\Site\Facades\Site;
@@ -46,6 +45,24 @@ class Product extends Model implements Imageable
     public function type()
     {
         return $this->belongsTo(ProductType::class);
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param null $product_id
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeMounted($query, $product_id = null)
+    {
+        $query
+            ->whereNotNull('sku')
+            ->where('enabled', 1)
+            ->where('type_id', 1);
+        if (!is_null($product_id)) {
+            $query->where('id', $product_id);
+        }
+
+        return $query;
     }
 
     /**
@@ -201,7 +218,7 @@ class Product extends Model implements Imageable
     }
 
     /**
-     * Премия за отчет по мнтажу
+     * Премия за отчет по монтажу
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */

@@ -75,10 +75,11 @@ trait RegisterControllerTrait
         /** @var $contragent Contragent */
         $user->contragents()->save($contragent = Contragent::create($request->input('contragent')));
         $contragent->addresses()->saveMany([
-            Address::create($request->input('address.legal')),
-            Address::create($request->input('address.postal')),
+            $legal = Address::query()->create($request->input('address.legal')),
+            Address::query()->create($request->input('address.postal')),
         ]);
         $user->attachRole(config('site.defaults.user.role_id', 2));
+        $user->update(['region_id' => $legal->getAttribute('region_id')]);
 
         event(new Registered($user));
 

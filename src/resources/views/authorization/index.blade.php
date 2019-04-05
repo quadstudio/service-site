@@ -19,6 +19,37 @@
                 <span>@lang('site::messages.back_home')</span>
             </a>
         </div>
+        <div class="card mb-2">
+            <div class="card-body">
+                <h5 class="card-title">@lang('site::authorization.authorizations')</h5>
+                <table class="table bg-white table-sm table-bordered">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col"></th>
+                        @foreach($authorization_roles as $authorization_role)
+                            <th class="text-center" scope="col">{{$authorization_role->name}}</th>
+                        @endforeach
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($authorization_types as $authorization_type)
+                        <tr>
+                            <td class="text-right">{{$authorization_type->name}} {{$authorization_type->brand->name}}</td>
+                            @foreach($authorization_roles as $authorization_role)
+                                <td class="text-center">
+                                    @if($authorization_accepts->contains(function ($accept) use ($authorization_role, $authorization_type) {
+                                        return $accept->type_id == $authorization_type->id && $accept->role_id == $authorization_role->role_id;
+                                    }))
+                                        <span class="badge text-normal badge-success"><i class="fa fa-check"></i></span>
+                                    @endif
+                                </td>
+                            @endforeach
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <div class="card my-2">
             <div class="card-body">
                 <h5 class="card-title">@lang('site::authorization.request.title')</h5>

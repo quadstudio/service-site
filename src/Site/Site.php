@@ -293,6 +293,7 @@ class Site
                                 '\QuadStudio\Service\Site\Http\Controllers\OrderController@message')
                                 ->middleware('permission:messages')
                                 ->name('orders.message');
+
                             //
                             //
                             $router->resource('/acts', 'ActController')->middleware('permission:acts');
@@ -357,6 +358,10 @@ class Site
                                 $router->name('admin')->post('/repairs/{repair}/message',
                                     '\QuadStudio\Service\Site\Http\Controllers\Admin\RepairController@message')
                                     ->name('.repairs.message');
+                                // Бонусы за монтаж
+                                $router->name('admin')->resource('/mounting-bonuses',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\MountingBonusController')
+                                    ->except(['show']);
                                 //
                                 //
                                 //

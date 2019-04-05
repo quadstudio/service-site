@@ -4,6 +4,7 @@ namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -187,13 +188,23 @@ class User extends Authenticatable implements Addressable
         return $this->belongsTo(Currency::class);
     }
 
+    /**
+     * @return Collection
+     */
     public function storehouses()
     {
-        if ($this->hasRole('gendistr')) {
-            return User::query()->find(1)->addresses()->where('type_id', 6)->get();
+        if ($this->hasRole(config('site.storehouse_check', []))) {
+
+            return User::query()
+                ->find(config('site.receiver_id'))
+                ->addresses()
+                ->where('type_id', 6)
+                ->get();
         }
 
-        return $this->region->storehouses;
+        return $this->region->storehouses->filter(function ($address) {
+            return $address->addressable->hasRole(config('site.storehouse_check', []));
+        });
     }
 
     /**

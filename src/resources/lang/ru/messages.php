@@ -90,8 +90,9 @@ return [
     'created_at'       => 'Дата создания',
     'updated_at'       => 'Дата обновления',
     'status_1c'        => 'Статус 1С',
-    'date_from'       => 'С...',
-    'date_to'         => 'По...',
+    'did_not_come'     => 'Не заходил',
+    'date_from'        => 'С...',
+    'date_to'          => 'По...',
     'symbol'           => [
         '\t'   => '[ ___ ] Табуляция',
         '\s'   => '[ &nbsp;&nbsp;&nbsp; ] Пробел',

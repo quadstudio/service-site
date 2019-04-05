@@ -19,6 +19,7 @@ return [
     'guid'             => 'Код 1С',
 
     'distributor'        => 'Входящий заказ',
+    'distributor_icon'   => 'download',
     'distributors'       => 'Входящие заказы',
     'items'              => 'Содержимое заказа',
     'items_count'        => 'Товаров в заказе',
@@ -34,6 +35,7 @@ return [
     'search_placeholder' => 'Поиск по товарам...',
     'placeholder'        => [
         'search_sc'        => 'Поиск СЦ',
+        'search_id'        => 'Поиск по № заказа',
         'contacts_comment' => 'Имя, телефон'
     ],
     'help'               => [

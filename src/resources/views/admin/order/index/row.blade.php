@@ -12,7 +12,7 @@
                 </div>
                 <div class="col-6 col-md-3 col-xl-4">
                     <a href="{{route('admin.users.show', $order->user)}}">{{$order->user->name}}</a>
-                    <div class="text-muted">{{ $order->user->address()->region->name }} / {{ $order->user->address()->locality }}</div>
+                    <div class="text-muted">{{ $order->user->address()->region->name }} / {{ $order->user->address()->locality }} {{ $order->address->name }}</div>
                 </div>
                 <div class="col-12 col-md-6 col-xl-4 text-right">
                     <div class="d-block">@lang('site::order.total'):</div>

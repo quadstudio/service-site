@@ -3,6 +3,8 @@
 namespace QuadStudio\Service\Site\Repositories;
 
 use QuadStudio\Repo\Eloquent\Repository;
+use QuadStudio\Service\Site\Filters\Order\OrderAddressSelectFilter;
+use QuadStudio\Service\Site\Filters\Order\OrderIdSearchFilter;
 use QuadStudio\Service\Site\Filters\Order\OrderStatusFilter;
 use QuadStudio\Service\Site\Filters\OrderSearchFilter;
 
@@ -29,6 +31,7 @@ class OrderRepository extends Repository
         return [
             OrderSortFilter::class,
             OrderStatusFilter::class,
+            OrderIdSearchFilter::class,
             OrderSearchFilter::class,
         ];
     }

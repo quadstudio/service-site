@@ -58,19 +58,11 @@
 
                     <div class="form-group required">
                         <label class="control-label"
-                               for="type_id">@lang('site::address.type_id')</label>
-                        <select class="form-control{{  $errors->has('address.type_id') ? ' is-invalid' : '' }}"
-                                required
-                                name="address[type_id]"
-                                id="type_id">
-                            @if($types->count() == 0 || $types->count() > 1)
-                                <option value="">@lang('site::messages.select_from_list')</option>
-                            @endif
-                            @foreach($types as $type)
-                                <option @if(old('address.type_id',$address->type_id) == $type->id) selected
-                                        @endif
-                                        value="{{ $type->id }}">{{ $type->name }}</option>
-                            @endforeach
+                               for="address_type_id">@lang('site::address.type_id')</label>
+                        <select required
+                                id="address_type_id"
+                                class="form-control{{  $errors->has('address.type_id') ? ' is-invalid' : '' }}">
+                                <option value="{{ $address->type_id }}">{{  $address->type->name }}</option>
                         </select>
                         <span class="invalid-feedback">{{ $errors->first('address.type_id') }}</span>
                     </div>
@@ -188,10 +180,11 @@
 
                     <hr/>
 
-                    <div class="form-row">
+                    <div class="form-row @if(old('address.type_id', $address->type_id) == 6) required @endif">
                         <div class="col mb-3">
                             <label class="control-label" for="email">@lang('site::address.email')</label>
                             <input type="email"
+                                   @if(old('address.type_id', $address->type_id) == 6) required @endif
                                    name="address[email]"
                                    id="address_email"
                                    class="form-control{{ $errors->has('address.email') ? ' is-invalid' : '' }}"
@@ -200,10 +193,11 @@
                             <span class="invalid-feedback">{{ $errors->first('address.email') }}</span>
                         </div>
                     </div>
-		   <div class="form-row">
+		            <div class="form-row @if(old('address.type_id', $address->type_id) == 5) required @endif">
                         <div class="col mb-3">
                             <label class="control-label" for="email">@lang('site::address.web')</label>
                             <input type="text"
+                                   @if(old('address.type_id', $address->type_id) == 5) required @endif
                                    name="address[web]"
                                    id="address_web"
                                    class="form-control{{ $errors->has('address.web') ? ' is-invalid' : '' }}"

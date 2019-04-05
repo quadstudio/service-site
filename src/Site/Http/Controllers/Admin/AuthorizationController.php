@@ -30,7 +30,6 @@ class AuthorizationController extends Controller
      */
     public function __construct(AuthorizationRepository $authorizations)
     {
-
         $this->authorizations = $authorizations;
     }
 
@@ -59,8 +58,6 @@ class AuthorizationController extends Controller
         $authorization_accepts = $authorization->user->authorization_accepts()->get();
         $authorization_roles = AuthorizationRole::query()->get();
         $authorization_types = AuthorizationType::query()->where('enabled', 1)->get();
-        $messages = $authorization->messages;
-        $route = route('admin.authorizations.message', $authorization);
 
         return view('site::admin.authorization.show', compact(
             'authorization',

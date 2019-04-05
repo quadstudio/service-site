@@ -26,7 +26,7 @@ class OrderExcel extends Excel
 
         $this->_sheet = $this->getActiveSheet();
         $this->_sheet->setTitle(trans('site::order.distributor'));
-        $this->_sheet->getStyle('B6')->getAlignment()->setWrapText(true);
+        $this->_sheet->getStyle('B8')->getAlignment()->setWrapText(true);
 
         foreach (trans('site::order.excel') as $cell => $value) {
             $this->_sheet->setCellValue($cell, $value);
@@ -41,12 +41,14 @@ class OrderExcel extends Excel
             ->setCellValue('B1', $order->getAttribute('id'))
             ->setCellValue('B3', $order->contragent->name)
             ->setCellValue('B4', $order->user->name)
-            ->setCellValue('B5', $order->address->name)
-            ->setCellValue('B6', $order->messages->implode('text', "\n\n"));
+            ->setCellValue('B5', $order->user->email)
+            ->setCellValue('B6', $order->contacts_comment)
+            ->setCellValue('B7', $order->address->name)
+            ->setCellValue('B8', $order->messages->implode('text', "\n\n"));
         /** @var Message $message */
 
 
-        $count = 9;
+        $count = 11;
         /**
          * @var int $key
          * @var OrderItem $item

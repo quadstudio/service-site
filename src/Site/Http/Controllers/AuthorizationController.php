@@ -3,11 +3,13 @@
 namespace QuadStudio\Service\Site\Http\Controllers;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use QuadStudio\Rbac\Models\Role;
 use QuadStudio\Service\Site\Concerns\StoreMessages;
 use QuadStudio\Service\Site\Events\AuthorizationCreateEvent;
+use QuadStudio\Service\Site\Filters\BelongsUserFilter;
 use QuadStudio\Service\Site\Http\Requests\AuthorizationRequest;
 use QuadStudio\Service\Site\Http\Requests\MessageRequest;
 use QuadStudio\Service\Site\Models\Authorization;
@@ -30,19 +32,26 @@ class AuthorizationController extends Controller
      */
     public function __construct(AuthorizationRepository $authorizations)
     {
-
         $this->authorizations = $authorizations;
     }
 
     /**
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $authorization_roles = AuthorizationRole::query()->get();
+        $this->authorizations->applyFilter(new BelongsUserFilter());
         $authorizations = $this->authorizations->all();
+        $authorization_accepts = $request->user()->authorization_accepts()->get();
+        $authorization_types = AuthorizationType::query()->where('enabled', 1)->get();
 
-        return view('site::authorization.index', compact('authorization_roles', 'authorizations'));
+        return view('site::authorization.index', compact(
+            'authorization_roles',
+            'authorizations',
+            'authorization_accepts',
+            'authorization_types'
+        ));
     }
 
 
@@ -74,11 +83,8 @@ class AuthorizationController extends Controller
     public function store(AuthorizationRequest $request)
     {
 
-        //$request->user()->authorizations()->save($authorization = $this->authorizations->create($request->input('authorization')));
         $authorization = $request->user()->authorizations()->create($request->input('authorization'));
-        //dd($authorization);
         $authorization->attachTypes($request->input('authorization_types', []));
-
         event(new AuthorizationCreateEvent($authorization));
 
         return redirect()->route('authorizations.index')->with('message', trans('site::authorization.created'));

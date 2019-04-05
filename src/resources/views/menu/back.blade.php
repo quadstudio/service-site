@@ -114,9 +114,18 @@
                         <a class="dropdown-item" href="{{ route('home') }}">
                             <i class="fa fa-desktop"></i> @lang('site::messages.home')
                         </a>
-
-                        @permission('repairs')
+                        @permission('orders')
                         <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ route('orders.index') }}"><i
+                                    class="fa fa-@lang('site::order.icon')"></i> @lang('site::order.orders')
+                        </a>
+                        @endpermission
+                        @permission('distributors')
+                        <a class="dropdown-item" href="{{ route('distributors.index') }}"><i
+                                    class="fa fa-@lang('site::order.distributor_icon')"></i> @lang('site::order.distributors')
+                        </a>
+                        @endpermission
+                        @permission('repairs')
                         <a class="dropdown-item" href="{{ route('repairs.index') }}"><i
                                     class="fa fa-@lang('site::repair.icon')"></i> @lang('site::repair.repairs')
                         </a>
@@ -139,12 +148,6 @@
                         @permission('messages')
                         <a class="dropdown-item" href="{{ route('messages.index') }}"><i
                                     class="fa fa-@lang('site::message.icon')"></i> @lang('site::message.messages')
-                        </a>
-                        @endpermission
-                        @permission('orders')
-
-                        <a class="dropdown-item" href="{{ route('orders.index') }}"><i
-                                    class="fa fa-@lang('site::order.icon')"></i> @lang('site::order.orders')
                         </a>
                         @endpermission
                         @permission('engineers')

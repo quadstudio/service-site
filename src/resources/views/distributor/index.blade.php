@@ -29,16 +29,19 @@
             <div class="card my-4" id="order-{{$order->id}}">
 
                 <div class="card-header with-elements">
+				
                     <div class="card-header-elements">
+					<a href="{{route('distributors.show', $order)}}" class="mr-3">
+                            @lang('site::order.header.order') № {{$order->id}}
+                        </a>
                         <span class="badge text-normal badge-pill badge-{{ $order->status->color }}">
                             <i class="fa fa-{{ $order->status->icon }}"></i> {{ $order->status->name }}
                         </span>
-                        <a href="{{route('distributors.show', $order)}}" class="mr-3">
-                            @lang('site::order.header.order') № {{$order->id}}
-                        </a>
+                        
                     </div>
 
                     <div class="card-header-elements ml-md-auto">
+					
                         @if( $order->messages()->exists())
                             <span class="badge badge-secondary text-normal badge-pill">
                                 <i class="fa fa-comment"></i> {{ $order->messages()->count() }}
@@ -51,13 +54,14 @@
                         <dl class="dl-horizontal mt-2">
                             <dt class="col-12">@lang('site::messages.created_at')</dt>
                             <dd class="col-12">{{$order->created_at->format('d.m.Y H:i')}}</dd>
+                            
 
                         </dl>
                     </div>
-                    <div class="col-xl-4 col-sm-6">
+                    <div class="col-xl-3 col-sm-5">
                         <dl class="dl-horizontal mt-2">
-                            <dt class="col-12">@lang('site::order.address_id')</dt>
-                            <dd class="col-12">{{ $order->address->name }}</dd>
+                            <dt class="col-12">@lang('site::order.client')</dt>
+                            <dd class="col-12"><img id="user-logo" src="{{$order->user->logo}}" style="width:25px!important;height: 25px" class="rounded-circle mr-2">{{$order->user->name}}</dd>
                             {{--<dt class="col-12">@lang('site::order.user_id')</dt>--}}
                             {{--<dd class="col-12">--}}
                                 {{--<img id="user-logo"--}}
@@ -84,22 +88,20 @@
                             </dd>
                         </dl>
                     </div>
-                    <div class="col-xl-2 col-sm-6">
+                    <div class="col-xl-3 col-sm-6">
                         <dl class="dl-horizontal mt-2">
                             <dt class="col-12">@lang('site::order.total')</dt>
                             <dd class="col-12">
                                 {{number_format($order->total(), 0, '.', ' ')}}
-                                {{ $order->user->currency->symbol_right }}
+                                {{ $order->user->currency->symbol_right }} <br />
+								{{ $order->address->name }}
                             </dd>
                         </dl>
                     </div>
                 </div>
                 <div class="card-footer py-1">
 
-                    <img id="user-logo"
-                         src="{{$order->user->logo}}"
-                         style="width:25px!important;height: 25px"
-                         class="rounded-circle mr-2">{{$order->user->name}}
+                    
 
                 </div>
             </div>

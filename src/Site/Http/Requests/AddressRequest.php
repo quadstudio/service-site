@@ -28,46 +28,35 @@ class AddressRequest extends FormRequest
 
             case 'POST': {
                 return [
-                    'address.type_id'      => 'required|exists:address_types,id',
-                    'address.name'         => 'required_if:address.type_id,2,5,6|max:255',
-                    'address.country_id'   => 'required|exists:countries,id',
-                    'address.region_id'    => 'sometimes|exists:regions,id',
-                    'address.locality'     => 'required|string|max:255',
-                    'address.street'       => 'sometimes|max:255',
-                    'address.building'     => 'sometimes|max:255',
-                    'address.apartment'    => 'sometimes|max:255',
-                    'address.email' => 'sometimes|nullable|email',
+                    'address.type_id'    => 'required|exists:address_types,id',
+                    'address.name'       => 'required_if:address.type_id,2,5,6|max:255',
+                    'address.country_id' => 'required|exists:countries,id',
+                    'address.region_id'  => 'sometimes|exists:regions,id',
+                    'address.locality'   => 'required|string|max:255',
+                    'address.street'     => 'sometimes|max:255',
+                    'address.building'   => 'sometimes|max:255',
+                    'address.apartment'  => 'sometimes|max:255',
+                    'address.email'      => 'required_if:address.type_id,6|email',
+                    'address.web'        => 'required_if:address.type_id,5|max:255',
                     //
-                    'phone.country_id'     => 'required|exists:countries,id',
-                    'phone.number'         => array(
-                        'required',
-                        'numeric',
-                        function ($attribute, $value, $fail) {
-
-                            if ($this->input('phone.country_id') == 643 && strlen($value) != 10) {
-                                return $fail(trans('site::phone.error.length_10'));
-                            }
-                            if ($this->input('phone.country_id') == 112 && strlen($value) != 9) {
-                                return $fail(trans('site::phone.error.length_9'));
-                            }
-                        }
-                    ),
-                    'phone.extra'          => 'max:20',
+                    'phone.country_id'   => 'required|exists:countries,id',
+                    'phone.number'       => 'required|string|size:' . config('site.phone.maxlength'),
+                    'phone.extra'        => 'max:20',
                 ];
             }
             case 'PUT':
             case 'PATCH': {
                 return [
-                    'address.type_id'      => 'required|exists:address_types,id',
-                    'address.name'         => 'required_if:address.type_id,2|max:255',
-                    'address.country_id'   => 'required|exists:countries,id',
-                    'address.region_id'    => 'sometimes|exists:regions,id',
-                    'address.locality'     => 'required|string|max:255',
-                    'address.street'       => 'sometimes|max:255',
-                    'address.building'     => 'sometimes|max:255',
-                    'address.apartment'    => 'sometimes|max:255',
-                    'address.sort_order'   => 'numeric|min:0|max:200',
-                    'address.email' => 'sometimes|email',
+                    'address.name'       => 'required_if:address.type_id,2|max:255',
+                    'address.country_id' => 'required|exists:countries,id',
+                    'address.region_id'  => 'sometimes|exists:regions,id',
+                    'address.locality'   => 'required|string|max:255',
+                    'address.street'     => 'sometimes|max:255',
+                    'address.building'   => 'sometimes|max:255',
+                    'address.apartment'  => 'sometimes|max:255',
+                    'address.sort_order' => 'numeric|min:0|max:200',
+                    'address.email'      => 'required_if:address.type_id,6|email',
+                    'address.web'        => 'required_if:address.type_id,5|max:255',
                 ];
             }
             default:
@@ -82,7 +71,10 @@ class AddressRequest extends FormRequest
      */
     public function messages()
     {
-        return [];
+        return [
+            'address.email.required_if' => trans('site::address.error.required_if.email'),
+            'address.web.required_if'   => trans('site::address.error.required_if.web'),
+        ];
     }
 
     /**
@@ -94,20 +86,21 @@ class AddressRequest extends FormRequest
     {
         return [
             //
-            'address.type_id'      => trans('site::address.type_id'),
-            'address.name'         => trans('site::address.name'),
-            'address.country_id'   => trans('site::address.country_id'),
-            'address.region_id'    => trans('site::address.region_id'),
-            'address.locality'     => trans('site::address.locality'),
-            'address.street'       => trans('site::address.street'),
-            'address.building'     => trans('site::address.building'),
-            'address.apartment'    => trans('site::address.apartment'),
-            'address.sort_order'   => trans('site::address.sort_order'),
-            'address.email' => trans('site::address.email'),
+            'address.type_id'    => trans('site::address.type_id'),
+            'address.name'       => trans('site::address.name'),
+            'address.country_id' => trans('site::address.country_id'),
+            'address.region_id'  => trans('site::address.region_id'),
+            'address.locality'   => trans('site::address.locality'),
+            'address.street'     => trans('site::address.street'),
+            'address.building'   => trans('site::address.building'),
+            'address.apartment'  => trans('site::address.apartment'),
+            'address.sort_order' => trans('site::address.sort_order'),
+            'address.email'      => trans('site::address.email'),
+            'address.web'        => trans('site::address.web'),
             //
-            'phone.country_id'     => trans('site::phone.country_id'),
-            'phone.number'         => trans('site::phone.number'),
-            'phone.extra'          => trans('site::phone.extra'),
+            'phone.country_id'   => trans('site::phone.country_id'),
+            'phone.number'       => trans('site::phone.number'),
+            'phone.extra'        => trans('site::phone.extra'),
         ];
     }
 }

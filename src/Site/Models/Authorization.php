@@ -71,6 +71,10 @@ class Authorization extends Model implements Messagable
                     ]);
                 }
                 $this->user->authorization_accepts()->saveMany($accepts);
+
+                if (!$this->user->roles->contains('id', $this->getAttribute('role_id'))) {
+                    $this->user->attachRole($this->getAttribute('role_id'));
+                }
             }
         }
     }

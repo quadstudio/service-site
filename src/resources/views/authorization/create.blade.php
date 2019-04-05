@@ -125,7 +125,9 @@
 
             function manageCheck(selectors) {
                 for (i = 0; i < selectors.length; ++i) {
-                    selectors[i].checked = event.target.checked;
+                    if(!selectors[i].disabled){
+                        selectors[i].checked = event.target.checked;
+                    }
                 }
             }
         });

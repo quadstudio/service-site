@@ -3,6 +3,7 @@
 namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 
 use QuadStudio\Service\Site\Filters\Equipment\SortByNameFilter;
+use QuadStudio\Service\Site\Filters\Product\ProductHasMountingBonusFilter;
 use QuadStudio\Service\Site\Filters\Product\TypeAdminFilter;
 use QuadStudio\Service\Site\Http\Requests\Admin\ProductAnalogRequest;
 use QuadStudio\Service\Site\Http\Requests\Admin\ProductRelationRequest;
@@ -57,6 +58,7 @@ trait ProductControllerTrait
 
         $this->products->trackFilter();
         $this->products->pushTrackFilter(TypeAdminFilter::class);
+        $this->products->pushTrackFilter(ProductHasMountingBonusFilter::class);
 
         return view('site::admin.product.index', [
             'repository' => $this->products,

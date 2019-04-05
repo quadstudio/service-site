@@ -39,11 +39,16 @@ class OrderListener
         // Отправка администратору письма об оформлении нового заказа
         Mail::to(env('MAIL_TO_ADDRESS'))->send(new AdminOrderCreateEmail($event->order));
 
-        // Отправка пользователю письма об оформлении нового заказа
-        Mail::to($event->order->user->email)->send(new UserOrderCreateEmail($event->order));
+        if($event->order->user->email){
+            // Отправка пользователю письма об оформлении нового заказа
+            Mail::to($event->order->user->email)->send(new UserOrderCreateEmail($event->order));
+        }
 
-        // Отправка на email склада дистрибьютора письма об оформлении нового заказа
-        Mail::to($event->order->address->email)->send(new UserOrderCreateEmail($event->order));
+        if($event->order->address->email){
+            // Отправка на email склада дистрибьютора письма об оформлении нового заказа
+            Mail::to($event->order->address->email)->send(new UserOrderCreateEmail($event->order));
+        }
+
     }
 
     /**

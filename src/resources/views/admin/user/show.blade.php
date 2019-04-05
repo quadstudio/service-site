@@ -106,7 +106,7 @@
                         </div>
                         <div class="mb-2">
                             <span class="text-muted">@lang('site::user.logged_at')
-                                :</span>&nbsp;&nbsp;{{ $user->logged_at->format('d.m.Y H:i') }}
+                                :</span>&nbsp;&nbsp;{{ $user->logged_at ? $user->logged_at->format('d.m.Y H:i') : trans('site::messages.did_not_come') }}
                         </div>
 
                         <div class="my-2">

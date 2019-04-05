@@ -11,7 +11,6 @@
         <h1 class="header-title mb-4"><i class="fa fa-desktop"></i> @lang('site::messages.home')</h1>
         <div class="row">
             <div class="col-xl-4">
-                <!-- Side info -->
                 <div class="card mb-4">
                     <div class="card-body">
                         <div class="media">
@@ -19,37 +18,17 @@
                                  class="rounded-circle">
                             <div class="media-body pt-2 ml-3">
                                 <h5 class="mb-2">{{ $user->name }}</h5>
-                                {{--<div class="text-muted small">{{ $user->type->name }}</div>--}}
-
-                                {{--<div class="mt-2">--}}
-                                {{--<a href="javascript:void(0)" class="text-twitter">--}}
-                                {{--<span class="ion ion-logo-twitter"></span>--}}
-                                {{--</a>--}}
-                                {{--&nbsp;&nbsp;--}}
-                                {{--<a href="javascript:void(0)" class="text-facebook">--}}
-                                {{--<span class="ion ion-logo-facebook"></span>--}}
-                                {{--</a>--}}
-                                {{--&nbsp;&nbsp;--}}
-                                {{--<a href="javascript:void(0)" class="text-instagram">--}}
-                                {{--<span class="ion ion-logo-instagram"></span>--}}
-                                {{--</a>--}}
-                                {{--</div>--}}
-
                                 <div class="mt-3">
-                                    {{--<a href="javascript:void(0)" class="btn btn-ferroli btn-sm btn-round">Сменить--}}
-                                    {{--логотип</a>--}}
                                     <form action="{{route('home.logo')}}" method="post" enctype="multipart/form-data">
                                         <div class="form-group">
-                                            <label class="btn btn-ferroli btn-sm control-label" for="change-user-logo">Сменить
-                                                логотип</label>
+                                            <label class="btn btn-ferroli btn-sm control-label" for="change-user-logo">
+                                                @lang('site::messages.change') @lang('site::user.help.logo')
+                                            </label>
                                             <input accept="image/jpeg" name="path" type="file"
                                                    class="d-none form-control-file" id="change-user-logo">
                                             <input type="hidden" name="storage" value="logo">
                                         </div>
                                     </form>
-                                    {{--<a href="javascript:void(0)" class="btn icon-btn btn-default btn-sm md-btn-flat btn-round">--}}
-                                    {{--<span class="ion ion-md-mail"></span>--}}
-                                    {{--</a>--}}
                                 </div>
                             </div>
                         </div>
@@ -60,23 +39,10 @@
                             <span class="text-muted">@lang('site::user.created_at')
                                 :</span>&nbsp;&nbsp;{{ $user->created_at->format('d.m.Y H:i') }}
                         </div>
-
-                        {{--<div class="mb-2">--}}
-                        {{--<span class="text-muted">@lang('site::address.country_id'):</span>&nbsp;--}}
-                        {{--<span class="text-dark">--}}
-                        {{--<img style="width: 30px;" class="img-fluid border"--}}
-                        {{--src="{{ asset($user->address()->country->flag) }}"--}}
-                        {{--alt=""> {{ $user->address()->country->name }}--}}
-                        {{--</span>--}}
-                        {{--</div>--}}
                         <div class="mb-2">
                             <span class="text-muted">@lang('site::user.email'):</span>&nbsp;
                             <span class="text-dark">{{ $user->email }}</span>
                         </div>
-                        {{--<div class="mb-2">--}}
-                        {{--<span class="text-muted">@lang('site::address.locality'):</span>&nbsp;--}}
-                        {{--<span class="text-dark">{{ $user->address()->locality }}</span>--}}
-                        {{--</div>--}}
                     </div>
                     <div class="list-group list-group-flush">
                         @permission('orders')
@@ -87,6 +53,16 @@
                                 @lang('site::order.orders')
                             </span>
                             <span class="badge text-big @if($user->orders()->exists()) badge-ferroli @else badge-light @endif">{{$user->orders()->count()}}</span>
+                        </a>
+                        @endpermission()
+                        @permission('distributors')
+                        <a href="{{ route('distributors.index') }}"
+                           class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="fa fa-@lang('site::order.distributor_icon')"></i>
+                                @lang('site::order.distributors')
+                            </span>
+                            <span class="badge text-big @if($user->distributors()->exists()) badge-ferroli @else badge-light @endif">{{$user->distributors()->count()}}</span>
                         </a>
                         @endpermission()
                         @permission('repairs')
@@ -147,16 +123,6 @@
                             <span class="badge text-big @if($user->inbox()->exists()) badge-ferroli @else badge-light @endif">
                                 {{$user->inbox()->count()}}
                             </span>
-                        </a>
-                        @endpermission()
-                        @permission('distributors')
-                        <a href="{{ route('distributors.index') }}"
-                           class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                            <span>
-                                <i class="fa fa-@lang('site::order.icon')"></i>
-                                @lang('site::order.distributors')
-                            </span>
-                            <span class="badge text-big @if($user->distributors()->exists()) badge-ferroli @else badge-light @endif">{{$user->distributors()->count()}}</span>
                         </a>
                         @endpermission()
                         @permission('engineers')

@@ -3,6 +3,7 @@
 namespace QuadStudio\Service\Site\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use QuadStudio\Service\Site\Filters\AddressableFilter;
@@ -43,16 +44,17 @@ class AddressController extends Controller
     /**
      * Show the user profile
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('index', Address::class);
         $this->addresses->trackFilter();
         $this->addresses->applyFilter((new AddressableFilter())->setId(Auth::user()->getAuthIdentifier())->setMorph('users'));
         $address_types = AddressType::where('enabled', 1)->get();
 
-        if (Auth::user()->hasRole('gendistr')) {
+        if ($request->user()->hasRole(config('site.storehouse_check', []))) {
             $address_types->push(AddressType::query()->find(6));
         }
 
@@ -72,12 +74,11 @@ class AddressController extends Controller
     public function create(AddressRequest $request, AddressType $address_type)//
     {
         $this->authorize('create', $address_type);
-        $address_types = collect([$address_type]);
         $countries = Country::query()->where('id', config('site.country'))->get();
         $regions = Region::query()->where('country_id', config('site.country'))->orderBy('name')->get();
         $view = $request->ajax() ? 'site::address.form' : 'site::address.create';
 
-        return view($view, compact('countries', 'regions', 'address_types'));
+        return view($view, compact('countries', 'regions', 'address_type'));
     }
 
     /**
@@ -131,19 +132,13 @@ class AddressController extends Controller
     public function edit(Address $address)
     {
         $this->authorize('edit', $address);
-        if ($address->addressable_type == 'contragents') {
-            $types = AddressType::find([1]);
-        } else {
-            $types = AddressType::find([2, 5, 6]);
-        }
-
         $countries = Country::enabled()->orderBy('sort_order')->get();
         $regions = collect([]);
-        if (old('country_id', $address->country_id)) {
+        if (old('address.country_id', $address->country_id)) {
             $regions = Region::where('country_id', old('country_id', $address->country_id))->orderBy('name')->get();
         }
 
-        return view('site::address.edit', compact('address', 'countries', 'regions', 'types'));
+        return view('site::address.edit', compact('address', 'countries', 'regions'));
     }
 
     /**

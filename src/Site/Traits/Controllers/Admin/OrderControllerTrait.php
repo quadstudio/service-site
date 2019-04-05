@@ -6,6 +6,8 @@ namespace QuadStudio\Service\Site\Traits\Controllers\Admin;
 
 //use QuadStudio\Service\Shop\Http\Requests\Order As Request;
 use QuadStudio\Service\Site\Events\OrderScheduleEvent;
+use QuadStudio\Service\Site\Filters\Order\OrderAddressSelectFilter;
+use QuadStudio\Service\Site\Filters\Order\OrderIdSearchFilter;
 use QuadStudio\Service\Site\Filters\Order\ScSearchFilter;
 use QuadStudio\Service\Site\Http\Requests\MessageRequest;
 use QuadStudio\Service\Site\Models\Order;
@@ -38,6 +40,7 @@ trait OrderControllerTrait
     {
         $this->orders->trackFilter();
         $this->orders->pushTrackFilter(ScSearchFilter::class);
+        $this->orders->pushTrackFilter(OrderAddressSelectFilter::class);
         return view('site::admin.order.index', [
             'orders' => $this->orders->paginate(config('site.per_page.order', 8)),
             'repository' => $this->orders,

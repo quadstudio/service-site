@@ -11,6 +11,16 @@ class MountingBonus extends Model
      */
     protected $table;
 
+    protected $fillable = [
+        'product_id', 'value', 'social',
+    ];
+
+    protected $casts = [
+        'product_id' => 'string',
+        'value'      => 'integer',
+        'social'     => 'integer',
+    ];
+
     /**
      * @param array $attributes
      */

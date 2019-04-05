@@ -148,7 +148,15 @@ class Address extends Model
         return $this->belongsTo(Region::class);
     }
 
-
+    /**
+     * Заказы
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 
 
 }

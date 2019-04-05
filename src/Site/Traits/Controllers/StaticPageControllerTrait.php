@@ -54,25 +54,25 @@ trait StaticPageControllerTrait
         return redirect()->route('feedback')->with('success', trans('Сообщение отправлено'));
     }
 
-    /**
-     * Show application index page
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function whereToBuy()
-    {
-        $this->users->trackFilter();
-        $users = $this->users
-            ->applyFilter(new ActiveFilter())
-            ->applyFilter(new DisplayFilter())
-            ->applyFilter(new IsDealerFilter())
-            ->applyFilter(new IsServiceFilter())
-            ->applyFilter(new WithPhonesFilter())
-            ->applyFilter(new WithAddressesFilter())
-            ->pushTrackFilter(SortByRegionFilter::class)
-            ->all(['users.*']);
-
-        return view('site::static.where_to_buy', compact('users'));
-    }
+//    /**
+//     * Show application index page
+//     *
+//     * @return \Illuminate\Http\Response
+//     */
+//    public function whereToBuy()
+//    {
+//        $this->users->trackFilter();
+//        $users = $this->users
+//            ->applyFilter(new ActiveFilter())
+//            ->applyFilter(new DisplayFilter())
+//            ->applyFilter(new IsDealerFilter())
+//            ->applyFilter(new IsServiceFilter())
+//            ->applyFilter(new WithPhonesFilter())
+//            ->applyFilter(new WithAddressesFilter())
+//            ->pushTrackFilter(SortByRegionFilter::class)
+//            ->all(['users.*']);
+//
+//        return view('site::static.where_to_buy', compact('users'));
+//    }
 
 }

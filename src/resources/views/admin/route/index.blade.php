@@ -9,9 +9,9 @@
             <li class="breadcrumb-item">
                 <a href="{{ route('admin') }}">@lang('site::messages.admin')</a>
             </li>
-            <li class="breadcrumb-item active">Маршруты</li>
+            <li class="breadcrumb-item active">@lang('site::route.routes')</li>
         </ol>
-        <h1 class="header-title mb-4">Маршруты</h1>
+        <h1 class="header-title mb-4"><i class="fa fa-@lang('site::route.icon')"></i> @lang('site::route.routes')</h1>
 
         @alert()@endalert
 
@@ -27,9 +27,9 @@
                 <table class="table table-sm">
                     <thead>
                     <tr>
-                        <th>Имя</th>
-                        <th>Обработчик</th>
-                        <th>Префикс</th>
+                        <th>@lang('site::route.name')</th>
+                        <th>@lang('site::route.action_name')</th>
+                        <th>@lang('site::route.prefix')</th>
                     </tr>
                     </thead>
                     <tbody>

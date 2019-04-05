@@ -57,7 +57,6 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
         'EquipmentController.stub'                => 'EquipmentController',
         'CartController.stub'                     => 'CartController',
         'SchemeController.stub'                   => 'SchemeController',
-        'PhoneController.stub'                    => 'PhoneController',
         'CurrencyController.stub'                 => 'CurrencyController',
         'OrderItemController.stub'                => 'OrderItemController',
         'NewsController.stub'                     => 'NewsController',

@@ -10,6 +10,7 @@ use QuadStudio\Service\Site\Concerns\StoreMessages;
 use QuadStudio\Service\Site\Events\OrderCreateEvent;
 use QuadStudio\Service\Site\Facades\Cart;
 use QuadStudio\Service\Site\Filters\BelongsUserFilter;
+use QuadStudio\Service\Site\Filters\Order\OrderAddressSelectFilter;
 use QuadStudio\Service\Site\Filters\OrderDateFilter;
 use QuadStudio\Service\Site\Http\Requests\MessageRequest;
 use QuadStudio\Service\Site\Http\Requests\OrderLoadRequest;
@@ -49,6 +50,7 @@ class OrderController extends Controller
         $this->orders->trackFilter();
         $this->orders->pushFilter(new BelongsUserFilter);
         $this->orders->pushFilter(new OrderDateFilter);
+        $this->orders->pushTrackFilter(OrderAddressSelectFilter::class);
 
         return view('site::order.index', [
             'orders'     => $this->orders->paginate(config('site.per_page.order', 8)),

@@ -40,17 +40,17 @@
 
                                 <hr/>
 
-                                <a class="list-group-item list-group-item-action py-1" href="{{ route('admin.catalogs.index') }}">
-                                    <i class="fa fa-@lang('site::catalog.icon')"></i> @lang('site::catalog.catalogs')
+                                <a class="list-group-item list-group-item-action py-1" href="{{ route('admin.pages.index') }}">
+                                    <i class="fa fa-@lang('site::page.icon')"></i> @lang('site::page.pages')
                                 </a>
-                                <a class="list-group-item list-group-item-action py-1" href="{{ route('admin.equipments.index') }}">
-                                    <i class="fa fa-@lang('site::equipment.icon')"></i> @lang('site::equipment.equipments')
+                                <a class="list-group-item list-group-item-action py-1" href="{{ route('admin.routes.index') }}">
+                                    <i class="fa fa-@lang('site::route.icon')"></i> @lang('site::route.routes')
                                 </a>
-                                <a class="list-group-item list-group-item-action py-1" href="{{ route('admin.products.index') }}">
-                                    <i class="fa fa-@lang('site::product.icon')"></i> @lang('site::product.cards')
+                                <a class="list-group-item list-group-item-action py-1" href="{{ route('admin.templates.index') }}">
+                                    <i class="fa fa-@lang('site::template.icon')"></i> @lang('site::template.templates')
                                 </a>
-                                <a class="list-group-item list-group-item-action py-1" href="{{ route('admin.serials.index') }}">
-                                    <i class="fa fa-@lang('site::serial.icon')"></i> @lang('site::serial.serials')
+                                <a class="list-group-item list-group-item-action py-1" href="{{ route('admin.event_types.index') }}">
+                                    <i class="fa fa-@lang('site::event_type.icon')"></i> @lang('site::event_type.event_types')
                                 </a>
 
                                 <hr/>
@@ -85,6 +85,24 @@
                         <div class="col-md-6">
                             <div class="list-group">
 
+                                <a class="list-group-item list-group-item-action py-1" href="{{ route('admin.catalogs.index') }}">
+                                    <i class="fa fa-@lang('site::catalog.icon')"></i> @lang('site::catalog.catalogs')
+                                </a>
+                                <a class="list-group-item list-group-item-action py-1" href="{{ route('admin.equipments.index') }}">
+                                    <i class="fa fa-@lang('site::equipment.icon')"></i> @lang('site::equipment.equipments')
+                                </a>
+                                <a class="list-group-item list-group-item-action py-1" href="{{ route('admin.products.index') }}">
+                                    <i class="fa fa-@lang('site::product.icon')"></i> @lang('site::product.cards')
+                                </a>
+                                <a class="list-group-item list-group-item-action py-1" href="{{ route('admin.serials.index') }}">
+                                    <i class="fa fa-@lang('site::serial.icon')"></i> @lang('site::serial.serials')
+                                </a>
+                                <a class="list-group-item list-group-item-action py-1" href="{{ route('admin.mounting-bonuses.index') }}">
+                                    <i class="fa fa-@lang('site::mounting_bonus.icon')"></i> @lang('site::mounting_bonus.mounting_bonuses')
+                                </a>
+
+                                <hr/>
+
                                 <a class="list-group-item list-group-item-action py-1" href="{{ route('admin.price_types.index') }}">
                                     <i class="fa fa-@lang('site::price_type.icon')"></i> @lang('site::price_type.price_types')
                                 </a>
@@ -97,19 +115,9 @@
                                 <a class="list-group-item list-group-item-action py-1" href="{{ route('admin.file_types.index') }}">
                                     <i class="fa fa-@lang('site::file_type.icon')"></i> @lang('site::file_type.file_types')
                                 </a>
-                                <hr/>
-
-                                <a class="list-group-item list-group-item-action py-1" href="{{ route('admin.pages.index') }}">
-                                    <i class="fa fa-@lang('site::page.icon')"></i> @lang('site::page.pages')
-                                </a>
-                                <a class="list-group-item list-group-item-action py-1" href="{{ route('admin.templates.index') }}">
-                                    <i class="fa fa-@lang('site::template.icon')"></i> @lang('site::template.templates')
-                                </a>
-                                <a class="list-group-item list-group-item-action py-1" href="{{ route('admin.event_types.index') }}">
-                                    <i class="fa fa-@lang('site::event_type.icon')"></i> @lang('site::event_type.event_types')
-                                </a>
 
                                 <hr/>
+
 
                                 <a class="list-group-item list-group-item-action py-1" href="{{ route('admin.authorization-roles.index') }}">
                                     <i class="fa fa-@lang('site::authorization_role.icon')"></i> @lang('site::authorization_role.authorization_roles')
@@ -134,7 +142,7 @@
 
                 <!-- Tasks -->
                 <div class="card mb-4">
-                    <h6 class="card-header">Меню администратора</h6>
+                    <h6 class="card-header">@lang('site::messages.admin')</h6>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="list-group">

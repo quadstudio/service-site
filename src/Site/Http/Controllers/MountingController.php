@@ -151,10 +151,7 @@ class MountingController extends Controller
         $file_types = FileType::query()->where('enabled', 1)->where('group_id', 4)->orderBy('sort_order')->get();
         $mounting_sources = MountingSource::query()->get();
         $products = Product::query()
-
-            ->whereNotNull('sku')
-            ->where('enabled', 1)
-            ->where('type_id', 1)
+            ->mounted()
             ->orderBy('name')
             ->with('mounting_bonus')
             ->get();
