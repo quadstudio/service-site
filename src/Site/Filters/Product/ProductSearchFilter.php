@@ -21,7 +21,7 @@ class ProductSearchFilter extends SearchFilter
                 $words = $this->split($this->get($this->search));
                 if (!empty($words)) {
                     foreach ($words as $product_id) {
-                        $builder = $builder->whereHas('back_relations', function ($query) use ($product_id) {
+                        $builder = $builder->whereHas('relations', function ($query) use ($product_id) {
                             $query->where(function ($query) use ($product_id) {
                                 $query->whereId($product_id);
                             });

@@ -96,8 +96,8 @@ trait ProductControllerTrait
             ->applyFilter((new HasProductFilter())->setProduct($product))
             ->all();
         $analogs = $product->analogs()->where('enabled', 1)->orderBy('name')->get();
-        $back_relations = $product->back_relations()->where('enabled', 1)->orderBy('name')->get();
-        $relations = $product->relations()->where('enabled', 1)->orderBy('name')->get();
+        $back_relations = $product->relations()->where('enabled', 1)->orderBy('name')->get();
+        $details = $product->details()->where('enabled', 1)->orderBy('name')->get();
         $images = $product->images;
         $schemes = $product->schemes;
         $datasheets = $product->datasheets()->with('schemes')->get();
@@ -106,8 +106,8 @@ trait ProductControllerTrait
             'product',
             'equipments',
             'analogs',
-            'back_relations',
             'relations',
+            'details',
             'images',
             'schemes',
             'datasheets'

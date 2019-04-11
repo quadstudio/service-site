@@ -57,29 +57,30 @@ return [
     ],
 
     'per_page' => [
-        'user'         => 50,
-        'block'        => 25,
-        'catalog'      => 25,
-        'repair'       => 10,
-        'mounting'     => 10,
-        'trade'        => 10,
-        'launch'       => 10,
-        'engineer'     => 10,
-        'act'          => 10,
-        'serial'       => 10,
-        'period'       => 10,
-        'order'        => 10,
-        'product'      => 28,
-        'archive'      => 21,
-        'product_list' => 100,
-        'product_type' => 25,
-        'message'      => 30,
-        'news'         => 15,
+        'user'          => 50,
+        'block'         => 25,
+        'catalog'       => 25,
+        'repair'        => 10,
+        'mounting'      => 10,
+        'trade'         => 10,
+        'launch'        => 10,
+        'engineer'      => 10,
+        'act'           => 10,
+        'serial'        => 10,
+        'period'        => 10,
+        'order'         => 10,
+        'product'       => 16,
+        'product_admin' => 10,
+        'archive'       => 21,
+        'product_list'  => 100,
+        'product_type'  => 25,
+        'message'       => 25,
+        'news'          => 15,
     ],
 
     'per_page_range' => [
-        'r8'  => [8 => 8, 32 => 32, 64 => 64, 128 => 128, 256 => 256, 512 => 512],
-        'r10' => [10 => 10, 25 => 25, 50 => 50, 100 => 100, 250 => 250, 500 => 500],
+        'r16' => [16 => 16, 32 => 32, 64 => 64, 128 => 128, 256 => 256, 512 => 512, 1024 => 1024, 9999999 => '∞...'],
+        'r10' => [10 => 10, 25 => 25, 50 => 50, 100 => 100, 250 => 250, 500 => 500, 1000 => 1000, 9999999 => '∞...'],
     ],
     'sort_order'     => [
         'equipment' => 'sort_order',
@@ -131,6 +132,28 @@ return [
             ],
         ],
 
+    ],
+
+    'catalogs' => [
+        'method'     => 'update',
+        'mime'       => 'jpg,jpeg',
+        'accept'     => 'image/jpeg',
+        'name' => 'catalog[image_id]',
+        'dot_name'   => 'catalog.image_id',
+        'size'       => [
+            'preview' => [
+                'width'  => 150,
+                'height' => 150
+            ],
+            'image'   => [
+                'width'  => 500,
+                'height' => 500
+            ],
+            'canvas'  => [
+                'width'  => 500,
+                'height' => 500
+            ],
+        ],
     ],
 
     'logo'                     => [
@@ -227,6 +250,8 @@ return [
 
     'country' => 643,
 
+    'mounting_min_cost' => 3000,
+
     /*
     |--------------------------------------------------------------------------
     | Коды обновляемых валют
@@ -245,14 +270,14 @@ return [
         1 => '127.0.0.1'
     ],
 
-    'name_limit'            => 25,
+    'name_limit'        => 25,
 
     /*
     |--------------------------------------------------------------------------
     | Телефоныый номер
     |--------------------------------------------------------------------------
     */
-    'phone'                 => [
+    'phone'             => [
 
         // Правило для валидации формы
         'pattern'   => '^(\(([0-9]{3})\)\s([0-9]{3})-([0-9]{2})-([0-9]{2}))$',
@@ -278,7 +303,7 @@ return [
         // Длина номера телефона
         'maxlength' => 15
     ],
-    'catalog_price_pdf'     => 'https://yadi.sk/d/7CXTYatd-Xp4bw',
+    'catalog_price_pdf' => 'https://yadi.sk/d/7CXTYatd-Xp4bw',
 
     'storehouse_check' => [
         'gendistr',

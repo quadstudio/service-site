@@ -112,7 +112,7 @@ class MountingController extends Controller
 
         return view('site::mounting.index', [
             'repository' => $this->mountings,
-            'mountings'  => $this->mountings->paginate($request->input('filter.per_page', config('site.per_page.mounting', 8)), ['mountings.*'])
+            'mountings'  => $this->mountings->paginate($request->input('filter.per_page', config('site.per_page.mounting', 10)), ['mountings.*'])
         ]);
     }
 
@@ -204,6 +204,7 @@ class MountingController extends Controller
     public function store(MountingRequest $request)
     {
         $mounting = $request->user()->mountings()->create($request->input('mounting'));
+
         $this->setFiles($request, $mounting);
 
         event(new MountingCreateEvent($mounting));

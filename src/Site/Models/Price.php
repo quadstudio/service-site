@@ -81,7 +81,7 @@ class Price extends Model
      */
     public function getValueAttribute()
     {
-        if(!$this->exists){
+        if (!$this->exists) {
             return 0;
         }
         $price = $this->getAttribute('price') * Site::currencyRates($this->type->currency, Site::currency());
@@ -95,6 +95,20 @@ class Price extends Model
         }
 
         return $price;
+    }
+
+    /**
+     * Scope a query to only enabled countries.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeTypeEnabled($query)
+    {
+        return $query->whereHas('type', function ($type) {
+            /** @var \Illuminate\Database\Eloquent\Builder $type */
+            $type->where('enabled', 1);
+        });
     }
 
 }

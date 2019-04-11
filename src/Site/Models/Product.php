@@ -6,9 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use QuadStudio\Service\Site\Contracts\Imageable;
 use QuadStudio\Service\Site\Facades\Site;
+use QuadStudio\Service\Site\Traits\Models\ProductAnalogTrait;
+use QuadStudio\Service\Site\Traits\Models\ProductDetailTrait;
+use QuadStudio\Service\Site\Traits\Models\ProductRelationTrait;
 
 class Product extends Model implements Imageable
 {
+    use ProductAnalogTrait, ProductDetailTrait, ProductRelationTrait;
     /**
      * @var bool
      */
@@ -75,6 +79,18 @@ class Product extends Model implements Imageable
         return $this->belongsTo(Brand::class)->withDefault(function ($brand) {
             $brand->name = '';
         });
+    }
+
+    public function getFullNameAttribute(){
+        $name = [];
+        if (mb_strlen($this->getAttribute('name'), 'UTF-8') > 0) {
+            $name[] = $this->getAttribute('name');
+        }
+        if (mb_strlen($this->getAttribute('sku'), 'UTF-8') > 0) {
+            $name[] = "({$this->getAttribute('sku')})";
+        }
+
+        return !empty($name) ? implode(' ', $name) : $this->getAttribute('id');
     }
 
     public function name()
@@ -354,78 +370,12 @@ class Product extends Model implements Imageable
         return $this->hasMany(Mounting::class);
     }
 
-    /**
-     * Добавить аналог
-     *
-     * @param mixed $analog
-     */
-    public function attachAnalog($analog)
-    {
-        if (is_object($analog)) {
-            $analog = $analog->getKey();
-        }
-        if (is_array($analog)) {
-            $analog = $analog['id'];
-        }
-        $this->analogs()->attach($analog);
-    }
-
-    /**
-     * Аналоги товара
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
-     */
-    public function analogs()
-    {
-        return $this->belongsToMany(
-            Product::class,
-            'analogs',
-            'product_id',
-            'analog_id');
-    }
-
-    /**
-     * @return \Illuminate\Support\Collection
-     */
-    public function analogs_array()
-    {
-
-        $analogs = collect([]);
-        if (!is_null($this->getAttribute('old_sku'))) {
-            $analogs->push($this->getAttribute('old_sku'));
-        }
-
-        if ($this->analogs()->exists()) {
-            foreach ($this->analogs as $analog) {
-                if ($analog->hasSku()) {
-                    $analogs->push($analog->getAttribute('sku'));
-                }
-            }
-        }
-
-        return $analogs;
-    }
-
     public function hasSku()
     {
         return !is_null($this->getAttribute('sku'));
     }
 
-    /**
-     * Удалить аналог
-     *
-     * @param mixed $analog
-     */
-    public function detachAnalog($analog)
-    {
-        if (is_object($analog)) {
-            $analog = $analog->getKey();
-        }
-        if (is_array($analog)) {
-            $analog = $analog['id'];
-        }
-        $this->analogs()->detach($analog);
-    }
+
 
     /**
      * @param $image_id
@@ -436,98 +386,6 @@ class Product extends Model implements Imageable
         Image::query()->findOrNew($image_id)->delete();
 
         return $this;
-    }
-
-    /**
-     * Добавить связь оборудование - запчасть
-     *
-     * @param mixed $relation
-     */
-    public function attachRelation($relation)
-    {
-        if (is_object($relation)) {
-            $relation = $relation->getKey();
-        }
-        if (is_array($relation)) {
-            $relation = $relation['id'];
-        }
-        $this->relations()->attach($relation);
-    }
-
-    /**
-     * Прямая связь товаров
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
-     */
-    public function relations()
-    {
-        return $this->belongsToMany(
-            Product::class,
-            'relations',
-            'product_id',
-            'relation_id');
-    }
-
-    /**
-     * Добавить связь запчасть - оборудование
-     *
-     * @param mixed $relation
-     */
-    public function attachBackRelation($relation)
-    {
-        if (is_object($relation)) {
-            $relation = $relation->getKey();
-        }
-        if (is_array($relation)) {
-            $relation = $relation['id'];
-        }
-        $this->back_relations()->attach($relation);
-    }
-
-    /**
-     * Обрантая связь товаров
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
-     */
-    public function back_relations()
-    {
-        return $this->belongsToMany(
-            Product::class,
-            'relations',
-            'relation_id',
-            'product_id');
-    }
-
-    /**
-     * Удалить связь запчасть - оборудование
-     *
-     * @param mixed $relation
-     */
-    public function detachBackRelation($relation)
-    {
-        if (is_object($relation)) {
-            $relation = $relation->getKey();
-        }
-        if (is_array($relation)) {
-            $relation = $relation['id'];
-        }
-        $this->back_relations()->detach($relation);
-    }
-
-    /**
-     * Удалить связь оборудование - запчасть
-     *
-     * @param mixed $relation
-     */
-    public function detachRelation($relation)
-    {
-        if (is_object($relation)) {
-            $relation = $relation->getKey();
-        }
-        if (is_array($relation)) {
-            $relation = $relation['id'];
-        }
-        $this->relations()->detach($relation);
     }
 
     /**
@@ -548,22 +406,5 @@ class Product extends Model implements Imageable
     {
         return !is_null($this->getAttribute('equipment_id'));
     }
-
-    /**
-     * @return \Illuminate\Support\Collection
-     */
-    public function relation_equipments()
-    {
-
-        $equipments = collect([]);
-        foreach ($this->back_relations()->where('enabled', 1)->get() as $relation) {
-            if (!is_null($relation->equipment_id)) {
-                $equipments->put($relation->equipment_id, $relation->equipment);
-            }
-        }
-
-        return $equipments;
-    }
-
 
 }

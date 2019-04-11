@@ -3,7 +3,7 @@
 namespace QuadStudio\Service\Site\Traits\Controllers\Api;
 
 
-use QuadStudio\Service\Site\Filters\Address\ActiveFilter;
+use QuadStudio\Service\Site\Filters\Address\AddressActiveFilter;
 use QuadStudio\Service\Site\Filters\Address\IsServiceFilter;
 use QuadStudio\Service\Site\Filters\Address\RegionFilter;
 use QuadStudio\Service\Site\Filters\Address\SortByNameFilter;
@@ -47,7 +47,7 @@ trait ServiceControllerTrait
                 ->trackFilter()
                 ->applyFilter((new TypeFilter())->setTypeId(2))
                 ->applyFilter(new IsServiceFilter())
-                ->applyFilter(new ActiveFilter())
+                ->applyFilter(new AddressActiveFilter())
                 ->applyFilter(new UserDisplayFilter())
                 ->applyFilter(new UserActiveFilter())
                 ->applyFilter((new RegionFilter())->setRegionId($region->id))

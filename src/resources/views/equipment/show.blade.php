@@ -154,7 +154,7 @@
                                     <a class="btn btn-sm btn-ferroli"
                                        href="{{route('products.index', ['filter[boiler_id]' => $product->id])}}">
                                         @lang('site::messages.show') <span
-                                                class="badge badge-light">{{$product->relations()->whereEnabled(1)->whereActive(1)->count()}}</span></a>
+                                                class="badge badge-light">{{$product->details()->whereEnabled(1)->whereActive(1)->count()}}</span></a>
                                 </div>
                             </div>
                         @endforeach

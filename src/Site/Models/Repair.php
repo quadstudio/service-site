@@ -234,6 +234,10 @@ class Repair extends Model implements Messagable
         return $this->cost_difficulty() + $this->cost_distance() + $this->cost_parts();
     }
 
+    public function getTotalAttribute(){
+        return $this->cost_difficulty() + $this->cost_distance() + $this->cost_parts();
+    }
+
     /**
      * Стоимость работ
      *

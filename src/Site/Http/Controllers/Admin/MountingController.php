@@ -5,6 +5,7 @@ namespace QuadStudio\Service\Site\Http\Controllers\Admin;
 use Illuminate\Routing\Controller;
 use QuadStudio\Service\Site\Concerns\StoreMessages;
 use QuadStudio\Service\Site\Events\MountingStatusChangeEvent;
+use QuadStudio\Service\Site\Exports\Excel\MountingExcel;
 use QuadStudio\Service\Site\Filters\Authorization\MountingUserFilter;
 use QuadStudio\Service\Site\Filters\FileType\ModelHasFilesFilter;
 use QuadStudio\Service\Site\Filters\Mounting\MountingPerPageFilter;
@@ -56,6 +57,10 @@ class MountingController extends Controller
         $this->mountings->pushTrackFilter(MountingPerPageFilter::class);
         $mountings = $this->mountings->paginate($request->input('filter.per_page', config('site.per_page.mounting', 10)), ['mountings.*']);
         $repository = $this->mountings;
+
+        if ($request->has('excel')) {
+            (new MountingExcel())->setRepository($this->mountings)->render();
+        }
 
         return view('site::admin.mounting.index', compact('mountings', 'repository'));
     }

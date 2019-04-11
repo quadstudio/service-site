@@ -39,6 +39,7 @@ class AuthorizationController extends Controller
      */
     public function index(AuthorizationRequest $request)
     {
+
         $this->authorizations->trackFilter();
         $this->authorizations->pushTrackFilter(AuthorizationUserFilter::class);
         $this->authorizations->pushTrackFilter(AuthorizationPerPageFilter::class);

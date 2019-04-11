@@ -24,6 +24,12 @@
                 <i class="fa fa-magic"></i>
                 <span>@lang('site::messages.create') @lang('site::mounting.mounting')</span>
             </a>
+            <a class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0"
+               href="{{ route('acts.create') }}"
+               role="button">
+                <i class="fa fa-magic"></i>
+                <span>@lang('site::messages.create') @lang('site::act.act')</span>
+            </a>
             <a href="{{ route('home') }}" class="d-block d-sm-inline btn btn-secondary">
                 <i class="fa fa-reply"></i>
                 <span>@lang('site::messages.back_home')</span>
@@ -42,12 +48,26 @@
                         <span class="badge text-normal badge-pill badge-{{ $mounting->status->color }}">
                             <i class="fa fa-{{ $mounting->status->icon }}"></i> {{ $mounting->status->name }}
                         </span>
-                        <a href="{{route('mountings.show', $mounting)}}" class="mr-3">
+                        <a href="{{route('mountings.show', $mounting)}}" class="ml-3">
                             @lang('site::mounting.header.mounting') № {{$mounting->id}}
                         </a>
                     </div>
-
                     <div class="card-header-elements ml-md-auto">
+                        @if($mounting->act)
+                            <a href="{{route('admin.acts.show', $mounting->act)}}">
+                                <span class="text-normal badge badge-pill @if($mounting->act->received && $mounting->act->paid) badge-success @else badge-warning @endif">
+                                    @lang('site::act.help.avr') № {{ $mounting->act->id }}
+                                    <span data-toggle="tooltip" data-placement="top"
+                                          title="@lang('site::act.user.received_'.($mounting->act->received))">
+                                        @component('site::components.bool.check', ['bool' => $mounting->act->received])@endcomponent
+                                    </span>
+                                    <span data-toggle="tooltip" data-placement="top"
+                                          title="@lang('site::act.user.paid_'.($mounting->act->paid))">
+                                        @component('site::components.bool.check', ['bool' => $mounting->act->paid])@endcomponent
+                                    </span>
+                                </span>
+                            </a>
+                        @endif
                         @if( $mounting->messages()->exists())
                             <span class="badge badge-secondary text-normal badge-pill">
                                 <i class="fa fa-comment"></i> {{ $mounting->messages()->count() }}

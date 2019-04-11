@@ -53,6 +53,10 @@
                             <span class="text-dark">@bool(['bool' => $act->received])@endbool</span>
                         </div>
                         <div class="mb-2">
+                            <span class="text-muted">@lang('site::act.user.paid'):</span>&nbsp;
+                            <span class="text-dark">@bool(['bool' => $act->paid])@endbool</span>
+                        </div>
+                        <div class="mb-2">
                             <span class="text-muted">@lang('site::act.number'):</span>&nbsp;
                             <span class="text-dark">{{ $act->number }}</span>
                         </div>
@@ -71,14 +75,7 @@
                     <div class="card-body">
                         <dl class="row">
 
-                            <dt class="col-sm-6 text-left text-sm-right">@lang('site::repair.cost_distance')</dt>
-                            <dd class="col-sm-6">{{ Site::format($act->distanceCost) }}</dd>
-
-                            <dt class="col-sm-6 text-left text-sm-right">@lang('site::repair.cost_difficulty')</dt>
-                            <dd class="col-sm-6">{{ Site::format($act->difficultyCost) }}</dd>
-
-                            <dt class="col-sm-6 text-left text-sm-right">@lang('site::repair.cost_parts')</dt>
-                            <dd class="col-sm-6">{{ Site::format($act->costParts) }}</dd>
+                            @include('site::act.show.'.$act->type_id)
 
                         </dl>
                     </div>
@@ -98,15 +95,15 @@
                         {{--</div>--}}
                     </h6>
                     <div class="card-body">
-                        @foreach($act->repairs as $repair)
+                        @foreach($act->contents as $repair)
                             <div class="row border-bottom">
-                                <div class="col"><a href="{{route('repairs.show', $repair)}}">{{$repair->id}}</a></div>
-                                <div class="col">{{$repair->date_repair->format('d.m.Y')}}</div>
+                                <div class="col"><a href="{{route($act->type_id.'.show', $repair)}}">№ {{$repair->id}}</a></div>
+                                <div class="col">{{$repair->created_at->format('d.m.Y')}}</div>
                                 <div class="col">
                                     <a href="{{route('products.show', $repair->product)}}">{{$repair->product->name}}</a>
                                 </div>
                                 <div class="col">
-                                    {{Site::format($repair->totalCost)}}
+                                    {{Site::format($repair->total)}}
                                 </div>
                             </div>
                         @endforeach

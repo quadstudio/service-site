@@ -1,21 +1,35 @@
-<tr class="sort-item" data-id="{{$image->id}}">
 
-    <td class="p-1 width-150">
-        <div class="custom-control custom-checkbox">
-            <input type="checkbox"
-                   form="delete-form"
-                   name="images[]"
-                   value="{{$image->id}}"
-                   class="custom-control-input"
-                   id="image-{{$image->id}}">
-            <label class="custom-control-label" for="image-{{$image->id}}">
-                <img style="width:150px;" class="img-fluid border" src="{{ Storage::disk($image->storage)->url($image->path) }}">
-            </label>
+@if(isset($image) && is_object($image) && $image->exists)
+    <div class="col" id="image-{{$image->id}}">
+        <input form="form" type="hidden" name="{{config('site.' . $image->storage . '.name', 'images[]')}}"
+               value="{{old(config('site.' . $image->storage . '.dot_name'), $image->id)}}">
+        <div class="row">
+            <div class="col-md-4 border">
+                @include('site::admin.image.preview')
+            </div>
+            <div class="col-md-8">
+                <strong class="project-attachment-filename">{{$image->name}}</strong>
+                <div class="text-muted small">{{formatFileSize($image->size)}}</div>
+                <div class="text-muted small">{{formatImageDimension(Storage::disk($image->storage)->url($image->path))}}</div>
+                <a class="btn btn-sm py-0 btn-ferroli"
+                   href="{{route('admin.images.show', $image)}}">@lang('site::messages.download')</a>
+                <a class="btn btn-sm py-0 btn-danger btn-row-delete"
+                   data-form="#image-delete-form-{{$image->id}}"
+                   data-btn-delete="@lang('site::messages.delete')"
+                   data-btn-cancel="@lang('site::messages.cancel')"
+                   data-label="@lang('site::messages.delete_confirm')"
+                   data-message="@lang('site::messages.delete_sure') @lang('site::image.image')? "
+                   data-toggle="modal" data-target="#form-modal"
+                   href="javascript:void(0);" title="@lang('site::messages.delete')">
+                    <i class="fa fa-close"></i> @lang('site::messages.delete')
+                </a>
+                <form id="image-delete-form-{{$image->id}}"
+                      action="{{route('admin.images.destroy', $image)}}"
+                      method="POST">
+                    @csrf
+                    @method('DELETE')
+                </form>
+            </div>
         </div>
-    </td>
-    <td class="p-1">
-        {!! $image->name !!}
-        <input form="form-content" type="hidden" name="image[{{$image->id}}]" value="{{$image->id}}">
-    </td>
-    <td class="p-1 width-10 text-center"><i class="fa fa-arrows"></i></td>
-</tr>
+    </div>
+@endif

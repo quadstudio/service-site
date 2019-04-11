@@ -12,9 +12,9 @@
             <li class="breadcrumb-item">
                 <a href="{{ route('admin.products.index') }}">@lang('site::product.cards')</a>
             </li>
-            <li class="breadcrumb-item active">{{$product->name}}</li>
+            <li class="breadcrumb-item active">{{$product->fullName}}</li>
         </ol>
-        <h1 class="header-title mb-4">{{$product->name}}</h1>
+        <h1 class="header-title mb-4">{{$product->fullName}}</h1>
         @alert()@endalert
         <div class=" border p-3 mb-2">
             <a href="{{route('admin.products.edit', $product)}}"
@@ -28,23 +28,23 @@
                 <span>@lang('site::image.images')</span> <span
                         class="badge badge-light">{{$product->images()->count()}}</span>
             </a>
-            <a href="{{route('admin.products.analogs', $product)}}"
+            <a href="{{route('admin.products.analogs.index', $product)}}"
                class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0">
                 <i class="fa fa-@lang('site::analog.icon')"></i>
                 <span>@lang('site::analog.analogs')</span>
                 <span class="badge badge-light product-analogs-count">{{$product->analogs()->count()}}</span>
             </a>
-            <a href="{{route('admin.products.relations', $product)}}"
+            <a href="{{route('admin.products.details.index', $product)}}"
                class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0">
-                <i class="fa fa-@lang('site::relation.icon')"></i>
-                <span>@lang('site::relation.header.relations')</span>
-                <span class="badge badge-light product-relations-count">{{$product->relations()->count()}}</span>
+                <i class="fa fa-@lang('site::detail.icon')"></i>
+                <span>@lang('site::detail.details')</span>
+                <span class="badge badge-light product-details-count">{{$product->details()->count()}}</span>
             </a>
-            <a href="{{route('admin.products.back_relations', $product)}}"
+            <a href="{{route('admin.products.relations.index', $product)}}"
                class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0">
-                <i class="fa fa-@lang('site::relation.back_icon')"></i>
-                <span>@lang('site::relation.header.back_relations')</span>
-                <span class="badge badge-light product-back-relations-count">{{$product->back_relations()->count()}}</span>
+                <i class="fa fa-@lang('site::detail.back_icon')"></i>
+                <span>@lang('site::relation.relations')</span>
+                <span class="badge badge-light product-back-details-count">{{$product->relations()->count()}}</span>
             </a>
             <a href="{{ route('admin.products.index') }}" class="d-block d-sm-inline btn btn-secondary">
                 <i class="fa fa-reply"></i>
@@ -99,14 +99,15 @@
                                                     type="button"
                                                     id="dropdownMenuButton"
                                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                {{ $product->mounting_bonus->value }} + {{ $product->mounting_bonus->social }}
+                                                {{ $product->mounting_bonus->value }}
+                                                + {{ $product->mounting_bonus->social }}
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
-                                                    <a class="dropdown-item"
-                                                       href="{{route('admin.mounting-bonuses.edit', $product->mounting_bonus)}}">
-                                                        <i class="fa fa-pencil"></i> @lang('site::messages.edit')
-                                                    </a>
+                                                <a class="dropdown-item"
+                                                   href="{{route('admin.mounting-bonuses.edit', $product->mounting_bonus)}}">
+                                                    <i class="fa fa-pencil"></i> @lang('site::messages.edit')
+                                                </a>
                                                 <button class="dropdown-item btn-row-delete"
                                                         data-form="#mounting-bonus-delete-form-{{$product->mounting_bonus->id}}"
                                                         data-btn-delete="@lang('site::messages.delete')"
@@ -129,7 +130,8 @@
                                         </form>
 
                                     @else
-                                        <a class="btn btn-sm btn-ferroli py-0" href="{{route('admin.mounting-bonuses.create', ['product_id' => $product->id])}}">
+                                        <a class="btn btn-sm btn-ferroli py-0"
+                                           href="{{route('admin.mounting-bonuses.create', ['product_id' => $product->id])}}">
                                             <i class="fa fa-plus"></i> @lang('site::messages.add')
                                         </a>
                                     @endif
@@ -160,6 +162,10 @@
                         <li class="list-group-item d-flex justify-content-between align-items-center py-1">
                             <div class="text-muted">@lang('site::product.active')</div>
                             <div>@bool(['bool' => $product->active == 1])@endbool</div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center py-1">
+                            <div class="text-muted">@lang('site::product.forsale')</div>
+                            <div>@bool(['bool' => $product->forsale == 1])@endbool</div>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center py-1">
                             <div class="text-muted">@lang('site::product.warranty')</div>
@@ -198,12 +204,16 @@
             </div>
             <div class="col">
                 <div class="card mb-2">
-                    <h6 class="card-header with-elements">
-                        <span class="card-header-title">
-                            <span class="badge badge-warning text-big">{{$prices->count()}}</span>
+                    <div class="card-header with-elements">
+                        <div class="card-header-title h6">
                             @lang('site::price.prices')
-                        </span>
-                    </h6>
+                        </div>
+                        <div class="card-header-elements ml-auto">
+                            <span class="badge badge-warning text-big" id="images-count">
+                                {{$prices->count()}}
+                            </span>
+                        </div>
+                    </div>
                     <div class="card-body">
                         <table class="table table-sm ">
                             <tbody>
@@ -219,18 +229,18 @@
                     </div>
                 </div>
                 <div class="card mb-2">
-                    <h6 class="card-header with-elements">
-                        <span class="card-header-title">
-                            <span class="badge badge-warning text-big"
-                                  id="images-count">{{$product->images()->count()}}</span>
-                            @lang('site::image.images')
-                        </span>
-                        <div class="card-header-elements ml-auto">
-                            <a href="{{route('admin.products.images', $product)}}" class="btn btn-light btn-sm">
-                                <i class="fa fa-pencil"></i>
+                    <div class="card-header with-elements">
+                        <div class="card-header-title">
+                            <a href="{{route('admin.products.images', $product)}}">
+                                @lang('site::image.images')
                             </a>
                         </div>
-                    </h6>
+                        <div class="card-header-elements ml-auto">
+                            <span class="badge badge-warning text-big" id="images-count">
+                                {{$product->images()->count()}}
+                            </span>
+                        </div>
+                    </div>
                     <div class="card-body p-3">
                         <div class="row no-gutters" data-target="{{route('admin.products.images.sort', $product)}}"
                              id="sort-list">
@@ -242,75 +252,82 @@
                 </div>
 
                 <div class="card mb-2">
-                    <h6 class="card-header with-elements">
-                        <span class="card-header-title">
-                            <span class="badge badge-warning text-big product-analogs-count">
+                    <div class="card-header with-elements">
+                        <div class="card-header-title">
+                            <a href="{{route('admin.products.analogs.index', $product)}}">
+                                @lang('site::analog.analogs')
+                            </a>
+                        </div>
+                        <div class="card-header-elements ml-auto">
+                            <span class="badge badge-warning text-normal product-analogs-count">
                                 {{$product->analogs()->count()}}
                             </span>
-                            @lang('site::analog.analogs')
-                        </span>
-                        <div class="card-header-elements ml-auto">
-                            <a href="{{route('admin.products.analogs', $product)}}" class="btn btn-light btn-sm">
-                                <i class="fa fa-pencil"></i>
-                            </a>
+
                         </div>
-                    </h6>
+                    </div>
                     <div class="card-body p-3">
-                        <ul class="list-group list-group-flush" id="product-analogs-list">
+                        <div class="list-group list-group-flush" id="product-analogs-list">
                             @foreach($product->analogs as $analog)
-                                @include('site::admin.product.show.analog')
+                                <a href="{{route('admin.products.show', $analog)}}"
+                                   class="list-group-item-action p-0">
+                                    {{$analog->fullName}}
+                                </a>
                             @endforeach
-                        </ul>
+                        </div>
                     </div>
 
                 </div>
 
                 <div class="card mb-2">
-                    <h6 class="card-header with-elements">
-                        <span class="card-header-title">
-                            <span class="badge badge-warning text-big product-back-relations-count">
-                                {{$product->back_relations()->count()}}
-                            </span>
-                            @lang('site::relation.header.back_relations')
-                        </span>
-                        <div class="card-header-elements ml-auto">
-                            <a href="{{route('admin.products.back_relations', $product)}}" class="btn btn-light btn-sm">
-                                <i class="fa fa-pencil"></i>
+                    <div class="card-header with-elements">
+                        <div class="card-header-title">
+                            <a href="{{route('admin.products.relations.index', $product)}}">
+                                @lang('site::relation.relations')
                             </a>
                         </div>
-                    </h6>
-                    <div class="card-body p-3">
-                        <ul class="list-group list-group-flush" id="product-back-relations-list">
-                            @foreach($product->back_relations()->orderBy('name')->get() as $relation)
-                                @include('site::admin.product.show.back_relation')
-                            @endforeach
-                        </ul>
-                    </div>
-
-                </div>
-
-                <div class="card mb-2">
-                    <h6 class="card-header with-elements">
-                        <span class="card-header-title">
-                            <span class="badge badge-warning text-big product-relations-count">
+                        <div class="card-header-elements ml-auto">
+                            <span class="badge badge-warning text-big product-back-details-count">
                                 {{$product->relations()->count()}}
                             </span>
-                            @lang('site::relation.header.relations')
-                        </span>
-                        <div class="card-header-elements ml-auto">
-                            <a href="{{route('admin.products.relations', $product)}}" class="btn btn-light btn-sm">
-                                <i class="fa fa-pencil"></i>
-                            </a>
                         </div>
-                    </h6>
+                    </div>
                     <div class="card-body p-3">
-                        <ul class="list-group list-group-flush" id="product-relations-list">
+                        <div class="list-group list-group-flush" id="product-back-details-list">
                             @foreach($product->relations()->orderBy('name')->get() as $relation)
-                                @include('site::admin.product.show.relation')
+                                <a href="{{route('admin.products.show', $relation)}}"
+                                   class="list-group-item-action p-0">
+                                    {{$relation->fullName}}
+                                </a>
                             @endforeach
-                        </ul>
+                        </div>
                     </div>
 
+                </div>
+
+                <div class="card mb-2">
+                    <div class="card-header with-elements">
+                        <div class="card-header-title">
+                            <a href="{{route('admin.products.details.index', $product)}}">
+                                @lang('site::detail.details')
+                            </a>
+                        </div>
+                        <div class="card-header-elements ml-auto">
+                            <span class="badge badge-warning text-big product-details-count">
+                                {{$product->details()->count()}}
+                            </span>
+
+                        </div>
+                    </div>
+                    <div class="card-body p-3">
+                        <div class="list-group list-group-flush" id="product-back-details-list">
+                            @foreach($product->details()->orderBy('name')->get() as $relation)
+                                <a href="{{route('admin.products.show', $relation)}}"
+                                   class="list-group-item-action p-0">
+                                    {{$relation->fullName}}
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

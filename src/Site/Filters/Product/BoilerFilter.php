@@ -22,9 +22,9 @@ class BoilerFilter extends WhereFilter
     function apply($builder, RepositoryInterface $repository)
     {
         $builder->when($this->canTrack() && $this->filled($this->name()), function($query){
-            return $query->whereHas('back_relations', function($query){
+            return $query->whereHas('relations', function($query){
                 $boiler_id = $this->get($this->name());
-                return $query->where('relations.product_id', $boiler_id);
+                return $query->where('details.product_id', $boiler_id);
             });
         });
 
@@ -48,7 +48,7 @@ class BoilerFilter extends WhereFilter
      */
     public function options(): array
     {
-        $options = Product::whereHas('relations', function ($query) {
+        $options = Product::whereHas('details', function ($query) {
             $query->where('enabled', 1)->where('active', 1)->whereNull('equipment_id');
         })->where('enabled', 1)->orderBy('name')->pluck('name', 'id');
         $options->prepend(trans('site::messages.select_from_list'), '');

@@ -64,7 +64,7 @@ class MountingRequest extends FormRequest
                     'mounting.client'        => 'required|string|max:255',
                     'mounting.country_id'    => 'required|exists:countries,id',
                     'mounting.address'       => 'required|string|max:255',
-                    'mounting.phone_primary' => 'required|string|size:14',
+                    'mounting.phone_primary' => 'required|string|size:' . config('site.phone.maxlength'),
                     'mounting.trade_id'      => [
                         'required',
                         'exists:trades,id',

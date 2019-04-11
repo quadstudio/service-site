@@ -31,6 +31,11 @@ class ProductRelationRequest extends FormRequest
                     'separator_row' => 'required|string',
                 ];
             }
+            case 'DELETE': {
+                return [
+                    'delete' => 'required|array',
+                ];
+            }
             default:
                 return [];
         }
@@ -43,7 +48,9 @@ class ProductRelationRequest extends FormRequest
      */
     public function messages()
     {
-        return [];
+        return [
+            'delete.required' => trans('site::relation.error.delete.required'),
+        ];
     }
 
     /**
@@ -54,7 +61,7 @@ class ProductRelationRequest extends FormRequest
     public function attributes()
     {
         return [
-            'relations'     => trans('site::analog.header.relations'),
+            'relations'     => trans('site::relation.relations'),
             'separator_row' => trans('site::messages.separator.row'),
         ];
     }

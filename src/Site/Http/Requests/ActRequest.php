@@ -3,6 +3,7 @@
 namespace QuadStudio\Service\Site\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use QuadStudio\Service\Site\Rules\ActMountingMinCostRule;
 
 class ActRequest extends FormRequest
 {
@@ -25,18 +26,18 @@ class ActRequest extends FormRequest
     public function rules()
     {
         switch ($this->method()) {
-            case 'GET':
-            case 'DELETE': {
-                return [];
-            }
+
             case 'POST': {
                 return [
-                    'repair' => 'required|array|min:1',
+                    'mountings'   => [
+                        'required',
+                        'array'
+                    ],
+                    'mountings.*' => [
+                        'exists:mountings,id',
+                        new ActMountingMinCostRule()
+                    ],
                 ];
-            }
-            case 'PUT':
-            case 'PATCH': {
-                return [];
             }
             default:
                 return [];
@@ -51,7 +52,7 @@ class ActRequest extends FormRequest
     public function messages()
     {
         return [
-            'repair.required' => trans('site::act.error.require')
+            'mountings.required' => trans('site::mounting.error.act.required')
         ];
     }
 
@@ -63,28 +64,7 @@ class ActRequest extends FormRequest
     public function attributes()
     {
         return [
-            'repair'          => trans('site::repair.contragent_id'),
-            'client'          => trans('site::repair.client'),
-            'country_id'      => trans('site::repair.country_id'),
-            'address'         => trans('site::repair.address'),
-            'phone_primary'   => trans('site::repair.phone_primary'),
-            'phone_secondary' => trans('site::repair.phone_secondary'),
-            'trade_id'        => trans('site::repair.trade_id'),
-            'date_trade'      => trans('site::repair.date_trade'),
-            'launch_id'       => trans('site::repair.launch_id'),
-            'date_launch'     => trans('site::repair.date_launch'),
-            'engineer_id'     => trans('site::repair.engineer_id'),
-            'date_call'       => trans('site::repair.date_call'),
-            'reason_call'     => trans('site::repair.reason_call'),
-            'diagnostics'     => trans('site::repair.diagnostics'),
-            'works'           => trans('site::repair.works'),
-            'date_repair'     => trans('site::repair.date_repair'),
-            'allow_work'      => trans('site::repair.allow_work'),
-            'allow_road'      => trans('site::repair.allow_road'),
-            'allow_parts'     => trans('site::repair.allow_parts'),
-            'file.1'          => trans('site::repair.file_1'),
-            'file.2'          => trans('site::repair.file_2'),
-            'file.3'          => trans('site::repair.file_3'),
+            'mountings' => trans('site::mounting.mountings'),
         ];
     }
 }

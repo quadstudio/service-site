@@ -42,11 +42,6 @@
                 <div class="card mb-2">
                     <h6 class="card-header with-elements">
                         <span class="card-header-title">@lang('site::act.header.info')</span>
-                        {{--<div class="card-header-elements ml-auto">--}}
-                        {{--<a href="#" class="btn btn-sm btn-light">--}}
-                        {{--<i class="fa fa-pencil"></i>--}}
-                        {{--</a>--}}
-                        {{--</div>--}}
                     </h6>
                     <div class="card-body">
                         <div class="mb-2">
@@ -60,8 +55,16 @@
                             </span>
                         </div>
                         <div class="mb-2">
+                            <span class="text-muted">@lang('site::act.type_id'):</span>&nbsp;
+                            <span class="text-dark">{{$act->type->name}}</span>
+                        </div>
+                        <div class="mb-2">
                             <span class="text-muted">@lang('site::act.received'):</span>&nbsp;
                             <span class="text-dark">@bool(['bool' => $act->received])@endbool</span>
+                        </div>
+                        <div class="mb-2">
+                            <span class="text-muted">@lang('site::act.user.paid'):</span>&nbsp;
+                            <span class="text-dark">@bool(['bool' => $act->paid])@endbool</span>
                         </div>
                         <div class="mb-2">
                             <span class="text-muted">@lang('site::act.number'):</span>&nbsp;
@@ -77,24 +80,10 @@
                 <div class="card mb-2">
                     <h6 class="card-header with-elements">
                         <span class="card-header-title">@lang('site::repair.header.payment')</span>
-                        {{--<div class="card-header-elements ml-auto">--}}
-                        {{--<a href="#" class="btn btn-sm btn-light">--}}
-                        {{--<i class="fa fa-pencil"></i>--}}
-                        {{--</a>--}}
-                        {{--</div>--}}
                     </h6>
                     <div class="card-body">
                         <dl class="row">
-
-                            <dt class="col-sm-6 text-left text-sm-right">@lang('site::repair.cost_distance')</dt>
-                            <dd class="col-sm-6">{{ Site::format($act->distanceCost) }}</dd>
-
-                            <dt class="col-sm-6 text-left text-sm-right">@lang('site::repair.cost_difficulty')</dt>
-                            <dd class="col-sm-6">{{ Site::format($act->difficultyCost) }}</dd>
-
-                            <dt class="col-sm-6 text-left text-sm-right">@lang('site::repair.cost_parts')</dt>
-                            <dd class="col-sm-6">{{ Site::format($act->costParts) }}</dd>
-
+                            @include('site::admin.act.show.cost.'.$act->type->alias)
                         </dl>
                     </div>
                     <div class="card-footer">
@@ -103,15 +92,15 @@
                 </div>
 
                 <div class="card mb-4">
-                    <h6 class="card-header with-elements">
-                        <span class="card-header-title">@lang('site::schedule.schedules')</span>
+                    <div class="card-header with-elements">
+                        <div class="card-header-title">@lang('site::schedule.schedules')</div>
                         <div class="card-header-elements ml-auto">
                             <a href="{{ route('admin.acts.schedule', $act) }}"
                                class="@cannot('schedule', $act) disabled @endcannot btn btn-sm btn-light">
                                 <i class="fa fa-@lang('site::schedule.icon')"></i>
                             </a>
                         </div>
-                    </h6>
+                    </div>
                     {{--<div class="card-body">--}}
                     <ul class="list-group list-group-flush">
                         @if($act->schedules()->count())
@@ -139,53 +128,11 @@
                         <div class="card-footer">
                             <div class="font-weight-bold text-danger">@lang('site::schedule.error')</div>
                         </div>
-                        {{--<ul class="list-group list-group-flush text-danger">--}}
-                        {{--@if(!$order->user->hasGuid())--}}
-                        {{--<li class="list-group-item  bg-lighter">@lang('site::user.error.guid')</li>--}}
-                        {{--@endif--}}
-                        {{--@if(!$order->contragent->hasOrganization())--}}
-                        {{--<li class="list-group-item  bg-lighter">@lang('site::messages.not_selected_f') @lang('site::contragent.organization_id')</li>--}}
-                        {{--@endif--}}
-                        {{--</ul>--}}
-
-                        {{--<ul class="list-group list-group-flush">--}}
-                        {{--<li class="list-group-item d-flex justify-content-between align-items-center">--}}
-                        {{--<div class="text-muted">--}}
-                        {{--@lang('site::contragent.organization_id')--}}
-                        {{--</div>--}}
-                        {{--<div>--}}
-                        {{--@bool(['bool' => $order->contragent->hasOrganization()])@endbool--}}
-                        {{--</div>--}}
-                        {{--</li>--}}
-                        {{--</ul>--}}
                     @endcannot
                 </div>
             </div>
             <div class="col-xl-8">
-                <div class="card mb-2">
-                    <h6 class="card-header with-elements">
-                        <span class="card-header-title">@lang('site::repair.repairs')</span>
-                        {{--<div class="card-header-elements ml-auto">--}}
-                        {{--<a href="#" class="btn btn-sm btn-light">--}}
-                        {{--<i class="fa fa-pencil"></i>--}}
-                        {{--</a>--}}
-                        {{--</div>--}}
-                    </h6>
-                    <div class="card-body">
-                        @foreach($act->repairs as $repair)
-                            <div class="row border-bottom">
-                                <div class="col"><a href="{{route('admin.repairs.show', $repair)}}">{{$repair->id}}</a></div>
-                                <div class="col">{{$repair->date_repair->format('d.m.Y')}}</div>
-                                <div class="col">
-                                    <a href="{{route('admin.products.show', $repair->product)}}">{{$repair->product->name}}</a>
-                                </div>
-                                <div class="col">
-                                    {{Site::format($repair->totalCost)}}
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
+                @include('site::admin.act.show.contents.'.$act->type->alias)
 
                 <div class="card mb-2">
                     <h6 class="card-header">@lang('site::act.header.detail_1')</h6>

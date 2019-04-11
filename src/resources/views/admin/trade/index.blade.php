@@ -24,9 +24,50 @@
         @filter(['repository' => $repository])@endfilter
         @pagination(['pagination' => $trades])@endpagination
         {{$trades->render()}}
-        <div class="row items-row-view">
-            @each('site::admin.trade.index.row', $trades, 'trade')
-        </div>
+        @foreach($trades as $trade)
+            <div class="card my-2" id="trade-{{$trade->id}}">
+
+                <div class="row">
+                    <div class="col-xl-3 col-sm-6">
+                        <dl class="dl-horizontal mt-2">
+                            <dt class="col-12">@lang('site::trade.name')</dt>
+                            <dd class="col-12">
+                                <a href="{{route('admin.trades.edit', $trade)}}" class="mr-3 text-big ml-0">
+                                    {{$trade->name}}
+                                </a>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="col-xl-3 col-sm-6">
+                        <dl class="dl-horizontal mt-0 mt-sm-2">
+                            <dt class="col-12">@lang('site::trade.user_id')</dt>
+                            <dd class="col-12">
+                                <a href="{{route('admin.users.show', $trade->user)}}">
+                                    {{$trade->user->name}}
+                                </a>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="col-xl-4 col-sm-6">
+                        @if($trade->address)
+                            <dl class="dl-horizontal mt-0 mt-sm-2">
+                                <dt class="col-12">@lang('site::trade.address')</dt>
+                                <dd class="col-12">{{$trade->address}}</dd>
+                            </dl>
+                        @endif
+                    </div>
+                    <div class="col-xl-2 col-sm-6">
+                        <dl class="dl-horizontal mt-0 mt-sm-2">
+                            <dt class="col-12">@lang('site::trade.phone')</dt>
+                            <dd class="col-12">
+                                {{ $trade->country->phone }}{{ $trade->phone }}
+                            </dd>
+                        </dl>
+                    </div>
+
+                </div>
+            </div>
+        @endforeach
         {{$trades->render()}}
 
     </div>

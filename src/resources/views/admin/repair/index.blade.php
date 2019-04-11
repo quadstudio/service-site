@@ -19,7 +19,7 @@
         <div class=" border p-3 mb-2">
             <button form="repository-form"
                     type="submit"
-                    name="excel" value="{{ route('admin.excel.repairs') }}"
+                    name="excel"
                     class="d-block d-sm-inline-block mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-primary">
                 <i class="fa fa-upload"></i>
                 <span>@lang('site::messages.upload') @lang('site::messages.to_excel')</span>
@@ -46,6 +46,12 @@
                     </div>
 
                     <div class="card-header-elements ml-md-auto">
+                        <a href="{{route('admin.users.show', $repair->user)}}" class="mr-3 ml-0">
+                            <img id="user-logo"
+                                 src="{{$repair->user->logo}}"
+                                 style="width:25px!important;height: 25px"
+                                 class="rounded-circle mr-2">{{$repair->user->name}}
+                        </a>
                         @if($repair->fails()->count())
                             <span data-toggle="tooltip" data-placement="top" title="@lang('site::fail.fails')"
                                   class="badge badge-danger text-normal badge-pill">
@@ -132,14 +138,6 @@
                             </dd>
                         </dl>
                     </div>
-                </div>
-                <div class="card-footer py-1">
-                    <a href="{{route('admin.users.show', $repair->user)}}" class="mr-3 ml-0">
-                        <img id="user-logo"
-                             src="{{$repair->user->logo}}"
-                             style="width:25px!important;height: 25px"
-                             class="rounded-circle mr-2">{{$repair->user->name}}
-                    </a>
                 </div>
             </div>
         @endforeach

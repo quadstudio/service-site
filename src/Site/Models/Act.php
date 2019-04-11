@@ -15,7 +15,7 @@ class Act extends Model
      */
     protected $table;
 
-    protected $fillable = ['number', 'contragent_id', 'received'];
+    protected $fillable = ['number', 'contragent_id', 'received', 'paid', 'type_id'];
 
     /**
      * @param array $attributes
@@ -44,6 +44,16 @@ class Act extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Тип акта
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function type()
+    {
+        return $this->belongsTo(ActType::class);
     }
 
     /**
@@ -77,43 +87,46 @@ class Act extends Model
     }
 
     /**
-     * Стоимость работ
-     *
-     * @return float
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function getDifficultyCostAttribute()
+    public function contents()
     {
-        return $this->repairs->sum('total_difficulty_cost');
+        $contents = $this->type->alias;
+
+        return $this->$contents();
     }
 
     /**
-     * Стоимость дороги
+     * Отчеты по монтажу
      *
-     * @return float
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function getDistanceCostAttribute()
+    public function mountings()
     {
-        return $this->repairs->sum('total_distance_cost');
+        return $this->hasMany(Mounting::class);
     }
 
     /**
-     * Стоимость запчастей
-     *
-     * @return float
-     */
-    public function getCostPartsAttribute()
-    {
-        return $this->repairs->sum('total_cost_parts');
-    }
-
-    /**
-     * Стоимость запчастей
+     * Стоимость акта
      *
      * @return float
      */
     public function getTotalAttribute()
     {
-        return $this->getAttribute('difficulty_cost') + $this->getAttribute('distance_cost') + $this->getAttribute('cost_parts');
+        return $this->getAttribute('total_' . $this->type->alias);
+    }
+
+    public function getTotalRepairsAttribute()
+    {
+        return $this->repairs->sum('total_difficulty_cost')
+            + $this->repairs->sum('total_distance_cost')
+            + $this->repairs->sum('total_cost_parts');
+    }
+
+    public function getTotalMountingsAttribute()
+    {
+        return $this->mountings->sum('bonus')
+            + $this->mountings->sum('enabled_social_bonus');
     }
 
     /**

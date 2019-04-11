@@ -25,7 +25,7 @@ class EquipmentFilter extends WhereFilter
         if ($this->canTrack() && $this->filled($this->name())) {
 
             $equipment_id = $this->get($this->name());
-            $builder = $builder->whereHas('back_relations', function ($query) use ($equipment_id) {
+            $builder = $builder->whereHas('relations', function ($query) use ($equipment_id) {
                 $query->whereEquipmentId($equipment_id);
             });
         }
@@ -50,7 +50,7 @@ class EquipmentFilter extends WhereFilter
     {
         $options = Equipment::whereHas('products', function ($query) {
             $query->where('products.enabled', 1);
-            $query->whereHas('relations', function ($query) {
+            $query->whereHas('details', function ($query) {
                 $query->where('enabled', 1)->where('active', 1)->whereNull('equipment_id');
             });
         })->orderBy('name')->pluck('name', 'id');

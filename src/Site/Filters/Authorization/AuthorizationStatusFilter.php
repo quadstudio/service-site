@@ -19,7 +19,8 @@ class AuthorizationStatusFilter extends WhereFilter
      */
     public function options(): array
     {
-        return ['' => trans('site::messages.select_no_matter')] + AuthorizationStatus::query()->whereHas('authorizations', function ($query) {
+        return ['' => trans('site::messages.select_no_matter')]
+            + AuthorizationStatus::query()->whereHas('authorizations', function ($query) {
                 if (auth()->user()->admin == 0) {
                     $query->where('user_id', auth()->user()->getAuthIdentifier());
                 }

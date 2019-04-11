@@ -9,10 +9,9 @@
 @endsection
 
 @section('body')
-    <p><b>@lang('site::mounting.id')</b>: {{$mounting->id }}</p>
     <p><b>@lang('site::mounting.user_id')</b>: {{$mounting->user->name }}</p>
     <p>
         <a class="btn btn-ferroli btn-lg" href="{{ route('admin.mountings.show', $mounting) }}">
-            &#128194; @lang('site::messages.open') @lang('site::mounting.mounting')</a>
+            &#128194; @lang('site::messages.open') @lang('site::mounting.mounting') № {{$mounting->id }}</a>
     </p>
 @endsection

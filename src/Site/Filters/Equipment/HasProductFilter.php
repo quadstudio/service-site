@@ -22,7 +22,7 @@ class HasProductFilter extends Filter
     {
         if (!is_null($this->product)) {
             $builder = $builder->whereHas('products', function ($query) {
-                $query->whereHas('relations', function ($query) {
+                $query->whereHas('details', function ($query) {
                     $query->whereId($this->product->id);
                 });
                 //whereEquipmentId($equipment_id);

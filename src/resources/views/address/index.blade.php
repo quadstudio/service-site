@@ -47,8 +47,18 @@
                             {{$address->name}}
                         </a>
                     </div>
+                    <div class="card-header-elements ml-md-auto">
+                        <span class="px-2 bg-light">{{$address->type->name}}</span>
+                    </div>
                 </div>
+
                 <div class="row">
+                    <div class="col-xl-5 col-sm-6">
+                        <dl class="dl-horizontal my-sm-2 my-0">
+                            <dt class="col-12">@lang('site::address.full')</dt>
+                            <dd class="col-12">{{$address->full}}</dd>
+                        </dl>
+                    </div>
                     <div class="col-xl-3 col-sm-6">
                         <dl class="dl-horizontal my-sm-2 my-0">
                             <dt class="col-12">@lang('site::phone.phones')</dt>
@@ -67,20 +77,7 @@
 
                         </dl>
                     </div>
-                    <div class="col-xl-3 col-sm-6">
-                        <dl class="dl-horizontal my-sm-2 my-0">
-                            <dt class="col-12">@lang('site::address.type_id')</dt>
-                            <dd class="col-12">{{$address->type->name}}</dd>
-                        </dl>
-                    </div>
-
-                    <div class="col-xl-3 col-sm-6">
-                        <dl class="dl-horizontal my-sm-2 my-0">
-                            <dt class="col-12">@lang('site::address.full')</dt>
-                            <dd class="col-12">{{$address->full}}</dd>
-                        </dl>
-                    </div>
-                    <div class="col-xl-3 col-sm-6">
+                    <div class="col-xl-4 col-sm-12">
                         <dl class="dl-horizontal my-sm-2 my-0">
                             @if($address->email)
                                 <dt class="col-12">@lang('site::address.email')</dt>

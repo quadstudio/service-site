@@ -47,6 +47,19 @@ class Image extends Model
         }
     }
 
+    public function getUrlAttribute(){
+        return Storage::disk($this->storage)->url($this->path);
+    }
+
+    public function getWidthAttribute(){
+        list($width, $height) = getimagesize($this->getAttribute('url'));
+        return $width;
+    }
+    public function getHeightAttribute(){
+        list($width, $height) = getimagesize($this->getAttribute('url'));
+        return $height;
+    }
+
     /**
      * Get all of the owning contactable models.
      */

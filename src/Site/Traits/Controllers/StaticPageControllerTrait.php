@@ -63,7 +63,7 @@ trait StaticPageControllerTrait
 //    {
 //        $this->users->trackFilter();
 //        $users = $this->users
-//            ->applyFilter(new ActiveFilter())
+//            ->applyFilter(new AddressActiveFilter())
 //            ->applyFilter(new DisplayFilter())
 //            ->applyFilter(new IsDealerFilter())
 //            ->applyFilter(new IsServiceFilter())

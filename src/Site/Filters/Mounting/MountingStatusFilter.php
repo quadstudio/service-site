@@ -19,7 +19,8 @@ class MountingStatusFilter extends WhereFilter
      */
     public function options(): array
     {
-        return ['' => trans('site::messages.select_no_matter')] + MountingStatus::query()
+        return ['' => trans('site::messages.select_no_matter')] +
+            MountingStatus::query()
                 ->has('mountings')
                 ->orderBy('id')
                 ->pluck('name', 'id')->toArray();

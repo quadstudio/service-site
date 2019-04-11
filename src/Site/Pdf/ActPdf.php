@@ -44,16 +44,16 @@ class ActPdf extends Pdf
         $this->Cell(10, $line_height, w1251(trans('site::act.pdf.table.unit')), 1, 0, 'C');
         $this->Cell(20, $line_height, w1251(trans('site::act.pdf.table.price')), 1, 0, 'C');
         $this->Cell(20, $line_height, w1251(trans('site::act.pdf.table.cost')), 1, 1, 'C');
-        foreach ($this->model->repairs as $key => $repair) {
+        foreach ($this->model->contents as $key => $repair) {
             $this->Cell(10, $line_height, $key + 1, 1, 0, 'C');
-            $this->Cell(110, $line_height, w1251(trans('site::act.pdf.table.text', [
+            $this->Cell(110, $line_height, w1251(trans('site::act.pdf.table.text.'.$this->model->type_id, [
                 'repair_id' => $repair->id,
                 'repair_date' => $this->model->created_at->format('d.m.Y')
             ])), 1, 0, 'L');
             $this->Cell(20, $line_height, 1, 1, 0, 'C');
             $this->Cell(10, $line_height, w1251(trans('site::act.pdf.table.unit_row')), 1, 0, 'C');
-            $this->Cell(20, $line_height, number_format($repair->totalCost, 2, '.', ' '), 1, 0, 'R');
-            $this->Cell(20, $line_height, number_format($repair->totalCost, 2, '.', ' '), 1, 1, 'R');
+            $this->Cell(20, $line_height, number_format($repair->total, 2, '.', ' '), 1, 0, 'R');
+            $this->Cell(20, $line_height, number_format($repair->total, 2, '.', ' '), 1, 1, 'R');
         }
         $this->ln(2);
         $this->SetFont('Verdana', 'B', $font_size);

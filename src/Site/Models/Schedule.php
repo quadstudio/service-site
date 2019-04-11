@@ -32,4 +32,24 @@ class Schedule extends Model
         return $this->morphTo();
     }
 
+    /**
+     * Статус
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function status()
+    {
+        return $this->belongsTo(ScheduleStatus::class, 'status');
+    }
+
+    /**
+     * Действие
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function action()
+    {
+        return $this->belongsTo(ScheduleAction::class);
+    }
+
 }

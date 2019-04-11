@@ -32,6 +32,12 @@ class ProductAnalogRequest extends FormRequest
                     'mirror'        => 'required|boolean',
                 ];
             }
+            case 'DELETE': {
+                return [
+                    'delete'        => 'required|array',
+                    'mirror_delete' => 'sometimes|boolean',
+                ];
+            }
             default:
                 return [];
         }
@@ -44,7 +50,9 @@ class ProductAnalogRequest extends FormRequest
      */
     public function messages()
     {
-        return [];
+        return [
+            'delete.required' => trans('site::analog.error.delete.required'),
+        ];
     }
 
     /**

@@ -32,7 +32,7 @@
 
     }
 
-    #product-row.row .product-relations {
+    #product-row.row .product-details {
         display: none;
     }
 
@@ -49,7 +49,7 @@
 
     @media (min-width: 576px) {
 
-        #product-row.row.list .product-relations {
+        #product-row.row.list .product-details {
             display: block;
         }
 
@@ -183,9 +183,9 @@
                                 @if($product->old_sku)
                                     <div class="text-muted">({!! $product->old_sku !!})</div>
                                 @endif
-                                <div class="product-relations mt-2">
+                                <div class="product-details mt-2">
                                     @if( $product->relation_equipments()->count() > 0)
-                                        @lang('site::relation.header.back_relations')
+                                        @lang('site::relation.relations')
                                         : {{ $product->relation_equipments()->implode('name', ', ') }}
                                     @endif
                                 </div>

@@ -18,9 +18,16 @@
         @alert()@endalert()
 
         <div class=" border p-3 mb-2">
-            <a href="{{ route('admin') }}" class="d-block d-sm-inline btn btn-secondary">
+            <button form="repository-form"
+                    type="submit"
+                    name="excel"
+                    class="d-block d-sm-inline-block mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-primary">
+                <i class="fa fa-upload"></i>
+                <span>@lang('site::messages.upload') @lang('site::messages.to_excel')</span>
+            </button>
+            <a href="{{ route('admin') }}" class="d-block d-sm-inline-block btn btn-secondary">
                 <i class="fa fa-reply"></i>
-                <span>@lang('site::messages.back_home')</span>
+                <span>@lang('site::messages.back_admin')</span>
             </a>
         </div>
 
@@ -42,6 +49,12 @@
                     </div>
 
                     <div class="card-header-elements ml-md-auto">
+                        <a href="{{route('admin.users.show', $mounting->user)}}" class="mr-3 ml-0">
+                            <img id="user-logo"
+                                 src="{{$mounting->user->logo}}"
+                                 style="width:25px!important;height: 25px"
+                                 class="rounded-circle mr-2">{{$mounting->user->name}}
+                        </a>
                         @if( $mounting->messages()->exists())
                             <span class="badge badge-secondary text-normal badge-pill">
                                 <i class="fa fa-comment"></i> {{ $mounting->messages()->count() }}
@@ -106,14 +119,6 @@
                             @endif
                         </dl>
                     </div>
-                </div>
-                <div class="card-footer py-1">
-                    <a href="{{route('admin.users.show', $mounting->user)}}" class="mr-3 ml-0">
-                        <img id="user-logo"
-                             src="{{$mounting->user->logo}}"
-                             style="width:25px!important;height: 25px"
-                             class="rounded-circle mr-2">{{$mounting->user->name}}
-                    </a>
                 </div>
             </div>
         @endforeach

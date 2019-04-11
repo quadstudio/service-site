@@ -95,6 +95,16 @@ class Contragent extends Model implements Addressable
     }
 
     /**
+     * Акты выполненных работ
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function acts()
+    {
+        return $this->hasMany(Act::class);
+    }
+
+    /**
      * Заказы
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

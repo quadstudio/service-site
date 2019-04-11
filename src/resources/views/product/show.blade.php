@@ -108,12 +108,11 @@
                                     <dd class="col-sm-8">@lang('site::price.help.price')</dd>
                                 @endif
                                 <dt class="col-sm-4"></dt>
-				<dd class="col-sm-8">
-                              @if($product->forsale)
-                                    @include('site::cart.buy.large')
-				@endif
+                                <dd class="col-sm-8">
+                                    @if($product->forsale)
+                                        @include('site::cart.buy.large')
+                                    @endif
                                 </dd>
-
                             </dl>
                             {{--@if(!$equipment->products->isEmpty())--}}
                             {{--<h5 class="mt-4">Оборудование</h5>--}}
@@ -130,17 +129,19 @@
                 </div>
                 <ul class="nav nav-tabs mt-3" id="myTab" role="tablist">
                     @if($product->description)
-					<li class="nav-item">
-                        <a class="nav-link @if($product->type_id<4) active @endif" id="description-tab" data-toggle="tab" href="#description"
-                           role="tab"
-                           aria-controls="description" aria-selected="true">
-                            @lang('site::product.description')
-                        </a>
-                    </li>
-					@endif
+                        <li class="nav-item">
+                            <a class="nav-link @if($product->type_id<4) active @endif" id="description-tab"
+                               data-toggle="tab" href="#description"
+                               role="tab"
+                               aria-controls="description" aria-selected="true">
+                                @lang('site::product.description')
+                            </a>
+                        </li>
+                    @endif
                     @if($product->specification)
                         <li class="nav-item">
-                            <a class="nav-link @if(!$product->description) active @endif" id="specification-tab" data-toggle="tab" href="#specification"
+                            <a class="nav-link @if(!$product->description) active @endif" id="specification-tab"
+                               data-toggle="tab" href="#specification"
                                role="tab"
                                aria-controls="specification" aria-selected="true">
                                 @lang('site::product.specification')
@@ -149,22 +150,23 @@
                     @endif
                     @if($equipments->isNotEmpty())
                         <li class="nav-item">
-                            <a class="nav-link @if($product->type_id>3) active @endif" id="back-relation-tab" data-toggle="tab" href="#back-relation"
+                            <a class="nav-link @if($product->type_id>3) active @endif" id="back-relation-tab"
+                               data-toggle="tab" href="#back-relation"
                                role="tab"
                                aria-controls="back-relation"
-                               aria-selected="false">@lang('site::relation.header.back_relations')
+                               aria-selected="false">@lang('site::relation.relations')
                                 <span class="text-big badge badge-secondary">
                                     {{$back_relations->count()}}
                                 </span>
                             </a>
                         </li>
                     @endif
-                    @if($relations->isNotEmpty())
+                @if($details->isNotEmpty())
                         <li class="nav-item">
-                            <a class="nav-link" id="relation-tab" data-toggle="tab" href="#relation" role="tab"
-                               aria-controls="relation" aria-selected="false">@lang('site::relation.header.relations')
+                            <a class="nav-link" id="detail-tab" data-toggle="tab" href="#detail" role="tab"
+                               aria-controls="detail" aria-selected="false">@lang('site::detail.details')
                                 <span class="text-big badge badge-secondary">
-                                {{$relations->count()}}
+                                {{$details->count()}}
                             </span>
                             </a>
                         </li>
@@ -203,17 +205,20 @@
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     @if($product->description)
-					<div class="tab-pane fade @if($product->type_id<4) show active @endif p-3" id="description" role="tabpanel"
-                         aria-labelledby="description-tab">{!! $product->description !!}
-                    </div>
-					@endif
+                        <div class="tab-pane fade @if($product->type_id<4) show active @endif p-3" id="description"
+                             role="tabpanel"
+                             aria-labelledby="description-tab">{!! $product->description !!}
+                        </div>
+                    @endif
                     @if($product->specification)
-                        <div class="tab-pane fade @if(!$product->description) show active @endif p-3" id="specification" role="tabpanel"
+                        <div class="tab-pane fade @if(!$product->description) show active @endif p-3" id="specification"
+                             role="tabpanel"
                              aria-labelledby="specification-tab">{!! $product->specification !!}
                         </div>
                     @endif
                     @if($equipments->isNotEmpty())
-                        <div class="tab-pane fade @if($product->type_id>3) show active @endif p-3" id="back-relation" role="tabpanel"
+                        <div class="tab-pane fade @if($product->type_id>3) show active @endif p-3" id="back-relation"
+                             role="tabpanel"
                              aria-labelledby="back-relation-tab">
                             <table class="table">
                                 <tbody>
@@ -237,24 +242,24 @@
                             </table>
                         </div>
                     @endif
-                    @if($relations->isNotEmpty())
-                        <div class="tab-pane fade p-3" id="relation" role="tabpanel" aria-labelledby="relation-tab">
-                            @foreach($relations as $relation)
+                    @if($details->isNotEmpty())
+                        <div class="tab-pane fade p-3" id="detail" role="tabpanel" aria-labelledby="detail-tab">
+                            @foreach($details as $detail)
                                 <div class="row border-bottom p-1">
                                     <div class="col-sm-8">
-                                        <span>{{$relation->sku}}</span>
-                                        <a href="{{route('products.show', $relation)}}">{!! $relation->name !!}</a>
+                                        <span>{{$detail->sku}}</span>
+                                        <a href="{{route('products.show', $detail)}}">{!! $detail->name !!}</a>
                                     </div>
                                     <div class="col-sm-2">
-                                        @if($relation->quantity > 0)
+                                        @if($detail->quantity > 0)
                                             <span class="badge badge-success d-block d-md-inline-block">@lang('site::product.in_stock')</span>
                                         @else
                                             <span class="badge badge-light d-block d-md-inline-block">@lang('site::product.not_available')</span>
                                         @endif
                                     </div>
                                     <div class="col-sm-2 text-left text-sm-right">
-                                        @if($relation->hasPrice)
-                                            {{ Site::format($relation->price->value) }}
+                                        @if($detail->hasPrice)
+                                            {{ Site::format($detail->price->value) }}
                                         @endif
                                     </div>
                                 </div>
@@ -314,8 +319,8 @@
 
                                             <div class="col-sm-3 text-right">
                                                 @if($datasheet->schemes()->count() > 0)
-                                                <a class="btn btn-ferroli"
-                                                   href="{{route('products.scheme', [$product, $datasheet->schemes()->first()])}}">@lang('site::messages.open') @lang('site::scheme.scheme')</a>
+                                                    <a class="btn btn-ferroli"
+                                                       href="{{route('products.scheme', [$product, $datasheet->schemes()->first()])}}">@lang('site::messages.open') @lang('site::scheme.scheme')</a>
                                                 @endif
                                             </div>
                                             <div class="col-sm-3 text-right">

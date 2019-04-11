@@ -15,9 +15,9 @@
             <li class="breadcrumb-item">
                 <a href="{{ route('admin.products.show', $product) }}">{{$product->name}}</a>
             </li>
-            <li class="breadcrumb-item active">@lang('site::relation.header.back_relations')</li>
+            <li class="breadcrumb-item active">@lang('site::relation.header.relations')</li>
         </ol>
-        <h1 class="header-title mb-4">@lang('site::relation.header.back_relations') {{$product->name}} {{$product->sku}}</h1>
+        <h1 class="header-title mb-4">@lang('site::relation.header.relations') {{$product->name}} {{$product->sku}}</h1>
         @alert()@endalert
         <div class="row justify-content-center">
             <div class="col-md-12">
@@ -25,7 +25,7 @@
                     <div class="card-body">
 
                         <form method="POST" id="form-content"
-                              action="{{ route('admin.products.back_relations.update', $product) }}">
+                              action="{{ route('admin.products.relations.update', $product) }}">
 
                             @csrf
 
@@ -55,7 +55,7 @@
                                 <div class="col-sm-8">
                                     <div class="form-row">
                                         <div class="col mb-3">
-                                            <label for="relations">@lang('site::relation.header.back_relations')</label>
+                                            <label for="relations">@lang('site::relation.header.relations')</label>
                                             <textarea
                                                     class="form-control{{ $errors->has('relations') ? ' is-invalid' : '' }}"
                                                     {{--placeholder="@lang('site::product.placeholder.relations')"--}}

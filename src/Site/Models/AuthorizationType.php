@@ -34,14 +34,21 @@ class AuthorizationType extends Model
         return $query->where('enabled', 1);
     }
 
+
     /**
      * Авторизации
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function authorizations()
     {
-        return $this->hasMany(Authorization::class, 'type_id');
+
+        return $this->belongsToMany(
+            Authorization::class,
+            'authorization_type',
+            'type_id',
+            'authorization_id'
+        );
     }
 
     /**

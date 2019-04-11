@@ -36,16 +36,16 @@ class ContragentRequest extends FormRequest
                     'contragent.type_id'         => 'required|exists:contragent_types,id',
                     'contragent.name'            => 'required|string|max:255',
                     'contragent.inn'             => array(
-                        'unique:contragents,inn,' . $this->route()->parameter('contragent')->id,
+                        'unique:' . 'contragents,inn,' . $this->route()->parameter('contragent')->id,
                         'required',
                         'numeric',
                         'regex:/\d{10}|\d{12}/',
                         function ($attribute, $value, $fail) {
                             if ($this->input('contragent.type_id') == 1 && strlen($value) != 10) {
-                                return $fail(trans('site::contragent.inn') . ': ' . trans('site::contragent.placeholder.inn'));
+                                return $fail(trans('site::contragent.placeholder.inn'));
                             }
                             if ($this->input('contragent.type_id') == 2 && strlen($value) != 12) {
-                                return $fail(trans('site::contragent.inn') . ': ' . trans('site::contragent.placeholder.inn'));
+                                return $fail(trans('site::contragent.placeholder.inn'));
                             }
                         }
                     ),
@@ -59,15 +59,14 @@ class ContragentRequest extends FormRequest
                         'numeric',
                         'regex:/\d{8}|\d{10}/'
                     ),
-                    'contragent.kpp'            => array(
-                        'sometimes',
+                    'contragent.kpp'             => array(
                         'required_if:contragent.type_id,1',
+//                        'regex:/^$|^\d{9}$/',
                         function ($attribute, $value, $fail) {
                             if ($this->input('contragent.type_id') == 1 && strlen($value) != 9) {
                                 return $fail(trans('site::contragent.placeholder.kpp'));
                             }
                         }
-                        //'regex:/^([0-9]{9})?$/'
                     ),
                     'contragent.ks'              => 'required|numeric|digits:20',
                     'contragent.rs'              => 'required|numeric|digits:20',

@@ -108,7 +108,8 @@ if (!function_exists('num2str')) {
 }
 
 if (!function_exists('formatBytes')) {
-    function formatBytes($bytes, $precision = 2) {
+    function formatBytes($bytes, $precision = 2)
+    {
         $units = array('B', 'KB', 'MB', 'GB', 'TB');
 
         $bytes = max($bytes, 0);
@@ -140,6 +141,15 @@ if (!function_exists('formatFileSize')) {
         }
 
         return $bytes;
+    }
+}
+
+if (!function_exists('formatImageDimension')) {
+    function formatImageDimension($path)
+    {
+        list($width, $height) = getimagesize($path);
+
+        return "{$width}px x {$height}px";
     }
 }
 

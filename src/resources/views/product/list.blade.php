@@ -55,48 +55,6 @@
                 </div>
             @endforeach
         </div>
-        {{--<div id="product-row" class="row grid">--}}
-        {{--@foreach($products as $key => $product)--}}
-        {{--<div class="product-col mt-3">--}}
-        {{--<div class="row p-2 mx-2">--}}
-
-        {{--<div class="product-image">--}}
-        {{--<a href="{{route('products.show', $product)}}">--}}
-        {{--<img class="img-fluid" src="{{ $product->image()->src() }}" alt="{{$product->name}}">--}}
-        {{--</a>--}}
-        {{--</div>--}}
-
-        {{--<div class="product-content pl-2 pl-sm-0 pt-sm-2">--}}
-        {{--<div class="product-name">--}}
-        {{--<a class="text-dark"--}}
-        {{--href="{{route('products.show', $product)}}">{!! str_limit($product->name, 60) !!}</a>--}}
-        {{--<div class="text-muted mb-2">@lang('site::product.sku')--}}
-        {{--: {{$product->sku}}</div>--}}
-        {{--<div class="product-relations">--}}
-        {{--@if( $product->relation_equipments()->count() > 0)--}}
-        {{--@lang('site::relation.header.back_relations')--}}
-        {{--: {{ $product->relation_equipments()->implode('name', ', ') }}--}}
-        {{--@endif--}}
-        {{--</div>--}}
-        {{--</div>--}}
-        {{--<div class="product-cart">--}}
-        {{--@if($product->price()->exists)--}}
-        {{--<div class="product-price font-weight-bold text-xlarge my-3">{{ $product->price()->format() }}</div>--}}
-        {{--@endif--}}
-        {{--@auth--}}
-        {{--@if(Auth::user()->hasPermission('buy'))--}}
-        {{--<div class="product-button">--}}
-        {{--@include('site::cart.add', $product->toCart())--}}
-        {{--</div>--}}
-        {{--@endif--}}
-        {{--@endauth--}}
-        {{--</div>--}}
-        {{--</div>--}}
-        {{--</div>--}}
-        {{--</div>--}}
-        {{--@endforeach--}}
-        {{--@each('site::product.grid', $items, 'product', 'site::product.empty')--}}
-        {{--</div>--}}
         {{$products->render()}}
     </div>
 @endsection

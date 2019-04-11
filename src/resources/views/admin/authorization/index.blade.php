@@ -28,13 +28,12 @@
 
                 <div class="card-header with-elements">
                     <div class="card-header-elements">
-
+                        <a href="{{route('admin.authorizations.show', $authorization)}}" class="mr-3 text-big ml-0">
+                            @lang('site::authorization.header.authorization') № {{$authorization->id}}
+                        </a>
                         <span class="badge text-normal badge-pill badge-{{ $authorization->status->color }} mr-3 ml-0">
                             <i class="fa fa-{{ $authorization->status->icon }}"></i> {{ $authorization->status->name }}
                         </span>
-                        <a href="{{route('admin.authorizations.show', $authorization)}}" class="mr-3 ml-0">
-                            @lang('site::authorization.header.authorization') № {{$authorization->id}}
-                        </a>
                     </div>
 
                     <div class="card-header-elements ml-md-auto">
@@ -65,15 +64,13 @@
                             <dd class="col-12">
                                 <ul class="list-group">
                                     @foreach($authorization->types as $authorization_type)
-                                        <li class="list-group-item px-2 py-1">{{$authorization_type->name}}</li>
+                                        <li class="list-group-item px-2 py-1">
+                                            {{$authorization_type->name}}
+                                            {{$authorization_type->brand->name}}
+                                        </li>
                                     @endforeach
                                 </ul>
                             </dd>
-
-                        </dl>
-                    </div>
-                    <div class="col-xl-3 col-sm-6">
-                        <dl class="dl-horizontal mt-2">
 
                         </dl>
                     </div>

@@ -23,10 +23,11 @@ return [
     'description'         => 'Описание',
     'specification'       => 'Технические характеристики',
     'equipment_id'        => 'Модель',
-    'enabled'             => 'Включен',
-    'active'              => 'Для продажи',
-    'warranty'            => 'На гарантии',
-    'service'             => 'Услуга',
+    'enabled'             => 'Включен?',
+    'active'              => 'Отображать?',
+    'forsale'             => 'Для продажи?',
+    'warranty'            => 'На гарантии?',
+    'service'             => 'Услуга?',
     //
     'placeholder'         => [
         'old_sku'         => '',
@@ -53,7 +54,14 @@ return [
         'shop' => 'в виде витрины',
     ],
     'help'                => [
-        'quantity' => 'Кол-во'
+        'back'               => 'Вернуться в карточку товара',
+        'quantity'           => 'Кол-во',
+        'has_quantity'       => 'Есть на остатках?',
+        'has_images'         => 'Есть изображения?',
+        'has_prices'         => 'Есть цены?',
+        'has_analogs'        => 'Есть аналоги?',
+        'has_details'      => 'Есть детали?',
+        'has_mounting_bonus' => 'Указан бонус за монтаж?',
     ]
 
 ];

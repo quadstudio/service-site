@@ -32,7 +32,7 @@ class MountingEquipmentFilter extends WhereFilter
      */
     public function name(): string
     {
-        return 'equipment_id';
+        return 'equipment';
     }
 
     /**

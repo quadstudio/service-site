@@ -122,6 +122,15 @@
                         </div>
 
                     </div>
+                    <hr class="border-light m-0">
+                    <div class="card-body">
+                        <h4>@lang('rbac::role.roles')</h4>
+                        @foreach($roles as $role)
+                            <span class="d-block text-normal @if($user->hasRole($role->name)) text-success @else text-danger @endif">
+                                @if($user->hasRole($role->name)) ✔ @else ✖ @endif {{$role->title}}
+                            </span>
+                        @endforeach
+                    </div>
                     <div class="list-group list-group-flush">
                         <a href="{{ route('admin.repairs.index', ['filter[user_id]='.$user->id]) }}"
                            class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
@@ -193,21 +202,48 @@
                                 {{$user->addresses()->count()}}
                             </span>
                         </a>
-
-
-                    </div>
-
-                    <div class="card-body">
-
-
-                        <h4>@lang('rbac::role.roles')</h4>
-                        @foreach($roles as $role)
-                            <span class="d-block text-normal @if($user->hasRole($role->name)) text-success @else text-danger @endif">
-                                @if($user->hasRole($role->name)) ✔ @else ✖ @endif {{$role->title}}
+                        <a href="{{ route('admin.engineers.index', ['filter[user]='.$user->id]) }}"
+                           class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="fa fa-@lang('site::engineer.icon')"></i>
+                                 <span>@lang('site::engineer.engineers')</span>
                             </span>
-                        @endforeach
-
+                            <span class="badge text-big @if($user->engineers()->exists()) badge-ferroli @else badge-light @endif">
+                                {{$user->engineers()->count()}}
+                            </span>
+                        </a>
+                        <a href="{{ route('admin.launches.index', ['filter[user]='.$user->id]) }}"
+                           class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="fa fa-@lang('site::launch.icon')"></i>
+                                 <span>@lang('site::launch.launches')</span>
+                            </span>
+                            <span class="badge text-big @if($user->launches()->exists()) badge-ferroli @else badge-light @endif">
+                                {{$user->launches()->count()}}
+                            </span>
+                        </a>
+                        <a href="{{ route('admin.trades.index', ['filter[user]='.$user->id]) }}"
+                           class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="fa fa-@lang('site::trade.icon')"></i>
+                                 <span>@lang('site::trade.trades')</span>
+                            </span>
+                            <span class="badge text-big @if($user->trades()->exists()) badge-ferroli @else badge-light @endif">
+                                {{$user->trades()->count()}}
+                            </span>
+                        </a>
+                        <a href="{{ route('admin.contragents.index', ['filter[user]='.$user->id]) }}"
+                           class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="fa fa-@lang('site::contragent.icon')"></i>
+                                 <span>@lang('site::contragent.contragents')</span>
+                            </span>
+                            <span class="badge text-big @if($user->contragents()->exists()) badge-ferroli @else badge-light @endif">
+                                {{$user->contragents()->count()}}
+                            </span>
+                        </a>
                     </div>
+
                 </div>
                 <div class="card mb-4">
                     <h6 class="card-header with-elements">
@@ -262,7 +298,8 @@
                                             @if($authorization_accepts->contains(function ($accept) use ($authorization_role, $authorization_type) {
                                                 return $accept->type_id == $authorization_type->id && $accept->role_id == $authorization_role->role_id;
                                             }))
-                                                <span class="badge text-normal badge-success"><i class="fa fa-check"></i></span>
+                                                <span class="badge text-normal badge-success"><i
+                                                            class="fa fa-check"></i></span>
                                             @endif
                                         </td>
                                     @endforeach
@@ -276,10 +313,9 @@
                 @foreach($contacts as $contact)
                     <div class="card mb-2">
                         <div class="card-body">
-                            <h5 class="card-title">@lang('site::user.header.contact')</h5>
                             <dl class="row">
 
-                                <dt class="col-sm-4 text-left text-sm-right">@lang('site::contact.name')</dt>
+                                <dt class="col-sm-4 text-left text-sm-right">@lang('site::user.header.contact')</dt>
                                 <dd class="col-sm-8">{{ $contact->name }}</dd>
 
                                 <dt class="col-sm-4 text-left text-sm-right">@lang('site::contact.position')</dt>

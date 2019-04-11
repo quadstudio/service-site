@@ -41,9 +41,10 @@
                     </div>
 
                     <div class="card-header-elements ml-md-auto">
-					    <span>
-                            <img id="user-logo" src="{{$order->user->logo}}" style="width:25px!important;height: 25px" class="rounded-circle mr-2">{{$order->user->name}}
-                        </span>
+					    <a href="{{route('admin.users.show', $order->user)}}">
+                            <img id="user-logo" src="{{$order->user->logo}}" style="width:25px!important;height: 25px" class="rounded-circle mr-2">
+                            {{$order->user->name}}
+                        </a>
                         @if( $order->messages()->exists())
                             <span class="badge badge-secondary text-normal badge-pill">
                                 <i class="fa fa-comment"></i> {{ $order->messages()->count() }}

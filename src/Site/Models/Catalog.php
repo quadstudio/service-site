@@ -4,9 +4,10 @@ namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use QuadStudio\Service\Site\Contracts\SingleImageable;
 use QuadStudio\Service\Site\Traits\Models\SortOrderTrait;
 
-class Catalog extends Model
+class Catalog extends Model implements SingleImageable
 {
 
     use SortOrderTrait;
@@ -21,7 +22,7 @@ class Catalog extends Model
      */
     protected $fillable = [
         'name', 'name_plural', 'description',
-        'catalog_id', 'enabled', 'model', 'sort_order'
+        'catalog_id', 'enabled', 'model', 'image_id', 'sort_order'
     ];
 
     /**
@@ -51,7 +52,7 @@ class Catalog extends Model
      */
     public function catalog()
     {
-        return $this->belongsTo(Catalog::class);//, 'id', 'catalog_id'
+        return $this->belongsTo(Catalog::class);
     }
 
     /**
@@ -67,11 +68,28 @@ class Catalog extends Model
             $this->equipments()->count() == 0;
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function catalogs()
+    {
+        return $this->hasMany(Catalog::class);
+
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function equipments()
+    {
+        return $this->hasMany(Equipment::class);
+    }
+
     public function parentTreeName()
     {
         $name = [];
         $last = null;
-        $this->parentTree()->reverse()->each(function ($item, $key) use (&$name, &$last) {
+        $this->parentTree()->reverse()->each(function ($item) use (&$name, &$last) {
             $name[] = mb_strtolower($item->name, 'UTF-8');
         });
         $name = implode(' ', $name);
@@ -106,8 +124,8 @@ class Catalog extends Model
     private function _parentTree(Catalog $catalog, Collection &$tree)
     {
         $tree->push($catalog);
-        if (!is_null($catalog->catalog)) {
-            $this->_parentTree($catalog->catalog, $tree);
+        if (!is_null($catalog->getAttribute('catalog'))) {
+            $this->_parentTree($catalog->getAttribute('catalog'), $tree);
         }
 
         return $tree;
@@ -124,7 +142,7 @@ class Catalog extends Model
     public function canAddEquipment()
     {
 
-        return $this->catalogs->isEmpty();
+        return !$this->catalogs()->exists();
     }
 
     /**
@@ -132,7 +150,7 @@ class Catalog extends Model
      */
     public function canAddCatalog()
     {
-        return $this->equipments->isEmpty();
+        return !$this->equipments()->exists();
     }
 
     /**
@@ -140,56 +158,14 @@ class Catalog extends Model
      */
     public function isRoot()
     {
-        return is_null($this->catalog_id);
+        return is_null($this->getAttribute('catalog_id'));
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany|mixed
+     * @return string
      */
-    public function catalogs()
+    function imageStorage()
     {
-        if (config('site::cache.use', true) === true) {
-            $key = $this->primaryKey;
-            $cacheKey = 'equipment_catalog_catalogs_' . $this->{$key};
-
-            return cache()->remember($cacheKey, config('site::cache.ttl'), function () {
-                return $this->_catalogs();
-            });
-        }
-
-        return $this->_catalogs();
-
+        return 'catalogs';
     }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function _catalogs()
-    {
-        return $this->hasMany(Catalog::class);
-    }
-
-    public function equipments()
-    {
-        if (config('site::cache.use', true) === true) {
-            $key = $this->primaryKey;
-            $cacheKey = 'equipment_catalog_equipments_' . $this->{$key};
-
-            return cache()->remember($cacheKey, config('site::cache.ttl'), function () {
-                return $this->_equipments();
-            });
-        }
-
-        return $this->_equipments();
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function _equipments()
-    {
-        return $this->hasMany(Equipment::class);
-    }
-
-
 }

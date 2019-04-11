@@ -5,6 +5,7 @@ namespace QuadStudio\Service\Site\Repositories;
 
 use QuadStudio\Repo\Eloquent\Repository;
 use QuadStudio\Service\Site\Filters\Authorization\AuthorizationStatusFilter;
+use QuadStudio\Service\Site\Filters\Authorization\AuthorizationTypeSelectFilter;
 use QuadStudio\Service\Site\Filters\Mounting\AuthorizationDateFromFilter;
 use QuadStudio\Service\Site\Filters\Mounting\AuthorizationDateToFilter;
 use QuadStudio\Service\Site\Models\Authorization;
@@ -27,9 +28,10 @@ class AuthorizationRepository extends Repository
     public function track(): array
     {
         return [
-            AuthorizationStatusFilter::class,
             AuthorizationDateFromFilter::class,
             AuthorizationDateToFilter::class,
+            AuthorizationTypeSelectFilter::class,
+            AuthorizationStatusFilter::class,
         ];
     }
 }

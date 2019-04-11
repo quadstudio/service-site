@@ -16,7 +16,7 @@
 
         @alert()@endalert()
 
-        <div class=" border p-3 mb-4">
+        <div class=" border p-3 mb-2">
             <a href="{{ route('admin') }}" class="d-block d-sm-inline btn btn-secondary">
                 <i class="fa fa-reply"></i>
                 <span>@lang('site::messages.back_admin')</span>
@@ -24,8 +24,9 @@
         </div>
 
         @filter(['repository' => $repository])@endfilter
+        @pagination(['pagination' => $messages])@endpagination
 
-        <div class="card mt-5 mb-4">
+        <div class="card mb-4">
             <div class="card-body flex-grow-1 position-relative overflow-hidden">
                 {{$messages->render()}}
                 <div class="row no-gutters h-100">

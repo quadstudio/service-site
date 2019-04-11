@@ -10,16 +10,19 @@
                 <a href="{{ route('admin.catalogs.index') }}">@lang('site::catalog.catalogs')</a>
             </li>
             @foreach($catalog->parentTree()->reverse() as $element)
-                <li class="breadcrumb-item">
-                    <a href="{{ route('admin.catalogs.show', $element) }}">{{ $element->name }}</a>
-                </li>
+                @if(!$loop->last)
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('admin.catalogs.show', $element) }}">{{ $element->name }}</a>
+                    </li>
+                @else
+                    <li class="breadcrumb-item active">
+                        {{ $element->name }}
+                    </li>
+                @endif
             @endforeach
-
         </ol>
-        <h1 class="header-title mb-4">{{ $catalog->name }}</h1>
-
+        <h1 class="header-title mb-2">{{ $catalog->name }}</h1>
         @alert()@endalert
-
         <div class="justify-content-start border p-3 mb-2">
             <a class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0" role="button"
                href="{{ route('admin.catalogs.edit', $catalog) }}">
@@ -66,22 +69,35 @@
                 </form>
             @endcan
         </div>
-
         <div class="card mb-2">
             <div class="card-body">
                 <dl class="row">
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::catalog.enabled')</dt>
+                    <dd class="col-sm-8">@bool(['bool' => $catalog->enabled == 1])@endbool</dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::catalog.image_id')</dt>
+                    <dd class="col-sm-8">
+                        @include('site::admin.image.preview', ['image' => $catalog->image])
+                    </dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::catalog.name')</dt>
                     <dd class="col-sm-8">{{ $catalog->name }}</dd>
 
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::catalog.name_plural')</dt>
+                    <dd class="col-sm-8">{{ $catalog->name_plural }}</dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::catalog.h1')</dt>
+                    <dd class="col-sm-8">{!! $catalog->h1 !!}</dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::catalog.title')</dt>
+                    <dd class="col-sm-8">{!! $catalog->title !!}</dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::catalog.metadescription')</dt>
+                    <dd class="col-sm-8">{!! $catalog->metadescription !!}</dd>
+
+
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::catalog.description')</dt>
-                    <dd class="col-sm-8">{{ $catalog->description }}</dd>
-
-                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::catalog.enabled')</dt>
-                    <dd class="col-sm-8">@bool(['bool' => $catalog->enabled == 1])@endbool</dd>
-
-                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::catalog.full_name')</dt>
-                    <dd class="col-sm-8">{{ $catalog->parentTreeName() }}</dd>
+                    <dd class="col-sm-8">{!! $catalog->description !!}</dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::catalog.catalog_id')</dt>
                     <dd class="col-sm-8">
@@ -89,8 +105,6 @@
                             <a href="{{route('admin.catalogs.show', $catalog->catalog)}}">{{ $catalog->catalog->name }}</a>
                         @endif
                     </dd>
-
-
                     @if($catalog->canAddCatalog())
                         <dt class="col-sm-4 text-left text-sm-right">@lang('site::catalog.children')</dt>
                         <dd class="col-sm-8">
@@ -103,7 +117,6 @@
                                     </li>
                                 @endforeach
                             </ul>
-
                         </dd>
                     @endif
                     @if($catalog->canAddEquipment())

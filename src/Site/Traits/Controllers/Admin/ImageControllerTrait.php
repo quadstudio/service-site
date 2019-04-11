@@ -54,7 +54,8 @@ trait ImageControllerTrait
         $file = $request->file('path');
 
         $image = new Image([
-            'path' => Storage::disk($request->input('storage'))->putFile('', new File($file->getPathName())),
+            'path' => Storage::disk($request->input('storage'))
+                ->putFile('', new File($file->getPathName())),
             'mime' => $file->getMimeType(),
             'storage' => $request->input('storage'),
             'size' => $file->getSize(),
@@ -65,7 +66,7 @@ trait ImageControllerTrait
         ProcessImage::dispatch($image, $request->input('storage'))->onQueue('images');
 
         return response()->json([
-            'image' => view('site::admin.image.image', ['image'   => $image])->render(),
+            'image' => view('site::admin.image.image', compact('image'))->render(),
         ]);
     }
 
@@ -73,7 +74,7 @@ trait ImageControllerTrait
     {
         $this->authorize('view', $image);
 
-        return Storage::disk($image->getAttribute('storage'))->download($image->getAttribute('path'));
+        return Storage::disk($image->getAttribute('storage'))->download($image->getAttribute('path'), $image->getAttribute('name'));
     }
 
     /**
