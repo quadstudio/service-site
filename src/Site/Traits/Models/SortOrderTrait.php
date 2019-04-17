@@ -12,7 +12,7 @@ trait SortOrderTrait
         $sort = array_flip($request->input('sort'));
 
         foreach ($sort as $sort_id => $sort_order) {
-            self::updateOrCreate(['id' => $sort_id], ['sort_order' => $sort_order]);
+            self::query()->updateOrCreate(['id' => $sort_id], ['sort_order' => $sort_order]);
         }
     }
 }

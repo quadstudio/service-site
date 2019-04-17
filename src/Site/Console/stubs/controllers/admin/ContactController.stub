@@ -2,10 +2,10 @@
 
 namespace {{namespace}}Http\Controllers\Admin;
 
-use QuadStudio\Service\Site\Traits\Controllers\Admin\ContactControllerTrait;
+use QuadStudio\Service\Site\Traits\Controllers\Admin\ContactController;
 use {{namespace}}Http\Controllers\Controller;
 
 class ContactController extends Controller
 {
-    use ContactControllerTrait;
+    use ContactController;
 }

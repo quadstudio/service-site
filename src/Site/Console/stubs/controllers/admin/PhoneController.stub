@@ -2,10 +2,10 @@
 
 namespace {{namespace}}Http\Controllers\Admin;
 
-use QuadStudio\Service\Site\Traits\Controllers\Admin\PhoneControllerTrait;
+use QuadStudio\Service\Site\Traits\Controllers\Admin\PhoneController;
 use {{namespace}}Http\Controllers\Controller;
 
 class PhoneController extends Controller
 {
-    use PhoneControllerTrait;
+    use PhoneController;
 }

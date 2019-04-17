@@ -74,8 +74,8 @@
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::member.header.date_from_to')</dt>
                     <dd class="col-sm-8">
-                        @lang('site::member.date_from') {{ $member->date_from() }}
-                        @lang('site::member.date_to') {{ $member->date_to() }}
+                        @lang('site::member.date_from') {{ $member->date_from->format('d.m.Y') }}
+                        @lang('site::member.date_to') {{ $member->date_to->format('d.m.Y') }}
                     </dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::member.email')</dt>

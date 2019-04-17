@@ -31,7 +31,7 @@
                 <div class="card-header with-elements">
 				
                     <div class="card-header-elements">
-					    <a href="{{route('distributors.show', $order)}}" class="mr-3">
+					    <a href="{{route('admin.orders.show', $order)}}" class="mr-3">
                             @lang('site::order.header.order') № {{$order->id}}
                         </a>
                         <span class="badge text-normal badge-pill badge-{{ $order->status->color }}">

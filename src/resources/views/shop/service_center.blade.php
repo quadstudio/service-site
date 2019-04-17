@@ -6,7 +6,8 @@
 
 @section('header')
     @include('site::header.front',[
-        'h1' => '<i class="fa fa-'.__('site::shop.service_center.icon').'"></i> '.__('site::shop.service_center.title'),
+        'h1' => '<i class="fa fa-'.__('site::shop.service_center.icon').'"></i> '
+        .__('site::shop.service_center.title'),
         'breadcrumbs' => [
             ['url' => route('index'), 'name' => __('site::messages.index')],
             ['name' => __('site::shop.service_center.title')]
@@ -20,27 +21,53 @@
             <div class="offset-sm-0 col-sm-12 offset-1 col-10">
                 <div class="row">
                     <div class="col-12">
-                        <form method="POST" action="{{route('service-centers')}}">
+                        <form method="POST" id="form" action="{{route('service-centers')}}">
                             @csrf
-                            <div class="input-group mb-3">
+                            <div class="input-group mb-2">
                                 <select class="form-control" name="filter[region_id]" title="">
-                                    <option value="">- все регионы -</option>
+                                    <option value="">@lang('site::region.help.select_all')</option>
                                     @foreach($regions as $region)
                                         <option @if($region_id == $region->id) selected @endif
-                                        value="{{$region->id}}">{{$region->name}}</option>
+                                        value="{{$region->id}}">{{$region->name}}
+                                        </option>
                                     @endforeach
                                 </select>
+
                                 <div class="input-group-append">
                                     <button class="btn btn-ferroli" type="submit">@lang('site::messages.show')</button>
                                 </div>
                             </div>
+                            @if($authorization_types)
+
+                                <div class="form-row">
+                                    <div class="col">
+                                        @foreach($authorization_types as $authorization_type)
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox"
+                                                       @if(empty($selected_authorization_types) || in_array($authorization_type->id, $selected_authorization_types))
+                                                       checked
+                                                       @endif
+                                                       name="filter[authorization_type][]"
+                                                       value="{{$authorization_type->id}}"
+                                                       class="custom-control-input"
+                                                       id="at-{{$authorization_type->id}}">
+                                                <label class="custom-control-label"
+                                                       for="at-{{$authorization_type->id}}">
+                                                    {{$authorization_type->name}} {{$authorization_type->brand->name}}
+                                                </label>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+
                         </form>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-12 text-center">
                         <h4 class="py-0" id="row-count">
-                            Загрузка данных...
+                            @lang('site::messages.data_load')
                         </h4>
                     </div>
                     <div class="col-sm-12 text-center" id="loading-data">
@@ -53,9 +80,7 @@
                 <div class="row">
                     <div class="col-12">
                         <h3 id="addresses-list">@lang('site::shop.service_center.header')</h3>
-                        <div id="container-addresses"
-                             data-region="{{$region_id}}"
-                             data-action="{{route('api.services.index')}}"></div>
+                        <div id="container-addresses" data-action="{{route('api.service-centers')}}"></div>
                     </div>
                 </div>
             </div>

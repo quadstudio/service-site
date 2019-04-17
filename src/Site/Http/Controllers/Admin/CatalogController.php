@@ -3,12 +3,10 @@
 namespace QuadStudio\Service\Site\Http\Controllers\Admin;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use QuadStudio\Service\Site\Concerns\StoreImage;
+use QuadStudio\Service\Site\Concerns\StoreImages;
 use QuadStudio\Service\Site\Filters\CatalogEnabledFilter;
 use QuadStudio\Service\Site\Http\Requests\Admin\CatalogRequest;
-use QuadStudio\Service\Site\Http\Requests\ImageRequest;
 use QuadStudio\Service\Site\Models\Catalog;
 use QuadStudio\Service\Site\Repositories\CatalogRepository;
 use QuadStudio\Service\Site\Repositories\ImageRepository;
@@ -16,7 +14,7 @@ use QuadStudio\Service\Site\Repositories\ImageRepository;
 class CatalogController extends Controller
 {
 
-    use AuthorizesRequests, StoreImage;
+    use AuthorizesRequests, StoreImages;
 
     protected $catalogs;
     protected $images;
@@ -130,16 +128,6 @@ class CatalogController extends Controller
         return redirect()->route('admin.catalogs.show', $catalog)->with('success', trans('site::catalog.updated'));
     }
 
-
-
-    /**
-     * @param Request $request
-     */
-    public function sort(Request $request)
-    {
-        Catalog::sort($request);
-    }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -170,14 +158,4 @@ class CatalogController extends Controller
         return view('site::admin.catalog.tree', compact('tree'));
     }
 
-
-    /**
-     * @param \QuadStudio\Service\Site\Http\Requests\ImageRequest $request
-     * @param \QuadStudio\Service\Site\Models\Catalog $catalog
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function image(ImageRequest $request, Catalog $catalog)
-    {
-        return $this->storeImage($request, $catalog);
-    }
 }

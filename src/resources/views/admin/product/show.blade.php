@@ -22,7 +22,7 @@
                 <i class="fa fa-pencil"></i>
                 <span>@lang('site::messages.edit')</span>
             </a>
-            <a href="{{route('admin.products.images', $product)}}"
+            <a href="{{route('admin.products.images.index', $product)}}"
                class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0">
                 <i class="fa fa-@lang('site::image.icon')"></i>
                 <span>@lang('site::image.images')</span> <span
@@ -231,7 +231,7 @@
                 <div class="card mb-2">
                     <div class="card-header with-elements">
                         <div class="card-header-title">
-                            <a href="{{route('admin.products.images', $product)}}">
+                            <a href="{{route('admin.products.images.index', $product)}}">
                                 @lang('site::image.images')
                             </a>
                         </div>
@@ -242,10 +242,9 @@
                         </div>
                     </div>
                     <div class="card-body p-3">
-                        <div class="row no-gutters" data-target="{{route('admin.products.images.sort', $product)}}"
-                             id="sort-list">
+                        <div class="row">
                             @foreach($product->images()->orderBy('sort_order')->get() as $image)
-                                @include('site::admin.product.show.image')
+                                <div class="col-md-4">@include('site::admin.image.preview')</div>
                             @endforeach
                         </div>
                     </div>

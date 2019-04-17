@@ -4,8 +4,8 @@
     </td>
     <td>{{$member->type->name}}</td>
     <td>
-        <div>@lang('site::member.date_from')&nbsp;&nbsp;&nbsp;{{$member->date_from()}}</div>
-        <div>@lang('site::member.date_to')&nbsp;{{$member->date_to()}}</div>
+        <div>@lang('site::member.date_from')&nbsp;&nbsp;&nbsp;{{$member->date_from->format('d.m.Y')}}</div>
+        <div>@lang('site::member.date_to')&nbsp;{{$member->date_to->format('d.m.Y')}}</div>
     </td>
     <td>{{$member->event->title}}</td>
 

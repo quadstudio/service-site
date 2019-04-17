@@ -124,38 +124,9 @@
                         </div>
                     </div>
                 </form>
-                {{--<div class="card mt-2 mb-2">--}}
-                    {{--<div class="card-body">--}}
-                        {{--<h5 class="card-title">@lang('site::image.images')</h5>--}}
-                        {{--<form method="POST" enctype="multipart/form-data"--}}
-                              {{--action="{{route('admin.images.store')}}">--}}
-                            {{--@csrf--}}
-                            {{--<div class="form-group form-control{{ $errors->has('path') ? ' is-invalid' : '' }}">--}}
-                                {{--<input type="file" name="path"/>--}}
-                                {{--<input type="hidden" name="storage" value="equipments"/>--}}
-                                {{--<input type="button" class="btn btn-ferroli image-upload"--}}
-                                       {{--value="@lang('site::messages.load')">--}}
-
-                            {{--</div>--}}
-                            {{--<span class="invalid-feedback">{{ $errors->first('path') }}</span>--}}
-                        {{--</form>--}}
-                        {{--<div class="d-flex flex-row bd-highlight">--}}
-                            {{--@if( !$images->isEmpty())--}}
-                                {{--@foreach($images as $image)--}}
-                                    {{--@include('site::admin.image.image')--}}
-                                {{--@endforeach--}}
-                            {{--@endif--}}
-                        {{--</div>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
                 <hr/>
                 <div class=" mb-2 text-right">
-                    <button form="form-content" type="submit" name="_stay" value="1"
-                            class="btn btn-ferroli mb-1">
-                        <i class="fa fa-check"></i>
-                        <span>@lang('site::messages.save_stay')</span>
-                    </button>
-                    <button form="form-content" type="submit" name="_stay" value="0"
+                    <button form="form-content" type="submit"
                             class="btn btn-ferroli mb-1">
                         <i class="fa fa-check"></i>
                         <span>@lang('site::messages.save')</span>

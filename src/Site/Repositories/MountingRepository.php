@@ -8,6 +8,8 @@ use QuadStudio\Service\Site\Filters\Mounting\MountingActIncludeFilter;
 use QuadStudio\Service\Site\Filters\Mounting\MountingClientSearchFilter;
 use QuadStudio\Service\Site\Filters\Mounting\MountingDateCreatedFromFilter;
 use QuadStudio\Service\Site\Filters\Mounting\MountingDateCreatedToFilter;
+use QuadStudio\Service\Site\Filters\Mounting\OrderCreatedAtFromFilter;
+use QuadStudio\Service\Site\Filters\Mounting\OrderCreatedAtToFilter;
 use QuadStudio\Service\Site\Filters\Mounting\MountingEquipmentFilter;
 use QuadStudio\Service\Site\Filters\Mounting\MountingProductFilter;
 use QuadStudio\Service\Site\Filters\Mounting\MountingSortFilter;

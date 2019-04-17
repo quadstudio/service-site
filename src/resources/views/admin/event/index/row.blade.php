@@ -12,10 +12,10 @@
         </small>
     </td>
     <td class="text-center">
-        <div class="px-1 @if($event->confirmed == 1) bg-success text-white @endif">{{$event->date_from()}}</div>
+        <div class="px-1 @if($event->confirmed == 1) bg-success text-white @endif">{{$event->date_from->format('d.m.Y')}}</div>
     </td>
     <td class="text-center">
-        <div class="px-1 @if($event->confirmed == 1) bg-success text-white @endif">{{$event->date_to()}}</div>
+        <div class="px-1 @if($event->confirmed == 1) bg-success text-white @endif">{{$event->date_to->format('d.m.Y')}}</div>
     </td>
     <td>{{$event->region->name}}</td>
     <td>{{$event->city}}@if($event->hasAddress()), {{$event->address}} @endif </td>

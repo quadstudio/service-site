@@ -4,7 +4,7 @@ namespace QuadStudio\Service\Site\Traits\Controllers\Api;
 
 
 use QuadStudio\Service\Site\Filters\Address\AddressActiveFilter;
-use QuadStudio\Service\Site\Filters\Address\IsShopFilter;
+use QuadStudio\Service\Site\Filters\Address\AddressIsDealerFilter;
 use QuadStudio\Service\Site\Filters\Address\RegionFilter;
 use QuadStudio\Service\Site\Filters\Address\SortByNameFilter;
 use QuadStudio\Service\Site\Filters\Address\SortByRegionFilter;
@@ -12,8 +12,8 @@ use QuadStudio\Service\Site\Filters\Address\SortByWeightFilter;
 use QuadStudio\Service\Site\Filters\Address\TypeFilter;
 use QuadStudio\Service\Site\Filters\Address\UserActiveFilter;
 use QuadStudio\Service\Site\Filters\Address\UserDisplayFilter;
-use QuadStudio\Service\Site\Http\Resources\Address\YandexMapCollection;
-use QuadStudio\Service\Site\Http\Resources\Address\YandexMapResource;
+use QuadStudio\Service\Site\Http\Resources\Address\ServiceCollection;
+use QuadStudio\Service\Site\Http\Resources\Address\ServiceResource;
 use QuadStudio\Service\Site\Http\Resources\LocationResource;
 use QuadStudio\Service\Site\Models\Region;
 use QuadStudio\Service\Site\Models\User;
@@ -38,15 +38,15 @@ trait DealerControllerTrait
      * Show the country profile
      *
      * @param Region $region
-     * @return YandexMapCollection
+     * @return ServiceCollection
      */
     public function index(Region $region)
     {
-        return new YandexMapCollection(
+        return new ServiceCollection(
             $this->addresses
                 ->trackFilter()
                 ->applyFilter((new TypeFilter())->setTypeId(2))
-                ->applyFilter(new IsShopFilter())
+                ->applyFilter(new AddressIsDealerFilter())
                 ->applyFilter(new AddressActiveFilter())
                 ->applyFilter(new UserDisplayFilter())
                 ->applyFilter(new UserActiveFilter())
@@ -62,11 +62,11 @@ trait DealerControllerTrait
      * Display the specified resource.
      *
      * @param User $service
-     * @return YandexMapResource
+     * @return ServiceResource
      */
     public function show(User $service)
     {
-        return new YandexMapResource($service);
+        return new ServiceResource($service);
     }
 
     public function location()

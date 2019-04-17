@@ -37,6 +37,13 @@
                 </div>
                 <div class="row">
                     <div class="col-xl-3 col-sm-12">
+                        @if($product->images()->exists())
+                            <div class="row p-2">
+                                <div class="col">@include('site::admin.image.preview', ['image' => $product->images()->orderBy('sort_order')->first()])</div>
+                            </div>
+                        @endif
+                    </div>
+                    <div class="col-xl-3 col-sm-12">
                         <dl class="dl-horizontal mt-sm-2">
                             <dt class="col-12">@lang('site::product.type_id')</dt>
                             <dd class="col-12">{{$product->type->name}}</dd>
@@ -68,11 +75,7 @@
                             @endforeach
                         </dl>
                     </div>
-                    <div class="col-xl-3 col-sm-12">
-                        @if($product->images()->exists())
-                            <img class="img-fluid" style="max-height: 150px;" src="{{ $product->image()->src() }}" alt="{{$product->name}}">
-                        @endif
-                    </div>
+
                     <div class="col-xl-3 col-sm-12">
                         <dl class="dl-horizontal mt-sm-2">
                             <dt class="col-12 mb-0 text-left text-xl-right">

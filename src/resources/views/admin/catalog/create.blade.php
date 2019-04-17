@@ -133,7 +133,7 @@
                                        for="image_id">@lang('site::catalog.image_id')</label>
 
                                 <form method="POST" enctype="multipart/form-data"
-                                      action="{{route('admin.catalogs.image')}}">
+                                      action="{{route('admin.images.store')}}">
                                     @csrf
                                     <input type="hidden"
                                            name="storage"

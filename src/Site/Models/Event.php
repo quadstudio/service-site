@@ -4,8 +4,10 @@ namespace QuadStudio\Service\Site\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use QuadStudio\Service\Site\Contracts\SingleImageable;
 
-class Event extends Model
+class Event extends Model implements SingleImageable
 {
 
     /**
@@ -43,6 +45,19 @@ class Event extends Model
     {
         parent::__construct($attributes);
         $this->table = 'events';
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+
+        self::deleting(function ($event) {
+            if($event->image()->exists()){
+                $event->image->delete();
+                //Storage::disk($event->image->storage)->delete($event->image->path);
+            }
+        });
     }
 
     public function setDateFromAttribute($value)
@@ -118,4 +133,11 @@ class Event extends Model
         return $this->hasMany(Member::class);
     }
 
+    /**
+     * @return string
+     */
+    function imageStorage()
+    {
+        return 'events';
+    }
 }

@@ -2,10 +2,10 @@
 
 namespace {{namespace}}Http\Controllers\Admin;
 
-use QuadStudio\Service\Site\Traits\Controllers\Admin\PriceTypeControllerTrait;
+use QuadStudio\Service\Site\Traits\Controllers\Admin\PriceTypeController;
 use {{namespace}}Http\Controllers\Controller;
 
 class PriceTypeController extends Controller
 {
-    use PriceTypeControllerTrait;
+    use PriceTypeController;
 }

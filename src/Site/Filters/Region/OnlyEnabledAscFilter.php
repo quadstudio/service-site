@@ -10,11 +10,11 @@ class OnlyEnabledAscFilter extends Filter
 
     function apply($builder, RepositoryInterface $repository)
     {
-        $builder = $builder->whereHas(env('DB_PREFIX', '') . 'addresses', function ($query) {
+        $builder = $builder->whereHas('addresses', function ($query) {
             $query
-                ->where(env('DB_PREFIX', '') . 'addresses.type_id', 2)
+                ->where('addresses.type_id', 2)
                 ->whereHas('users', function ($query) {
-                    $query->where(env('DB_PREFIX', '') . 'users.display', 1);
+                    $query->where('users.display', 1);
                 });
         });
 

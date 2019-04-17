@@ -28,7 +28,7 @@
                         <div class="col mb-3">
 							<select class="form-control{{  $errors->has('event_id') ? ' is-invalid' : '' }}"
                                     name="event_id" id="event_id" readonly >
-                                <option selected value="{{ $event->id }}"> {{ $event->date_from() }} / {{ $event->city }} / {{ $event->type->name }} </option>
+                                <option selected value="{{ $event->id }}"> {{ $event->date_from->format('d.m.Y') }} / {{ $event->city }} / {{ $event->type->name }} </option>
                              </select>
                             <span class="invalid-feedback">{{ $errors->first('event_id') }}</span>
                         </div>
@@ -88,7 +88,7 @@
                                            maxlength="10"
                                            required readonly
                                            class="datetimepicker-input form-control{{ $errors->has('date_from') ? ' is-invalid' : '' }}"
-                                           value="{{ old('date_from', ($event->exists && $event->status_id == 2) ? $event->date_from() : null) }}">
+                                           value="{{ old('date_from', ($event->exists && $event->status_id == 2) ? $event->date_from->format('d.m.Y') : null) }}">
                                     
                                 </div>
                                 <span class="invalid-feedback">{{ $errors->first('date_from') }}</span>
@@ -106,7 +106,7 @@
                                            maxlength="10"
                                            required readonly
                                            class="datetimepicker-input form-control{{ $errors->has('date_to') ? ' is-invalid' : '' }}"
-                                           value="{{ old('date_to', ($event->exists && $event->status_id == 2) ? $event->date_to() : null) }}">
+                                           value="{{ old('date_to', ($event->exists && $event->status_id == 2) ? $event->date_to->format('d.m.Y') : null) }}">
                                     
                                 </div>
                                 <span class="invalid-feedback">{{ $errors->first('date_to') }}</span>
@@ -227,7 +227,7 @@
                                            data-target="#datetimepicker_date_from"
                                            data-toggle="datetimepicker"
                                            class="datetimepicker-input form-control{{ $errors->has('date_from') ? ' is-invalid' : '' }}"
-                                           value="{{ old('date_from', ($event->exists && $event->status_id == 2) ? $event->date_from() : null) }}">
+                                           value="{{ old('date_from', ($event->exists && $event->status_id == 2) ? $event->date_from->format('d.m.Y') : null) }}">
                                     <div class="input-group-append"
                                          data-target="#datetimepicker_date_from"
                                          data-toggle="datetimepicker">
@@ -254,7 +254,7 @@
                                            data-target="#datetimepicker_date_to"
                                            data-toggle="datetimepicker"
                                            class="datetimepicker-input form-control{{ $errors->has('date_to') ? ' is-invalid' : '' }}"
-                                           value="{{ old('date_to', ($event->exists && $event->status_id == 2) ? $event->date_to() : null) }}">
+                                           value="{{ old('date_to', ($event->exists && $event->status_id == 2) ? $event->date_to->format('d.m.Y') : null) }}">
                                     <div class="input-group-append"
                                          data-target="#datetimepicker_date_to"
                                          data-toggle="datetimepicker">

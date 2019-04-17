@@ -111,7 +111,7 @@
                             <ul class="list-group" data-target="{{route('admin.catalogs.sort', $catalog)}}"
                                 id="sort-list">
                                 @foreach($catalog->catalogs()->orderBy('sort_order')->get() as $children)
-                                    <li class="sort-item list-group-item p-1" data-id="{{$children->id}}">
+                                    <li class="sort-item list-group-item p-2" data-id="{{$children->id}}">
                                         <i class="fa fa-arrows"></i>
                                         <a href="{{route('admin.catalogs.show', $children)}}">{{ $children->name }}</a>
                                     </li>
@@ -124,7 +124,7 @@
                         <dd class="col-sm-8">
                             <ul class="list-group" data-target="{{route('admin.equipments.sort')}}" id="sort-list">
                                 @foreach($catalog->equipments()->orderBy('sort_order')->get() as $equipment)
-                                    <li class="sort-item list-group-item p-1" data-id="{{$equipment->id}}">
+                                    <li class="sort-item list-group-item p-2" data-id="{{$equipment->id}}">
                                         <i class="fa fa-arrows"></i>
                                         <a href="{{route('admin.equipments.show', $equipment)}}">{{ $equipment->name }}</a>
                                     </li>

@@ -135,24 +135,90 @@ return [
     ],
 
     'catalogs' => [
-        'method'     => 'update',
+        'process'    => true,
+        'mode'       => 'update',
         'mime'       => 'jpg,jpeg',
         'accept'     => 'image/jpeg',
-        'name' => 'catalog[image_id]',
+        'name'       => 'catalog[image_id]',
         'dot_name'   => 'catalog.image_id',
-        'size'       => [
-            'preview' => [
-                'width'  => 150,
-                'height' => 150
-            ],
-            'image'   => [
-                'width'  => 500,
-                'height' => 500
-            ],
-            'canvas'  => [
-                'width'  => 500,
-                'height' => 500
-            ],
+        'size'       => 5000000, // 5мб
+        'preview'    => [
+            'width'  => 150,
+            'height' => 150
+        ],
+        'image'      => [
+            'width'  => 500,
+            'height' => 500
+        ],
+        'canvas'     => [
+            'width'  => 500,
+            'height' => 500
+        ],
+    ],
+
+    'events' => [
+        'process'    => true,
+        'mode'       => 'update',
+        'mime'       => 'jpg,jpeg',
+        'accept'     => 'image/jpeg',
+        'name'       => 'event[image_id]',
+        'dot_name'   => 'event.image_id',
+        'size'       => 5000000, // 5мб
+        'preview'    => [
+            'width'  => 130,
+            'height' => 70
+        ],
+        'image'      => [
+            'width'  => 370,
+            'height' => 200
+        ],
+        'canvas'     => [
+            'width'  => 370,
+            'height' => 200
+        ],
+    ],
+
+    'products' => [
+        'process'  => true,
+        'mode'     => 'append',
+        'mime'     => 'jpg,jpeg',
+        'accept'   => 'image/jpeg',
+        'name'     => 'images[]',
+        'dot_name' => 'images',
+        'size'       => 5000000, //
+        'preview' => [
+            'width'  => 150,
+            'height' => 150
+        ],
+        'image'   => [
+            'width'  => 500,
+            'height' => 500
+        ],
+        'canvas'  => [
+            'width'  => 500,
+            'height' => 500
+        ],
+    ],
+
+    'equipments' => [
+        'process'  => true,
+        'mode'     => 'append',
+        'mime'     => 'jpg,jpeg',
+        'accept'   => 'image/jpeg',
+        'name'     => 'images[]',
+        'dot_name' => 'images',
+        'size'       => 5000000, //
+        'preview' => [
+            'width'  => 150,
+            'height' => 150
+        ],
+        'image'   => [
+            'width'  => 500,
+            'height' => 500
+        ],
+        'canvas'  => [
+            'width'  => 500,
+            'height' => 500
         ],
     ],
 
@@ -260,7 +326,7 @@ return [
     | Для основной валюты устанавливается обменный курс = 1.0000
     |
     */
-    'update'  => [
+    'update'            => [
         978
     ],
 

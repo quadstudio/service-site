@@ -18,30 +18,48 @@
         @alert()@endalert
         <div class="justify-content-start border p-3 mb-2">
 
-            <a class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0"
+            <a class="btn btn-ferroli d-block d-sm-inline-block mr-0 mr-sm-1 mb-1 mb-sm-0"
                href="{{ route('admin.events.edit', $event) }}"
                role="button">
                 <i class="fa fa-pencil"></i>
                 <span>@lang('site::messages.edit') @lang('site::event.event')</span>
             </a>
-            <a class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0"
+            <a class="btn btn-ferroli d-block d-sm-inline-block mr-0 mr-sm-1 mb-1 mb-sm-0"
                href="{{ route('admin.members.create', ['event_id' => $event->id]) }}"
                role="button">
                 <i class="fa fa-plus"></i>
                 <span>@lang('site::messages.add') @lang('site::member.member')</span>
             </a>
-            <a class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0"
+            <a class="btn btn-ferroli d-block d-sm-inline-block mr-0 mr-sm-1 mb-1 mb-sm-0"
                href="{{ route('admin.events.mailing', $event) }}"
                role="button">
                 <i class="fa fa-envelope"></i>
                 <span>@lang('site::messages.create') @lang('site::mailing.mailing')</span>
             </a>
-            <a href="{{ route('admin.events.index') }}" class="d-block d-sm-inline btn btn-secondary">
+            <button
+                    @cannot('delete', $event) disabled @endcannot
+                    class=" btn btn-danger btn-row-delete"
+                    data-form="#event-delete-form-{{$event->id}}"
+                    data-btn-delete="@lang('site::messages.delete')"
+                    data-btn-cancel="@lang('site::messages.cancel')"
+                    data-label="@lang('site::messages.delete_confirm')"
+                    data-message="@lang('site::messages.delete_sure') @lang('site::event.event')? "
+                    data-toggle="modal" data-target="#form-modal"
+                    href="javascript:void(0);" title="@lang('site::messages.delete')">
+                @lang('site::messages.delete')
+            </button>
+            <a href="{{ route('admin.events.index') }}" class="d-block d-sm-inline-block btn btn-secondary">
                 <i class="fa fa-reply"></i>
                 <span>@lang('site::messages.back')</span>
             </a>
 
         </div>
+        <form id="event-delete-form-{{$event->id}}"
+              action="{{route('admin.events.destroy', $event)}}"
+              method="POST">
+            @csrf
+            @method('DELETE')
+        </form>
         <div class="card mb-2">
             <div class="card-body">
                 <dl class="row">
@@ -69,8 +87,8 @@
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::event.date_from_to')</dt>
                     <dd class="col-sm-8">
-                        @lang('site::event.date_from') {{ $event->date_from() }}
-                        @lang('site::event.date_to') {{ $event->date_to() }}
+                        @lang('site::event.date_from') {{ $event->date_from->format('d.m.Y') }}
+                        @lang('site::event.date_to') {{ $event->date_to->format('d.m.Y') }}
                     </dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::event.confirmed')</dt>
@@ -81,8 +99,7 @@
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::event.image_id')</dt>
                     <dd class="col-sm-8">
-                        <img style="width: {{config('site.events.size.image.width', 370)}}px;height: {{config('site.events.size.image.height', 200)}}px;"
-                             src="{{$event->image->src()}}">
+                        @include('site::admin.image.preview', ['image' => $event->image])
                     </dd>
                 </dl>
                 <h4 class="mb-2">@lang('site::member.members')</h4>

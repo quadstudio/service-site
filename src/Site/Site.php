@@ -13,6 +13,7 @@ use QuadStudio\Service\Site\Models\Element;
 use QuadStudio\Service\Site\Models\Equipment;
 use QuadStudio\Service\Site\Models\EventType;
 use QuadStudio\Service\Site\Models\FileType;
+use QuadStudio\Service\Site\Models\Image;
 use QuadStudio\Service\Site\Models\Mounting;
 use QuadStudio\Service\Site\Models\Order;
 use QuadStudio\Service\Site\Models\Repair;
@@ -374,56 +375,7 @@ class Site
                                     '\QuadStudio\Service\Site\Http\Controllers\Admin\MountingBonusController')
                                     ->except(['show']);
 
-                                // Товары
-                                $router->name('admin')->resource('/products',
-                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\ProductController');
-                                $router->name('admin')->get('/products/{product}/images',
-                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\ProductController@images')
-                                    ->name('.products.images');
-                                $router->name('admin')->post('/products/{product}/images',
-                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\ProductController@images')
-                                    ->name('.products.images.update');
 
-                                // Аналоги
-                                $router->resource('/products/{product}/analogs',
-                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\ProductAnalogController')
-                                    ->only(['index', 'store'])
-                                    ->names([
-                                        'index' => 'admin.products.analogs.index',
-                                        'store' => 'admin.products.analogs.store',
-                                    ]);
-                                $router->name('admin')->delete('/products/{product}/analogs/destroy',
-                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\ProductAnalogController@destroy')
-                                    ->name('.products.analogs.destroy');
-
-                                // Детали
-                                $router->resource('/products/{product}/details',
-                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\ProductDetailController')
-                                    ->only(['index', 'store'])
-                                    ->names([
-                                        'index' => 'admin.products.details.index',
-                                        'store' => 'admin.products.details.store',
-                                    ]);
-                                $router->name('admin')->delete('/products/{product}/details/destroy',
-                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\ProductDetailController@destroy')
-                                    ->name('.products.details.destroy');
-
-                                // Подходит к
-                                $router->resource('/products/{product}/relations',
-                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\ProductRelationController')
-                                    ->only(['index', 'store'])
-                                    ->names([
-                                        'index' => 'admin.products.relations.index',
-                                        'store' => 'admin.products.relations.store',
-                                    ]);
-                                $router->name('admin')->delete('/products/{product}/relations/destroy',
-                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\ProductRelationController@destroy')
-                                    ->name('.products.relations.destroy');
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                                // Изображения товара
-                                $router->name('admin')->put('/product-images/{product}/sort',
-                                    'ProductImageController@sort')
-                                    ->name('.products.images.sort');
                                 // Банки
                                 $router->name('admin')->resource('/banks',
                                     '\QuadStudio\Service\Site\Http\Controllers\Admin\BankController');
@@ -445,22 +397,6 @@ class Site
                                     ->name('.distances.sort');
                                 $router->name('admin')->resource('/distances',
                                     '\QuadStudio\Service\Site\Http\Controllers\Admin\DistanceController')->except(['show']);
-
-                                // Каталог
-                                $router->name('admin')->put('/catalogs/sort', function (Request $request) {
-                                    Catalog::sort($request);
-                                })->name('.catalogs.sort');
-                                $router->name('admin')->post('/catalogs/image',
-                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\CatalogController@image')
-                                    ->name('.catalogs.image');
-                                $router->name('admin')->resource('/catalogs',
-                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\CatalogController');
-                                $router->name('admin')->get('/catalogs/create/{catalog?}',
-                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\CatalogController@create')
-                                    ->name('.catalogs.create.parent');
-                                $router->name('admin')->get('/tree',
-                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\CatalogController@tree')
-                                    ->name('.catalogs.tree');
 
                                 // Акты
                                 $router->name('admin')->resource('/acts',
@@ -549,31 +485,218 @@ class Site
                                 $router->name('admin')->get('/users/{user}/force',
                                     '\QuadStudio\Service\Site\Http\Controllers\Admin\UserController@force')
                                     ->name('.users.force');
-                                //
-                                //
-                                //
-                                $router->name('admin')->post('/news/image', 'NewsController@image')->name('.news.image');
-                                $router->name('admin')->resource('/news', 'NewsController');
-                                $router->name('admin')->resource('/mailings', 'MailingController')->only(['store']);
-                                $router->name('admin')->resource('/templates', 'TemplateController');
-                                $router->name('admin')->resource('/events', 'EventController');
-                                $router->name('admin')->get('/events/{event}/mailing', 'EventController@mailing')->name('.events.mailing');
-                                $router->name('admin')->get('/events/{event}/attachment', 'EventController@attachment')->name('.events.attachment');
-                                $router->name('admin')->get('/events/create/{member?}', 'EventController@create')->name('.events.create');
-                                $router->name('admin')->post('/events/store/{member?}', 'EventController@store')->name('.events.store');
+
+                                // Узлы схемы
+                                $router->name('admin')->resource('/blocks',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\BlockController');
+
+                                // Документация
+                                $router->name('admin')->post('/datasheets/file',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\DatasheetController@file')
+                                    ->name('.datasheets.file');
+                                $router->name('admin')->resource('/datasheets',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\DatasheetController');
+                                $router->name('admin')->get('/datasheets/{datasheet}/products',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\DatasheetController@products')
+                                    ->name('.datasheets.products');
+                                $router->name('admin')->post('/datasheets/{datasheet}/products',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\DatasheetController@products')
+                                    ->name('.datasheets.products.update');
+                                $router->name('admin')->delete('/datasheets/{datasheet}/products',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\DatasheetController@products')
+                                    ->name('.datasheets.products.delete');
+
+                                // Аналоги
+                                $router->resource('/products/{product}/analogs',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\ProductAnalogController')
+                                    ->only(['index', 'store'])
+                                    ->names([
+                                        'index' => 'admin.products.analogs.index',
+                                        'store' => 'admin.products.analogs.store',
+                                    ]);
+                                $router->name('admin')->delete('/products/{product}/analogs/destroy',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\ProductAnalogController@destroy')
+                                    ->name('.products.analogs.destroy');
+
+                                // Детали
+                                $router->resource('/products/{product}/details',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\ProductDetailController')
+                                    ->only(['index', 'store'])
+                                    ->names([
+                                        'index' => 'admin.products.details.index',
+                                        'store' => 'admin.products.details.store',
+                                    ]);
+                                $router->name('admin')->delete('/products/{product}/details/destroy',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\ProductDetailController@destroy')
+                                    ->name('.products.details.destroy');
+
+                                // Подходит к
+                                $router->resource('/products/{product}/relations',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\ProductRelationController')
+                                    ->only(['index', 'store'])
+                                    ->names([
+                                        'index' => 'admin.products.relations.index',
+                                        'store' => 'admin.products.relations.store',
+                                    ]);
+                                $router->name('admin')->delete('/products/{product}/relations/destroy',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\ProductRelationController@destroy')
+                                    ->name('.products.relations.destroy');
+                                $router->name('admin')->put('/product-images/{product}/sort',
+                                    'ProductImageController@sort')
+                                    ->name('.products.images.sort');
+
+                                // Каталог
+                                $router->name('admin')->put('/catalogs/sort', function (Request $request) {
+                                    Catalog::sort($request);
+                                })->name('.catalogs.sort');
+                                $router->name('admin')->resource('/catalogs',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\CatalogController');
+                                $router->name('admin')->get('/catalogs/create/{catalog?}',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\CatalogController@create')
+                                    ->name('.catalogs.create.parent');
+                                $router->name('admin')->get('/tree',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\CatalogController@tree')
+                                    ->name('.catalogs.tree');
+
+                                // Товары
+                                $router->name('admin')->resource('/products',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\ProductController');
+
+                                // Изображения товара
+                                $router->resource('/products/{product}/images',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\ProductImageController')
+                                    ->only(['index', 'store'])
+                                    ->names([
+                                        'index' => 'admin.products.images.index',
+                                        'store' => 'admin.products.images.store',
+                                    ]);
+
+                                // Оборудование
+                                $router->name('admin')->resource('/equipments',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\EquipmentController');
+                                $router->name('admin')->get('/equipments/create/{catalog?}',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\EquipmentController@create')
+                                    ->name('.equipments.create.parent');
+
+                                $router->name('admin')->put('/equipments/sort', function (Request $request) {
+                                    Equipment::sort($request);
+                                })->name('.equipments.sort');
+
+                                // Изображения оборудования
+                                $router->resource('/equipments/{equipment}/images',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\EquipmentImageController')
+                                    ->only(['index', 'store'])
+                                    ->names([
+                                        'index' => 'admin.equipments.images.index',
+                                        'store' => 'admin.equipments.images.store',
+                                    ]);
+
+                                // Изображения
+                                $router->name('admin')->put('/images/sort', function (Request $request) {
+                                    Image::sort($request);
+                                })->name('.images.sort');
+                                $router->name('admin')->resource('/images',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\ImageController')
+                                    ->only(['index', 'store', 'show', 'destroy']);
+
+                                // Серийные номера
+                                $router->name('admin')->resource('/serials',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\SerialController');
+
+                                // Валюта
+                                $router->name('admin')->resource('/currencies',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\CurrencyController');
+                                $router->name('admin')->resource('/currency_archives',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\CurrencyArchiveController')->only(['index']);
+
+                                // Типы товаров
+                                $router->name('admin')->resource('/product_types',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\ProductTypeController');
+
+                                // Типы цен
+                                $router->name('admin')->resource('/price_types',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\PriceTypeController')
+                                    ->except(['create', 'store', 'destroy']);
+
+                                // Типы файлов
+                                $router->name('admin')->resource('/file_types',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\FileTypeController');
+
+                                // Группы файлов
+                                $router->name('admin')->resource('/file_groups',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\FileGroupController');
+
+                                // Склады
+                                $router->name('admin')->resource('/warehouses',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\WarehouseController');
+
+                                // Страницы
+                                $router->name('admin')->resource('/pages',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\PageController');
+
+                                //Контакты
+                                $router->name('admin')->resource('/contacts',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\ContactController');
+
+                                // Телефоны
+                                $router->name('admin')->resource('/phones',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\PhoneController')
+                                    ->except(['show']);
+
+                                // Заказы
+                                $router->name('admin')->resource('/orders',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\OrderController')
+                                    ->only(['index', 'show', 'destroy']);
+                                $router->name('admin')->post('/orders/{order}/message',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\OrderController@message')
+                                    ->name('.orders.message');
+                                $router->name('admin')->delete('/order-items/{item}',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\OrderItemController@destroy')
+                                    ->name('.orders.items.destroy');
+                                $router->name('admin')->get('/orders/{order}/schedule',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\OrderController@schedule')
+                                    ->name('.orders.schedule');
+
+                                // Типы мероприятий
                                 $router->name('admin')->put('/event_types/sort', function (Request $request) {
                                     EventType::sort($request);
                                 })->name('.event_types.sort');
-                                $router->name('admin')->resource('/event_types', 'EventTypeController');
+                                $router->name('admin')->resource('/event_types',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\EventTypeController');
+
+                                // Мероприятия
+                                $router->name('admin')->resource('/events',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\EventController');
+                                $router->name('admin')->get('/events/{event}/mailing',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\EventController@mailing')
+                                    ->name('.events.mailing');
+                                $router->name('admin')->get('/events/{event}/attachment',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\EventController@attachment')
+                                    ->name('.events.attachment');
+                                $router->name('admin')->get('/events/create/{member?}',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\EventController@create')
+                                    ->name('.events.create');
+                                $router->name('admin')->post('/events/store/{member?}',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\EventController@store')
+                                    ->name('.events.store');
+
+
                                 $router->name('admin')->resource('/members', 'MemberController');
 
                                 $router->name('admin')->get('/participants/create/{member}', 'ParticipantController@create')->name('.participants.create');
                                 $router->name('admin')->post('/participants/store/{member}', 'ParticipantController@store')->name('.participants.store');
                                 $router->name('admin')->resource('/participants', 'ParticipantController')->only(['destroy']);
+
+                                //
+                                $router->name('admin')->post('/news/image', 'NewsController@image')->name('.news.image');
+                                $router->name('admin')->resource('/news', 'NewsController');
+                                $router->name('admin')->resource('/mailings', 'MailingController')->only(['store']);
+                                $router->name('admin')->resource('/templates', 'TemplateController');
+
                                 $router->name('admin')->put('/blocks/sort', function (Request $request) {
                                     Block::sort($request);
                                 })->name('.blocks.sort');
-                                $router->name('admin')->resource('/blocks', 'BlockController');
+
                                 $router->name('admin')->post('/schemes/image', 'SchemeController@image')->name('.schemes.image');
                                 $router->name('admin')->get('/schemes/{scheme}/pointers', 'SchemeController@pointers')->name('.schemes.pointers');
                                 $router->name('admin')->get('/schemes/{scheme}/shapes', 'SchemeController@shapes')->name('.schemes.shapes');
@@ -598,61 +721,32 @@ class Site
                                         $router->name('admin.contragents')->resource('/addresses', 'AddressController')->only(['index', 'create', 'store']);
                                     });
 
-                                $router->name('admin')->resource('/contacts', 'ContactController');
-                                $router->name('admin')->resource('/phones', 'PhoneController')->except(['show']);
 
 
-                                $router->name('admin')->resource('/orders', 'OrderController')->only(['index', 'show', 'destroy']);
-                                $router->name('admin')->post('/orders/{order}/message', 'OrderController@message')->name('.orders.message');
-                                $router->name('admin')->delete('/order-items/{item}', 'OrderItemController@destroy')->name('.orders.items.destroy');
-                                $router->name('admin')->get('/orders/{order}/schedule', 'OrderController@schedule')->name('.orders.schedule');
 
-                                $router->name('admin')->resource('/serials', 'SerialController');
+
+
+
                                 //$router->name('admin')->resource('/explodes', 'ExplodeController');
 
-                                $router->name('admin')->post('/images/field', 'ImageController@field')->name('.images.field');
-                                $router->name('admin')->resource('/images', 'ImageController');
-
-                                //
-                                $router->name('admin')->put('/equipments/sort', function (Request $request) {
-
-                                    Equipment::sort($request);
-                                })->name('.equipments.sort');
-                                $router->name('admin')->resource('/equipments', 'EquipmentController');
-
-                                $router->name('admin')->get('/equipments/create/{catalog?}', 'EquipmentController@create')->name('.equipments.create.parent');
-
-                                $router->name('admin')->post('/equipment-images/{equipment}/store', 'EquipmentImageController@store')->name('.equipments.images.store');
-                                $router->name('admin')->get('/equipment-images/{equipment}/edit', 'EquipmentImageController@edit')->name('.equipments.images.edit');
-                                $router->name('admin')->put('/equipment-images/{equipment}/update', 'EquipmentImageController@update')->name('.equipments.images.update');
-                                $router->name('admin')->put('/equipment-images/{equipment}/sort', 'EquipmentImageController@sort')->name('.equipments.images.sort');
-                                $router->name('admin')->delete('/equipment-images/{equipment}/destroy', 'EquipmentImageController@destroy')->name('.equipments.images.destroy');
-                                //
+                                //$router->name('admin')->post('/images/field', 'ImageController@field')->name('.images.field');
+                                //$router->name('admin')->resource('/images', 'ImageController');
 
                                 //$router->name('admin')->post('/product-images/{product}/store', 'ProductImageController@store')->name('.products.images.store');
 
 
-                                $router->name('admin')->resource('/product_types', 'ProductTypeController');
                                 $router->name('admin')->put('/file_types/sort', function (Request $request) {
                                     FileType::sort($request);
                                 })->name('.file_types.sort');
-                                $router->name('admin')->resource('/file_types', 'FileTypeController');
-                                $router->name('admin')->resource('/file_groups', 'FileGroupController');
+
                                 $router->name('admin')->resource('/prices', 'PriceController');
-                                $router->name('admin')->resource('/price_types', 'PriceTypeController')->except(['create', 'store', 'destroy']);
 
 
-                                $router->name('admin')->resource('/currencies', 'CurrencyController');
-                                $router->name('admin')->resource('/pages', 'PageController');
+
 
                                 $router->name('admin')->resource('/parts', 'PartController')->only(['edit', 'update', 'destroy']);
-                                $router->name('admin')->resource('/currency_archives', 'CurrencyArchiveController')->only(['index']);
-                                $router->name('admin')->resource('/warehouses', 'WarehouseController');
-                                $router->name('admin')->post('/datasheets/file', 'DatasheetController@file')->name('.datasheets.file');
-                                $router->name('admin')->resource('/datasheets', 'DatasheetController');
-                                $router->name('admin')->get('/datasheets/{datasheet}/products', 'DatasheetController@products')->name('.datasheets.products');
-                                $router->name('admin')->post('/datasheets/{datasheet}/products', 'DatasheetController@products')->name('.datasheets.products.update');
-                                $router->name('admin')->delete('/datasheets/{datasheet}/products', 'DatasheetController@products')->name('.datasheets.products.delete');
+
+
 
 
                             });
@@ -669,14 +763,19 @@ class Site
                 // Товары
                 // Для отчета по монтажу
                 $router->name('api')->get('/products/mounting', '\QuadStudio\Service\Site\Http\Controllers\Api\ProductController@mounting');
-//                $router->name('api')->get('/countries', function (){
-//                    return new CountryCollection(
-//                        Country::query()->enabled()->orderBy('sort_order')->get()
-//                    );
-//                })->name('.countries.index');
-                $router->name('api')->get('/services/location', 'ServiceController@location')->name('.services.location');
-                $router->name('api')->get('/services/{region?}', 'ServiceController@index')->name('.services.index');
-                $router->name('api')->get('/dealers/{region?}', 'DealerController@index')->name('.dealers.index');
+
+                // Сервисные центры на карте
+                $router->name('api')->get('/services/{region?}',
+                    '\QuadStudio\Service\Site\Http\Controllers\Api\ShopController@service_centers')
+                    ->name('.service-centers');
+
+                // Дилеры на карте
+                $router->name('api')->get('/dealers/{region?}',
+                    '\QuadStudio\Service\Site\Http\Controllers\Api\ShopController@where_to_buy')
+                    ->name('.where-to-buy');
+
+
+
 
                 $router->name('api')->resource('/countries', 'CountryController')->only(['index']);
                 $router->name('api')->resource('/users', 'UserController');

@@ -13,8 +13,9 @@ return [
         'header' => 'Список сервисных центров'
     ],
     'where_to_buy'   => [
-        'menu'  => 'Где купить?',
-        'title' => 'Дилеры',
-        'icon'  => 'shopping-cart'
+        'menu'   => 'Где купить?',
+        'title'  => 'Дилеры',
+        'icon'   => 'shopping-cart',
+        'header' => 'Список дилеров'
     ],
 ];

@@ -27,7 +27,12 @@ class ImageRequest extends FormRequest
         switch ($this->method()) {
             case 'POST': {
                 return [
-                    'path'    => 'required|mimes:' . config('site.files.mimes', 'jpg,jpeg,png,gif') . '|max:' . config('site.files.size', 8092),
+                    'path' => [
+                        'required',
+                        'image',
+                        'mimes:' . config("site.{$this->input('storage')}.mimes", 'jpg,jpeg,png,gif'),
+                        'max:' . config("site.{$this->input('storage')}.size", 5000000)
+                    ]
                 ];
             }
             default:
@@ -53,7 +58,7 @@ class ImageRequest extends FormRequest
     public function attributes()
     {
         return [
-            'path'    => trans('site::image.path'),
+            'path' => trans('site::image.path'),
         ];
     }
 }

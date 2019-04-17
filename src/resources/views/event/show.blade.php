@@ -31,10 +31,10 @@
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::event.date_from_to')</dt>
                     <dd class="col-sm-8">
                         @if($event->date_from == $event->date_to)
-                            {{ $event->date_from() }}
+                            {{ $event->date_from }}
                         @else
-                            @lang('site::event.date_from') {{ $event->date_from() }}
-                            @lang('site::event.date_to') {{ $event->date_to() }}
+                            @lang('site::event.date_from') {{ $event->date_from->format('d.m.Y') }}
+                            @lang('site::event.date_to') {{ $event->date_to->format('d.m.Y') }}
                         @endif
                     </dd>
 

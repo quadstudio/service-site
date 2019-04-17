@@ -8,8 +8,8 @@ use QuadStudio\Service\Site\Filters\Act\ActDateCreatedFromFilter;
 use QuadStudio\Service\Site\Filters\Act\ActDateCreatedToFilter;
 use QuadStudio\Service\Site\Filters\Act\ActSortFilter;
 use QuadStudio\Service\Site\Filters\Act\ActTypeFilter;
-use QuadStudio\Service\Site\Filters\Фсе\ActBoolPaidFilter;
-use QuadStudio\Service\Site\Filters\Фсе\ActBoolReceivedFilter;
+use QuadStudio\Service\Site\Filters\Act\ActBoolPaidFilter;
+use QuadStudio\Service\Site\Filters\Act\ActBoolReceivedFilter;
 use QuadStudio\Service\Site\Models\Act;
 
 class ActRepository extends Repository

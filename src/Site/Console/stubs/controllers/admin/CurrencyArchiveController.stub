@@ -2,10 +2,10 @@
 
 namespace {{namespace}}Http\Controllers\Admin;
 
-use QuadStudio\Service\Site\Traits\Controllers\Admin\CurrencyArchiveControllerTrait;
+use QuadStudio\Service\Site\Traits\Controllers\Admin\CurrencyArchiveController;
 use {{namespace}}Http\Controllers\Controller;
 
 class CurrencyArchiveController extends Controller
 {
-    use CurrencyArchiveControllerTrait;
+    use CurrencyArchiveController;
 }

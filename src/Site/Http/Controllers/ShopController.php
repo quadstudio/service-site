@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use QuadStudio\Rbac\Models\Role;
 use QuadStudio\Service\Site\Filters\Address\AddressOnlineStoreFilter;
-use QuadStudio\Service\Site\Filters\Address\AddressServiceCenterFilter;
-use QuadStudio\Service\Site\Filters\Address\AddressWhereToBuyFilter;
-use QuadStudio\Service\Site\Filters\Region\RegionsSelectedFilter;
+use QuadStudio\Service\Site\Filters\Region\RegionDealerMapFilter;
+use QuadStudio\Service\Site\Filters\Region\RegionServiceMapFilter;
+use QuadStudio\Service\Site\Models\AuthorizationType;
 use QuadStudio\Service\Site\Repositories\AddressRepository;
 use QuadStudio\Service\Site\Repositories\RegionRepository;
 
@@ -24,6 +24,8 @@ class ShopController extends Controller
      */
     private $addresses;
 
+    private $authorization_types;
+
     /**
      * Create a new controller instance.
      *
@@ -37,6 +39,36 @@ class ShopController extends Controller
     {
         $this->regions = $regions;
         $this->addresses = $addresses;
+        $this->authorization_types = AuthorizationType::query()
+            ->where('brand_id', 1)
+            ->where('enabled', 1)
+            ->orderBy('name')
+            ->get();
+    }
+
+    /**
+     * Сервисные центры
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function service_centers(Request $request)
+    {
+
+        $selected_authorization_types = $request->input('filter.authorization_type', $this->authorization_types->pluck('id')->toArray());
+        $regions = $this->regions
+            ->trackFilter()
+            ->applyFilter(new RegionServiceMapFilter())
+            ->all();
+        $region_id = $request->input('filter.region_id');
+        $authorization_types = $this->authorization_types;
+
+        return view('site::shop.service_center', compact(
+            'regions',
+            'region_id',
+            'selected_authorization_types',
+            'authorization_types'
+        ));
     }
 
     /**
@@ -47,16 +79,22 @@ class ShopController extends Controller
      */
     public function where_to_buy(Request $request)
     {
-        $this->addresses
-            ->trackFilter()
-            ->applyFilter(new AddressWhereToBuyFilter());
+
+        $selected_authorization_types = $request->input('filter.authorization_type', $this->authorization_types->pluck('id')->toArray());
         $regions = $this->regions
             ->trackFilter()
-            ->applyFilter((new RegionsSelectedFilter())->setRegions($this->addresses->all()->pluck('region_id')->unique()->toArray()))
+            ->applyFilter(new RegionDealerMapFilter())
             ->all();
         $region_id = $request->input('filter.region_id');
+        $authorization_types = $this->authorization_types;
 
-        return view('site::shop.where_to_buy', compact('regions', 'region_id'));
+        return view('site::shop.where_to_buy', compact(
+            'regions',
+            'region_id',
+            'selected_authorization_types',
+            'authorization_types'
+        ));
+
     }
 
     /**
@@ -74,27 +112,6 @@ class ShopController extends Controller
         $roles = Role::query()->where('display', 1)->get();
 
         return view('site::shop.online_store', compact('addresses', 'roles'));
-    }
-
-    /**
-     * Сервисные центры
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function service_centers(Request $request)
-    {
-
-        $this->addresses
-            ->trackFilter()
-            ->applyFilter(new AddressServiceCenterFilter());
-        $regions = $this->regions
-            ->trackFilter()
-            ->applyFilter((new RegionsSelectedFilter())->setRegions($this->addresses->all()->pluck('region_id')->unique()->toArray()))
-            ->all();
-        $region_id = $request->input('filter.region_id');
-
-        return view('site::shop.service_center', compact('regions', 'region_id'));
     }
 
 }

@@ -26,22 +26,18 @@ class EventRequest extends FormRequest
     {
 
         switch ($this->method()) {
-            case 'GET':
-            case 'DELETE': {
-                return [];
-            }
             case 'PUT':
             case 'PATCH':
             case 'POST': {
                 return [
-                    'status_id'  => 'required|exists:event_statuses,id',
-                    'type_id'    => 'required|exists:event_types,id',
-                    'region_id'  => 'required|exists:regions,id',
-                    'city'       => 'required|string|max:100',
-                    'title'      => 'required|string|max:64',
-                    'annotation' => 'required|string|max:255',
-                    'date_from'  => 'required|date',
-                    'date_to'    => 'required|date|after_or_equal:date_from',
+                    'event.status_id'  => 'required|exists:event_statuses,id',
+                    'event.type_id'    => 'required|exists:event_types,id',
+                    'event.region_id'  => 'required|exists:regions,id',
+                    'event.city'       => 'required|string|max:100',
+                    'event.title'      => 'required|string|max:64',
+                    'event.annotation' => 'required|string|max:255',
+                    'event.date_from'  => 'required|date',
+                    'event.date_to'    => 'required|date|after_or_equal:date_from',
                 ];
             }
             default:
@@ -57,7 +53,7 @@ class EventRequest extends FormRequest
     public function messages()
     {
         return [
-            'date_to.after_or_equal' => trans('site::event.error.date_to.after_or_equal'),
+            'event.date_to.after_or_equal' => trans('site::event.error.date_to.after_or_equal'),
         ];
     }
 
@@ -69,14 +65,14 @@ class EventRequest extends FormRequest
     public function attributes()
     {
         return [
-            'status_id'  => trans('site::event.status_id'),
-            'type_id'    => trans('site::event.type_id'),
-            'region_id'  => trans('site::event.region_id'),
-            'title'      => trans('site::event.title'),
-            'city'       => trans('site::event.city'),
-            'annotation' => trans('site::event.annotation'),
-            'date_from'  => trans('site::event.date_from'),
-            'date_to'    => trans('site::event.date_to'),
+            'event.status_id'  => trans('site::event.status_id'),
+            'event.type_id'    => trans('site::event.type_id'),
+            'event.region_id'  => trans('site::event.region_id'),
+            'event.title'      => trans('site::event.title'),
+            'event.city'       => trans('site::event.city'),
+            'event.annotation' => trans('site::event.annotation'),
+            'event.date_from'  => trans('site::event.date_from'),
+            'event.date_to'    => trans('site::event.date_to'),
         ];
     }
 }

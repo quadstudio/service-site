@@ -73,7 +73,7 @@
                                         <span>@lang('site::messages.load')</span>
                                     </button>
                                     <span id="pathHelp" class="d-block form-text text-success">
-                                            @lang('site::order.help.load')
+                                            @lang('site::order.help.load') <br /> @lang('site::order.help.xlsexample')
                                         </span>
                                 </div>
                             </div>

@@ -2,6 +2,7 @@
 
 namespace QuadStudio\Service\Site\Http\Controllers\Admin;
 
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use QuadStudio\Service\Site\Concerns\StoreMessages;
 use QuadStudio\Service\Site\Events\MountingStatusChangeEvent;
@@ -46,10 +47,10 @@ class MountingController extends Controller
     }
 
     /**
-     * @param MountingRequest $request
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index(MountingRequest $request)
+    public function index(Request $request)
     {
         $this->mountings->trackFilter();
 

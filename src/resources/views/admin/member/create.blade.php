@@ -94,7 +94,7 @@
                                             selected
                                             @endif
                                             value="{{ $e->id }}">
-                                        {{ $e->date_from() }} / {{ $e->type->name }} / {{ $e->title }}
+                                        {{ $e->date_from->format('d.m.Y') }} / {{ $e->type->name }} / {{ $e->title }}
                                     </option>
                                 @endforeach
                             </select>

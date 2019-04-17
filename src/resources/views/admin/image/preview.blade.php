@@ -1,5 +1,6 @@
 @isset($image)
-    <img style="width:{{config('site.'.$image->storage.'.size.preview.width', 150)}}px;height:{{config('site.'.$image->storage.'.size.preview.height', 150)}}px;cursor: pointer;"
+
+    <img style="width:{{config('site.'.$image->storage.'.preview.width', 150)}}px;height:{{config('site.'.$image->storage.'.preview.height', 150)}}px;cursor: pointer;"
          data-toggle="modal"
          data-target=".image-modal-{{$image->id}}"
          class="img-fluid img-preview"
@@ -25,4 +26,5 @@
             </div>
         </div>
     </div>
+
 @endisset

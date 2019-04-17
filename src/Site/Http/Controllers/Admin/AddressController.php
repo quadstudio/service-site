@@ -87,6 +87,7 @@ class AddressController extends Controller
      */
     public function update(AddressRequest $request, Address $address)
     {
+
         $address->update($request->input(['address']));
 
         return redirect()->route('admin.addresses.show', $address)->with('success', trans('site::address.updated'));

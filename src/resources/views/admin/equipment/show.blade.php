@@ -26,10 +26,11 @@
                 <i class="fa fa-pencil"></i>
                 <span>@lang('site::messages.edit') @lang('site::equipment.equipment')</span>
             </a>
-            <a href="{{ route('admin.equipments.images.edit', $equipment) }}"
+            <a href="{{ route('admin.equipments.images.index', $equipment) }}"
                class="d-block mr-0 mr-sm-1 mb-1 mb-sm-0 d-sm-inline btn btn-ferroli">
                 <i class="fa fa-image"></i>
                 <span>@lang('site::image.images')</span>
+                <span class="badge badge-light">{{$equipment->images()->count()}}</span>
             </a>
             <a href="{{ route('admin.equipments.index') }}"
                class="d-block mr-0 mr-sm-1 mb-1 mb-sm-0 d-sm-inline btn btn-secondary">
@@ -100,10 +101,9 @@
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::image.images')</dt>
                     <dd class="col-sm-8">
-                        <div class="row no-gutters" data-target="{{route('admin.equipments.images.sort', $equipment)}}"
-                             id="sort-list">
+                        <div class="row">
                             @foreach($equipment->images()->orderBy('sort_order')->get() as $image)
-                                @include('site::admin.image.show')
+                                <div class="col-md-4">@include('site::admin.image.preview')</div>
                             @endforeach
                         </div>
                     </dd>

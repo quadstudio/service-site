@@ -65,8 +65,8 @@ trait StaticPageControllerTrait
 //        $users = $this->users
 //            ->applyFilter(new AddressActiveFilter())
 //            ->applyFilter(new DisplayFilter())
-//            ->applyFilter(new IsDealerFilter())
-//            ->applyFilter(new IsServiceFilter())
+//            ->applyFilter(new AddressIsDealerFilter())
+//            ->applyFilter(new AddressIsServiceFilter())
 //            ->applyFilter(new WithPhonesFilter())
 //            ->applyFilter(new WithAddressesFilter())
 //            ->pushTrackFilter(SortByRegionFilter::class)

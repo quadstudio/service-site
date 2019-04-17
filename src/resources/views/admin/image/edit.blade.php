@@ -1,10 +1,14 @@
-
 @if(isset($image) && is_object($image) && $image->exists)
-    <div class="col" id="image-{{$image->id}}">
+    <div class="col-md-12 my-2" data-id="{{$image->id}}" id="image-{{$image->id}}">
         <input form="form" type="hidden" name="{{config('site.' . $image->storage . '.name', 'images[]')}}"
                value="{{old(config('site.' . $image->storage . '.dot_name'), $image->id)}}">
         <div class="row">
-            <div class="col-md-4 border">
+
+            <div class="col-md-4 border position-relative">
+                <i data-toggle="tooltip"
+                   data-placement="top"
+                   title="@lang('site::messages.sort')"
+                   class="fa fa-arrows position-absolute" style="top:8px;left:8px;"></i>
                 @include('site::admin.image.preview')
             </div>
             <div class="col-md-8">

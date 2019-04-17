@@ -32,6 +32,9 @@
                         'email' => $address->email,
                         'web' => $address->web,
 			            'logo' => $address->addressable->logo,
+			            'accepts' => $address->addressable->authorization_accepts()->where('role_id', 3)->whereHas('type', function($query){
+                            $query->where('brand_id', 1);
+                        })->get(),
                     ])
                 @endforeach
             </div>

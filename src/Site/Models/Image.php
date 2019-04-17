@@ -4,10 +4,12 @@ namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use QuadStudio\Service\Site\Traits\Models\SortOrderTrait;
 
 class Image extends Model
 {
 
+    use SortOrderTrait;
     /**
      * @var string
      */

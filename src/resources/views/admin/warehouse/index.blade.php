@@ -13,6 +13,13 @@
         </ol>
         <h1 class="header-title mb-4"><i
                     class="fa fa-@lang('site::warehouse.icon')"></i> @lang('site::warehouse.warehouses')</h1>
+        @alert()@endalert
+        <div class="justify-content-start border p-3 mb-2">
+            <a href="{{ route('admin') }}" class="d-page d-sm-inline btn btn-secondary">
+                <i class="fa fa-reply"></i>
+                <span>@lang('site::messages.back_admin')</span>
+            </a>
+        </div>
         @pagination(['pagination' => $warehouses])@endpagination
         {{$warehouses->render()}}
         <div class="row items-row-view">

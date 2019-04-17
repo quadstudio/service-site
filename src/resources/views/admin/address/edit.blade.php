@@ -321,10 +321,10 @@
 
                     <div class="form-row">
                         <div class="col mb-3">
-                            <label class="control-label" for="eshop">@lang('site::address.web')</label>
+                            <label class="control-label" for="web">@lang('site::address.web')</label>
                             <input type="text"
-                                   name="address[eshop]"
-                                   id="address[eshop]"
+                                   name="address[web]"
+                                   id="address[web]"
                                    class="form-control{{ $errors->has('address.web') ? ' is-invalid' : '' }}"
                                    placeholder="@lang('site::address.placeholder.web')"
                                    value="{{ old('address.web',$address->web) }}">

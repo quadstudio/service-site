@@ -12,12 +12,12 @@ class OnlyEnabledUserFilter extends Filter
     {
         $builder = $builder->whereHas('addresses', function ($query) {
             $query
-                ->where('addresses.type_id', 2)
-                ->where('addresses.active', 1)
+                ->where('type_id', 2)
+                ->where('active', 1)
                 ->whereHas('users', function ($query) {
                     $query
-                        ->where('users.active', 1)
-                        ->where('users.display', 1);
+                        ->where('active', 1)
+                        ->where('display', 1);
                 });
         });
 

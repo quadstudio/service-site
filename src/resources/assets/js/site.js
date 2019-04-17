@@ -140,14 +140,18 @@
             let drawAddresses = function () {
 
                 let el = $(containerAddresses),
-                    region = el.data('region'),
+                    region = $('[name="filter[region_id]"]').find('option:selected').val(),
                     action = el.data('action');
+                let checked = [];
+                $('[name="filter[authorization_type][]"]').each(function (i, e) {
+                    if (e.checked) {
+                        checked.push('filter[authorization_type][]=' + this.value)
+                    }
+                });
 
                 axios
-                    .get(action + '/' + region)
-
+                    .get(action + '/' + region + '?' + checked.join('&'))
                     .then((response) => {
-
                         $('#row-count').html(response.data.data.found);
                         renderAddressesList(response.data.data);
                         $('#loading-data').remove();
@@ -188,36 +192,6 @@
                 drawAddresses();
 
             });
-
-
-            // $('.services-region-select').on('click', function (e) {
-            //     drawServices($(this));
-            //     e.preventDefault();
-            // });
-
-            // axios
-            //     .get("/api/services/location")
-            //     .then((response) => {
-            //
-            //         if (typeof response.data.data !== "undefined") {
-            //             let location = response.data.data;
-            //             if(location.countryCode !== null && location.regionCode !== null){
-            //                 let code = location.countryCode + '-' + location.regionCode;
-            //                 $('.services-region-select').each(function (i, region) {
-            //                     if (code === $(region).data('region')) {
-            //                         drawServices($(region));
-            //                         //$(region).trigger('click');
-            //                         return true;
-            //                     }
-            //                 });
-            //             }
-            //         }
-            //         drawServices($('[data-region="RU-MOW"]'));
-            //
-            //     })
-            //     .catch((error) => {
-            //         this.status = 'Error:' + error;
-            //     });
         }
     });
 
@@ -268,6 +242,36 @@
                     this.status = 'Error:' + error;
                 });
         });
+    }
+    let sortableImageList = document.getElementsByClassName("sort-list");
+    if (sortableImageList.length > 0) {
+        for (let i in sortableImageList) {
+            if (sortableImageList.hasOwnProperty(i)) {
+                Sortable.create(sortableImageList[i], {
+                    group: 'items',
+                    animation: 100,
+                    // Changed sorting within list
+                    onUpdate: function (/**Event*/evt) {
+                        let result = [],
+                            i,
+                            list = evt.item.parentElement,
+                            action = list.getAttribute('data-target'),
+                            elements = list.children;
+                        for (i = 0; i < elements.length; i++) {
+                            result.push(elements[i].getAttribute('data-id'));
+                        }
+
+                        axios
+                            .put(action, {sort: result})
+                            .catch((error) => {
+                                console.log(error);
+                            });
+
+                    },
+
+                });
+            }
+        }
     }
 
     let sortableImagesList = document.getElementById("sort-list");
@@ -468,7 +472,6 @@
             }
         });
     }
-
 
 
     // let schemeFormExists = document.getElementById("scheme-form");
@@ -736,7 +739,6 @@
                 },
             });
         })
-
         .on('click', '.image-upload-button', function () {
             let
                 form = $(this).parents('form'),
@@ -956,7 +958,6 @@
             if ("append" in data) {
 
                 $.each(data.append, function (identifier, view) {
-                    console.log(identifier, view);
                     $(identifier).append(view);
                 });
             }
@@ -999,7 +1000,6 @@
             dataType: 'json',
             data: form.serializeArray() || [],
             error: function (xhr, status, error) {
-
                 if ("errors" in xhr.responseJSON) {
                     //console.log(xhr.responseJSON.errors);
                     $("#form-content")

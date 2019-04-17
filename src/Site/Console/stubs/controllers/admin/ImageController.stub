@@ -2,10 +2,10 @@
 
 namespace {{namespace}}Http\Controllers\Admin;
 
-use QuadStudio\Service\Site\Traits\Controllers\Admin\ImageControllerTrait;
+use QuadStudio\Service\Site\Traits\Controllers\Admin\ImageController;
 use {{namespace}}Http\Controllers\Controller;
 
 class ImageController extends Controller
 {
-    use ImageControllerTrait;
+    use ImageController;
 }

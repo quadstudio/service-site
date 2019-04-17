@@ -95,7 +95,7 @@
                                                     selected
                                                     @endif
                                                     value="{{ $event->id }}">
-                                                {{ $event->date_from() }} / {{ $event->type->name }} / {{ $event->title }}
+                                                {{ $event->date_from->format('d.m.Y') }} / {{ $event->type->name }} / {{ $event->title }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -185,7 +185,7 @@
                                                    data-target="#datetimepicker_date_from"
                                                    data-toggle="datetimepicker"
                                                    class="datetimepicker-input form-control{{ $errors->has('date_from') ? ' is-invalid' : '' }}"
-                                                   value="{{ old('date_from', $member->date_from()) }}">
+                                                   value="{{ old('date_from', $member->date_from->format('d.m.Y')) }}">
                                             <div class="input-group-append"
                                                  data-target="#datetimepicker_date_from"
                                                  data-toggle="datetimepicker">
@@ -212,7 +212,7 @@
                                                    data-target="#datetimepicker_date_to"
                                                    data-toggle="datetimepicker"
                                                    class="datetimepicker-input form-control{{ $errors->has('date_to') ? ' is-invalid' : '' }}"
-                                                   value="{{ old('date_to', $member->date_to()) }}">
+                                                   value="{{ old('date_to', $member->date_to->format('d.m.Y')) }}">
                                             <div class="input-group-append"
                                                  data-target="#datetimepicker_date_to"
                                                  data-toggle="datetimepicker">
