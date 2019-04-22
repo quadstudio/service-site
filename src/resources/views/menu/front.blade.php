@@ -44,6 +44,8 @@
                                     class="fa fa-@lang('site::act.icon')"></i> @lang('site::act.acts')</a>
                         <a class="dropdown-item" href="{{ route('admin.authorizations.index') }}"><i
                                     class="fa fa-@lang('site::authorization.icon')"></i> @lang('site::authorization.authorizations')</a>
+                        <a class="dropdown-item" href="{{ route('admin.mounters.index') }}"><i
+                                    class="fa fa-@lang('site::mounter.icon')"></i> @lang('site::mounter.mounters')</a>
                         <a class="dropdown-item" href="{{ route('admin.messages.index') }}"><i
                                     class="fa fa-@lang('site::message.icon')"></i> @lang('site::message.messages')</a>
                         <a class="dropdown-item" href="{{ route('admin.orders.index') }}"><i
@@ -202,20 +204,26 @@
                         </li>
 			            <li class="nav-item">
                             <a class="nav-link" href="{{ route('service-centers') }}">
-                                <i class="fa fa-@lang('site::shop.service_center.icon')"></i>
-                                @lang('site::shop.service_center.menu')
+                                <i class="fa fa-@lang('site::map.service_center.icon')"></i>
+                                @lang('site::map.service_center.menu')
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('where-to-buy') }}">
-                                <i class="fa fa-@lang('site::shop.where_to_buy.icon')"></i>
-                                @lang('site::shop.where_to_buy.menu')
+                                <i class="fa fa-@lang('site::map.where_to_buy.icon')"></i>
+                                @lang('site::map.where_to_buy.menu')
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('online-stores') }}">
-                                <i class="fa fa-@lang('site::shop.online_store.icon')"></i>
-                                @lang('site::shop.online_store.menu')
+                                <i class="fa fa-@lang('site::map.online_store.icon')"></i>
+                                @lang('site::map.online_store.menu')
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('mounter-requests') }}">
+                                <i class="fa fa-@lang('site::map.mounter_request.icon')"></i>
+                                @lang('site::map.mounter_request.menu')
                             </a>
                         </li>
                         <li class="nav-item">
@@ -249,9 +257,9 @@
                 <li><a href="{{ route('catalogs.index') }}">@lang('site::catalog.catalogs')</a></li>
                 <li><a href="{{config('catalog_price_pdf')}}">Каталог и прайс (PDF)</a></li>
                 <li><a href="{{ route('datasheets.index') }}">@lang('site::datasheet.datasheets')</a></li>
-                <li><a href="{{ route('service-centers') }}">@lang('site::shop.service_center.menu')</a></li>
-                <li><a href="{{ route('where-to-buy') }}">@lang('site::shop.where_to_buy.menu')</a></li>
-                <li><a href="{{ route('online-stores') }}">@lang('site::shop.online_store.menu')</a></li>
+                <li><a href="{{ route('service-centers') }}">@lang('site::map.service_center.menu')#</a></li>
+                <li><a href="{{ route('where-to-buy') }}">@lang('site::map.where_to_buy.menu')#</a></li>
+                <li><a href="{{ route('online-stores') }}">@lang('site::map.online_store.menu')#</a></li>
                 <li><a href="{{ route('feedback') }}">@lang('site::messages.feedback')</a></li>
             </ul>
         </div>

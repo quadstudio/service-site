@@ -30,7 +30,7 @@ class DealerResource extends JsonResource
                 'coordinates' => [$this->lat(), $this->lon()]
             ],
             'properties' => [
-                'balloonContentBody' => view('site::shop.balloon', [
+                'balloonContentBody' => view('site::map.balloon.where_to_buy', [
                     'name'      => $this->name,
                     'roles'      => $roles,
                     'logo'      => $this->addressable->logo,

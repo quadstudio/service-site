@@ -1,12 +1,13 @@
 <?php
 
-namespace QuadStudio\Service\Site\Traits\Controllers;
+namespace QuadStudio\Service\Site\Http\Controllers;
 
+use Illuminate\Routing\Controller;
 use QuadStudio\Service\Site\Filters\Datasheet\ActiveFilter;
 use QuadStudio\Service\Site\Models\Datasheet;
 use QuadStudio\Service\Site\Repositories\DatasheetRepository;
 
-trait DatasheetControllerTrait
+class DatasheetController extends Controller
 {
 
     protected $datasheets;

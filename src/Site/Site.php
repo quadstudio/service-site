@@ -85,23 +85,58 @@ class Site
 
                     // Интернет-магазины
                     $router->match(['get', 'post'], '/eshop',
-                        '\QuadStudio\Service\Site\Http\Controllers\ShopController@online_stores')
+                        '\QuadStudio\Service\Site\Http\Controllers\MapController@online_stores')
                         ->name('online-stores');
 
                     // Где купить
                     $router->match(['get', 'post'], '/dealers',
-                        '\QuadStudio\Service\Site\Http\Controllers\ShopController@where_to_buy')
+                        '\QuadStudio\Service\Site\Http\Controllers\MapController@where_to_buy')
                         ->name('where-to-buy');
 
                     // Сервисные центры
                     $router->match(['get', 'post'], '/services',
-                        '\QuadStudio\Service\Site\Http\Controllers\ShopController@service_centers')
+                        '\QuadStudio\Service\Site\Http\Controllers\MapController@service_centers')
                         ->name('service-centers');
 
+                    // Заявки на монтаж
+                    $router->match(['get', 'post'], '/mounter-requests',
+                        '\QuadStudio\Service\Site\Http\Controllers\MapController@mounter_requests')
+                        ->name('mounter-requests');
 
+                    $router->get('/mounters/create/{address}',
+                        '\QuadStudio\Service\Site\Http\Controllers\MounterController@create')
+                        ->name('mounters.create');
+                    $router->post('/mounters/{address}',
+                        '\QuadStudio\Service\Site\Http\Controllers\MounterController@store')
+                        ->name('mounters.store');
+
+                    $router->resource('/mounters',
+                        '\QuadStudio\Service\Site\Http\Controllers\MounterController')
+                        ->only(['index', 'show', 'edit', 'update']);
+
+                    // Файлы
                     $router->resource('/files',
                         '\QuadStudio\Service\Site\Http\Controllers\FileController')
                         ->only(['index', 'store', 'show', 'destroy']);
+
+                    // Каталог
+                    $router->resource('/catalogs',
+                        '\QuadStudio\Service\Site\Http\Controllers\CatalogController')
+                        ->only(['index', 'show']);
+                    $router->get('/catalogs/{catalog}/list',
+                        '\QuadStudio\Service\Site\Http\Controllers\CatalogController@list')
+                        ->name('catalogs.list');
+
+                    // Оборудование
+                    $router->resource('/equipments',
+                        '\QuadStudio\Service\Site\Http\Controllers\EquipmentController')
+                        ->only(['index', 'show']);
+
+                    // Техдокументация
+                    $router->resource('/datasheets',
+                        '\QuadStudio\Service\Site\Http\Controllers\DatasheetController')
+                        ->only(['index', 'show']);
+
 
                     /* Новости */
                     $router->resource('/news', 'NewsController')->only(['index']);
@@ -121,13 +156,10 @@ class Site
                     $router->get('/products/list', 'ProductController@list')->name('products.list');
                     $router->resource('/products', 'ProductController')->only(['index', 'show']);
                     $router->get('/products/{product}/schemes/{scheme}', 'ProductController@scheme')->name('products.scheme');
-                    $router->resource('/catalogs', 'CatalogController')->only(['index', 'show']);
-                    $router->get('/catalogs/{catalog}/list', 'CatalogController@list')->name('catalogs.list');
-                    $router->resource('/equipments', 'EquipmentController')->only(['index', 'show']);
-                    $router->resource('/datasheets', 'DatasheetController')->only(['index', 'show']);
+
+
 
                     $router->get('/currencies/refresh/', 'CurrencyController@refresh')->name('currencies.refresh');
-                    //$router->resource('/schemes', 'SchemeController')->only(['index','show']);
 
                     // Static pages
                     $router->get('/feedback', 'StaticPageController@feedback')->name('feedback');
@@ -347,6 +379,9 @@ class Site
                                     ->except(['delete']);
                                 $router->name('admin')->resource('/authorizations',
                                     '\QuadStudio\Service\Site\Http\Controllers\Admin\AuthorizationController')
+                                    ->except(['delete']);
+                                $router->name('admin')->resource('/mounters',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\MounterController')
                                     ->except(['delete']);
                                 $router->name('admin')->post('/authorizations/{authorization}/message',
                                     '\QuadStudio\Service\Site\Http\Controllers\Admin\AuthorizationController@message')
@@ -722,11 +757,6 @@ class Site
                                     });
 
 
-
-
-
-
-
                                 //$router->name('admin')->resource('/explodes', 'ExplodeController');
 
                                 //$router->name('admin')->post('/images/field', 'ImageController@field')->name('.images.field');
@@ -742,11 +772,7 @@ class Site
                                 $router->name('admin')->resource('/prices', 'PriceController');
 
 
-
-
                                 $router->name('admin')->resource('/parts', 'PartController')->only(['edit', 'update', 'destroy']);
-
-
 
 
                             });
@@ -766,15 +792,18 @@ class Site
 
                 // Сервисные центры на карте
                 $router->name('api')->get('/services/{region?}',
-                    '\QuadStudio\Service\Site\Http\Controllers\Api\ShopController@service_centers')
+                    '\QuadStudio\Service\Site\Http\Controllers\Api\MapController@service_centers')
                     ->name('.service-centers');
 
                 // Дилеры на карте
                 $router->name('api')->get('/dealers/{region?}',
-                    '\QuadStudio\Service\Site\Http\Controllers\Api\ShopController@where_to_buy')
+                    '\QuadStudio\Service\Site\Http\Controllers\Api\MapController@where_to_buy')
                     ->name('.where-to-buy');
 
-
+                // Монтажники на карте
+                $router->name('api')->get('/mounters/{region?}',
+                    '\QuadStudio\Service\Site\Http\Controllers\Api\MapController@mounter_requests')
+                    ->name('.mounter-requests');
 
 
                 $router->name('api')->resource('/countries', 'CountryController')->only(['index']);

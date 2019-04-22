@@ -63,6 +63,9 @@
                         <a class="dropdown-item" href="{{ route('admin.authorizations.index') }}">
                             <i class="fa fa-@lang('site::authorization.icon')"></i> @lang('site::authorization.authorizations')
                         </a>
+                        <a class="dropdown-item" href="{{ route('admin.mounters.index') }}">
+                            <i class="fa fa-@lang('site::mounter.icon')"></i> @lang('site::mounter.mounters')
+                        </a>
                         <a class="dropdown-item" href="{{ route('admin.messages.index') }}">
                             <i class="fa fa-@lang('site::message.icon')"></i> @lang('site::message.messages')
                         </a>
@@ -143,6 +146,11 @@
                         @permission('authorizations')
                         <a class="dropdown-item" href="{{ route('authorizations.index') }}"><i
                                     class="fa fa-@lang('site::authorization.icon')"></i> @lang('site::authorization.authorizations')
+                        </a>
+                        @endpermission
+                        @permission('mountings')
+                        <a class="dropdown-item" href="{{ route('mounters.index') }}"><i
+                                    class="fa fa-@lang('site::mounter.icon')"></i> @lang('site::mounter.mounters')
                         </a>
                         @endpermission
                         @permission('messages')

@@ -1,13 +1,14 @@
 <?php
 
-namespace QuadStudio\Service\Site\Traits\Controllers;
+namespace QuadStudio\Service\Site\Http\Controllers;
 
+use Illuminate\Routing\Controller;
 use QuadStudio\Service\Site\Filters\EnabledFilter;
 use QuadStudio\Service\Site\Models\Datasheet;
 use QuadStudio\Service\Site\Models\Equipment;
 use QuadStudio\Service\Site\Repositories\EquipmentRepository;
 
-trait EquipmentControllerTrait
+class EquipmentController extends Controller
 {
     protected $equipments;
 
@@ -42,7 +43,7 @@ trait EquipmentControllerTrait
             abort(404);
         }
         $products = $equipment->products()->where('enabled', 1)->orderBy('name')->get();
-        $datasheets = Datasheet::where('active', 1)->whereHas('products', function($query) use ($equipment){
+        $datasheets = Datasheet::query()->where('active', 1)->whereHas('products', function($query) use ($equipment){
             $query->where('enabled', 1)->where('equipment_id', $equipment->id);
         })->get();
         return view('site::equipment.show', compact('equipment', 'products', 'datasheets'));

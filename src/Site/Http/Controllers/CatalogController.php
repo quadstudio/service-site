@@ -1,14 +1,19 @@
 <?php
 
-namespace QuadStudio\Service\Site\Traits\Controllers;
+namespace QuadStudio\Service\Site\Http\Controllers;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Routing\Controller;
 use QuadStudio\Service\Site\Filters\CatalogRootFilter;
 use QuadStudio\Service\Site\Filters\EnabledFilter;
 use QuadStudio\Service\Site\Models\Catalog;
 use QuadStudio\Service\Site\Repositories\CatalogRepository;
 
-trait CatalogControllerTrait
+class CatalogController extends Controller
 {
+
+    use AuthorizesRequests;
+
     protected $catalogs;
 
     /**

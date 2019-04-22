@@ -14,8 +14,8 @@ class Address extends Model
         'type_id', 'country_id', 'region_id',
         'locality', 'street', 'building',
         'apartment', 'postal', 'name', 'active',
-        'is_shop', 'is_service', 'is_eshop', 'sort_order',
-        'email', 'eshop'
+        'is_shop', 'is_service', 'is_eshop', 'is_mounter',
+        'sort_order', 'email', 'web'
     ];
 
     /**
@@ -156,6 +156,16 @@ class Address extends Model
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    /**
+     * Заявки на монтаж
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function mounters()
+    {
+        return $this->hasMany(Mounter::class, 'user_address_id');
     }
 
 

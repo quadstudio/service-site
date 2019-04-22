@@ -41,6 +41,12 @@
                                         return $accept->type_id == $authorization_type->id && $accept->role_id == $authorization_role->role_id;
                                     }))
                                         <span class="badge text-normal badge-success"><i class="fa fa-check"></i></span>
+                                    @elseif($authorizations->contains(function($authorization) use ($authorization_role, $authorization_type){
+                                        return $authorization->types->contains(function($a_type) use ($authorization_type){
+                                            return $a_type->id == $authorization_type->id;
+                                        })  && $authorization->role_id == $authorization_role->role_id;
+                                    }))
+                                        <span class="badge text-normal badge-info"><i class="fa fa-question"></i></span>
                                     @endif
                                 </td>
                             @endforeach

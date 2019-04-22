@@ -7,13 +7,14 @@ use Illuminate\Routing\Controller;
 use QuadStudio\Rbac\Models\Role;
 use QuadStudio\Service\Site\Filters\Address\AddressOnlineStoreFilter;
 use QuadStudio\Service\Site\Filters\Region\RegionDealerMapFilter;
+use QuadStudio\Service\Site\Filters\Region\RegionMounterMapFilter;
 use QuadStudio\Service\Site\Filters\Region\RegionServiceMapFilter;
 use QuadStudio\Service\Site\Models\AuthorizationType;
 use QuadStudio\Service\Site\Repositories\AddressRepository;
 use QuadStudio\Service\Site\Repositories\RegionRepository;
 
 
-class ShopController extends Controller
+class MapController extends Controller
 {
     /**
      * @var RegionRepository
@@ -63,7 +64,7 @@ class ShopController extends Controller
         $region_id = $request->input('filter.region_id');
         $authorization_types = $this->authorization_types;
 
-        return view('site::shop.service_center', compact(
+        return view('site::map.service_center', compact(
             'regions',
             'region_id',
             'selected_authorization_types',
@@ -88,7 +89,33 @@ class ShopController extends Controller
         $region_id = $request->input('filter.region_id');
         $authorization_types = $this->authorization_types;
 
-        return view('site::shop.where_to_buy', compact(
+        return view('site::map.where_to_buy', compact(
+            'regions',
+            'region_id',
+            'selected_authorization_types',
+            'authorization_types'
+        ));
+
+    }
+
+    /**
+     * Заявки на монтаж
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function mounter_requests(Request $request)
+    {
+
+        $selected_authorization_types = $request->input('filter.authorization_type', $this->authorization_types->pluck('id')->toArray());
+        $regions = $this->regions
+            ->trackFilter()
+            ->applyFilter(new RegionMounterMapFilter())
+            ->all();
+        $region_id = $request->input('filter.region_id');
+        $authorization_types = $this->authorization_types;
+
+        return view('site::map.mounter_request', compact(
             'regions',
             'region_id',
             'selected_authorization_types',
@@ -111,7 +138,7 @@ class ShopController extends Controller
             ->all();
         $roles = Role::query()->where('display', 1)->get();
 
-        return view('site::shop.online_store', compact('addresses', 'roles'));
+        return view('site::map.online_store', compact('addresses', 'roles'));
     }
 
 }

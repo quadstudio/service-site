@@ -15,7 +15,7 @@ class ServiceCollection extends ResourceCollection
     public function toArray($request)
     {
         //$name = $request->route()->getName() == 'api.dealers.index' ? trans('site::dealer.text') : trans('site::service.text');
-        $name = trans('site::service.text');
+        $name = trans('site::map.service_center.text');
         $found = numberof($this->collection->count(), 'Найден', ['', 'о', 'о']);
         $text = $found . ' ' . $this->collection->count() . ' ' . numberof($this->collection->count(), $name, ['', 'а', 'ов']);
         return [

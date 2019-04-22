@@ -145,6 +145,29 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-row">
+                                <div class="col mb-3">
+                                    <label class="control-label d-block" for="is_mounter">@lang('site::address.is_mounter')</label>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input class="custom-control-input {{$errors->has('address.is_mounter') ? ' is-invalid' : ''}}"
+                                               type="radio" name="address[is_mounter]"
+                                               @if(old('address.is_mounter', $address->is_mounter) == 0) checked @endif
+                                               id="is_mounter_0"  value="0">
+                                        <label class="custom-control-label" for="is_mounter_0">@lang('site::messages.no')</label>
+                                    </div>
+                                    <div class="custom-control custom-radio  custom-control-inline">
+                                        <input class="custom-control-input {{$errors->has('address.is_mounter') ? ' is-invalid' : ''}}"
+                                               type="radio" name="address[is_mounter]"
+                                               required
+                                               @if(old('address.is_mounter', $address->is_mounter) == 1) checked @endif
+                                               id="is_mounter_1"  value="1">
+                                        <label class="custom-control-label" for="is_mounter_1">@lang('site::messages.yes')</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
 

@@ -28,5 +28,6 @@
                 </dd>
             @endif
         </dl>
+        @yield('link')
     </div>
 </div>

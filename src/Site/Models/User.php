@@ -208,6 +208,19 @@ class User extends Authenticatable implements Addressable
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function mounters()
+    {
+        return Mounter::query()
+            ->whereHas('userAddress', function ($address) {
+                $address
+                    ->where('addressable_type', '=', 'users')
+                    ->where('addressable_id', '=', $this->getAuthIdentifier());
+            });//->orderBy('created_at', 'DESC')
+    }
+
+    /**
      * Склад
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

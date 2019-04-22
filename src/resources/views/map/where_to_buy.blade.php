@@ -1,16 +1,16 @@
 @extends('layouts.app')
-@section('title')@lang('site::shop.where_to_buy.title')@lang('site::messages.title_separator')@endsection
+@section('title')@lang('site::map.where_to_buy.title')@lang('site::messages.title_separator')@endsection
 @push('scripts')
 <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
 @endpush
 
 @section('header')
     @include('site::header.front',[
-        'h1' => '<i class="fa fa-'.__('site::shop.where_to_buy.icon').'"></i> '
-        .__('site::shop.where_to_buy.title'),
+        'h1' => '<i class="fa fa-'.__('site::map.where_to_buy.icon').'"></i> '
+        .__('site::map.where_to_buy.title'),
         'breadcrumbs' => [
             ['url' => route('index'), 'name' => __('site::messages.index')],
-            ['name' => __('site::shop.where_to_buy.title')]
+            ['name' => __('site::map.where_to_buy.title')]
         ]
     ])
 @endsection
@@ -77,7 +77,7 @@
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <h3 id="addresses-list">@lang('site::shop.where_to_buy.header')</h3>
+                        <h3 id="addresses-list">@lang('site::map.where_to_buy.header')</h3>
                         <div id="container-addresses" data-action="{{route('api.where-to-buy')}}"></div>
                     </div>
                 </div>

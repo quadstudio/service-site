@@ -37,11 +37,6 @@
                 <div class="card mb-2">
                     <h6 class="card-header with-elements">
                         <span class="card-header-title">@lang('site::act.header.info')</span>
-                        {{--<div class="card-header-elements ml-auto">--}}
-                        {{--<a href="#" class="btn btn-sm btn-light">--}}
-                        {{--<i class="fa fa-pencil"></i>--}}
-                        {{--</a>--}}
-                        {{--</div>--}}
                     </h6>
                     <div class="card-body">
                         <div class="mb-2">
@@ -62,21 +57,13 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="card mb-2">
                     <h6 class="card-header with-elements">
                         <span class="card-header-title">@lang('site::repair.header.payment')</span>
-                        {{--<div class="card-header-elements ml-auto">--}}
-                        {{--<a href="#" class="btn btn-sm btn-light">--}}
-                        {{--<i class="fa fa-pencil"></i>--}}
-                        {{--</a>--}}
-                        {{--</div>--}}
                     </h6>
                     <div class="card-body">
                         <dl class="row">
-
-                            @include('site::act.show.'.$act->type_id)
-
+                            @include('site::act.show.'.$act->type->alias)
                         </dl>
                     </div>
                     <div class="card-footer">
@@ -88,16 +75,11 @@
                 <div class="card mb-2">
                     <h6 class="card-header with-elements">
                         <span class="card-header-title">@lang('site::repair.repairs')</span>
-                        {{--<div class="card-header-elements ml-auto">--}}
-                        {{--<a href="#" class="btn btn-sm btn-light">--}}
-                        {{--<i class="fa fa-pencil"></i>--}}
-                        {{--</a>--}}
-                        {{--</div>--}}
                     </h6>
                     <div class="card-body">
                         @foreach($act->contents as $repair)
                             <div class="row border-bottom">
-                                <div class="col"><a href="{{route($act->type_id.'.show', $repair)}}">№ {{$repair->id}}</a></div>
+                                <div class="col"><a href="{{route($act->type->alias.'.show', $repair)}}">№ {{$repair->id}}</a></div>
                                 <div class="col">{{$repair->created_at->format('d.m.Y')}}</div>
                                 <div class="col">
                                     <a href="{{route('products.show', $repair->product)}}">{{$repair->product->name}}</a>
@@ -109,27 +91,21 @@
                         @endforeach
                     </div>
                 </div>
-
                 <div class="card mb-2">
                     <h6 class="card-header">@lang('site::act.user.detail_1')</h6>
                     <div class="card-body">
                         @php $detail = $act->details()->whereOur(1)->first() @endphp
                         @include('site::admin.act.show.detail')
                     </div>
-
                 </div>
-
                 <div class="card mb-4">
                     <h6 class="card-header">@lang('site::act.user.detail_0')</h6>
                     <div class="card-body">
                         @php $detail = $act->details()->whereOur(0)->first() @endphp
                         @include('site::admin.act.show.detail')
                     </div>
-
                 </div>
-
             </div>
-
         </div>
     </div>
 @endsection

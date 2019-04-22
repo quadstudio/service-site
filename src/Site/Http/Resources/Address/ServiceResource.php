@@ -31,7 +31,7 @@ class ServiceResource extends JsonResource
                 'coordinates' => [$this->lat(), $this->lon()]
             ],
             'properties' => [
-                'balloonContentBody' => view('site::shop.balloon', [
+                'balloonContentBody' => view('site::map.balloon.service_center', [
                     'name'      => $this->name,
                     'roles'      => $roles,
                     'logo'      => $this->addressable->logo,

@@ -113,6 +113,18 @@
                             </span>
                         </a>
                         @endpermission()
+                        @permission('mountings')
+                        <a href="{{ route('mounters.index') }}"
+                           class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="fa fa-@lang('site::mounter.icon')"></i>
+                                @lang('site::mounter.mounters')
+                            </span>
+                            <span class="badge text-big @if($user->mounters()->exists()) badge-ferroli @else badge-light @endif">
+                                {{$user->mounters()->count()}}
+                            </span>
+                        </a>
+                        @endpermission()
                         @permission('messages')
                         <a href="{{ route('messages.index') }}"
                            class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">

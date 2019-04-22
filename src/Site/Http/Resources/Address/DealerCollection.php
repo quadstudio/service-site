@@ -14,7 +14,7 @@ class DealerCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        $name = trans('site::dealer.text');
+        $name = trans('site::map.where_to_buy.text');
         $found = numberof($this->collection->count(), 'Найден', ['', 'о', 'о']);
         $text = $found . ' ' . $this->collection->count() . ' ' . numberof($this->collection->count(), $name, ['', 'а', 'ов']);
         return [

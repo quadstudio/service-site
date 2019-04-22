@@ -119,6 +119,9 @@
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.is_service')</dt>
                     <dd class="col-sm-8">@bool(['bool' => $address->is_service])@endbool</dd>
 
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.is_mounter')</dt>
+                    <dd class="col-sm-8">@bool(['bool' => $address->is_mounter])@endbool</dd>
+
                     @if($address->name)
                         <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.name')</dt>
                         <dd class="col-sm-8">{{ $address->name }}</dd>

@@ -2,10 +2,10 @@
 
 namespace {{namespace}}Http\Controllers;
 
-use QuadStudio\Service\Site\Traits\Controllers\SchemeControllerTrait;
+use QuadStudio\Service\Site\Traits\Controllers\SchemeController;
 use {{namespace}}Http\Controllers\Controller;
 
 class SchemeController extends Controller
 {
-    use SchemeControllerTrait;
+    use SchemeController;
 }

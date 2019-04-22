@@ -20,6 +20,7 @@ return [
         'service-centers',
         'where-to-buy',
         'online-stores',
+        'mounter-requests',
         'news.index',
         'news.show',
         'events.index',

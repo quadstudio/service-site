@@ -45,7 +45,8 @@ class SiteServiceProvider extends ServiceProvider
         Models\OrderItem::class   => Policies\OrderItemPolicy::class,
         Models\Member::class      => Policies\MemberPolicy::class,
         Models\Mounting::class    => Policies\MountingPolicy::class,
-        Models\Event::class    => Policies\EventPolicy::class,
+        Models\Event::class       => Policies\EventPolicy::class,
+        Models\Mounter::class     => Policies\MounterPolicy::class,
     ];
 
     /**
@@ -294,6 +295,7 @@ class SiteServiceProvider extends ServiceProvider
         Event::subscribe(new Listeners\AuthorizationListener());
         Event::subscribe(new Listeners\MessageListener());
         Event::subscribe(new Listeners\MountingListener());
+        Event::subscribe(new Listeners\MounterListener());
     }
 
     /**

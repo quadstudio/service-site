@@ -2,9 +2,9 @@
 
 namespace {{namespace}}Http\Controllers;
 
-use QuadStudio\Service\Site\Traits\Controllers\DatasheetControllerTrait;
+use QuadStudio\Service\Site\Traits\Controllers\DatasheetController;
 
 class DatasheetController extends Controller
 {
-    use DatasheetControllerTrait;
+    use DatasheetController;
 }

@@ -1,14 +1,14 @@
 @extends('layouts.app')
-@section('title')@lang('site::shop.online_store.title')@lang('site::messages.title_separator')@endsection
+@section('title')@lang('site::map.online_store.title')@lang('site::messages.title_separator')@endsection
 
 
 @section('header')
     @include('site::header.front',[
-        'h1' => '<i class="fa fa-'.__('site::shop.online_store.icon').'"></i> '
-        .__('site::shop.online_store.title'),
+        'h1' => '<i class="fa fa-'.__('site::map.online_store.icon').'"></i> '
+        .__('site::map.online_store.title'),
         'breadcrumbs' => [
             ['url' => route('index'), 'name' => __('site::messages.index')],
-            ['name' => __('site::shop.online_store.title')]
+            ['name' => __('site::map.online_store.title')]
         ]
     ])
 @endsection
@@ -24,7 +24,7 @@
                             @php $user_roles[] = $role->title @endphp
                         @endif
                     @endforeach
-                    @include('site::shop.balloon', [
+                    @include('site::map.balloon', [
                         'name' => $address->name,
                         'address' => $address->address,
                         'roles' => $user_roles,

@@ -5,16 +5,18 @@ namespace QuadStudio\Service\Site\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use QuadStudio\Service\Site\Filters\Address\AddressIsDealerFilter;
+use QuadStudio\Service\Site\Filters\Address\AddressIsMounterFilter;
 use QuadStudio\Service\Site\Filters\Address\AddressMapFilter;
 use QuadStudio\Service\Site\Filters\Address\AddressIsServiceFilter;
 use QuadStudio\Service\Site\Filters\Address\RegionFilter;
 use QuadStudio\Service\Site\Http\Resources\Address\DealerCollection;
+use QuadStudio\Service\Site\Http\Resources\Address\MounterCollection;
 use QuadStudio\Service\Site\Http\Resources\Address\ServiceCollection;
 use QuadStudio\Service\Site\Models\AuthorizationType;
 use QuadStudio\Service\Site\Models\Region;
 use QuadStudio\Service\Site\Repositories\AddressRepository;
 
-class ShopController extends Controller
+class MapController extends Controller
 {
 
     private $addresses;
@@ -80,6 +82,31 @@ class ShopController extends Controller
                             $this->authorization_types->pluck('id')->toArray()
                         ))
                         ->setRoleId(4)
+                )
+                ->applyFilter((new RegionFilter())->setRegionId($region->id))
+                ->all()
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @param Region $region
+     * @return MounterCollection
+     */
+    public function mounter_requests(Request $request, Region $region)
+    {
+
+        return new MounterCollection(
+            $this->addresses
+                ->trackFilter()
+                ->applyFilter(new AddressIsMounterFilter())
+                ->applyFilter(
+                    (new AddressMapFilter())
+                        ->setAccepts($request->input(
+                            'filter.authorization_type',
+                            $this->authorization_types->pluck('id')->toArray()
+                        ))
+                        ->setRoleId(11)
                 )
                 ->applyFilter((new RegionFilter())->setRegionId($region->id))
                 ->all()
