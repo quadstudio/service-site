@@ -6,6 +6,7 @@ use Illuminate\Routing\Controller;
 use QuadStudio\Service\Site\Concerns\StoreMessages;
 use QuadStudio\Service\Site\Filters\Authorization\AuthorizationPerPageFilter;
 use QuadStudio\Service\Site\Filters\Authorization\AuthorizationUserFilter;
+use QuadStudio\Service\Site\Filters\Authorization\AuthorizationSortFilter;
 use QuadStudio\Service\Site\Http\Requests\Admin\AuthorizationRequest;
 use QuadStudio\Service\Site\Http\Requests\MessageRequest;
 use QuadStudio\Service\Site\Models\Authorization;
@@ -43,6 +44,7 @@ class AuthorizationController extends Controller
         $this->authorizations->trackFilter();
         $this->authorizations->pushTrackFilter(AuthorizationUserFilter::class);
         $this->authorizations->pushTrackFilter(AuthorizationPerPageFilter::class);
+        $this->authorizations->pushTrackFilter(AuthorizationSortFilter::class);
         $authorizations = $this->authorizations->paginate($request->input('filter.per_page', config('site.per_page.authorization', 10)), ['authorizations.*']);
         $repository = $this->authorizations;
 

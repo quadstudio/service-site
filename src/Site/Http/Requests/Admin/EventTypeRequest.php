@@ -29,8 +29,8 @@ class EventTypeRequest extends FormRequest
             case 'PUT':
             case 'PATCH': {
                 return [
-                    'name'       => 'required|string|max:64',
-                    'annotation' => 'required|string|max:255'
+                    'event_type.name'       => 'required|string|max:64',
+                    'event_type.annotation' => 'required|string|max:255'
                 ];
             }
             default:
@@ -56,8 +56,8 @@ class EventTypeRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name'       => trans('site::event_type.name'),
-            'annotation' => trans('site::event_type.annotation'),
+            'event_type.name'       => trans('site::event_type.name'),
+            'event_type.annotation' => trans('site::event_type.annotation'),
         ];
     }
 }

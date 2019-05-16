@@ -49,26 +49,20 @@
                         <hr/>
 
                         <a class="list-group-item list-group-item-action py-1"
-                           href="{{ route('admin.engineers.index') }}">
-                            <i class="fa fa-@lang('site::engineer.icon')"></i> @lang('site::engineer.engineers')
+                           href="{{ route('admin.catalogs.index') }}">
+                            <i class="fa fa-@lang('site::catalog.icon')"></i> @lang('site::catalog.catalogs')
                         </a>
                         <a class="list-group-item list-group-item-action py-1"
-                           href="{{ route('admin.launches.index') }}">
-                            <i class="fa fa-@lang('site::launch.icon')"></i> @lang('site::launch.launches')
-                        </a>
-                        <a class="list-group-item list-group-item-action py-1" href="{{ route('admin.trades.index') }}">
-                            <i class="fa fa-@lang('site::trade.icon')"></i> @lang('site::trade.trades')
+                           href="{{ route('admin.equipments.index') }}">
+                            <i class="fa fa-@lang('site::equipment.icon')"></i> @lang('site::equipment.equipments')
                         </a>
                         <a class="list-group-item list-group-item-action py-1"
-                           href="{{ route('admin.contragents.index') }}">
-                            <i class="fa fa-@lang('site::contragent.icon')"></i> @lang('site::contragent.contragents')
+                           href="{{ route('admin.products.index') }}">
+                            <i class="fa fa-@lang('site::product.icon')"></i> @lang('site::product.cards')
                         </a>
-
-                        <hr/>
-
                         <a class="list-group-item list-group-item-action py-1"
-                           href="{{ route('admin.addresses.index') }}">
-                            <i class="fa fa-@lang('site::address.icon')"></i> @lang('site::address.addresses')
+                           href="{{ route('admin.datasheets.index') }}">
+                            <i class="fa fa-@lang('site::datasheet.icon')"></i> @lang('site::datasheet.datasheets')
                         </a>
 
                         <hr/>
@@ -80,10 +74,11 @@
                            href="{{ route('admin.permissions.index') }}">
                             <i class="fa fa-unlock-alt"></i> @lang('rbac::permission.permissions')
                         </a>
+
                         <hr/>
 
-                        <a class="list-group-item list-group-item-action py-1" href="{{ route('admin.news.index') }}">
-                            <i class="fa fa-@lang('site::news.icon')"></i> @lang('site::news.news')
+                        <a class="list-group-item list-group-item-action py-1" href="{{ route('admin.announcements.index') }}">
+                            <i class="fa fa-@lang('site::announcement.icon')"></i> @lang('site::announcement.announcements')
                         </a>
                         <a class="list-group-item list-group-item-action py-1" href="{{ route('admin.events.index') }}">
                             <i class="fa fa-@lang('site::event.icon')"></i> @lang('site::event.events')
@@ -157,20 +152,13 @@
                                 <hr/>
 
                                 <a class="list-group-item list-group-item-action py-1"
-                                   href="{{ route('admin.datasheets.index') }}">
-                                    <i class="fa fa-@lang('site::datasheet.icon')"></i> @lang('site::datasheet.datasheets')
-                                </a>
-
-                                <a class="list-group-item list-group-item-action py-1"
                                    href="{{ route('admin.blocks.index') }}">
                                     <i class="fa fa-@lang('site::block.icon')"></i> @lang('site::block.blocks')
                                 </a>
-
                                 <a class="list-group-item list-group-item-action py-1"
                                    href="{{ route('admin.schemes.index') }}">
                                     <i class="fa fa-@lang('site::scheme.icon')"></i> @lang('site::scheme.schemes')
                                 </a>
-
                                 <a class="list-group-item list-group-item-action py-1"
                                    href="{{ route('admin.elements.index') }}">
                                     <i class="fa fa-@lang('site::element.icon')"></i> @lang('site::element.elements')
@@ -182,17 +170,34 @@
                             <div class="list-group">
 
                                 <a class="list-group-item list-group-item-action py-1"
-                                   href="{{ route('admin.catalogs.index') }}">
-                                    <i class="fa fa-@lang('site::catalog.icon')"></i> @lang('site::catalog.catalogs')
+                                   href="{{ route('admin.engineers.index') }}">
+                                    <i class="fa fa-@lang('site::engineer.icon')"></i> @lang('site::engineer.engineers')
                                 </a>
                                 <a class="list-group-item list-group-item-action py-1"
-                                   href="{{ route('admin.equipments.index') }}">
-                                    <i class="fa fa-@lang('site::equipment.icon')"></i> @lang('site::equipment.equipments')
+                                   href="{{ route('admin.launches.index') }}">
+                                    <i class="fa fa-@lang('site::launch.icon')"></i> @lang('site::launch.launches')
+                                </a>
+                                <a class="list-group-item list-group-item-action py-1" href="{{ route('admin.trades.index') }}">
+                                    <i class="fa fa-@lang('site::trade.icon')"></i> @lang('site::trade.trades')
                                 </a>
                                 <a class="list-group-item list-group-item-action py-1"
-                                   href="{{ route('admin.products.index') }}">
-                                    <i class="fa fa-@lang('site::product.icon')"></i> @lang('site::product.cards')
+                                   href="{{ route('admin.contragents.index') }}">
+                                    <i class="fa fa-@lang('site::contragent.icon')"></i> @lang('site::contragent.contragents')
                                 </a>
+
+                                <hr/>
+
+                                <a class="list-group-item list-group-item-action py-1"
+                                   href="{{ route('admin.addresses.index') }}">
+                                    <i class="fa fa-@lang('site::address.icon')"></i> @lang('site::address.addresses')
+                                </a>
+                                <a class="list-group-item list-group-item-action py-1"
+                                   href="{{ route('admin.contacts.index') }}">
+                                    <i class="fa fa-@lang('site::contact.icon')"></i> @lang('site::contact.contacts')
+                                </a>
+
+                                <hr/>
+
                                 <a class="list-group-item list-group-item-action py-1"
                                    href="{{ route('admin.serials.index') }}">
                                     <i class="fa fa-@lang('site::serial.icon')"></i> @lang('site::serial.serials')
@@ -200,6 +205,10 @@
                                 <a class="list-group-item list-group-item-action py-1"
                                    href="{{ route('admin.mounting-bonuses.index') }}">
                                     <i class="fa fa-@lang('site::mounting_bonus.icon')"></i> @lang('site::mounting_bonus.mounting_bonuses')
+                                </a>
+                                <a class="list-group-item list-group-item-action py-1"
+                                   href="{{ route('admin.certificates.index') }}">
+                                    <i class="fa fa-@lang('site::certificate.icon')"></i> @lang('site::certificate.certificates')
                                 </a>
 
                                 <hr/>
@@ -223,7 +232,6 @@
 
                                 <hr/>
 
-
                                 <a class="list-group-item list-group-item-action py-1"
                                    href="{{ route('admin.authorization-roles.index') }}">
                                     <i class="fa fa-@lang('site::authorization_role.icon')"></i> @lang('site::authorization_role.authorization_roles')
@@ -240,13 +248,8 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
-                <!-- / Tasks -->
-
             </div>
-
-
         </div>
     </div>
 @endsection

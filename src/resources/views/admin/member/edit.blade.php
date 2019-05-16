@@ -30,33 +30,53 @@
 
                             @method('PUT')
 
-                            <div class="form-row required">
-                                <div class="col mb-3">
-                                    <label class="control-label d-block"
-                                           for="user_verified">@lang('site::member.verified')</label>
-                                    <div class="custom-control custom-radio  custom-control-inline">
-                                        <input class="custom-control-input
-                                                    {{$errors->has('verified') ? ' is-invalid' : ''}}"
-                                               type="radio"
-                                               name="verified"
-                                               required
-                                               @if(old('verified', $member->verified) == 1) checked @endif
-                                               id="verified_1"
-                                               value="1">
-                                        <label class="custom-control-label"
-                                               for="verified_1">@lang('site::messages.yes')</label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox"
+                                                       @if(old('member.show_ferroli', $member->show_ferroli)) checked
+                                                       @endif
+                                                       class="custom-control-input{{  $errors->has('member.show_ferroli') ? ' is-invalid' : '' }}"
+                                                       id="show_ferroli"
+                                                       name="member[show_ferroli]">
+                                                <label class="custom-control-label"
+                                                       for="show_ferroli">@lang('site::messages.show_ferroli')</label>
+                                                <span class="invalid-feedback">{{ $errors->first('member.show_ferroli') }}</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="custom-control custom-radio custom-control-inline">
-                                        <input class="custom-control-input
-                                                    {{$errors->has('verified') ? ' is-invalid' : ''}}"
-                                               type="radio"
-                                               name="verified"
-                                               required
-                                               @if(old('verified', $member->verified) == 0) checked @endif
-                                               id="verified_0"
-                                               value="0">
-                                        <label class="custom-control-label"
-                                               for="verified_0">@lang('site::messages.no')</label>
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox"
+                                                       @if(old('member.show_lamborghini', $member->show_lamborghini)) checked
+                                                       @endif
+                                                       class="custom-control-input{{  $errors->has('member.show_lamborghini') ? ' is-invalid' : '' }}"
+                                                       id="show_lamborghini"
+                                                       name="member[show_lamborghini]">
+                                                <label class="custom-control-label"
+                                                       for="show_lamborghini">@lang('site::messages.show_lamborghini')</label>
+                                                <span class="invalid-feedback">{{ $errors->first('member.show_lamborghini') }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox"
+                                                       @if(old('member.verified', $member->verified)) checked @endif
+                                                       class="custom-control-input{{  $errors->has('member.verified') ? ' is-invalid' : '' }}"
+                                                       id="verified"
+                                                       name="member[verified]">
+                                                <label class="custom-control-label"
+                                                       for="verified">@lang('site::member.verified')</label>
+                                                <span class="invalid-feedback">{{ $errors->first('member.verified') }}</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -65,19 +85,19 @@
                                 <div class="col mb-3">
 
                                     <label class="control-label" for="status_id">@lang('site::member.status_id')</label>
-                                    <select class="form-control{{  $errors->has('event_id') ? ' is-invalid' : '' }}"
-                                            name="status_id"
+                                    <select class="form-control{{  $errors->has('member.event_id') ? ' is-invalid' : '' }}"
+                                            name="member.status_id"
                                             id="status_id">
-                                        @foreach($statuses as $status)
+                                        @foreach($member_statuses as $member_status)
                                             <option
-                                                    @if(old('status_id', $member->status_id) == $status->id)
+                                                    @if(old('member.status_id', $member->status_id) == $member_status->id)
                                                     selected
                                                     @endif
-                                                    value="{{ $status->id }}">{{ $status->name }}
+                                                    value="{{ $member_status->id }}">{{ $member_status->name }}
                                             </option>
                                         @endforeach
                                     </select>
-                                    <span class="invalid-feedback">{{ $errors->first('status_id') }}</span>
+                                    <span class="invalid-feedback">{{ $errors->first('member.status_id') }}</span>
                                 </div>
                             </div>
 
@@ -85,21 +105,23 @@
                                 <div class="col mb-3 ">
 
                                     <label class="control-label" for="event_id">@lang('site::member.event_id')</label>
-                                    <select class="form-control{{  $errors->has('event_id') ? ' is-invalid' : '' }}"
-                                            name="event_id"
+                                    <select class="form-control{{  $errors->has('member.event_id') ? ' is-invalid' : '' }}"
+                                            name="member[event_id]"
                                             id="event_id">
                                         <option value="">@lang('site::messages.select_from_list')</option>
-                                        @foreach($events as $event)
+                                        @foreach($member_events as $member_event)
                                             <option
-                                                    @if(old('event_id', $member->event_id) == $event->id)
+                                                    @if(old('member.event_id', $member->event_id) == $member_event->id)
                                                     selected
                                                     @endif
-                                                    value="{{ $event->id }}">
-                                                {{ $event->date_from->format('d.m.Y') }} / {{ $event->type->name }} / {{ $event->title }}
+                                                    value="{{ $member_event->id }}">
+                                                {{ $member_event->date_from->format('d.m.Y') }} /
+                                                {{ $member_event->type->name }} /
+                                                {{ $member_event->title }}
                                             </option>
                                         @endforeach
                                     </select>
-                                    <span class="invalid-feedback">{{ $errors->first('event_id') }}</span>
+                                    <span class="invalid-feedback">{{ $errors->first('member.event_id') }}</span>
                                 </div>
                             </div>
 
@@ -107,24 +129,23 @@
                                 <div class="col mb-3 required">
 
                                     <label class="control-label" for="type_id">@lang('site::member.type_id')</label>
-                                    <select class="form-control{{  $errors->has('event_id') ? ' is-invalid' : '' }}"
-                                            name="type_id"
-                                            required
+                                    <select required
+                                            class="form-control{{  $errors->has('member.event_id') ? ' is-invalid' : '' }}"
+                                            name="member[type_id]"
                                             id="type_id">
                                         <option value="">@lang('site::messages.select_from_list')</option>
-                                        @foreach($types as $type)
+                                        @foreach($member_types as $member_type)
                                             <option
-                                                    @if(old('type_id', $member->type_id) == $type->id)
+                                                    @if(old('member.type_id', $member->type_id) == $member_type->id)
                                                     selected
                                                     @endif
-                                                    value="{{ $type->id }}">{{ $type->name }}
+                                                    value="{{ $member_type->id }}">{{ $member_type->name }}
                                             </option>
                                         @endforeach
                                     </select>
-                                    <span class="invalid-feedback">{{ $errors->first('type_id') }}</span>
+                                    <span class="invalid-feedback">{{ $errors->first('member.type_id') }}</span>
                                 </div>
                             </div>
-
 
 
                             <div class="row">
@@ -132,22 +153,23 @@
                                     <div class="form-row required">
                                         <div class="col mb-3 required">
 
-                                            <label class="control-label" for="region_id">@lang('site::member.region_id')</label>
-                                            <select class="form-control{{  $errors->has('event_id') ? ' is-invalid' : '' }}"
-                                                    name="region_id"
-                                                    required
+                                            <label class="control-label"
+                                                   for="region_id">@lang('site::member.region_id')</label>
+                                            <select required
+                                                    class="form-control{{  $errors->has('member.event_id') ? ' is-invalid' : '' }}"
+                                                    name="member[region_id]"
                                                     id="region_id">
                                                 <option value="">@lang('site::messages.select_from_list')</option>
                                                 @foreach($regions as $region)
                                                     <option
-                                                            @if(old('region_id', $member->region_id) == $region->id)
+                                                            @if(old('member.region_id', $member->region_id) == $region->id)
                                                             selected
                                                             @endif
                                                             value="{{ $region->id }}">{{ $region->name }}
                                                     </option>
                                                 @endforeach
                                             </select>
-                                            <span class="invalid-feedback">{{ $errors->first('region_id') }}</span>
+                                            <span class="invalid-feedback">{{ $errors->first('member.region_id') }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -155,37 +177,38 @@
                                     <div class="form-row required">
                                         <div class="col mb-3">
                                             <label class="control-label" for="city">@lang('site::member.city')</label>
-                                            <input type="text" name="city"
+                                            <input required
+                                                   type="text"
+                                                   name="member[city]"
                                                    id="city"
-                                                   required
-                                                   class="form-control{{ $errors->has('city') ? ' is-invalid' : '' }}"
+                                                   class="form-control{{ $errors->has('member.city') ? ' is-invalid' : '' }}"
                                                    placeholder="@lang('site::member.placeholder.city')"
-                                                   value="{{ old('city', $member->city) }}">
-                                            <span class="invalid-feedback">{{ $errors->first('city') }}</span>
+                                                   value="{{ old('member.city', $member->city) }}">
+                                            <span class="invalid-feedback">{{ $errors->first('member.city') }}</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <h4 class=" mt-3">@lang('site::member.header.date_from_to')</h4>
+                            <h4 class=" mt-3">@lang('site::member.date')</h4>
 
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group required">
                                         <label class="control-label"
-                                               for="date_from">@lang('site::member.date_from')</label>
+                                               for="date_from">@lang('site::messages.date_from')</label>
                                         <div class="input-group date datetimepicker" id="datetimepicker_date_from"
                                              data-target-input="nearest">
-                                            <input type="text"
-                                                   name="date_from"
+                                            <input required
+                                                   type="text"
+                                                   name="member[date_from]"
                                                    id="date_from"
                                                    maxlength="10"
-                                                   required
                                                    placeholder="@lang('site::member.placeholder.date_from')"
                                                    data-target="#datetimepicker_date_from"
                                                    data-toggle="datetimepicker"
-                                                   class="datetimepicker-input form-control{{ $errors->has('date_from') ? ' is-invalid' : '' }}"
-                                                   value="{{ old('date_from', $member->date_from->format('d.m.Y')) }}">
+                                                   class="datetimepicker-input form-control{{ $errors->has('member.date_from') ? ' is-invalid' : '' }}"
+                                                   value="{{ old('member.date_from', $member->date_from->format('d.m.Y')) }}">
                                             <div class="input-group-append"
                                                  data-target="#datetimepicker_date_from"
                                                  data-toggle="datetimepicker">
@@ -194,25 +217,25 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <span class="invalid-feedback">{{ $errors->first('date_from') }}</span>
+                                        <span class="invalid-feedback">{{ $errors->first('member.date_from') }}</span>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group required">
                                         <label class="control-label"
-                                               for="date_to">@lang('site::member.date_to')</label>
+                                               for="date_to">@lang('site::messages.date_to')</label>
                                         <div class="input-group date datetimepicker" id="datetimepicker_date_to"
                                              data-target-input="nearest">
-                                            <input type="text"
-                                                   name="date_to"
+                                            <input required
+                                                   type="text"
+                                                   name="member[date_to]"
                                                    id="date_to"
                                                    maxlength="10"
-                                                   required
                                                    placeholder="@lang('site::member.placeholder.date_to')"
                                                    data-target="#datetimepicker_date_to"
                                                    data-toggle="datetimepicker"
-                                                   class="datetimepicker-input form-control{{ $errors->has('date_to') ? ' is-invalid' : '' }}"
-                                                   value="{{ old('date_to', $member->date_to->format('d.m.Y')) }}">
+                                                   class="datetimepicker-input form-control{{ $errors->has('member.date_to') ? ' is-invalid' : '' }}"
+                                                   value="{{ old('member.date_to', $member->date_to->format('d.m.Y')) }}">
                                             <div class="input-group-append"
                                                  data-target="#datetimepicker_date_to"
                                                  data-toggle="datetimepicker">
@@ -221,7 +244,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <span class="invalid-feedback">{{ $errors->first('date_to') }}</span>
+                                        <span class="invalid-feedback">{{ $errors->first('member.date_to') }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -230,53 +253,81 @@
 
 
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-row required">
                                         <div class="col mb-3">
                                             <label class="control-label"
                                                    for="name">@lang('site::member.name')</label>
-                                            <input type="text" name="name"
+                                            <input required
+                                                   type="text"
+                                                   name="member[name]"
                                                    id="name"
-                                                   required
                                                    maxlength="255"
-                                                   class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}"
+                                                   class="form-control{{ $errors->has('member.name') ? ' is-invalid' : '' }}"
                                                    placeholder="@lang('site::member.placeholder.name')"
-                                                   value="{{ old('name', $member->name) }}">
-                                            <span class="invalid-feedback">{{ $errors->first('name') }}</span>
+                                                   value="{{ old('member.name', $member->name) }}">
+                                            <span class="invalid-feedback">{{ $errors->first('member.name') }}</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-row required">
                                         <div class="col mb-3">
                                             <label class="control-label" for="email">@lang('site::member.email')</label>
-                                            <input type="email"
-                                                   name="email"
+                                            <input required
+                                                   type="email"
+                                                   name="member[email]"
                                                    id="email"
-                                                   required
                                                    maxlength="50"
-                                                   class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}"
+                                                   class="form-control{{ $errors->has('member.email') ? ' is-invalid' : '' }}"
                                                    placeholder="@lang('site::member.placeholder.email')"
-                                                   value="{{ old('email', $member->email) }}">
-                                            <span class="invalid-feedback">{{ $errors->first('email') }}</span>
+                                                   value="{{ old('member.email', $member->email) }}">
+                                            <span class="invalid-feedback">{{ $errors->first('member.email') }}</span>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-row required">
+                                        <div class="col">
+                                            <label class="control-label" for="contact">@lang('site::member.contact')</label>
+                                            <input required
+                                                   type="text"
+                                                   name="member[contact]"
+                                                   id="contact"
+                                                   maxlength="255"
+                                                   class="form-control{{ $errors->has('member.contact') ? ' is-invalid' : '' }}"
+                                                   placeholder="@lang('site::member.placeholder.contact')"
+                                                   value="{{ old('member.contact', $member->contact) }}">
+                                            <span class="invalid-feedback">{{ $errors->first('member.contact') }}</span>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-row required">
-                                        <div class="col mb-3">
-                                            <label class="control-label" for="contact">@lang('site::member.contact')</label>
-                                            <input type="text" name="contact"
-                                                   id="contact"
-                                                   required
-                                                   maxlength="255"
-                                                   class="form-control{{ $errors->has('contact') ? ' is-invalid' : '' }}"
-                                                   placeholder="@lang('site::member.placeholder.contact')"
-                                                   value="{{ old('contact', $member->contact) }}">
-                                            <span class="invalid-feedback">{{ $errors->first('contact') }}</span>
+                                        <div class="col mb-3 required">
+                                            <label class="control-label" for="country_id">@lang('site::member.country_id')</label>
+                                            <select required
+                                                    name="member[country_id]"
+                                                    id="country_id"
+                                                    class="form-control{{  $errors->has('member.country_id') ? ' is-invalid' : '' }}">
+                                                @if($countries->count() == 0 || $countries->count() > 1)
+                                                    <option value="">@lang('site::messages.select_from_list')</option>
+                                                @endif
+                                                @foreach($countries as $country)
+                                                    <option @if(old('member.country_id', $member->country_id) == $country->id)
+                                                            selected
+                                                            @endif
+                                                            value="{{ $country->id }}">
+                                                        {{ $country->name }}
+                                                        {{ $country->phone }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <span class="invalid-feedback">{{ $errors->first('member.country_id') }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -285,15 +336,18 @@
                                         <div class="col">
                                             <label class="control-label"
                                                    for="phone">@lang('site::member.phone')</label>
-                                            <input type="tel"
-                                                   required
-                                                   name="phone"
+                                            <input required
+                                                   type="tel"
+                                                   name="member[phone]"
                                                    id="phone"
-                                                   title="@lang('site::member.placeholder.phone')"
-                                                   maxlength="10"
-                                                   class="form-control{{ $errors->has('phone') ? ' is-invalid' : '' }}"
+                                                   oninput="mask_phones()"
+                                                   pattern="{{config('site.phone.pattern')}}"
+                                                   maxlength="{{config('site.phone.maxlength')}}"
+                                                   title="{{config('site.phone.format')}}"
+                                                   data-mask="{{config('site.phone.mask')}}"
+                                                   class="phone-mask form-control{{ $errors->has('member.phone') ? ' is-invalid' : '' }}"
                                                    placeholder="@lang('site::member.placeholder.phone')"
-                                                   value="{{ old('phone', $member->phone) }}">
+                                                   value="{{ old('member.phone', $member->phone) }}">
                                             <span class="invalid-feedback">{{ $errors->first('phone') }}</span>
                                         </div>
                                     </div>
@@ -306,33 +360,34 @@
                                         <div class="col mb-3">
                                             <label class="control-label"
                                                    for="count">@lang('site::member.count')</label>
-                                            <input type="number"
-                                                   name="count"
+                                            <input required
+                                                   type="number"
+                                                   name="member[count]"
                                                    id="count"
                                                    maxlength="2"
-                                                   required
                                                    step="1"
                                                    min="1"
                                                    max="50"
-                                                   class="form-control{{ $errors->has('count') ? ' is-invalid' : '' }}"
+                                                   class="form-control{{ $errors->has('member.count') ? ' is-invalid' : '' }}"
                                                    placeholder="@lang('site::member.placeholder.count')"
-                                                   value="{{ old('count', $member->count) }}">
-                                            <span class="invalid-feedback">{{ $errors->first('count') }}</span>
+                                                   value="{{ old('member.count', $member->count) }}">
+                                            <span class="invalid-feedback">{{ $errors->first('member.count') }}</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-row">
                                         <div class="col mb-3">
-                                            <label class="control-label" for="address">@lang('site::member.address')</label>
+                                            <label class="control-label"
+                                                   for="address">@lang('site::member.address')</label>
                                             <input type="text"
-                                                   name="address"
+                                                   name="member[address]"
                                                    id="address"
                                                    maxlength="255"
-                                                   class="form-control{{ $errors->has('address') ? ' is-invalid' : '' }}"
+                                                   class="form-control{{ $errors->has('member.address') ? ' is-invalid' : '' }}"
                                                    placeholder="@lang('site::member.placeholder.address')"
-                                                   value="{{ old('address', $member->address) }}">
-                                            <span class="invalid-feedback">{{ $errors->first('address') }}</span>
+                                                   value="{{ old('member.address', $member->address) }}">
+                                            <span class="invalid-feedback">{{ $errors->first('member.address') }}</span>
                                             <small class="mb-4 form-text text-success">
                                                 @lang('site::member.help.address')
                                             </small>
@@ -345,15 +400,12 @@
 
                         <hr/>
                         <div class=" text-right">
-                            <button name="_stay" form="form-content" value="1" type="submit" class="btn btn-ferroli">
-                                <i class="fa fa-check"></i>
-                                <span>@lang('site::messages.save_stay')</span>
-                            </button>
-                            <button name="_stay" form="form-content" value="0" type="submit" class="btn btn-ferroli">
+                            <button form="form-content" type="submit" class="btn btn-ferroli">
                                 <i class="fa fa-check"></i>
                                 <span>@lang('site::messages.save')</span>
                             </button>
-                            <a href="{{ route('admin.members.show', $member) }}" class="d-block d-sm-inline btn btn-secondary">
+                            <a href="{{ route('admin.members.show', $member) }}"
+                               class="d-block d-sm-inline btn btn-secondary">
                                 <i class="fa fa-close"></i>
                                 <span>@lang('site::messages.cancel')</span>
                             </a>

@@ -5,18 +5,24 @@
                href="{{route('admin.catalogs.show', $element['id'])}}">
                 {!! $element['name'] !!}
                 @if($element['enabled'])
-                    <i data-toggle="tooltip" data-placement="top" title="@lang('equipment::catalog.enabled')"
+                    <i data-toggle="tooltip"
+                       data-placement="top"
+                       title="@lang('site::catalog.enabled')"
                        class="fa fa-check text-success"></i>
                 @else
-                    <i data-toggle="tooltip" data-placement="top" title="@lang('equipment::catalog.enabled')"
+                    <i data-toggle="tooltip"
+                       data-placement="top"
+                       title="@lang('site::catalog.enabled')"
                        class="fa fa-close text-secondary"></i>
                 @endif
             </a>
 
             @if($element['can']['addCatalog'])
                 <div class="d-inline-block">
-                    <a data-toggle="tooltip" data-placement="top" class="text-success"
-                       title="@lang('equipment::messages.add') @lang('equipment::catalog.catalog')"
+                    <a data-toggle="tooltip"
+                       data-placement="top"
+                       class="text-success"
+                       title="@lang('equipment::messages.add') @lang('site::catalog.catalog')"
                        href="{{route('admin.catalogs.create.parent', $element['id'])}}">
                         <i class="fa fa-plus"></i>
                         <i class="fa fa-folder-open"></i>

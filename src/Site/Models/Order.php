@@ -4,11 +4,11 @@ namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use QuadStudio\Service\Site\Contracts\Messagable;
-use QuadStudio\Service\Site\Traits\Models\ScheduleTrait;
+use QuadStudio\Service\Site\Concerns\Schedulable;
 
 class Order extends Model implements Messagable
 {
-    use ScheduleTrait;
+    use Schedulable;
 
     /**
      * @var string

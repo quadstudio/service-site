@@ -39,16 +39,16 @@ trait ProductControllerTrait
         return new ProductCollection($this->products->all());
     }
 
-    /**
-     * @return ProductCollection
-     */
-    public function repair()
-    {
-        $this->products->applyFilter(new SearchFilter());
-        $this->products->applyFilter(new ProductSearchFilter());
-
-        return new ProductCollection($this->products->all());
-    }
+//    /**
+//     * @return ProductCollection
+//     */
+//    public function repair()
+//    {
+//        $this->products->applyFilter(new SearchFilter());
+//        $this->products->applyFilter(new ProductSearchFilter());
+//
+//        return new ProductCollection($this->products->all());
+//    }
 
     /**
      * @return ProductCollection
@@ -60,17 +60,6 @@ trait ProductControllerTrait
         return new ProductCollection($this->products->all());
     }
 
-    /**
-     * @return ProductCollection
-     */
-    public function fast()
-    {
-        $this->products->applyFilter(new ProductCanBuyFilter());
-        $this->products->applyFilter(new SearchFilter());
-        $this->products->applyFilter(new LimitFilter());
-
-        return new ProductCollection($this->products->all());
-    }
 
     /**
      * @return ProductCollection
@@ -82,15 +71,15 @@ trait ProductControllerTrait
         return new ProductCollection($this->products->all());
     }
 
-    /**
-     * @return ProductCollection
-     */
-    public function datasheet()
-    {
-        $this->products->applyFilter(new DatasheetFilter());
-
-        return new ProductCollection($this->products->all());
-    }
+//    /**
+//     * @return ProductCollection
+//     */
+//    public function datasheet()
+//    {
+//        $this->products->applyFilter(new DatasheetFilter());
+//
+//        return new ProductCollection($this->products->all());
+//    }
 
     /**
      * @return ProductCollection

@@ -4,13 +4,13 @@ namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use QuadStudio\Service\Site\Concerns\Sortable;
 use QuadStudio\Service\Site\Contracts\SingleImageable;
-use QuadStudio\Service\Site\Traits\Models\SortOrderTrait;
 
 class Catalog extends Model implements SingleImageable
 {
 
-    use SortOrderTrait;
+    use Sortable;
 
     /**
      * @var string
@@ -22,7 +22,21 @@ class Catalog extends Model implements SingleImageable
      */
     protected $fillable = [
         'name', 'name_plural', 'description',
-        'catalog_id', 'enabled', 'model', 'image_id', 'sort_order'
+        'catalog_id', 'image_id', 'sort_order',
+        'enabled', 'show_ferroli', 'show_lamborghini'
+    ];
+
+    protected $casts = [
+
+        'name'             => 'string',
+        'name_plural'      => 'string',
+        'description'      => 'string',
+        'catalog_id'       => 'integer',
+        'image_id'         => 'integer',
+        'sort_order'       => 'integer',
+        'enabled'          => 'boolean',
+        'show_ferroli'     => 'boolean',
+        'show_lamborghini' => 'boolean',
     ];
 
     /**
@@ -35,8 +49,6 @@ class Catalog extends Model implements SingleImageable
     }
 
     /**
-     * Изображение каталога
-     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function image()
@@ -85,6 +97,9 @@ class Catalog extends Model implements SingleImageable
         return $this->hasMany(Equipment::class);
     }
 
+    /**
+     * @return string
+     */
     public function parentTreeName()
     {
         $name = [];
@@ -131,6 +146,9 @@ class Catalog extends Model implements SingleImageable
         return $tree;
     }
 
+    /**
+     * @return mixed
+     */
     public function parentRoot()
     {
         return $this->parentTree()->last();

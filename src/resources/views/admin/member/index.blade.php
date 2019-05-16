@@ -35,7 +35,7 @@
             <tr>
                 <th>@lang('site::member.name')</th>
                 <th>@lang('site::member.type_id')</th>
-                <th>@lang('site::member.header.date_from_to')</th>
+                <th>@lang('site::member.date')</th>
                 <th>@lang('site::member.event_id')</th>
                 <th>@lang('site::member.contact')</th>
                 <th>@lang('site::member.region_id')</th>

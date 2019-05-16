@@ -2,6 +2,7 @@
 
 namespace QuadStudio\Service\Site\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Storage;
 use QuadStudio\Service\Site\Http\Requests\FileRequest;
@@ -85,6 +86,7 @@ class FileController extends Controller
             $this->authorize('view', $file);
         }
         $file->increment('downloads');
+        $file->update(['downloaded_at' => Carbon::now()]);
 
         return Storage::disk($file->storage)->download($file->path, $file->name);
     }

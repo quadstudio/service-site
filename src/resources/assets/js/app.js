@@ -22,5 +22,8 @@ window.mask_phones = function () {
         new IMask(phones[i], {mask: phones[i].getAttribute('data-mask')});
     }
 };
-
+import Parser from './parser';
+window.Parser = Parser;
+import route from './router';
+window.route = route;
 require('./site');

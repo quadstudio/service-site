@@ -10,13 +10,7 @@
                 <a href="{{ route('admin') }}">@lang('site::messages.admin')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.'.$address->addressable->path().'.index') }}">@lang('site::'.$address->addressable->lang().'.'.$address->addressable->path())</a>
-            </li>
-            <li class="breadcrumb-item">
-                <a href="{{ route('admin.'.$address->addressable->path().'.show', $address->addressable) }}">{{$address->addressable->name}}</a>
-            </li>
-            <li class="breadcrumb-item">
-                <a href="{{ route('admin.'.$address->addressable->path().'.addresses.index', $address->addressable) }}">@lang('site::address.addresses')</a>
+                <a href="{{ route('admin.addresses.index') }}">@lang('site::address.addresses')</a>
             </li>
             <li class="breadcrumb-item">
                 <a href="{{ route('admin.addresses.show', $address) }}">{{$address->full}}</a>
@@ -30,9 +24,7 @@
         <div class="card mt-2 mb-2">
             <div class="card-body">
                 <form id="district-form" method="POST"
-                      {{--action="{{ route('admin.addresses.phones.store', $address) }}">--}}
                       action="{{ route('admin.addresses.regions.store', $address) }}">
-
                     @csrf
 
                     <div class="custom-control custom-checkbox mb-4">

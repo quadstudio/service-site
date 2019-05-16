@@ -30,8 +30,38 @@
 
                             @method('PUT')
 
-                            <div class="form-row required">
-                                <div class="col mb-3">
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox"
+                                               @if(old('event.show_ferroli', $event->show_ferroli)) checked @endif
+                                               class="custom-control-input{{  $errors->has('event.show_ferroli') ? ' is-invalid' : '' }}"
+                                               id="show_ferroli"
+                                               name="event[show_ferroli]">
+                                        <label class="custom-control-label"
+                                               for="show_ferroli">@lang('site::messages.show_ferroli')</label>
+                                        <span class="invalid-feedback">{{ $errors->first('event.show_ferroli') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox"
+                                               @if(old('event.show_lamborghini', $event->show_lamborghini)) checked
+                                               @endif
+                                               class="custom-control-input{{  $errors->has('event.show_lamborghini') ? ' is-invalid' : '' }}"
+                                               id="show_lamborghini"
+                                               name="event[show_lamborghini]">
+                                        <label class="custom-control-label"
+                                               for="show_lamborghini">@lang('site::messages.show_lamborghini')</label>
+                                        <span class="invalid-feedback">{{ $errors->first('event.show_lamborghini') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-row required mt-3">
+                                <div class="col">
                                     <label class="control-label" for="title">@lang('site::event.title')</label>
                                     <input type="text"
                                            name="event[title]"
@@ -44,7 +74,7 @@
                                 </div>
                             </div>
                             <div class="form-row required">
-                                <div class="col mb-3">
+                                <div class="col">
                                     <label class="control-label"
                                            for="annotation">@lang('site::event.annotation')</label>
                                     <textarea class="form-control{{ $errors->has('event.annotation') ? ' is-invalid' : '' }}"
@@ -59,7 +89,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-row required">
-                                        <div class="col mb-3 required">
+                                        <div class="col required">
 
                                             <label class="control-label"
                                                    for="type_id">@lang('site::event.type_id')</label>
@@ -83,7 +113,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-row required">
-                                        <div class="col mb-3 required">
+                                        <div class="col required">
 
                                             <label class="control-label"
                                                    for="status_id">@lang('site::event.status_id')</label>
@@ -112,7 +142,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-row required">
-                                        <div class="col mb-3 required">
+                                        <div class="col required">
 
                                             <label class="control-label"
                                                    for="region_id">@lang('site::event.region_id')</label>
@@ -137,7 +167,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-row required">
-                                        <div class="col mb-3">
+                                        <div class="col">
                                             <label class="control-label" for="city">@lang('site::event.city')</label>
                                             <input type="text"
                                                    name="event[city]"
@@ -153,7 +183,7 @@
                             </div>
 
                             <div class="form-row">
-                                <div class="col mb-3">
+                                <div class="col">
                                     <label class="control-label" for="address">@lang('site::event.address')</label>
                                     <input type="text"
                                            name="event[address]"
@@ -222,7 +252,7 @@
                                 </div>
                             </div>
 
-                            <div class="custom-control custom-checkbox mb-3">
+                            <div class="custom-control custom-checkbox">
                                 <input type="checkbox" @if(old('event.confirmed', $event->confirmed) == 1) checked @endif
                                 class="custom-control-input{{  $errors->has('event.confirmed') ? ' is-invalid' : '' }}"
                                        id="confirmed"

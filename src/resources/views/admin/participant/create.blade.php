@@ -29,68 +29,98 @@
                 <form id="form-content" method="POST" action="{{ route('admin.participants.store', $member) }}">
                     @csrf
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-row required">
                                 <div class="col mb-3">
                                     <label class="control-label" for="name">@lang('site::participant.name')</label>
-                                    <input type="text" name="name"
+                                    <input type="text"
+                                           name="participant[name]"
                                            id="name"
                                            required
                                            maxlength="100"
-                                           class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}"
+                                           class="form-control{{ $errors->has('participant.name') ? ' is-invalid' : '' }}"
                                            placeholder="@lang('site::participant.placeholder.name')"
-                                           value="{{ old('name') }}">
-                                    <span class="invalid-feedback">{{ $errors->first('name') }}</span>
+                                           value="{{ old('participant.name') }}">
+                                    <span class="invalid-feedback">{{ $errors->first('participant.name') }}</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-row required">
                                 <div class="col mb-3">
                                     <label class="control-label"
                                            for="headposition">@lang('site::participant.headposition')</label>
-                                    <input type="text" name="headposition"
+                                    <input type="text"
+                                           name="participant[headposition]"
                                            id="headposition"
                                            required
                                            maxlength="100"
-                                           class="form-control{{ $errors->has('headposition') ? ' is-invalid' : '' }}"
+                                           class="form-control{{ $errors->has('participant.headposition') ? ' is-invalid' : '' }}"
                                            placeholder="@lang('site::participant.placeholder.headposition')"
-                                           value="{{ old('headposition') }}">
-                                    <span class="invalid-feedback">{{ $errors->first('headposition') }}</span>
+                                           value="{{ old('participant.headposition') }}">
+                                    <span class="invalid-feedback">{{ $errors->first('participant.headposition') }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-row">
+                                <div class="col mb-3">
+                                    <label class="control-label" for="email">@lang('site::participant.email')</label>
+                                    <input type="email"
+                                           name="participant[email]"
+                                           id="email"
+                                           maxlength="50"
+                                           class="form-control{{ $errors->has('participant.email') ? ' is-invalid' : '' }}"
+                                           placeholder="@lang('site::participant.placeholder.email')"
+                                           value="{{ old('participant.email') }}">
+                                    <span class="invalid-feedback">{{ $errors->first('participant.email') }}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
+                            <div class="form-row required">
+                                <div class="col mb-3 ">
+                                    <label class="control-label" for="country_id">@lang('site::member.country_id')</label>
+                                    <select required
+                                            name="participant[country_id]"
+                                            id="country_id"
+                                            class="form-control{{  $errors->has('participant.country_id') ? ' is-invalid' : '' }}">
+                                        @if($countries->count() == 0 || $countries->count() > 1)
+                                            <option value="">@lang('site::messages.select_from_list')</option>
+                                        @endif
+                                        @foreach($countries as $country)
+                                            <option @if(old('participant.country_id') == $country->id)
+                                                    selected
+                                                    @endif
+                                                    value="{{ $country->id }}">
+                                                {{ $country->name }}
+                                                {{ $country->phone }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <span class="invalid-feedback">{{ $errors->first('participant.country_id') }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
                             <div class="form-row ">
                                 <div class="col">
                                     <label class="control-label"
                                            for="phone">@lang('site::participant.phone')</label>
                                     <input type="tel"
-                                           name="phone"
+                                           name="participant[phone]"
                                            id="phone"
-                                           title="@lang('site::participant.placeholder.phone')"
-                                           maxlength="10"
-                                           class="form-control{{ $errors->has('phone') ? ' is-invalid' : '' }}"
+                                           oninput="mask_phones()"
+                                           pattern="{{config('site.phone.pattern')}}"
+                                           maxlength="{{config('site.phone.maxlength')}}"
+                                           title="{{config('site.phone.format')}}"
+                                           data-mask="{{config('site.phone.mask')}}"
+                                           class="phone-mask form-control{{ $errors->has('participant.phone') ? ' is-invalid' : '' }}"
                                            placeholder="@lang('site::participant.placeholder.phone')"
-                                           value="{{ old('phone') }}">
-                                    <span class="invalid-feedback">{{ $errors->first('phone') }}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-row">
-                                <div class="col mb-3">
-                                    <label class="control-label" for="email">@lang('site::participant.email')</label>
-                                    <input type="email"
-                                           name="email"
-                                           id="email"
-                                           maxlength="50"
-                                           class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}"
-                                           placeholder="@lang('site::participant.placeholder.email')"
-                                           value="{{ old('email') }}">
-                                    <span class="invalid-feedback">{{ $errors->first('email') }}</span>
+                                           value="{{ old('participant.phone') }}">
+                                    <span class="invalid-feedback">{{ $errors->first('participant.phone') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -136,7 +166,9 @@
                         <tr id="participant-{{$participant->id}}">
                             <td>{{$participant->name}}</td>
                             <td>{{$participant->headposition}}</td>
-                            <td>{{$participant->phone}}</td>
+                            <td>
+                                {{$participant->phoneNumber}}
+                            </td>
                             <td>{{$participant->email}}</td>
                             <td>
                                 <button

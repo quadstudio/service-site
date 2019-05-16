@@ -115,7 +115,7 @@
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::product.equipment_id')</dt>
                     <dd class="col-sm-8"><a
                                 href="{{route('admin.equipments.show', $repair->product->equipment)}}">
-                            {{ $repair->product->equipment->catalog->parentTreeName() }} {{ $repair->serial->product->equipment->name }}
+                            {{ $repair->product->equipment->catalog->name_plural }} {{ $repair->serial->product->equipment->name }}
                         </a>
                     </dd>
 

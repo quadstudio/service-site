@@ -15,7 +15,15 @@ class File extends Model
     protected $table;
 
     protected $fillable = [
-        'name', 'path', 'type_id', 'size', 'mime', 'storage'
+        'name', 'path', 'type_id', 'size', 'mime', 'storage', 'downloaded_at'
+    ];
+
+    protected $casts = [
+        'downloaded_at' => 'date:Y-m-d',
+    ];
+
+    protected $dates = [
+        'downloaded_at',
     ];
 
     /**

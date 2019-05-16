@@ -24,6 +24,13 @@ class Part extends Model
         parent::__construct($attributes);
         $this->table = 'parts';
     }
+    protected static function boot()
+    {
+        static::creating(function (Part $part) {
+            $part->cost = $part->getAttribute('rates') * $part->getAttribute('price');
+        });
+    }
+
 
     /**
      * Товар
@@ -33,11 +40,6 @@ class Part extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
-    }
-
-    public function fixPrice()
-    {
-
     }
 
     /**

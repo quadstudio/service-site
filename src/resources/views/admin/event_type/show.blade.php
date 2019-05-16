@@ -32,14 +32,22 @@
             <div class="card-body">
                 <dl class="row">
 
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::messages.show_ferroli')</dt>
+                    <dd class="col-sm-8">@bool(['bool' => $event_type->show_ferroli == 1])@endbool</dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::messages.show_lamborghini')</dt>
+                    <dd class="col-sm-8">@bool(['bool' => $event_type->show_lamborghini == 1])@endbool</dd>
+
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::event_type.name')</dt>
                     <dd class="col-sm-8">{!! $event_type->name !!}</dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::event_type.annotation')</dt>
                     <dd class="col-sm-8">{!! $event_type->annotation !!}</dd>
 
-                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::event_type.active')</dt>
-                    <dd class="col-sm-8">@bool(['bool' => $event_type->active == 1])@endbool</dd>
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::event_type.image_id')</dt>
+                    <dd class="col-sm-8">
+                        @include('site::admin.image.preview', ['image' => $event_type->image])
+                    </dd>
 
                 </dl>
             </div>

@@ -3,14 +3,14 @@
         <li>
             <a class="list-group-item-action"
                href="{{route('admin.catalogs.show', $element['id'])}}">
-                {!! $element['name'] !!}
                 @if($element['enabled'])
                     <i data-toggle="tooltip" data-placement="top" title="@lang('site::catalog.enabled')"
                        class="fa fa-check text-success"></i>
                 @else
                     <i data-toggle="tooltip" data-placement="top" title="@lang('site::catalog.enabled')"
-                       class="fa fa-close text-secondary"></i>
+                       class="fa fa-close text-danger"></i>
                 @endif
+                {!! $element['name'] !!}
             </a>
 
             @if($element['can']['addCatalog'])

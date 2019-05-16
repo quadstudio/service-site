@@ -33,78 +33,14 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
      * @var array
      */
     protected $directories = [
-        'app/Http/Controllers/Admin',
-        'app/Http/Controllers/Admin/User',
-        'app/Http/Controllers/Admin/Contragent',
-        'app/Http/Controllers/Admin/Address',
-        'app/Http/Controllers/Auth',
-        'app/Http/Controllers/Api',
         'resources/views/layouts',
     ];
 
     protected $controllers = [
-        'auth/ForgotPasswordController.stub'      => 'Auth/ForgotPasswordController',
-        'auth/LoginController.stub'               => 'Auth/LoginController',
-        'auth/RegisterController.stub'            => 'Auth/RegisterController',
-        'auth/ResetPasswordController.stub'       => 'Auth/ResetPasswordController',
-        //
-        'StaticPageController.stub'               => 'StaticPageController',
-        'ProductController.stub'                  => 'ProductController',
-        'CostController.stub'                     => 'CostController',
-        'DatasheetController.stub'                => 'DatasheetController',
-        'CatalogController.stub'                  => 'CatalogController',
-        'EquipmentController.stub'                => 'EquipmentController',
-        'CartController.stub'                     => 'CartController',
-        'SchemeController.stub'                   => 'SchemeController',
-        'CurrencyController.stub'                 => 'CurrencyController',
-        'OrderItemController.stub'                => 'OrderItemController',
-        'NewsController.stub'                     => 'NewsController',
-        'EventController.stub'                    => 'EventController',
-        'MemberController.stub'                   => 'MemberController',
-        'ParticipantController.stub'              => 'ParticipantController',
-        //
-        'api/FileController.stub'                 => 'Api/FileController',
         'api/RepairController.stub'               => 'Api/RepairController',
-        'api/CatalogController.stub'              => 'Api/CatalogController',
-        'api/CountryController.stub'              => 'Api/CountryController',
-        'api/RegionController.stub'               => 'Api/RegionController',
         'api/UserController.stub'                 => 'Api/UserController',
-        'api/SerialController.stub'               => 'Api/SerialController',
-        'api/ContragentController.stub'           => 'Api/ContragentController',
         'api/BoilerController.stub'               => 'Api/BoilerController',
         'api/OrderController.stub'                => 'Api/OrderController',
-        'api/ActController.stub'                  => 'Api/ActController',
-        'api/DealerController.stub'               => 'Api/DealerController',
-        //
-        'admin/WarehouseController.stub'          => 'Admin/WarehouseController',
-        'admin/ImageController.stub'              => 'Admin/ImageController',
-        'admin/CurrencyController.stub'           => 'Admin/CurrencyController',
-        'admin/ServiceController.stub'            => 'Admin/ServiceController',
-        'admin/OrderController.stub'              => 'Admin/OrderController',
-        'admin/PriceController.stub'              => 'Admin/PriceController',
-        'admin/PriceTypeController.stub'          => 'Admin/PriceTypeController',
-        'admin/ProductTypeController.stub'        => 'Admin/ProductTypeController',
-        'admin/ContactController.stub'            => 'Admin/ContactController',
-        'admin/FileTypeController.stub'           => 'Admin/FileTypeController',
-        'admin/FileGroupController.stub'          => 'Admin/FileGroupController',
-        'admin/ExplodeController.stub'            => 'Admin/ExplodeController',
-        'admin/SchemeController.stub'             => 'Admin/SchemeController',
-        'admin/ElementController.stub'            => 'Admin/ElementController',
-        'admin/PhoneController.stub'              => 'Admin/PhoneController',
-        'admin/user/AddressController.stub'       => 'Admin/User/AddressController',
-        'admin/contragent/AddressController.stub' => 'Admin/Contragent/AddressController',
-        'admin/address/PhoneController.stub'      => 'Admin/Address/PhoneController',
-        'admin/CurrencyArchiveController.stub'    => 'Admin/CurrencyArchiveController',
-        'admin/PointerController.stub'            => 'Admin/PointerController',
-        'admin/ShapeController.stub'              => 'Admin/ShapeController',
-        'admin/PartController.stub'               => 'Admin/PartController',
-        'admin/PageController.stub'               => 'Admin/PageController',
-        'admin/OrderItemController.stub'          => 'Admin/OrderItemController',
-        'admin/NewsController.stub'               => 'Admin/NewsController',
-        'admin/MemberController.stub'             => 'Admin/MemberController',
-        'admin/ParticipantController.stub'        => 'Admin/ParticipantController',
-        'admin/TemplateController.stub'           => 'Admin/TemplateController',
-        'admin/MailingController.stub'            => 'Admin/MailingController',
     ];
 
     /**
@@ -116,6 +52,8 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
         'js/bootstrap.js',
         'js/app.js',
         'js/site.js',
+        'js/parser.js',
+        'js/router.js',
     ];
 
     protected $views = [

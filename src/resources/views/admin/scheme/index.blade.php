@@ -20,8 +20,8 @@
             <a class="btn btn-ferroli d-scheme d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0"
                href="{{ route('admin.schemes.create') }}"
                role="button">
-                <i class="fa fa-plus"></i>
-                <span>@lang('site::messages.add') @lang('site::scheme.scheme')</span>
+                <i class="fa fa-magic"></i>
+                <span>@lang('site::messages.create') @lang('site::scheme.scheme')</span>
             </a>
             <a href="{{ route('admin') }}" class="d-scheme d-sm-inline btn btn-secondary">
                 <i class="fa fa-reply"></i>

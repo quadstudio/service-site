@@ -23,7 +23,7 @@
                 <i class="fa fa-plus"></i>
                 <span>@lang('site::messages.add') @lang('site::user.create.dealer')</span>
             </a>
-            <a href="{{ route('admin.users.mailing') }}"
+            <a href="{{ route('admin.mailings.create') }}"
                class="d-block d-sm-inline-block btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn-ferroli">
                 <i class="fa fa-@lang('site::mailing.icon')"></i>
                 <span>@lang('site::messages.create') @lang('site::mailing.mailing')</span>
@@ -48,9 +48,10 @@
         <table class="table table-bordered bg-white table-sm table-hover">
             <tr>
                 <th>Имя</th>
-                <th>Регион</th>
+                <th>Основной регион</th>
                 <th>Город</th>
                 <th>ПЛЗ</th>
+                <th>МНТЖ</th>
                 <th>АСЦ</th>
                 <th>ДЗЧ</th>
                 <th>Дил</th>

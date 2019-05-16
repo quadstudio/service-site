@@ -24,20 +24,16 @@ class ParticipantRequest extends FormRequest
      */
     public function rules()
     {
-
         switch ($this->method()) {
-            case 'GET':
-            case 'DELETE': {
-                return [];
-            }
             case 'PUT':
             case 'PATCH':
             case 'POST': {
                 return [
-                    'name'         => 'required|string|max:100',
-                    'headposition' => 'required|string|max:100',
-                    'phone'        => 'nullable|digits:10',
-                    'email'        => 'nullable|email|max:50'
+                    'participant.name'         => 'required|string|max:100',
+                    'participant.headposition' => 'required|string|max:100',
+                    'participant.email'        => 'nullable|email|max:50',
+                    'participant.country_id'   => 'required|exists:countries,id',
+                    'participant.phone'        => 'sometimes|nullable|size:' . config('site.phone.maxlength'),
                 ];
             }
             default:
@@ -63,11 +59,11 @@ class ParticipantRequest extends FormRequest
     public function attributes()
     {
         return [
-
-            'name'         => trans('site::member.organization'),
-            'headposition' => trans('site::member.headposition'),
-            'phone'        => trans('site::member.phone'),
-            'email'        => trans('site::member.email'),
+            'participant.name'         => trans('site::participant.organization'),
+            'participant.headposition' => trans('site::participant.headposition'),
+            'participant.country_id'   => trans('site::participant.country_id'),
+            'participant.phone'        => trans('site::participant.phone'),
+            'participant.email'        => trans('site::participant.email'),
 
         ];
     }

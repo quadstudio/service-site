@@ -9,9 +9,11 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Session;
 use QuadStudio\Service\Site\Concerns\StoreImages;
 use QuadStudio\Service\Site\Filters\Event\ConfirmedSelectFilter;
-use QuadStudio\Service\Site\Filters\Event\DateFromFilter;
-use QuadStudio\Service\Site\Filters\Event\DateToFilter;
+use QuadStudio\Service\Site\Filters\Event\EventDateFromFilter;
+use QuadStudio\Service\Site\Filters\Event\EventDateToFilter;
 use QuadStudio\Service\Site\Filters\Event\EventPerPageFilter;
+use QuadStudio\Service\Site\Filters\Event\EventShowFerroliBoolFilter;
+use QuadStudio\Service\Site\Filters\Event\EventShowLamborghiniBoolFilter;
 use QuadStudio\Service\Site\Filters\Event\HasMembersSelectFilter;
 use QuadStudio\Service\Site\Filters\Event\RegionSelectFilter;
 use QuadStudio\Service\Site\Filters\Event\SearchFilter;
@@ -98,14 +100,16 @@ class EventController extends Controller
     {
         $this->events->trackFilter();
         $this->events->pushTrackFilter(SearchFilter::class);
+        $this->events->pushTrackFilter(EventShowFerroliBoolFilter::class);
+        $this->events->pushTrackFilter(EventShowLamborghiniBoolFilter::class);
         $this->events->pushTrackFilter(SortCreatedAtFilter::class);
         $this->events->pushTrackFilter(TypeSelectFilter::class);
         $this->events->pushTrackFilter(StatusSelectFilter::class);
         $this->events->pushTrackFilter(RegionSelectFilter::class);
-        $this->events->pushTrackFilter(HasMembersSelectFilter::class);
-        $this->events->pushTrackFilter(DateFromFilter::class);
-        $this->events->pushTrackFilter(DateToFilter::class);
         $this->events->pushTrackFilter(ConfirmedSelectFilter::class);
+        $this->events->pushTrackFilter(EventDateFromFilter::class);
+        $this->events->pushTrackFilter(EventDateToFilter::class);
+        $this->events->pushTrackFilter(HasMembersSelectFilter::class);
         $this->events->pushTrackFilter(EventPerPageFilter::class);
 
 
@@ -142,7 +146,11 @@ class EventController extends Controller
         //dd($request->all());
         $event = $this->events->create(array_merge(
             $request->input(['event']),
-            ['confirmed' => $request->filled('confirmed') ? 1 : 0]
+            [
+                'confirmed'        => $request->filled('event.confirmed'),
+                'show_ferroli'     => $request->filled('event.show_ferroli'),
+                'show_lamborghini' => $request->filled('event.show_lamborghini')
+            ]
         ));
         if ($member->exists) {
             $member->event()->associate($event);
@@ -198,7 +206,9 @@ class EventController extends Controller
 
         $event->update(array_merge(
             $request->input(['event']),
-            ['confirmed' => $request->filled('confirmed') ? 1 : 0]
+            ['confirmed' => $request->filled('event.confirmed')],
+            ['show_ferroli' => $request->filled('event.show_ferroli')],
+            ['show_lamborghini' => $request->filled('event.show_lamborghini')]
         ));
 
         return redirect()->route('admin.events.show', $event)->with('success', trans('site::event.updated'));

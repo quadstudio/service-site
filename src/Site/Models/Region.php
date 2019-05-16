@@ -3,11 +3,10 @@
 namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use QuadStudio\Service\Site\Traits\Models\RegionStorehouseTrait;
 
 class Region extends Model
 {
-    use RegionStorehouseTrait;
+
     /**
      * @var bool
      */
@@ -28,6 +27,20 @@ class Region extends Model
     {
         parent::__construct($attributes);
         $this->table = 'regions';
+    }
+
+    /**
+     * Many-to-Many relations with address model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function storehouses()
+    {
+        return $this->belongsToMany(
+            Address::class,
+            'address_region',
+            'region_id',
+            'address_id');
     }
 
     /**

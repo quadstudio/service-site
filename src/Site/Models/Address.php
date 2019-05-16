@@ -3,19 +3,38 @@
 namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use QuadStudio\Service\Site\Traits\Models\AddressStorehouseTrait;
+use QuadStudio\Service\Site\Concerns\AttachRegions;
 
 class Address extends Model
 {
 
-    use AddressStorehouseTrait;
+    use AttachRegions;
 
     protected $fillable = [
         'type_id', 'country_id', 'region_id',
         'locality', 'street', 'building',
-        'apartment', 'postal', 'name', 'active',
+        'apartment', 'postal', 'name',
+        'show_ferroli', 'show_lamborghini',
         'is_shop', 'is_service', 'is_eshop', 'is_mounter',
         'sort_order', 'email', 'web'
+    ];
+
+    protected $casts = [
+        'type_id'          => 'integer',
+        'country_id'       => 'integer',
+        'region_id'        => 'string',
+        'locality'         => 'string',
+        'street'           => 'string',
+        'name'             => 'string',
+        'sort_order'       => 'integer',
+        'email'            => 'string',
+        'web'              => 'string',
+        'show_ferroli'     => 'boolean',
+        'show_lamborghini' => 'boolean',
+        'is_shop'          => 'boolean',
+        'is_service'       => 'boolean',
+        'is_eshop'         => 'boolean',
+        'is_mounter'       => 'boolean',
     ];
 
     /**
@@ -114,6 +133,20 @@ class Address extends Model
     }
 
     /**
+     * Many-to-Many relations with region model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function regions()
+    {
+        return $this->belongsToMany(
+            Region::class,
+            'address_region',
+            'address_id',
+            'region_id');
+    }
+
+    /**
      * Пользователи
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -136,6 +169,11 @@ class Address extends Model
     public function hasEmail()
     {
         return !is_null($this->getAttribute('email'));
+    }
+
+    public function getCanEditRegionsAttribute()
+    {
+        return in_array($this->getAttribute('type_id'), [5, 6]);
     }
 
     /**

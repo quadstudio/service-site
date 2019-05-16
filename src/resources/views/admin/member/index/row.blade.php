@@ -4,14 +4,14 @@
     </td>
     <td>{{$member->type->name}}</td>
     <td>
-        <div>@lang('site::member.date_from')&nbsp;&nbsp;&nbsp;{{$member->date_from->format('d.m.Y')}}</div>
-        <div>@lang('site::member.date_to')&nbsp;{{$member->date_to->format('d.m.Y')}}</div>
+        <div>@lang('site::messages.date_from')&nbsp;&nbsp;&nbsp;{{$member->date_from->format('d.m.Y')}}</div>
+        <div>@lang('site::messages.date_to')&nbsp;{{$member->date_to->format('d.m.Y')}}</div>
     </td>
     <td>{{$member->event->title}}</td>
 
     <td>
         <div><i class="fa fa-user"></i> {{$member->contact}}</div>
-        <div><i class="fa fa-phone"></i> {{$member->phone}}</div>
+        <div><i class="fa fa-phone"></i> {{$member->country->phone}} {{$member->phone}}</div>
         <div class="@if($member->verified == 0) text-danger @else text-success @endif">{{$member->email}}</div>
     </td>
 

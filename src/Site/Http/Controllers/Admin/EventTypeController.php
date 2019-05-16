@@ -3,15 +3,15 @@
 namespace QuadStudio\Service\Site\Http\Controllers\Admin;
 
 use Illuminate\Routing\Controller;
-use QuadStudio\Service\Site\Filters\EventType\SortFilter;
+use QuadStudio\Service\Site\Concerns\Sortable;
+use QuadStudio\Service\Site\Concerns\StoreImages;
 use QuadStudio\Service\Site\Http\Requests\Admin\EventTypeRequest;
 use QuadStudio\Service\Site\Models\EventType;
 use QuadStudio\Service\Site\Repositories\EventTypeRepository;
-use QuadStudio\Service\Site\Traits\Models\SortOrderTrait;
 
 class EventTypeController extends Controller
 {
-    use SortOrderTrait;
+    use Sortable, StoreImages;
     /**
      * @var EventTypeRepository
      */
@@ -34,17 +34,17 @@ class EventTypeController extends Controller
      */
     public function index()
     {
-        $this->event_types->applyFilter(new SortFilter());
+        $event_types = EventType::query()->orderBy('sort_order')->get();
 
-        return view('site::admin.event_type.index', [
-            'event_types' => $this->event_types->all(['event_types.*'])
-        ]);
+        return view('site::admin.event_type.index', compact('event_types'));
     }
 
 
-    public function create()
+    public function create(EventTypeRequest $request)
     {
-        return view('site::admin.event_type.create');
+        $image = $this->getImage($request);
+
+        return view('site::admin.event_type.create', compact('image'));
     }
 
 
@@ -58,9 +58,11 @@ class EventTypeController extends Controller
      * @param EventType $event_type
      * @return \Illuminate\Http\Response
      */
-    public function edit(EventType $event_type)
+    public function edit(EventTypeRequest $request, EventType $event_type)
     {
-        return view('site::admin.event_type.edit', compact('event_type'));
+        $image = $this->getImage($request, $event_type);
+
+        return view('site::admin.event_type.edit', compact('event_type', 'image'));
     }
 
     /**
@@ -72,21 +74,16 @@ class EventTypeController extends Controller
     public function store(EventTypeRequest $request)
     {
 
-        //dd($request->all());
         $event_type = $this->event_types->create(array_merge(
-            $request->except(['_method', '_token', '_create']),
+            $request->input('event_type'),
             [
-                'active'  => $request->filled('active') ? 1 : 0,
-                'sort_order' => EventType::all()->count()
+                'show_ferroli'     => $request->filled('event_type.show_ferroli'),
+                'show_lamborghini' => $request->filled('event_type.show_lamborghini'),
+                'sort_order'       => EventType::all()->count()
             ]
         ));
-        if ($request->input('_create') == 1) {
-            $redirect = redirect()->route('admin.event_types.create')->with('success', trans('site::event_type.created'));
-        } else {
-            $redirect = redirect()->route('admin.event_types.show', $event_type)->with('success', trans('site::event_type.created'));
-        }
 
-        return $redirect;
+        return redirect()->route('admin.event_types.show', $event_type)->with('success', trans('site::event_type.created'));
     }
 
     /**
@@ -99,18 +96,14 @@ class EventTypeController extends Controller
     public function update(EventTypeRequest $request, EventType $event_type)
     {
         $event_type->update(array_merge(
-            $request->except(['_method', '_token', '_stay']),
+            $request->input('event_type'),
             [
-                'active'  => $request->filled('active') ? 1 : 0
+                'show_ferroli'     => $request->filled('event_type.show_ferroli'),
+                'show_lamborghini' => $request->filled('event_type.show_lamborghini'),
             ]
         ));
-        if ($request->input('_stay') == 1) {
-            $redirect = redirect()->route('admin.event_types.edit', $event_type)->with('success', trans('site::event_type.updated'));
-        } else {
-            $redirect = redirect()->route('admin.event_types.show', $event_type)->with('success', trans('site::event_type.updated'));
-        }
 
-        return $redirect;
+        return redirect()->route('admin.event_types.show', $event_type)->with('success', trans('site::event_type.updated'));
     }
 
 }

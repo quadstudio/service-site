@@ -45,8 +45,6 @@
                         <a href="{{route('admin.catalogs.show', $catalog)}}" class="text-large mr-3 ml-0">
                             {{ $catalog->name }}
                         </a>
-                    </div>
-                    <div class="card-header-elements ml-md-auto">
                         @if($catalog->canAddCatalog())
                             <a class="btn btn-sm py-0 btn-ferroli" data-toggle="tooltip" data-placement="top"
                                title="@lang('site::messages.add') @lang('site::catalog.catalog')"
@@ -64,11 +62,14 @@
                             </a>
                         @endif
                     </div>
+                    <div class="card-header-elements ml-md-auto">
+                        @component('site::components.bool.pill', ['bool' => $catalog->enabled])@endcomponent
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-xl-3 col-sm-6">
                         <dl class="dl-horizontal mt-2">
-                            <dt class="col-12">@lang('site::catalog.image_id')</dt>
+{{--                            <dt class="col-12">@lang('site::catalog.image_id')</dt>--}}
                             <dd class="col-12">
                                 @include('site::admin.image.preview', ['image' => $catalog->image])
                             </dd>
@@ -81,7 +82,9 @@
                                 <dd class="col-12">
                                     <div class="list-group">
                                         <a href="{{route('admin.catalogs.show', $catalog->catalog)}}"
-                                           class="list-group-item-action">{{ $catalog->catalog->name }}
+                                           class="list-group-item-action">
+                                            @bool(['bool' => $catalog->catalog->enabled])@endbool
+                                            {{ $catalog->catalog->name }}
                                         </a>
                                     </div>
                                 </dd>
@@ -96,28 +99,40 @@
                                     <div class="list-group">
                                         @foreach($catalog->catalogs as $children)
                                             <a href="{{route('admin.catalogs.show', $children)}}"
-                                               class="list-group-item-action">{{$children->name}}
+                                               class="list-group-item-action">
+                                                @bool(['bool' => $children->enabled])@endbool
+                                                {{$children->name}}
                                             </a>
                                         @endforeach
                                     </div>
                                 </dd>
                             @endif
+                                @if($catalog->equipments()->exists())
+                                    <dt class="col-12">@lang('site::catalog.products')</dt>
+                                    <dd class="col-12">
+                                        <div class="list-group">
+                                            @foreach($catalog->equipments as $equipment)
+                                                <a href="{{route('admin.equipments.show', $equipment)}}"
+                                                   class="list-group-item-action">
+                                                    @bool(['bool' => $equipment->enabled])@endbool
+                                                    {{$equipment->name}}
+                                                </a>
+                                            @endforeach
+                                        </div>
+                                    </dd>
+                                @endif
                         </dl>
                     </div>
                     <div class="col-xl-3 col-sm-6">
                         <dl class="dl-horizontal mt-2">
-                            @if($catalog->equipments()->exists())
-                                <dt class="col-12">@lang('site::catalog.products')</dt>
-                                <dd class="col-12">
-                                    <div class="list-group">
-                                        @foreach($catalog->equipments as $equipment)
-                                            <a href="{{route('admin.equipments.show', $equipment)}}"
-                                               class="list-group-item-action">{{$equipment->name}}
-                                            </a>
-                                        @endforeach
-                                    </div>
-                                </dd>
-                            @endif
+                            <dt class="col-12 mb-0 text-left text-xl-right">
+                                @lang('site::messages.show_ferroli')
+                                <span>@bool(['bool' => $catalog->show_ferroli])@endbool</span>
+                            </dt>
+                            <dt class="col-12 mb-0 text-left text-xl-right">
+                                @lang('site::messages.show_lamborghini')
+                                <span>@bool(['bool' => $catalog->show_lamborghini])@endbool</span>
+                            </dt>
                         </dl>
                     </div>
                 </div>

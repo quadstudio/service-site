@@ -48,9 +48,12 @@ class BoilerFilter extends WhereFilter
      */
     public function options(): array
     {
-        $options = Product::whereHas('details', function ($query) {
-            $query->where('enabled', 1)->where('active', 1)->whereNull('equipment_id');
-        })->where('enabled', 1)->orderBy('name')->pluck('name', 'id');
+        $options = Product::query()->whereHas('details', function ($query) {
+            $query->where('enabled', 1)->where(config('site.check_field'), 1)->whereNull('equipment_id');
+        })
+            ->where('enabled', 1)
+            ->orderBy('name')
+            ->pluck('name', 'id');
         $options->prepend(trans('site::messages.select_from_list'), '');
 
         return $options->toArray();

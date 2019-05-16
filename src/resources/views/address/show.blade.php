@@ -41,10 +41,10 @@
             <li class="breadcrumb-item">
                 <a href="{{ route('addresses.index') }}">@lang('site::address.addresses')</a>
             </li>
-            <li class="breadcrumb-item active">{{ $address->name }}</li>
+            <li class="breadcrumb-item active">{{ $address->full }}</li>
         </ol>
         <h1 class="header-title mb-4">
-            <i class="fa fa-@lang('site::address.icon')"></i> {{ $address->name }}
+            <i class="fa fa-@lang('site::address.icon')"></i> {{ $address->full }}
         </h1>
         @alert()@endalert()
         <div class="justify-content-start border p-3 mb-2">
@@ -119,53 +119,6 @@
                             </li>
                         @endforeach
                     </dd>
-
-                    {{--<dt class="col-sm-4 text-left text-sm-right">@lang('site::phone.phones')</dt>--}}
-                    {{--<dd class="col-sm-8">--}}
-                    {{--@foreach($address->phones as $phone)--}}
-                    {{--<div class="card mb-1" id="phone-{{$phone->id}}">--}}
-                    {{--<div class="card-body">--}}
-                    {{--<div class="items-dropdown btn-group">--}}
-                    {{--<button type="button"--}}
-                    {{--class="btn btn-sm btn-ferroli border btn-round md-btn-flat dropdown-toggle icon-btn hide-arrow"--}}
-                    {{--data-toggle="dropdown" aria-expanded="false">--}}
-                    {{--<i class="fa fa-ellipsis-h"></i>--}}
-                    {{--</button>--}}
-                    {{--<div class="items-dropdown-menu dropdown-menu dropdown-menu-right"--}}
-                    {{--x-placement="bottom-end"--}}
-                    {{--style="position: absolute; will-change: top, left; top: 26px; left: -134px;">--}}
-                    {{--<a @can('edit', $phone)--}}
-                    {{--href="{{route('phones.edit', $phone)}}"--}}
-                    {{--class="dropdown-item"--}}
-                    {{--@else()--}}
-                    {{--href="javascript:void(0);"--}}
-                    {{--class="disabled dropdown-item"--}}
-                    {{--@endcan>@lang('site::messages.edit')</a>--}}
-                    {{--<button @cannot('delete', $phone) disabled @endcannot--}}
-                    {{--class="dropdown-item btn-row-delete"--}}
-                    {{--data-form="#phone-delete-form-{{$phone->id}}"--}}
-                    {{--data-btn-delete="@lang('site::messages.delete')"--}}
-                    {{--data-btn-cancel="@lang('site::messages.cancel')"--}}
-                    {{--data-label="@lang('site::messages.delete_confirm')"--}}
-                    {{--data-message="@lang('site::messages.delete_sure') @lang('site::phone.phone')? "--}}
-                    {{--data-toggle="modal" data-target="#form-modal"--}}
-                    {{--href="javascript:void(0);" title="@lang('site::messages.delete')">--}}
-                    {{--@lang('site::messages.delete')--}}
-                    {{--</button>--}}
-                    {{--<form id="phone-delete-form-{{$phone->id}}"--}}
-                    {{--action="{{route('phones.destroy', $phone)}}"--}}
-                    {{--method="POST">--}}
-                    {{--@csrf--}}
-                    {{--@method('DELETE')--}}
-                    {{--</form>--}}
-                    {{--</div>--}}
-                    {{--</div>--}}
-                    {{--<a href="{{route('phones.edit', $phone)}}">{{$phone->country->phone}} {{$phone->number}}</a>--}}
-                    {{--</div>--}}
-                    {{--</div>--}}
-
-                    {{--@endforeach--}}
-                    {{--</dd>--}}
                     <dt class="col-sm-4 text-left text-sm-right"></dt>
                     <dd class="col-sm-8">
                         <div id="address-map" style="height: 320px;width: 100%;"></div>

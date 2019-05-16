@@ -14,10 +14,16 @@
         <h1 class="header-title mb-4"><i class="fa fa-@lang('site::order.icon')"></i> @lang('site::order.orders')
         </h1>
         <div class=" border p-3 mb-2">
-            <a href="{{ route('admin') }}"
-               class="d-block d-sm-inline btn btn btn-secondary">
+            <button form="repository-form"
+                    type="submit"
+                    name="excel"
+                    class="d-block d-sm-inline-block mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-primary">
+                <i class="fa fa-upload"></i>
+                <span>@lang('site::messages.upload') @lang('site::messages.to_excel')</span>
+            </button>
+            <a href="{{ route('admin') }}" class="d-block d-sm-inline-block btn btn-secondary">
                 <i class="fa fa-reply"></i>
-                <span>@lang('site::messages.admin')</span>
+                <span>@lang('site::messages.back_admin')</span>
             </a>
         </div>
         @alert()@endalert()
@@ -29,20 +35,25 @@
             <div class="card my-4" id="order-{{$order->id}}">
 
                 <div class="card-header with-elements">
-				
+
                     <div class="card-header-elements">
-					    <a href="{{route('admin.orders.show', $order)}}" class="mr-3">
+                        <a href="{{route('admin.orders.show', $order)}}" class="mr-3 text-big">
                             @lang('site::order.header.order') № {{$order->id}}
                         </a>
-                        <span class="badge text-normal badge-pill badge-{{ $order->status->color }}">
+                        <span class="badge text-normal badge-pill text-white" style="background-color: {{ $order->status->color }}">
                             <i class="fa fa-{{ $order->status->icon }}"></i> {{ $order->status->name }}
                         </span>
-                        
+
                     </div>
 
                     <div class="card-header-elements ml-md-auto">
-					    <a href="{{route('admin.users.show', $order->user)}}">
-                            <img id="user-logo" src="{{$order->user->logo}}" style="width:25px!important;height: 25px" class="rounded-circle mr-2">
+
+                        <a href="{{route('admin.users.show', $order->user)}}">
+                            @if($order->user->image->fileExists)
+                                <img id="user-logo" src="{{$order->user->logo}}"
+                                     style="width:25px!important;height: 25px"
+                                     class="rounded-circle mr-2">
+                            @endif
                             {{$order->user->name}}
                         </a>
                         @if( $order->messages()->exists())
@@ -63,30 +74,54 @@
                     <div class="col-xl-4 col-sm-6">
                         <dl class="dl-horizontal mt-2">
                             <dt class="col-12">@lang('site::order.address_id')</dt>
-                            <dd class="col-12">{{ $order->address->name }}</dd>
-                            {{--<dt class="col-12">@lang('site::order.user_id')</dt>--}}
-                            {{--<dd class="col-12">--}}
-                                {{--<img id="user-logo"--}}
-                                     {{--src="{{$order->user->logo}}"--}}
-                                     {{--style="width:25px!important;height: 25px"--}}
-                                     {{--class="rounded-circle mr-2">{{$order->user->name}}--}}
-                            {{--</dd>--}}
+                            <dd class="col-12">{{ optional($order->address)->name }}</dd>
                         </dl>
                     </div>
                     <div class="col-xl-4 col-sm-6">
                         <dl class="dl-horizontal mt-2">
-                            <dt class="col-12">@lang('site::order.items')</dt>
+                            <dt class="col-12">@lang('site::order.items') ({{$order->items()->count()}})</dt>
                             <dd class="col-12">
-                                <ul class="list-group"></ul>
-                                @foreach($order->items()->with('product')->get() as $item)
-                                    <li class="list-group-item border-0 px-0 py-1">
-                                        <a href="{{route('products.show', $item->product)}}">
-                                            {!!$item->product->name!!} ({{$item->product->sku}})
-                                        </a>
+                                <ul class="list-group">
+                                    @foreach($order->items()->with('product')->get() as $item)
+                                        <li class="list-group-item border-0 px-0 py-1">
+                                            <a href="{{route('products.show', $item->product)}}">
+                                                {!!$item->product->name!!} ({{$item->product->sku}})
+                                            </a>
 
-                                        x {{$item->quantity}} {{$item->product->unit}}
-                                    </li>
-                                @endforeach
+                                            x {{$item->quantity}} {{$item->product->unit}}
+                                        </li>
+                                        @if($order->items()->count() > 3 && $loop->iteration == 3)
+                                            @break
+                                        @endif
+                                    @endforeach
+                                </ul>
+                                @if($order->items()->count() > 3)
+                                    <ul class="list-group collapse" id="collapse-order-{{$order->id}}">
+                                        @foreach($order->items()->with('product')->get() as $item)
+                                            @if($loop->iteration > 3)
+                                                <li class="list-group-item border-0 px-0 py-1">
+                                                    <a href="{{route('products.show', $item->product)}}">
+                                                        {!!$item->product->name!!} ({{$item->product->sku}})
+                                                    </a>
+                                                    x {{$item->quantity}} {{$item->product->unit}}
+                                                </li>
+                                            @endif
+                                        @endforeach
+                                    </ul>
+                                    <p class="mt-2">
+                                        <a class="btn py-0 btn-sm btn-ferroli"
+                                           data-toggle="collapse"
+                                           href="#collapse-order-{{$order->id}}"
+                                           role="button"
+                                           aria-expanded="false"
+                                           aria-controls="collapseExample">
+                                            <i class="fa fa-chevron-down"></i>
+                                            @lang('site::messages.show')
+                                            @lang('site::messages.more')
+                                            {{$order->items()->count() - 3}}...
+                                        </a>
+                                    </p>
+                                @endif
                             </dd>
                         </dl>
                     </div>

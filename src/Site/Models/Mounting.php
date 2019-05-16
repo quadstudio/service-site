@@ -2,7 +2,7 @@
 
 namespace QuadStudio\Service\Site\Models;
 
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use QuadStudio\Service\Site\Contracts\Messagable;
 

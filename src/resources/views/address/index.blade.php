@@ -44,7 +44,7 @@
                 <div class="card-header with-elements">
                     <div class="card-header-elements">
                         <a href="{{route('addresses.show', $address)}}" class="mr-3">
-                            {{$address->name}}
+                            {{$address->full}}
                         </a>
                     </div>
                     <div class="card-header-elements ml-md-auto">
@@ -55,8 +55,8 @@
                 <div class="row">
                     <div class="col-xl-5 col-sm-6">
                         <dl class="dl-horizontal my-sm-2 my-0">
-                            <dt class="col-12">@lang('site::address.full')</dt>
-                            <dd class="col-12">{{$address->full}}</dd>
+                            <dt class="col-12">@lang('site::address.name')</dt>
+                            <dd class="col-12">{{$address->name}}</dd>
                         </dl>
                     </div>
                     <div class="col-xl-3 col-sm-6">

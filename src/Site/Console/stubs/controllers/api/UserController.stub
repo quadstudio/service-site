@@ -2,10 +2,10 @@
 
 namespace {{namespace}}Http\Controllers\Api;
 
-use QuadStudio\Service\Site\Traits\Controllers\Api\UserControllerTrait;
+use QuadStudio\Service\Site\Traits\Controllers\Api\UserController;
 use {{namespace}}Http\Controllers\Controller;
 
 class UserController extends Controller
 {
-    use UserControllerTrait;
+    use UserController;
 }

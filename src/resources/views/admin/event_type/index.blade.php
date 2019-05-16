@@ -32,10 +32,9 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
-
-
                         <th>@lang('site::event_type.name')</th>
-                        <th class="text-center">@lang('site::event_type.active')</th>
+                        <th class="text-center">@lang('site::messages.show_ferroli')</th>
+                        <th class="text-center">@lang('site::messages.show_lamborghini')</th>
                     </tr>
                     </thead>
                     <tbody id="sort-list" data-target="{{route('admin.event_types.sort')}}">
@@ -45,7 +44,8 @@
                                 <i class="fa fa-arrows"></i>
                                 <a href="{{route('admin.event_types.show', $event_type)}}">{!! $event_type->name !!}</a>
                             </td>
-                            <td class="align-middle text-center">@bool(['bool' => $event_type->active == 1])@endbool</td>
+                            <td class="align-middle text-center">@bool(['bool' => $event_type->show_ferroli == 1])@endbool</td>
+                            <td class="align-middle text-center">@bool(['bool' => $event_type->show_lamborghini == 1])@endbool</td>
                         </tr>
                     @endforeach
                     </tbody>

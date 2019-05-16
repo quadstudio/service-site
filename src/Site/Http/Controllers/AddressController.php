@@ -54,7 +54,7 @@ class AddressController extends Controller
         $this->addresses->applyFilter((new AddressableFilter())->setId(Auth::user()->getAuthIdentifier())->setMorph('users'));
         $address_types = AddressType::where('enabled', 1)->get();
 
-        if ($request->user()->hasRole(config('site.storehouse_check', []))) {
+        if ($request->user()->hasRole(config('site.storehouse_check', []), false)) {
             $address_types->push(AddressType::query()->find(6));
         }
 
@@ -74,6 +74,7 @@ class AddressController extends Controller
     public function create(AddressRequest $request, AddressType $address_type)//
     {
         $this->authorize('create', $address_type);
+
         $countries = Country::query()->where('id', config('site.country'))->get();
         $regions = Region::query()->where('country_id', config('site.country'))->orderBy('name')->get();
         $view = $request->ajax() ? 'site::address.form' : 'site::address.create';

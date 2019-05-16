@@ -10,95 +10,86 @@
                 <a href="{{ route('admin') }}">@lang('site::messages.admin')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.'.$address->addressable->path().'.index') }}">@lang('site::'.$address->addressable->lang().'.'.$address->addressable->path())</a>
+                <a href="{{ route('admin.addresses.index') }}">@lang('site::address.addresses')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.'.$address->addressable->path().'.show', $address->addressable) }}">{{$address->addressable->name}}</a>
-            </li>
-            <li class="breadcrumb-item">
-                <a href="{{ route('admin.'.$address->addressable->path().'.addresses.index', $address->addressable) }}">@lang('site::address.addresses')</a>
-            </li>
-            <li class="breadcrumb-item">
-                <a href="{{ route('admin.addresses.show', $address) }}">{{$address->full}}</a>
+                <a href="{{ route('admin.addresses.show', $address) }}">{{$address->name}}</a>
             </li>
             <li class="breadcrumb-item active">@lang('site::messages.add') @lang('site::phone.phone')</li>
         </ol>
-        <h1 class="header-title mb-4">@lang('site::messages.add')  @lang('site::phone.phone')</h1>
+        <h1 class="header-title mb-4">@lang('site::messages.add') @lang('site::phone.phone')</h1>
 
         @alert()@endalert()
 
         <div class="card mt-2 mb-2">
             <div class="card-body">
-                <form id="phone-form" method="POST"
-                      {{--action="{{ route('admin.addresses.phones.store', $address) }}">--}}
-                      action="{{ route('admin.addresses.phones.store', $address) }}">
-
+                <form id="form" method="POST" action="{{ route('admin.addresses.phones.store', $address) }}">
                     @csrf
 
-                    <div class="form-row required">
-                        <div class="col mb-3">
-
-                            <label class="control-label"
-                                   for="country_id">@lang('site::phone.country_id')</label>
-                            <select class="form-control{{  $errors->has('country_id') ? ' is-invalid' : '' }}"
-                                    name="country_id"
-                                    required
-                                    id="country_id">
-                                <option value="">@lang('site::messages.select_from_list')</option>
-                                @foreach($countries as $country)
-                                    <option
-                                            @if(old('country_id') == $country->id) selected
-                                            @endif
-                                            value="{{ $country->id }}">{{ $country->name }}
-                                        ({{ $country->phone }})
-                                    </option>
-                                @endforeach
-                            </select>
-                            <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('country_id') }}</strong>
-                                    </span>
-                        </div>
-                    </div>
                     <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-row required">
+                                <div class="col mb-3">
+
+                                    <label class="control-label"
+                                           for="country_id">@lang('site::phone.country_id')</label>
+                                    <select class="form-control{{  $errors->has('phone.country_id') ? ' is-invalid' : (old('phone.country_id') ? ' is-valid' : '') }}"
+                                            required
+                                            name="phone[country_id]"
+                                            id="country_id">
+                                        @if($countries->count() == 0 || $countries->count() > 1)
+                                            <option value="">@lang('site::messages.select_from_list')</option>
+                                        @endif
+                                        @foreach($countries as $country)
+                                            <option
+                                                    @if(old('phone.country_id') == $country->id) selected
+                                                    @endif
+                                                    value="{{ $country->id }}">{{ $country->name }}
+                                                ({{ $country->phone }})
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('phone.country_id') }}</strong>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-md-6">
                             <div class="form-row required">
                                 <div class="col">
                                     <label class="control-label"
                                            for="number">@lang('site::phone.number')</label>
-                                    <input type="tel"
-                                           required
-                                           name="number"
+                                    <input required
+                                           type="tel"
+                                           name="phone[number]"
                                            id="number"
-                                           title="@lang('site::placeholder.number')"
-                                           pattern="^\d{9,10}$"
-                                           maxlength="10"
-                                           class="form-control{{ $errors->has('number') ? ' is-invalid' : '' }}"
+                                           oninput="mask_phones()"
+                                           pattern="{{config('site.phone.pattern')}}"
+                                           maxlength="{{config('site.phone.maxlength')}}"
+                                           title="{{config('site.phone.format')}}"
+                                           data-mask="{{config('site.phone.mask')}}"
+                                           class="phone-mask form-control{{ $errors->has('phone.number') ? ' is-invalid' : (old('phone.number') ? ' is-valid' : '') }}"
                                            placeholder="@lang('site::phone.placeholder.number')"
-                                           value="{{ old('number') }}">
-                                    <span class="invalid-feedback">
-                                                <strong>{{ $errors->first('number') }}</strong>
-                                            </span>
-                                    <small id="phone_numberHelp"
-                                           class="mb-4 form-text text-success">
-                                        @lang('site::phone.help.number')
-                                    </small>
+                                           value="{{ old('phone.number') }}">
+                                    <span class="invalid-feedback">{{ $errors->first('phone.number') }}</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-row">
                                 <div class="col mb-3">
                                     <label class="control-label"
                                            for="extra">@lang('site::phone.extra')</label>
                                     <input type="text"
-                                           name="extra"
-                                           id="phone_extra"
-                                           class="form-control{{ $errors->has('extra') ? ' is-invalid' : '' }}"
+                                           name="phone[extra]"
+                                           id="extra"
+                                           class="form-control{{ $errors->has('phone.extra') ? ' is-invalid' : '' }}"
                                            placeholder="@lang('site::phone.placeholder.extra')"
-                                           value="{{ old('extra') }}">
+                                           value="{{ old('phone.extra') }}">
                                     <span class="invalid-feedback">
-                                                <strong>{{ $errors->first('extra') }}</strong>
-                                            </span>
+                                        <strong>{{ $errors->first('phone.extra') }}</strong>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -107,8 +98,7 @@
                 </form>
                 <hr/>
                 <div class=" mb-2 text-right">
-                    <button form="phone-form" type="submit"
-                            class="btn btn-ferroli mb-1">
+                    <button form="form" type="submit" class="btn btn-ferroli mb-1">
                         <i class="fa fa-check"></i>
                         <span>@lang('site::messages.save')</span>
                     </button>
@@ -116,6 +106,7 @@
                         <i class="fa fa-close"></i>
                         <span>@lang('site::messages.cancel')</span>
                     </a>
+
                 </div>
             </div>
         </div>

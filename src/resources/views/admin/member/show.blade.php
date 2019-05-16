@@ -52,6 +52,12 @@
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::member.status_id')</dt>
                     <dd class="col-sm-8">{{$member->status->name}}</dd>
 
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::messages.show_ferroli')</dt>
+                    <dd class="col-sm-8">@bool(['bool' => $member->show_ferroli])@endbool</dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::messages.show_lamborghini')</dt>
+                    <dd class="col-sm-8">@bool(['bool' => $member->show_lamborghini])@endbool</dd>
+
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::member.event_id')</dt>
                     <dd class="col-sm-8">
                         <a href="{{route('admin.events.show', $member->event)}}">{{$member->event->title}}</a>
@@ -72,10 +78,12 @@
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::member.address')</dt>
                     <dd class="col-sm-8">{{$member->address}}</dd>
 
-                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::member.header.date_from_to')</dt>
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::member.date')</dt>
                     <dd class="col-sm-8">
-                        @lang('site::member.date_from') {{ $member->date_from->format('d.m.Y') }}
-                        @lang('site::member.date_to') {{ $member->date_to->format('d.m.Y') }}
+                        {{$member->date_from->format('d.m.Y')}}
+                        @if($member->date_from->ne($member->date_to))
+                            -&nbsp;{{$member->date_to->format('d.m.Y')}}
+                        @endif
                     </dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::member.email')</dt>
@@ -85,7 +93,7 @@
                     <dd class="col-sm-8">@bool(['bool' => $member->verified])@endbool</dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::member.phone')</dt>
-                    <dd class="col-sm-8">{{$member->phone}}</dd>
+                    <dd class="col-sm-8">{{$member->country->phone}} {{$member->phone}}</dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::member.count')</dt>
                     <dd class="col-sm-8">{{$member->count}}</dd>

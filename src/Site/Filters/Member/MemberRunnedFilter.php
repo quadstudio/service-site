@@ -9,6 +9,9 @@ class MemberRunnedFilter extends Filter
 {
     function apply($builder, RepositoryInterface $repository)
     {
-        return $builder->whereIn("status_id", [ 2]);
+        return $builder
+            ->whereIn("status_id", [2])
+            ->where("verified", 1)
+            ->orderBy('date_from', 'ASC');
     }
 }

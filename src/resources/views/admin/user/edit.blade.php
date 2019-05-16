@@ -231,11 +231,7 @@
 
                             <div class="form-row">
                                 <div class="col text-right">
-                                    <button name="_stay" value="1" type="submit" class="btn btn-ferroli">
-                                        <i class="fa fa-check"></i>
-                                        <span>@lang('site::messages.save_stay')</span>
-                                    </button>
-                                    <button name="_stay" value="0" type="submit" class="btn btn-ferroli">
+                                    <button type="submit" class="btn btn-ferroli">
                                         <i class="fa fa-check"></i>
                                         <span>@lang('site::messages.save')</span>
                                     </button>

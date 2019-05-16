@@ -429,8 +429,7 @@
                                            value="1">
                                     <label class="control-label"
                                            for="address_legal_country_id">@lang('site::address.country_id')</label>
-                                    <select class="country-select form-control
-                                    {{$errors->has('address.legal.country_id') ? ' is-invalid' : ''}}"
+                                    <select class="form-control{{$errors->has('address.legal.country_id') ? ' is-invalid' : ''}}"
                                             data-regions="#address_legal_region_id"
                                             data-empty="@lang('site::messages.select_from_list')"
                                             required
@@ -449,7 +448,6 @@
                             </div>
                             <div class="form-row required">
                                 <div class="col mb-3">
-
                                     <label class="control-label"
                                            for="address_legal_region_id">@lang('site::address.region_id')</label>
                                     <select class="form-control{{  $errors->has('address.legal.region_id') ? ' is-invalid' : '' }}"

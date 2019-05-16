@@ -72,13 +72,25 @@
                             @endif
                         </dl>
                     </div>
-                    <div class="col-xl-6 col-sm-12">
+                    <div class="col-xl-4 col-sm-12">
                         @if($equipment->annotation)
                             <dl class="dl-horizontal mt-sm-2">
                                 <dt class="col-12">@lang('site::equipment.annotation')</dt>
                                 <dd class="col-12">{!! $equipment->annotation !!}</dd>
                             </dl>
                         @endif
+                    </div>
+                    <div class="col-xl-2 col-sm-12">
+                        <dl class="dl-horizontal mt-2">
+                            <dt class="col-12 mb-0 text-left text-xl-right">
+                                @lang('site::messages.show_ferroli')
+                                <span>@bool(['bool' => $equipment->show_ferroli])@endbool</span>
+                            </dt>
+                            <dt class="col-12 mb-0 text-left text-xl-right">
+                                @lang('site::messages.show_lamborghini')
+                                <span>@bool(['bool' => $equipment->show_lamborghini])@endbool</span>
+                            </dt>
+                        </dl>
                     </div>
 
                 </div>

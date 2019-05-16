@@ -5,7 +5,13 @@ namespace QuadStudio\Service\Site\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use QuadStudio\Service\Site\Exports\Excel\AddressExcel;
+use QuadStudio\Service\Site\Filters\Address\AddressPerPageFilter;
+use QuadStudio\Service\Site\Filters\Address\AddressShowFerroliBoolFilter;
+use QuadStudio\Service\Site\Filters\Address\AddressShowLamborghiniBoolFilter;
+use QuadStudio\Service\Site\Filters\Address\AddressUserSelectFilter;
 use QuadStudio\Service\Site\Filters\Address\CountrySelectFilter;
+use QuadStudio\Service\Site\Filters\Address\IsEShopSelectFilter;
+use QuadStudio\Service\Site\Filters\Address\IsMounterSelectFilter;
 use QuadStudio\Service\Site\Filters\Address\IsServiceSelectFilter;
 use QuadStudio\Service\Site\Filters\Address\IsShopSelectFilter;
 use QuadStudio\Service\Site\Filters\Address\RegionSelectFilter;
@@ -13,11 +19,9 @@ use QuadStudio\Service\Site\Filters\Address\SearchFilter;
 use QuadStudio\Service\Site\Filters\Address\TypeSelectFilter;
 use QuadStudio\Service\Site\Filters\Address\UserFilter;
 use QuadStudio\Service\Site\Http\Requests\AddressRequest;
-use QuadStudio\Service\Site\Http\Requests\PhoneRequest;
 use QuadStudio\Service\Site\Models\Address;
 use QuadStudio\Service\Site\Models\AddressType;
 use QuadStudio\Service\Site\Models\Country;
-use QuadStudio\Service\Site\Models\Phone;
 use QuadStudio\Service\Site\Models\Region;
 use QuadStudio\Service\Site\Repositories\AddressRepository;
 
@@ -46,19 +50,26 @@ class AddressController extends Controller
     {
 
         $this->addresses->trackFilter();
+        $this->addresses->pushTrackFilter(SearchFilter::class);
+        $this->addresses->pushTrackFilter(AddressShowFerroliBoolFilter::class);
+        $this->addresses->pushTrackFilter(AddressShowLamborghiniBoolFilter::class);
         $this->addresses->pushTrackFilter(CountrySelectFilter::class);
         $this->addresses->pushTrackFilter(RegionSelectFilter::class);
         $this->addresses->pushTrackFilter(TypeSelectFilter::class);
-        $this->addresses->pushTrackFilter(SearchFilter::class);
         $this->addresses->pushTrackFilter(IsShopSelectFilter::class);
         $this->addresses->pushTrackFilter(IsServiceSelectFilter::class);
+        $this->addresses->pushTrackFilter(IsEshopSelectFilter::class);
+        $this->addresses->pushTrackFilter(IsMounterSelectFilter::class);
+        $this->addresses->pushTrackFilter(AddressUserSelectFilter::class);
         $this->addresses->pushTrackFilter(UserFilter::class);
         if ($request->has('excel')) {
             (new AddressExcel())->setRepository($this->addresses)->render();
         }
+        $this->addresses->pushTrackFilter(AddressPerPageFilter::class);
+
         return view('site::admin.address.index', [
             'repository' => $this->addresses,
-            'addresses'  => $this->addresses->paginate(config('site.per_page.address', 10), ['addresses.*'])
+            'addresses'  => $this->addresses->paginate($request->input('filter.per_page', config('site.per_page.address', 10)), ['addresses.*'])
         ]);
     }
 
@@ -68,14 +79,11 @@ class AddressController extends Controller
      */
     public function edit(Address $address)
     {
-        $types = AddressType::query()->find([$address->type_id, 2, 5]);
-        $countries = Country::query()->enabled()->orderBy('sort_order')->get();
-        $regions = collect([]);
-        if (old('country_id', $address->country_id)) {
-            $regions = Region::query()->where('country_id', old('country_id', $address->country_id))->orderBy('name')->get();
-        }
+        $address_types = AddressType::query()->find([$address->type_id, 2, 5]);
+        $countries = Country::query()->where('enabled', 1)->orderBy('sort_order')->get();
+        $regions = Region::query()->whereIn('country_id', $countries->toArray())->orderBy('name')->get();
 
-        return view('site::admin.address.edit', compact('address', 'countries', 'regions', 'types'));
+        return view('site::admin.address.edit', compact('address', 'countries', 'regions', 'address_types'));
     }
 
     /**
@@ -88,7 +96,15 @@ class AddressController extends Controller
     public function update(AddressRequest $request, Address $address)
     {
 
-        $address->update($request->input(['address']));
+        $address->update(array_merge(
+            $request->input(['address']),
+            ['show_ferroli' => $request->filled('address.show_ferroli')],
+            ['show_lamborghini' => $request->filled('address.show_lamborghini')],
+            ['is_shop' => $request->filled('address.is_shop')],
+            ['is_service' => $request->filled('address.is_service')],
+            ['is_eshop' => $request->filled('address.is_eshop')],
+            ['is_mounter' => $request->filled('address.is_mounter')]
+        ));
 
         return redirect()->route('admin.addresses.show', $address)->with('success', trans('site::address.updated'));
     }
@@ -100,25 +116,6 @@ class AddressController extends Controller
     public function show(Address $address)
     {
         return view('site::admin.address.show', compact('address'));
-    }
-
-    /**
-     * @param PhoneRequest $request
-     * @param Address $address
-     * @return \Illuminate\Http\Response
-     */
-    public function phone(PhoneRequest $request, Address $address)
-    {
-        if ($request->isMethod('post')) {
-            $address->phones()->save(Phone::create($request->except(['_token', '_method'])));
-
-            return redirect()->route('admin.addresses.show', $address)->with('success', trans('site::phone.created'));
-        } else {
-            $countries = Country::query()->enabled()->orderBy('sort_order')->get();
-
-            return view('site::admin.address.phone', compact('countries', 'address'));
-        }
-
     }
 
     public function destroy(Address $address)

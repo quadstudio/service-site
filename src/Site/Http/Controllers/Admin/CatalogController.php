@@ -5,6 +5,8 @@ namespace QuadStudio\Service\Site\Http\Controllers\Admin;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Routing\Controller;
 use QuadStudio\Service\Site\Concerns\StoreImages;
+use QuadStudio\Service\Site\Filters\Catalog\CatalogShowFerroliBoolFilter;
+use QuadStudio\Service\Site\Filters\Catalog\CatalogShowLamborghiniBoolFilter;
 use QuadStudio\Service\Site\Filters\CatalogEnabledFilter;
 use QuadStudio\Service\Site\Http\Requests\Admin\CatalogRequest;
 use QuadStudio\Service\Site\Models\Catalog;
@@ -32,15 +34,15 @@ class CatalogController extends Controller
     }
 
     /**
-     * Каталог оборудования
-     *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
 
-        $this->catalogs->trackFilter();
-        $this->catalogs->applyFilter(new CatalogEnabledFilter());
+        $this->catalogs->trackFilter()
+            ->applyFilter(new CatalogEnabledFilter())
+            ->pushTrackFilter(CatalogShowFerroliBoolFilter::class)
+            ->pushTrackFilter(CatalogShowLamborghiniBoolFilter::class);
 
         return view('site::admin.catalog.index', [
             'repository' => $this->catalogs,
@@ -49,26 +51,21 @@ class CatalogController extends Controller
     }
 
     /**
-     * Карточка каталога оборудования
-     *
      * @param Catalog $catalog
      * @return \Illuminate\Http\Response
      */
     public function show(Catalog $catalog)
     {
-        return view('site::admin.catalog.show', ['catalog' => $catalog]);
+        return view('site::admin.catalog.show', compact('catalog'));
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
      * @param CatalogRequest $request
      * @param Catalog|null $catalog
      * @return \Illuminate\Http\Response
      */
     public function create(CatalogRequest $request, Catalog $catalog = null)
     {
-        $this->authorize('create', Catalog::class);
         $parent_catalog_id = !is_null($catalog) ? $catalog->getAttribute('id') : null;
         $tree = $this->catalogs->tree();
         $image = $this->getImage($request);
@@ -77,8 +74,6 @@ class CatalogController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
      * @param  CatalogRequest $request
      * @return \Illuminate\Http\Response
      */
@@ -87,7 +82,11 @@ class CatalogController extends Controller
 
         $catalog = $this->catalogs->create(array_merge(
             $request->input('catalog'),
-            ['enabled' => $request->filled('enabled') ? 1 : 0]
+            [
+                'enabled'          => $request->filled('catalog.enabled'),
+                'show_ferroli'     => $request->filled('catalog.show_ferroli'),
+                'show_lamborghini' => $request->filled('catalog.show_lamborghini')
+            ]
         ));
 
         return redirect()->route('admin.catalogs.show', $catalog)->with('success', trans('site::catalog.created'));
@@ -95,8 +94,6 @@ class CatalogController extends Controller
 
 
     /**
-     * Show the form for editing the specified resource.
-     *
      * @param CatalogRequest $request
      * @param  Catalog $catalog
      * @return \Illuminate\Http\Response
@@ -112,8 +109,6 @@ class CatalogController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
      * @param  CatalogRequest $request
      * @param  Catalog $catalog
      * @return \Illuminate\Http\Response
@@ -122,15 +117,17 @@ class CatalogController extends Controller
     {
         $catalog->update(array_merge(
             $request->input('catalog'),
-            ['enabled' => $request->filled('enabled') ? 1 : 0]
+            [
+                'enabled'          => $request->filled('catalog.enabled'),
+                'show_ferroli'     => $request->filled('catalog.show_ferroli'),
+                'show_lamborghini' => $request->filled('catalog.show_lamborghini')
+            ]
         ));
 
         return redirect()->route('admin.catalogs.show', $catalog)->with('success', trans('site::catalog.updated'));
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
      * @param  Catalog $catalog
      * @return \Illuminate\Http\Response
      */
@@ -139,12 +136,7 @@ class CatalogController extends Controller
 
         $this->authorize('delete', $catalog);
 
-        if ($catalog->delete()) {
-            $redirect = route('admin.catalogs.index');
-        } else {
-            $redirect = route('admin.catalogs.show', $catalog);
-        }
-        $json['redirect'] = $redirect;
+        $json['redirect'] = $catalog->delete() ? route('admin.catalogs.index') : route('admin.catalogs.show', $catalog);
 
         return response()->json($json);
 

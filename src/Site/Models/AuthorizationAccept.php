@@ -4,12 +4,12 @@ namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use QuadStudio\Rbac\Models\Role;
-use QuadStudio\Service\Site\Traits\Models\AuthorizationTypeTrait;
+use QuadStudio\Service\Site\Concerns\AttachAuthorizationTypes;
 
 class AuthorizationAccept extends Model
 {
 
-    use AuthorizationTypeTrait;
+    use AttachAuthorizationTypes;
 
     /**
      * @var string

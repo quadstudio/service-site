@@ -8,6 +8,7 @@ return [
     'headposition' => 'Должность',
     'phone'        => 'Контактный телефон',
     'email'        => 'E-mail',
+    'country_id'   => 'Код страны',
     'created_at'   => 'Дата создания',
     'updated_at'   => 'Дата обновления',
     //
@@ -21,7 +22,7 @@ return [
         'phone'        => '',
         'email'        => '',
         'list'         => 'состав участников',
-        'list_h'         => 'Состав участников',
+        'list_h'       => 'Состав участников',
     ],
     'placeholder'  => [
         'name'         => '',

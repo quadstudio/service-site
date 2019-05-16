@@ -216,33 +216,6 @@
         });
     }
 
-    let repairAdminEditForm = document.getElementById("repair-admin-edit-form");
-    if (repairAdminEditForm !== null) {
-        $('.repair-error-check').on('click', function () {
-
-            //let name = $(this).val();
-            let dt = $(this).parent();
-            if ($(this).is(':checked')) {
-                dt.addClass('bg-danger');
-                dt.addClass('text-white');
-            } else {
-                dt.removeClass('bg-danger');
-                dt.removeClass('text-white');
-            }
-        });
-        $('.part-cost-edit').on('click', function () {
-            let part_id = $(this).data('part');
-            axios
-                .get("/api/boilers/" + boiler_id)
-                .then((response) => {
-
-                    calc_parts();
-                })
-                .catch((error) => {
-                    this.status = 'Error:' + error;
-                });
-        });
-    }
     let sortableImageList = document.getElementsByClassName("sort-list");
     if (sortableImageList.length > 0) {
         for (let i in sortableImageList) {
@@ -301,138 +274,6 @@
         });
     }
 
-    let analogAddForm = document.getElementById("analog-add-form");
-    if (analogAddForm !== null) {
-        let analog_search = $('#analog_search');
-        $('#analog-add-form').find('button').click(function () {
-            submitForm($(this).closest('form'));
-            return false;
-
-        });
-        analog_search.select2({
-            theme: "bootstrap4",
-            ajax: {
-                url: '/api/products/analog',
-                dataType: 'json',
-                delay: 250,
-                data: function (params) {
-                    return {
-                        'filter[search_part]': params.term,
-                    };
-                },
-                processResults: function (data, params) {
-                    return {
-                        results: data.data,
-                    };
-                }
-            },
-            minimumInputLength: 3,
-            templateResult: function (product) {
-                if (product.loading) return "...";
-                return product.name + ' (' + product.sku + ')';
-            },
-            templateSelection: function (product) {
-                return product.name + ' (' + product.sku + ')';
-            },
-            escapeMarkup: function (markup) {
-                return markup;
-            }, // let our custom formatter work
-        });
-
-
-    }
-    let relationAddForm = document.getElementsByClassName("relation-add-form");
-    if (relationAddForm !== null) {
-        let relation_search = $('.relation_search');
-        $('.relation-add-form').find('button').click(function () {
-            submitForm($(this).closest('form'));
-            return false;
-        });
-        relation_search.select2({
-            theme: "bootstrap4",
-            ajax: {
-                url: '/api/products/relation',
-                dataType: 'json',
-                delay: 250,
-                data: function (params) {
-                    return {
-                        'filter[search_part]': params.term,
-                    };
-                },
-                processResults: function (data, params) {
-                    return {
-                        results: data.data,
-                    };
-                }
-            },
-            minimumInputLength: 3,
-            templateResult: function (product) {
-                if (product.loading) return "...";
-                return product.name + ' (' + product.sku + ')';
-            },
-            templateSelection: function (product) {
-                return product.name + ' (' + product.sku + ')';
-            },
-            escapeMarkup: function (markup) {
-                return markup;
-            }, // let our custom formatter work
-        });
-
-
-    }
-
-    let fastProduct = document.getElementById("fast_product_id");
-    if (fastProduct !== null) {
-        let fast_product_id = $('#fast_product_id');
-        fast_product_id.select2({
-            theme: "bootstrap4",
-            ajax: {
-                url: '/api/products/fast',
-                dataType: 'json',
-                delay: 200,
-                data: function (params) {
-                    return {
-                        'filter[search_part]': params.term,
-                        'filter[limit]': fast_product_id.data('limit'),
-                    };
-                },
-                processResults: function (data, params) {
-                    return {
-                        results: data.data,
-                    };
-                }
-            },
-            minimumInputLength: 3,
-
-            templateResult: function (product) {
-                if (product.loading) return "...";
-                //return product.name;
-                //if(product.enabled) return product.name;
-                //let markup = product.name + ' (' + product.sku + ')';
-                let markup = "<img style='width:70px;' src=" + product.image + " /> &nbsp; " + product.name + ' (' + product.sku + ') - ' + product.format;
-                return markup;
-            },
-            templateSelection: function (product) {
-                return product.name;
-            },
-            escapeMarkup: function (markup) {
-                return markup;
-            }
-        });
-
-        fast_product_id.on('select2:select', function (e) {
-            let product_id = $(this).find('option:selected').val();
-
-            axios
-                .post("/cart/" + product_id + '/add', {quantity: 1})
-                .then((response) => {
-                    parseData(response.data);
-                })
-                .catch((error) => {
-                    this.status = 'Error:' + error;
-                });
-        });
-    }
     let adminPartsFieldset = document.getElementById("admin-parts-fieldset");
     if (adminPartsFieldset !== null) {
         let boiler_search = $('#product_id'),
@@ -471,61 +312,6 @@
                 return markup;
             }
         });
-    }
-
-
-    // let schemeFormExists = document.getElementById("scheme-form");
-    // if (schemeFormExists !== null) {
-    //     let datasheet = $('#datasheet_id');
-    //     datasheet.on('change', function () {
-    //         let datasheet_id = datasheet.find('option:selected').val();
-    //         if (datasheet_id.length > 0) {
-    //             axios
-    //                 .get("/api/datasheets/" + datasheet_id + "/products")
-    //                 .then((response) => {
-    //                     let html = '';
-    //                     $.each(response.data.data, function (index, region) {
-    //                         html += '<option value="' + region.label + '">' + region.value + '</option>';
-    //                     });
-    //                     regions.html(html);
-    //                 })
-    //                 .catch((error) => {
-    //                     this.status = 'Error:' + error;
-    //                 });
-    //         } else {
-    //             regions.html('<option value="">' + empty + '</option>');
-    //         }
-    //         console.log(country_id);
-    //     });
-    // }
-    let registerFormExists = document.getElementById("register-form");
-    let contragentFormExists = document.getElementById("contragent-form");
-    let addressFormExists = document.getElementById("address-form");
-    if (registerFormExists !== null || contragentFormExists !== null || addressFormExists !== null) {
-        $('.country-select ').on('change', function () {
-            let country = $(this),
-                country_id = country.find('option:selected').val(),
-                regions = $(country.data('regions')),
-                empty = country.data('empty');
-            if (country_id.length > 0) {
-                axios
-                    .get("/api/regions/" + country_id)
-                    .then((response) => {
-                        let html = '';
-                        $.each(response.data.data, function (index, region) {
-                            html += '<option value="' + region.label + '">' + region.value + '</option>';
-                        });
-                        regions.html(html);
-                    })
-                    .catch((error) => {
-                        this.status = 'Error:' + error;
-                    });
-            } else {
-                regions.html('<option value="">' + empty + '</option>');
-            }
-            console.log(country_id);
-        });
-
     }
 
     let mountingSourceIdExists = document.getElementById("mounting_source_id");
@@ -617,7 +403,7 @@
                 $.ajax({
                     type: 'GET',
                     url: action,
-                    data: [],
+                    data: {},
                     success: function (data) {
                         _modal.find('.modal-body').html(data);
                         manageButtonData(select);

@@ -29,8 +29,9 @@
 
 @section('content')
     <div class="container">
-        @include('site::event_type.main')
-        @include('site::news.carousel')
+	@include('site::static.home_text')
+        @include('site::event_type.index')
+        @include('site::announcement.carousel')
 
     </div>
 

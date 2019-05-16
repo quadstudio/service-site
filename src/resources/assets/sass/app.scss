@@ -362,7 +362,7 @@ nav .btn,
 
 .mauro {
   clear: both;
-  padding-top: 54px;
+  padding-top: 20px;
 }
 
 .nav-utility {
@@ -510,6 +510,7 @@ nav.bg-dark .logo-dark {
 .img-preview{
   cursor: zoom-in;
 }
+
 
 .module.widget-handle {
   border-left: 1px solid #ccc;
@@ -1117,16 +1118,16 @@ nav.nav-centered.outOfSight .logo {
   }
 }
 
-.news {
+.announcement {
   padding-bottom: 24px;
 }
 
-.news img {
+.announcement img {
   width: 100%;
   margin: 24px 0;
 }
 
-.news h3 {
+.announcement h3 {
   color: #292929;
   margin-bottom: 40px;
 }
@@ -1357,8 +1358,8 @@ input[type="text"], button, textarea, select, input[type="password"], input[type
 
 .btn-ferroli:hover {
   color: #fff;
-  background-color: #d24c10;
-  border-color: #d24c10;
+  background-color: $ferroli-color-dark;
+  border-color: $ferroli-color-dark;
 }
 
 .btn-ferroli:focus,
@@ -1378,8 +1379,8 @@ input[type="text"], button, textarea, select, input[type="password"], input[type
 .btn-ferroli:not(:disabled):not(.disabled).active,
 .show > .btn-ferroli.dropdown-toggle {
   color: #fff;
-  background-color: #d24c10;
-  border-color: #d24c10;
+  background-color: $ferroli-color-dark;
+  border-color: $ferroli-color-dark;
 }
 
 .btn-ferroli:not(:disabled):not(.disabled):active:focus,
@@ -1398,8 +1399,8 @@ input[type="text"], button, textarea, select, input[type="password"], input[type
 
 .btn-outline-ferroli:hover {
   color: #fff;
-  background-color: $ferroli-color;
-  border-color: $ferroli-color;
+  background-color: $ferroli-color-dark;
+  border-color: $ferroli-color-dark;
 }
 
 .btn-outline-ferroli:focus,
@@ -3744,6 +3745,14 @@ html:not([dir=rtl]) .card-hover[class]:not(:hover), html[dir=rtl] .card-hover[cl
   flex-shrink: 1
 }
 
+.text-ferroli {
+  color: $ferroli-color !important
+}
+
+.text-ferroli[href]:focus:not(:hover) {
+  color: $ferroli-color !important
+}
+
 .text-dark {
   color: #4E5155 !important
 }
@@ -3916,11 +3925,11 @@ td.trngc {
   white-space: nowrap;
 }
 
-.news-item.fixed-height-450 {
+.announcement-item.fixed-height-450 {
   height: 450px;
 }
 
-.news-item.fixed-height-400 {
+.announcement-item.fixed-height-400 {
   height: 400px;
 }
 
@@ -3951,19 +3960,19 @@ td.trngc {
   line-height: 1.2;
 }
 
-.news-item .news-title {
+.announcement-item .announcement-title {
   margin-bottom: 5px;
   letter-spacing: .2px;
 }
 
-.news-meta {
+.announcement-meta {
   margin-top: 20px;
   margin-bottom: 10px;
   color: rgba(237, 27, 47, .75);
   line-height: 1;
 }
 
-.news-content p {
+.announcement-content p {
   font-size: 0.85rem;
   text-align: justify;
   letter-spacing: 0.04rem;
@@ -3972,14 +3981,14 @@ td.trngc {
   line-height: 1.6;
 }
 
-.news-title {
+.announcement-title {
   color: #414141;
   font-weight: bold;
   /*padding-bottom: 6px;*/
   /*border-bottom: 1px solid #ed9068;*/
 }
 
-.news-content ul li {
+.announcement-content ul li {
   text-align: justify;
   font-size: 0.85rem;
   margin-bottom: 0.4rem;
@@ -3988,11 +3997,11 @@ td.trngc {
   line-height: 1.6;
 }
 
-.news-content ul.no-disk li {
+.announcement-content ul.no-disk li {
   list-style: none outside;
 }
 
-.news-content h4 {
+.announcement-content h4 {
   font-size: 1rem;
 }
 
@@ -4050,4 +4059,43 @@ $cards-per-line: (
       flex: 0 0 calc(#{100/map-get($cards-per-line, $name)}% - #{$grid-gutter-width});
     }
   }
+}
+
+// overlay
+.view {
+  position: relative;
+  overflow: hidden;
+  cursor: default;
+}
+
+.overlay .mask {
+  opacity: 0;
+  -webkit-transition: all .4s ease-in-out;
+  -o-transition: all .4s ease-in-out;
+  transition: all .4s ease-in-out;
+}
+.view .mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  background-attachment: fixed;
+}
+
+.rgba-ferroli-slight, .rgba-ferroli-slight:after {
+  background-color: rgba(237,144,104,.1);
+}
+.rgba-ferroli-light, .rgba-ferroli-light:after {
+  background-color: rgba(237,144,104,.3);
+}
+.rgba-ferroli-strong, .rgba-ferroli-strong:after {
+  background-color: rgba(237,144,104,.7);
+}
+
+.overlay .mask:hover {
+  opacity: 1;
 }

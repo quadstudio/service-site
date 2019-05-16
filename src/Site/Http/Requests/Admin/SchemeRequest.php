@@ -25,17 +25,13 @@ class SchemeRequest extends FormRequest
     public function rules()
     {
         switch ($this->method()) {
-            case 'GET':
-            case 'DELETE': {
-                return [];
-            }
             case 'PUT':
             case 'PATCH':
             case 'POST': {
                 return [
-                    'block_id'     => 'required|exists:blocks,id',
-                    'image_id'     => 'required|exists:images,id',
-                    'datasheet_id' => 'required|exists:datasheets,id',
+                    'scheme.block_id'     => 'required|exists:blocks,id',
+                    'scheme.image_id'     => 'required|exists:images,id',
+                    'scheme.datasheet_id' => 'required|exists:datasheets,id',
                 ];
             }
             default:
@@ -51,7 +47,7 @@ class SchemeRequest extends FormRequest
     public function messages()
     {
         return [
-            'image_id.required' => trans('site::scheme.error.image_id.required'),
+            'scheme.image_id.required' => trans('site::scheme.error.image_id.required'),
         ];
     }
 
@@ -63,9 +59,9 @@ class SchemeRequest extends FormRequest
     public function attributes()
     {
         return [
-            'block_id'     => trans('site::scheme.block_id'),
-            'image_id'     => trans('site::scheme.image_id'),
-            'datasheet_id' => trans('site::scheme.datasheet_id'),
+            'scheme.block_id'     => trans('site::scheme.block_id'),
+            'scheme.image_id'     => trans('site::scheme.image_id'),
+            'scheme.datasheet_id' => trans('site::scheme.datasheet_id'),
         ];
     }
 }

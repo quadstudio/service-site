@@ -5,6 +5,8 @@ namespace QuadStudio\Service\Site\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use QuadStudio\Service\Site\Http\Requests\EngineerRequest;
+use QuadStudio\Service\Site\Models\Certificate;
+use QuadStudio\Service\Site\Models\CertificateType;
 use QuadStudio\Service\Site\Models\Country;
 use QuadStudio\Service\Site\Models\Engineer;
 
@@ -20,8 +22,8 @@ class EngineerController extends Controller
     public function index(EngineerRequest $request)
     {
         $engineers = $request->user()->engineers()->orderBy('name')->get();
-
-        return view('site::engineer.index', compact('engineers'));
+        $certificate_types = CertificateType::query()->get();
+        return view('site::engineer.index', compact('engineers', 'certificate_types'));
     }
 
     /**
@@ -33,11 +35,13 @@ class EngineerController extends Controller
     public function create(EngineerRequest $request)
     {
         $engineer = new Engineer();
+        $certificate_types = CertificateType::query()->get();
+        $certificate_type_id = $request->get('certificate_type_id');
         $this->authorize('create', Engineer::class);
         $countries = Country::query()->where('enabled', 1)->orderBy('name')->get();
         $view = $request->ajax() ? 'site::engineer.form.create' : 'site::engineer.create';
 
-        return view($view, compact('countries', 'engineer'));
+        return view($view, compact('countries', 'engineer', 'certificate_types', 'certificate_type_id'));
     }
 
     /**
@@ -52,6 +56,17 @@ class EngineerController extends Controller
 
         $request->user()->engineers()->save($engineer = new Engineer($request->input('engineer')));
 
+        foreach ($request->input('certificate') as $certificate_type_id => $certificate_id) {
+            if (
+                !is_null($certificate_id)
+                && ($certificate = Certificate::query()
+                    ->where('type_id', $certificate_type_id)
+                    ->where('id', $certificate_id))->exists()
+            ) {
+                $certificate->first()->engineer()->associate($engineer)->save();
+            }
+        }
+
         if ($request->ajax()) {
             $engineers = $request->user()->engineers()->orderBy('name')->get();
             Session::flash('success', trans('site::engineer.created'));
@@ -61,6 +76,7 @@ class EngineerController extends Controller
                     '#engineer_id' => view('site::engineer.options')
                         ->with('engineers', $engineers)
                         ->with('engineer_id', $engineer->getKey())
+                        ->with('certificate_type_id', $request->get('certificate_type_id'))
                         ->render()
                 ],
                 'append' => [
@@ -86,9 +102,10 @@ class EngineerController extends Controller
     {
         $this->authorize('edit', $engineer);
         $countries = Country::query()->where('enabled', 1)->orderBy('name')->get();
+        $certificate_types = CertificateType::query()->get();
         $view = $request->ajax() ? 'site::engineer.form.edit' : 'site::engineer.edit';
 
-        return view($view, compact('countries', 'engineer'));
+        return view($view, compact('countries', 'engineer', 'certificate_types'));
     }
 
     /**
@@ -102,6 +119,20 @@ class EngineerController extends Controller
     {
         $this->authorize('edit', $engineer);
         $engineer->update($request->input('engineer'));
+
+        foreach ($engineer->certificates()->get() as $certificate){
+            $certificate->engineer()->dissociate()->save();
+        }
+        foreach ($request->input('certificate') as $certificate_type_id => $certificate_id) {
+            if (
+                !is_null($certificate_id)
+                && ($certificate = Certificate::query()
+                    ->where('type_id', $certificate_type_id)
+                    ->where('id', $certificate_id))->exists()
+            ) {
+                $certificate->first()->engineer()->associate($engineer)->save();
+            }
+        }
 
         return redirect()->route('engineers.index')->with('success', trans('site::engineer.updated'));
     }

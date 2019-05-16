@@ -1,4 +1,4 @@
-@if(isset($image) && is_object($image) && $image->exists)
+@if(isset($image) && is_object($image) && $image->exists && $image->fileExists)
     <div class="col-md-12 my-2" data-id="{{$image->id}}" id="image-{{$image->id}}">
         <input form="form" type="hidden" name="{{config('site.' . $image->storage . '.name', 'images[]')}}"
                value="{{old(config('site.' . $image->storage . '.dot_name'), $image->id)}}">

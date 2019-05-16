@@ -25,26 +25,25 @@ class UserRequest extends FormRequest
     public function rules()
     {
         switch ($this->method()) {
-            case 'GET':
-            case 'DELETE':
             case 'POST': {
                 return [
                     'display'               => 'required|boolean',
                     'active'                => 'required|boolean',
                     'dealer'                => 'required|boolean',
                     'verified'              => 'required|boolean',
-                    'region_id'             => 'required|exists:regions,id',
+//                    'region_id'             => 'required|exists:regions,id',
                     //
                     'name'                  => 'required|string|max:255',
                     'email'                 => 'required|string|email|max:255|unique:users',
                     'web'                   => 'max:255',
                     //
+                    'address.sc.name'       => 'required|string|max:255',
                     'address.sc.country_id' => 'required|exists:countries,id',
                     'address.sc.region_id'  => 'required|exists:regions,id',
                     'address.sc.locality'   => 'required|string|max:255',
                     //
                     'phone.sc.country_id'   => 'required|exists:countries,id',
-                    'phone.sc.number'       => 'required|numeric|digits_between:9,10',
+                    'phone.sc.number'       => 'required|string|size:' . config('site.phone.maxlength'),
                     'phone.sc.extra'        => 'max:20',
                 ];
             }
@@ -80,21 +79,21 @@ class UserRequest extends FormRequest
     public function attributes()
     {
         return [
+            'display'               => trans('site::user.display'),
+            'active'                => trans('site::user.active'),
             'name'                  => trans('site::user.name'),
             'email'                 => trans('site::user.email'),
             'web'                   => trans('site::user.web'),
-            'region_id'             => trans('site::user.region_id'),
+//            'region_id'             => trans('site::user.region_id'),
             //
             'phone.sc.country_id'   => trans('site::phone.country_id'),
             'phone.sc.number'       => trans('site::phone.number'),
             'phone.sc.extra'        => trans('site::phone.extra'),
             //
+            'address.sc.name'       => trans('site::address.name'),
             'address.sc.country_id' => trans('site::address.country_id'),
             'address.sc.region_id'  => trans('site::address.region_id'),
             'address.sc.locality'   => trans('site::address.locality'),
-            //
-            'display'               => trans('site::user.display'),
-            'active'                => trans('site::user.active'),
         ];
     }
 }

@@ -3,9 +3,10 @@
 namespace QuadStudio\Service\Site\Repositories;
 
 use QuadStudio\Repo\Eloquent\Repository;
+use QuadStudio\Service\Site\Filters\CurrencyArchive\CurrencyArchivePerPageFilter;
 use QuadStudio\Service\Site\Filters\CurrencyArchive\CurrencySelectFilter;
-use QuadStudio\Service\Site\Filters\CurrencyArchive\DateFilter;
 use QuadStudio\Service\Site\Filters\CurrencyArchive\SortFilter;
+use QuadStudio\Service\Site\Filters\Mounting\CurrencyArchiveDateFilter;
 use QuadStudio\Service\Site\Models\CurrencyArchive;
 
 class CurrencyArchiveRepository extends Repository
@@ -28,7 +29,8 @@ class CurrencyArchiveRepository extends Repository
         return [
             SortFilter::class,
             CurrencySelectFilter::class,
-            DateFilter::class,
+            CurrencyArchiveDateFilter::class,
+            CurrencyArchivePerPageFilter::class
         ];
     }
 }

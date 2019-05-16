@@ -7,6 +7,9 @@
                 <a href="{{ route('index') }}">@lang('site::messages.index')</a>
             </li>
             <li class="breadcrumb-item">
+                <a href="{{ route('admin') }}">@lang('site::messages.admin')</a>
+            </li>
+            <li class="breadcrumb-item">
                 <a href="{{ route('admin.catalogs.index') }}">@lang('site::catalog.catalogs')</a>
             </li>
             <li class="breadcrumb-item active">@lang('site::messages.add') @lang('site::catalog.catalog')</li>
@@ -21,19 +24,56 @@
 
                 <form id="form" method="POST" action="{{ route('admin.catalogs.store') }}">
                     @csrf
-                    <div class="form-row">
-                        <div class="col">
-                            <div class="custom-control custom-checkbox mb-3">
-                                <input type="checkbox" @if(old('catalog.enabled', true)) checked @endif
-                                class="custom-control-input{{  $errors->has('catalog.enabled') ? ' is-invalid' : '' }}"
-                                       id="enabled"
-                                       value="1"
-                                       name="catalog[enabled]">
-                                <label class="custom-control-label" for="enabled">@lang('site::catalog.enabled')</label>
-                                <span class="invalid-feedback">{{ $errors->first('catalog.enabled') }}</span>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox"
+                                               @if(old('catalog.show_ferroli')) checked @endif
+                                               class="custom-control-input{{  $errors->has('catalog.show_ferroli') ? ' is-invalid' : '' }}"
+                                               id="show_ferroli"
+                                               name="catalog[show_ferroli]">
+                                        <label class="custom-control-label"
+                                               for="show_ferroli">@lang('site::messages.show_ferroli')</label>
+                                        <span class="invalid-feedback">{{ $errors->first('catalog.show_ferroli') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox"
+                                               @if(old('catalog.show_lamborghini')) checked
+                                               @endif
+                                               class="custom-control-input{{  $errors->has('catalog.show_lamborghini') ? ' is-invalid' : '' }}"
+                                               id="show_lamborghini"
+                                               name="catalog[show_lamborghini]">
+                                        <label class="custom-control-label"
+                                               for="show_lamborghini">@lang('site::messages.show_lamborghini')</label>
+                                        <span class="invalid-feedback">{{ $errors->first('catalog.show_lamborghini') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox"
+                                               @if(old('catalog.enabled')) checked @endif
+                                               class="custom-control-input{{  $errors->has('catalog.enabled') ? ' is-invalid' : '' }}"
+                                               id="enabled"
+                                               name="catalog[enabled]">
+                                        <label class="custom-control-label"
+                                               for="enabled">@lang('site::catalog.enabled')</label>
+                                        <span class="invalid-feedback">{{ $errors->first('catalog.enabled') }}</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+
                     <fieldset @if(is_null($parent_catalog_id)) disabled @endif>
                         <div class="form-row">
                             <div class="col">

@@ -9,13 +9,13 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use QuadStudio\Online\OnlineChecker;
-use QuadStudio\Rbac\Traits\Models\RbacUserTrait;
+use QuadStudio\Rbac\Concerns\RbacUsers;
+use QuadStudio\Service\Site\Concerns\Schedulable;
 use QuadStudio\Service\Site\Contracts\Addressable;
-use QuadStudio\Service\Site\Traits\Models\ScheduleTrait;
 
 class User extends Authenticatable implements Addressable
 {
-    use Notifiable, RbacUserTrait, OnlineChecker, ScheduleTrait;
+    use Notifiable, RbacUsers, OnlineChecker, Schedulable;
 
     /**
      * The attributes that are mass assignable.
@@ -193,7 +193,8 @@ class User extends Authenticatable implements Addressable
      */
     public function storehouses()
     {
-        if ($this->hasRole(config('site.storehouse_check', []))) {
+
+        if ($this->hasRole(config('site.storehouse_check', []), false)) {
 
             return User::query()
                 ->find(config('site.receiver_id'))
@@ -202,9 +203,13 @@ class User extends Authenticatable implements Addressable
                 ->get();
         }
 
-        return $this->region->storehouses->filter(function ($address) {
-            return $address->addressable->hasRole(config('site.storehouse_check', []));
-        });
+        if ($this->region) {
+            return $this->region->storehouses->filter(function ($address) {
+                return $address->addressable->hasRole(config('site.storehouse_check', []), false);
+            });
+        }
+
+        return collect([]);
     }
 
     /**

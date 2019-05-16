@@ -20,5 +20,12 @@ class EventPolicy
         return $user->getAttribute('admin') == 1 && in_array($event->getAttribute('status_id'), [1, 4, 5]) && $event->members()->count() == 0;
     }
 
+    public function view(User $user, Event $event)
+    {
+        $check_field = config('site.check_field');
+
+        return $event->getAttribute($check_field) == 1;
+    }
+
 
 }

@@ -20,9 +20,9 @@ class TypeFilter extends WhereFilter
      */
     public function options():array
     {
-        $options = ProductType::whereHas('products', function ($query) {
+        $options = ProductType::query()->whereHas('products', function ($query) {
             $query->where('products.enabled', 1)
-                ->where('active', 1)
+                ->where(config('site.check_field'), 1)
                 ->whereNull('equipment_id')
             ;
         })->orderBy('name')->pluck('name', 'id');

@@ -24,103 +24,150 @@
                 <form id="form-content" method="POST" action="{{ route('admin.equipments.update', $equipment) }}">
                     @csrf
                     @method('PUT')
-                    <div class="custom-control custom-checkbox mb-3">
-                        <input type="checkbox" @if(old('enabled', $equipment->enabled)) checked @endif
-                        class="custom-control-input{{  $errors->has('enabled') ? ' is-invalid' : '' }}"
-                               id="enabled"
-                               name="enabled">
-                        <label class="custom-control-label" for="enabled">@lang('site::equipment.enabled')</label>
-                        <span class="invalid-feedback">{{ $errors->first('enabled') }}</span>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox"
+                                               @if(old('equipment.show_ferroli', $equipment->show_ferroli)) checked @endif
+                                               class="custom-control-input{{  $errors->has('equipment.show_ferroli') ? ' is-invalid' : '' }}"
+                                               id="show_ferroli"
+                                               name="equipment[show_ferroli]">
+                                        <label class="custom-control-label"
+                                               for="show_ferroli">@lang('site::messages.show_ferroli')</label>
+                                        <span class="invalid-feedback">{{ $errors->first('equipment.show_ferroli') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox"
+                                               @if(old('equipment.show_lamborghini', $equipment->show_lamborghini)) checked
+                                               @endif
+                                               class="custom-control-input{{  $errors->has('equipment.show_lamborghini') ? ' is-invalid' : '' }}"
+                                               id="show_lamborghini"
+                                               name="equipment[show_lamborghini]">
+                                        <label class="custom-control-label"
+                                               for="show_lamborghini">@lang('site::messages.show_lamborghini')</label>
+                                        <span class="invalid-feedback">{{ $errors->first('equipment.show_lamborghini') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox"
+                                               @if(old('equipment.enabled', $equipment->enabled)) checked
+                                               @endif
+                                               class="custom-control-input{{  $errors->has('equipment.enabled') ? ' is-invalid' : '' }}"
+                                               id="enabled"
+                                               name="equipment[enabled]">
+                                        <label class="custom-control-label"
+                                               for="enabled">@lang('site::equipment.enabled')</label>
+                                        <span class="invalid-feedback">{{ $errors->first('equipment.enabled') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="form-group required">
+                    <div class="form-group required mt-3">
                         <label class="control-label" for="catalog_id">@lang('site::equipment.catalog_id')</label>
-                        <select class="form-control{{  $errors->has('name') ? ' is-invalid' : '' }}"
-                                name="catalog_id"
+                        <select class="form-control{{  $errors->has('equipment.name') ? ' is-invalid' : '' }}"
+                                name="equipment[catalog_id]"
                                 required
                                 id="catalog_id">
                             <option value="">@lang('site::equipment.default.catalog_id')</option>
                             @include('site::admin.equipment.tree.edit', ['value' => $tree, 'level' => 0])
                         </select>
-                        <span class="invalid-feedback">{{ $errors->first('catalog_id') }}</span>
+                        <span class="invalid-feedback">{{ $errors->first('equipment.catalog_id') }}</span>
                     </div>
 
                     <div class="form-row required">
-                        <div class="col mb-3">
+                        <div class="col">
                             <label class="control-label" for="name">@lang('site::equipment.name')</label>
-                            <input type="text" name="name"
+                            <input type="text"
+                                   name="equipment[name]"
                                    id="name"
                                    required
-                                   class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}"
+                                   class="form-control{{ $errors->has('equipment.name') ? ' is-invalid' : '' }}"
                                    placeholder="@lang('site::equipment.placeholder.name')"
-                                   value="{{ old('name', $equipment->name) }}">
-                            <span class="invalid-feedback">{{ $errors->first('name') }}</span>
+                                   value="{{ old('equipment.name', $equipment->name) }}">
+                            <span class="invalid-feedback">{{ $errors->first('equipment.name') }}</span>
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="col mb-3">
+                        <div class="col">
                             <label class="control-label" for="h1">@lang('site::equipment.h1')</label>
-                            <input type="text" name="h1"
+                            <input type="text"
+                                   name="equipment[h1]"
                                    id="h1"
-                                   class="form-control{{ $errors->has('h1') ? ' is-invalid' : '' }}"
+                                   class="form-control{{ $errors->has('equipment.h1') ? ' is-invalid' : '' }}"
                                    placeholder="@lang('site::equipment.placeholder.h1')"
-                                   value="{{ old('h1', $equipment->h1) }}">
-                            <span class="invalid-feedback">{{ $errors->first('h1') }}</span>
+                                   value="{{ old('equipment.h1', $equipment->h1) }}">
+                            <span class="invalid-feedback">{{ $errors->first('equipment.h1') }}</span>
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="col mb-3">
+                        <div class="col">
                             <label class="control-label" for="title">@lang('site::equipment.title')</label>
-                            <input type="text" name="title"
+                            <input type="text"
+                                   name="equipment[title]"
                                    id="title"
-                                   class="form-control{{ $errors->has('title') ? ' is-invalid' : '' }}"
+                                   class="form-control{{ $errors->has('equipment.title') ? ' is-invalid' : '' }}"
                                    placeholder="@lang('site::equipment.placeholder.title')"
-                                   value="{{ old('title', $equipment->title) }}">
-                            <span class="invalid-feedback">{{ $errors->first('title') }}</span>
+                                   value="{{ old('equipment.title', $equipment->title) }}">
+                            <span class="invalid-feedback">{{ $errors->first('equipment.title') }}</span>
                         </div>
                     </div>
 
                     <div class="form-row">
-                        <div class="col mb-3">
+                        <div class="col">
                             <label for="metadescription">@lang('site::equipment.metadescription')</label>
                             <textarea
-                                    class="form-control{{ $errors->has('metadescription') ? ' is-invalid' : '' }}"
+                                    class="form-control{{ $errors->has('equipment.metadescription') ? ' is-invalid' : '' }}"
                                     placeholder="@lang('site::equipment.placeholder.metadescription')"
-                                    name="metadescription"
+                                    name="equipment[metadescription]"
                                     rows="5"
-                                    id="metadescription">{!! old('metadescription', $equipment->metadescription) !!}</textarea>
-                            <span class="invalid-feedback">{{ $errors->first('metadescription') }}</span>
+                                    id="metadescription">{!! old('equipment.metadescription', $equipment->metadescription) !!}</textarea>
+                            <span class="invalid-feedback">{{ $errors->first('equipment.metadescription') }}</span>
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="col mb-3">
+                        <div class="col">
                             <label class="control-label" for="annotation">@lang('site::equipment.annotation')</label>
-                            <input type="text" name="annotation"
+                            <input type="text"
+                                   name="equipment[annotation]"
                                    id="annotation"
-                                   class="form-control{{ $errors->has('annotation') ? ' is-invalid' : '' }}"
+                                   class="form-control{{ $errors->has('equipment.annotation') ? ' is-invalid' : '' }}"
                                    placeholder="@lang('site::equipment.placeholder.annotation')"
-                                   value="{{ old('annotation', $equipment->annotation) }}">
-                            <span class="invalid-feedback">{{ $errors->first('annotation') }}</span>
+                                   value="{{ old('equipment.annotation', $equipment->annotation) }}">
+                            <span class="invalid-feedback">{{ $errors->first('equipment.annotation') }}</span>
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="col mb-3">
+                        <div class="col">
                             <label class="control-label" for="description">@lang('site::equipment.description')</label>
-                            <textarea class="summernote form-control{{ $errors->has('description') ? ' is-invalid' : '' }}"
+                            <textarea class="summernote form-control{{ $errors->has('equipment.description') ? ' is-invalid' : '' }}"
                                       placeholder="@lang('site::equipment.placeholder.description')"
-                                      name="description"
-                                      id="description">{{ old('description', $equipment->description) }}</textarea>
-                            <span class="invalid-feedback">{{ $errors->first('description') }}</span>
+                                      name="equipment[description]"
+                                      id="description">{{ old('equipment.description', $equipment->description) }}</textarea>
+                            <span class="invalid-feedback">{{ $errors->first('equipment.description') }}</span>
                         </div>
                     </div>
-                    <div class="form-row">
-                        <div class="col mb-3">
+                    <div class="form-row mt-3">
+                        <div class="col">
                             <label class="control-label" for="specification">@lang('site::equipment.specification')</label>
-                            <textarea class="summernote form-control{{ $errors->has('specification') ? ' is-invalid' : '' }}"
+                            <textarea class="summernote form-control{{ $errors->has('equipment.specification') ? ' is-invalid' : '' }}"
                                       placeholder="@lang('site::equipment.placeholder.specification')"
-                                      name="specification"
-                                      id="specification">{{ old('specification', $equipment->specification) }}</textarea>
-                            <span class="invalid-feedback">{{ $errors->first('specification') }}</span>
+                                      name="equipment[specification]"
+                                      id="specification">{{ old('equipment.specification', $equipment->specification) }}</textarea>
+                            <span class="invalid-feedback">{{ $errors->first('equipment.specification') }}</span>
                         </div>
                     </div>
                 </form>

@@ -11,6 +11,6 @@ return [
     'multiplicity' => 'Множитель',
     'date'         => 'Дата обновления курса',
     'placeholder'  => [
-        'date' => 'Дата'
+        'date' => 'Выбрать'
     ],
 ];

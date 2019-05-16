@@ -50,7 +50,7 @@
                                            for="number">@lang('site::product.equipment_id')</label>
                                     <div class="text-big">
                                         <a href="{{route('equipments.show', $repair->product->equipment)}}">
-                                            {{$repair->product->equipment->catalog->parentTreeName()}}
+                                            {{$repair->product->equipment->catalog->name_plural}}
                                             {{$repair->product->equipment->name}}
                                         </a>
                                     </div>

@@ -19,7 +19,7 @@
                     <dt class="col-sm-4 text-left text-sm-right"></dt>
                     <dd class="col-sm-8">
                         @if($datasheet->file->exists())
-                            @include('site::file.download', ['file' => $datasheet->file])
+                            @include('site::file.download', ['file' => $datasheet->file, 'small' => true])
                         @else
                             <span class="badge badge-danger text-big">@lang('site::file.error.not_found')</span>
                         @endif
@@ -39,7 +39,11 @@
                     <dd class="col-sm-8">{{mimeToExt($datasheet->file->mime)}}</dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::file.size')</dt>
-                    <dd class="col-sm-8">{{formatFileSize(filesize(Storage::disk($datasheet->file->storage)->getAdapter()->getPathPrefix().$datasheet->file->path))}}</dd>
+                    <dd class="col-sm-8">
+                        @if($datasheet->file->exists())
+                            {{formatFileSize(filesize(Storage::disk($datasheet->file->storage)->getAdapter()->getPathPrefix().$datasheet->file->path))}}
+                        @endif
+                    </dd>
                     @if($products->isNotEmpty())
                         <dt class="col-sm-4 text-left text-sm-right">@lang('site::datasheet.help.products')</dt>
                         <dd class="col-sm-8">

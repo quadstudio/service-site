@@ -60,7 +60,7 @@
 
                             <div class="form-row border p-3">
                                 <div class="form-group mb-0">
-                                    <label for="path">Файл Excel</label>
+                                    <label for="path">@lang('site::messages.xls_file')</label>
                                     <input type="file"
                                            name="path"
                                            accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -73,7 +73,7 @@
                                         <span>@lang('site::messages.load')</span>
                                     </button>
                                     <span id="pathHelp" class="d-block form-text text-success">
-                                            @lang('site::order.help.load') <br /> @lang('site::order.help.xlsexample')
+                                            @lang('site::order.help.load') <br/> @lang('site::order.help.xlsexample')
                                         </span>
                                 </div>
                             </div>
@@ -81,24 +81,75 @@
                         </form>
                     </div>
                 </div>
-
-                <table class="table mt-3">
-                    <thead class="thead-light">
-                    <tr>
-                        <th class="text-left">@lang('site::cart.name')</th>
-                        <th class="text-center">@lang('site::cart.quantity')</th>
-                        <th class="text-right d-none d-xl-table-cell d-md-table-cell">@lang('site::cart.price')</th>
-                        <th class="text-right">@lang('site::cart.subtotal')</th>
-                    </tr>
-                    </thead>
-                    <tbody class="table-hover" id="cart-table">
+                <div id="cart-table">
                     @if(!Cart::isEmpty())
                         @include('site::cart.item.rows')
                     @endif
-                    </tbody>
-                </table>
+                </div>
+
                 @include('site::cart.modal.delete')
             </div>
         </div>
     </div>
 @endsection
+
+
+@push('scripts')
+<script>
+    try {
+        window.addEventListener('load', function () {
+            let fast_product_id = $('#fast_product_id');
+            fast_product_id.select2({
+                theme: "bootstrap4",
+                ajax: {
+                    url: '{{route('api.products.fast')}}',
+                    dataType: 'json',
+                    delay: 200,
+                    data: function (params) {
+                        return {
+                            'filter[search_part]': params.term,
+                            'filter[limit]': fast_product_id.data('limit'),
+                        };
+                    },
+                    processResults: function (data, params) {
+                        return {
+                            results: data.data,
+                        };
+                    }
+                },
+                minimumInputLength: 3,
+
+                templateResult: function (product) {
+                    if (product.loading) return "...";
+                    let markup = "<img style='width:70px;' src=" + product.image + " /> &nbsp; " + product.name + ' (' + product.sku + ') - ' + product.format;
+                    return markup;
+                },
+                templateSelection: function (product) {
+                    return product.name;
+                },
+                escapeMarkup: function (markup) {
+                    return markup;
+                }
+            });
+
+            fast_product_id.on('select2:select', function (e) {
+                let product_id = $(this).find('option:selected').val();
+
+                axios
+                    .post(route('buy', product_id), {quantity: 1})
+                    .then((response) => {
+                        let parser = new Parser();
+                        parser.parse(response.data);
+                    })
+                    .catch((error) => {
+                        this.status = 'Error:' + error;
+                    });
+            });
+
+        });
+    } catch (e) {
+        console.log(e);
+    }
+
+</script>
+@endpush

@@ -25,22 +25,16 @@ class ProductRequest extends FormRequest
     public function rules()
     {
         switch ($this->method()) {
-            case 'GET':
-            case 'DELETE':
-            case 'POST': {
-                return [];
-            }
             case 'PUT':
             case 'PATCH': {
                 return [
-                    'name'     => 'required|string|max:255',
-                    'sku'      => 'max:255',
-                    'old_sku'  => 'max:255',
-                    'type_id'  => 'required|exists:product_types,id',
-                    'enabled'  => 'required|boolean',
-                    'active'   => 'required|boolean',
-                    'warranty' => 'required|boolean',
-                    'service'  => 'required|boolean',
+                    'product.name'     => 'required|string|max:255',
+                    'product.sku'      => 'max:255',
+                    'product.old_sku'  => 'max:255',
+                    'product.type_id'  => 'required|exists:product_types,id',
+                    'product.enabled'  => 'required|boolean',
+                    'product.warranty' => 'required|boolean',
+                    'product.service'  => 'required|boolean',
                 ];
             }
             default:
@@ -66,14 +60,13 @@ class ProductRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name'     => trans('site::product.name'),
-            'sku'      => trans('site::product.sku'),
-            'old_sku'  => trans('site::product.old_sku'),
-            'type_id'  => trans('site::product.type_id'),
-            'enabled'  => trans('site::product.enabled'),
-            'active'   => trans('site::product.active'),
-            'warranty' => trans('site::product.warranty'),
-            'service'  => trans('site::product.service'),
+            'product.name'     => trans('site::product.name'),
+            'product.sku'      => trans('site::product.sku'),
+            'product.old_sku'  => trans('site::product.old_sku'),
+            'product.type_id'  => trans('site::product.type_id'),
+            'product.enabled'  => trans('site::product.enabled'),
+            'product.warranty' => trans('site::product.warranty'),
+            'product.service'  => trans('site::product.service'),
         ];
     }
 }

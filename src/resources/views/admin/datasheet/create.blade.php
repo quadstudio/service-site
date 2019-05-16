@@ -19,150 +19,202 @@
         @alert()@endalert
 
         <div class="card mb-5">
-            <div class="card-body" id="summernote">
-                <form id="form-content" method="POST" action="{{ route('admin.datasheets.store') }}">
+            <div class="card-body">
+                <form id="form" method="POST" action="{{ route('admin.datasheets.store') }}">
                     @csrf
 
-                    <div class="form-row required">
-                        <div class="col mb-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox"
+                                               @if(old('datasheet.show_ferroli')) checked @endif
+                                               class="custom-control-input{{  $errors->has('datasheet.show_ferroli') ? ' is-invalid' : '' }}"
+                                               id="show_ferroli"
+                                               name="datasheet[show_ferroli]">
+                                        <label class="custom-control-label"
+                                               for="show_ferroli">@lang('site::messages.show_ferroli')</label>
+                                        <span class="invalid-feedback">{{ $errors->first('datasheet.show_ferroli') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox"
+                                               @if(old('datasheet.show_lamborghini')) checked
+                                               @endif
+                                               class="custom-control-input{{  $errors->has('datasheet.show_lamborghini') ? ' is-invalid' : '' }}"
+                                               id="show_lamborghini"
+                                               name="datasheet[show_lamborghini]">
+                                        <label class="custom-control-label"
+                                               for="show_lamborghini">@lang('site::messages.show_lamborghini')</label>
+                                        <span class="invalid-feedback">{{ $errors->first('datasheet.show_lamborghini') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox"
+                                               @if(old('datasheet.active')) checked @endif
+                                               class="custom-control-input{{  $errors->has('datasheet.active') ? ' is-invalid' : '' }}"
+                                               id="active"
+                                               name="datasheet[active]">
+                                        <label class="custom-control-label"
+                                               for="active">@lang('site::messages.active')</label>
+                                        <span class="invalid-feedback">{{ $errors->first('datasheet.active') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row required mt-3">
+                        <div class="col">
                             <label class="control-label" for="name">@lang('site::datasheet.name')</label>
                             <input type="text"
-                                   name="name"
+                                   name="datasheet[name]"
                                    id="name"
                                    required
-                                   class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}"
+                                   class="form-control{{ $errors->has('datasheet.name') ? ' is-invalid' : '' }}"
                                    placeholder="@lang('site::datasheet.placeholder.name')"
-                                   value="{{ old('name') }}">
-                            <span class="invalid-feedback">{{ $errors->first('name') }}</span>
+                                   value="{{ old('datasheet.name') }}">
+                            <span class="invalid-feedback">{{ $errors->first('datasheet.name') }}</span>
                         </div>
                     </div>
 
                     <div class="form-row required">
-                        <div class="col mb-3">
+                        <div class="col">
                             <label class="control-label"
                                    for="type_id">@lang('site::datasheet.type_id')</label>
                             <select class="form-control
-                                            {{$errors->has('type_id') ? ' is-invalid' : ''}}"
+                                            {{$errors->has('datasheet.type_id') ? ' is-invalid' : ''}}"
                                     required
-                                    name="type_id"
+                                    name="datasheet[type_id]"
                                     id="type_id">
                                 <option value="">@lang('site::messages.select_from_list')</option>
-                                @foreach($types as $type)
-                                    <option value="{{ $type->id }}"
-                                            @if(old('type_id') == $type->id) selected @endif >
-                                        {{ $type->name }}
+                                @foreach($file_types as $file_type)
+                                    <option value="{{ $file_type->id }}"
+                                            @if(old('datasheet.type_id') == $file_type->id) selected @endif >
+                                        {{ $file_type->name }}
                                     </option>
                                 @endforeach
                             </select>
-                            <span class="invalid-feedback">{{ $errors->first('type_id') }}</span>
+                            <span class="invalid-feedback">{{ $errors->first('datasheet.type_id') }}</span>
                         </div>
                     </div>
 
-                    <div class="form-row required">
-                        <div class="col mb-3">
-                            <label class="control-label d-block"
-                                   for="active">@lang('site::datasheet.active')</label>
-                            <div class="custom-control custom-radio  custom-control-inline">
-                                <input class="custom-control-input
-                                                    {{$errors->has('active') ? ' is-invalid' : ''}}"
-                                       type="radio"
-                                       name="active"
-                                       required
-                                       @if(old('active', 1) == 1) checked @endif
-                                       id="active_1"
-                                       value="1">
-                                <label class="custom-control-label"
-                                       for="active_1">@lang('site::messages.yes')</label>
-                            </div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input class="custom-control-input
-                                                    {{$errors->has('active') ? ' is-invalid' : ''}}"
-                                       type="radio"
-                                       name="active"
-                                       required
-                                       @if(old('active', 1) == 0) checked @endif
-                                       id="active_0"
-                                       value="0">
-                                <label class="custom-control-label"
-                                       for="active_0">@lang('site::messages.no')</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="control-label"
-                                       for="date_from">@lang('site::datasheet.date_from_to') @lang('site::datasheet.date_from')</label>
-                                <input type="date" name="date_from" id="date_from"
-                                       class="form-control{{ $errors->has('date_from') ? ' is-invalid' : '' }}"
-                                       value="{{ old('date_from') }}">
-                                <span class="invalid-feedback">{{ $errors->first('date_from') }}</span>
+                                       for="date_from">@lang('site::datasheet.date_from')</label>
+                                <div class="input-group date datetimepicker" id="datetimepicker_date_from"
+                                     data-target-input="nearest">
+                                    <input type="text"
+                                           name="datasheet[date_from]"
+                                           id="date_from"
+                                           maxlength="10"
+                                           placeholder="@lang('site::datasheet.placeholder.date_from')"
+                                           data-target="#datetimepicker_date_from"
+                                           data-toggle="datetimepicker"
+                                           class="datetimepicker-input form-control{{ $errors->has('datasheet.date_from') ? ' is-invalid' : '' }}"
+                                           value="{{ old('datasheet.date_from') }}">
+                                    <div class="input-group-append"
+                                         data-target="#datetimepicker_date_from"
+                                         data-toggle="datetimepicker">
+                                        <div class="input-group-text">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="invalid-feedback">{{ $errors->first('datasheet.date_from') }}</span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="control-label"
-                                       for="date_to">@lang('site::datasheet.date_from_to') @lang('site::datasheet.date_to')</label>
-                                <input type="date" name="date_to" id="date_to"
-                                       class="form-control{{ $errors->has('date_to') ? ' is-invalid' : '' }}"
-                                       value="{{ old('date_to') }}">
-                                <span class="invalid-feedback">{{ $errors->first('date_to') }}</span>
+                                       for="date_to">@lang('site::datasheet.date_to')</label>
+                                <div class="input-group date datetimepicker" id="datetimepicker_date_to"
+                                     data-target-input="nearest">
+                                    <input type="text"
+                                           name="datasheet[date_to]"
+                                           id="date_to"
+                                           maxlength="10"
+                                           placeholder="@lang('site::datasheet.placeholder.date_to')"
+                                           data-target="#datetimepicker_date_to"
+                                           data-toggle="datetimepicker"
+                                           class="datetimepicker-input form-control{{ $errors->has('datasheet.date_to') ? ' is-invalid' : '' }}"
+                                           value="{{ old('datasheet.date_to') }}">
+                                    <div class="input-group-append"
+                                         data-target="#datetimepicker_date_to"
+                                         data-toggle="datetimepicker">
+                                        <div class="input-group-text">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="invalid-feedback">{{ $errors->first('datasheet.date_to') }}</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-row">
-                        <div class="col mb-3">
+                        <div class="col">
                             <label class="control-label" for="tags">@lang('site::datasheet.tags')</label>
-                            <textarea class="summernote form-control{{ $errors->has('tags') ? ' is-invalid' : '' }}"
+                            <textarea class="form-control{{ $errors->has('datasheet.tags') ? ' is-invalid' : '' }}"
                                       placeholder="@lang('site::datasheet.placeholder.tags')"
-                                      name="tags"
-                                      id="tags">{!! old('tags') !!}</textarea>
-                            <span class="invalid-feedback">{{ $errors->first('tags') }}</span>
+                                      name="datasheet[tags]"
+                                      id="tags">{!! old('datasheet.tags') !!}</textarea>
+                            <span class="invalid-feedback">{{ $errors->first('datasheet.tags') }}</span>
                         </div>
                     </div>
                 </form>
 
-                <div class="row">
-                    <div class="col-md-8">
-                        <form method="POST" data-preview="#file-preview" enctype="multipart/form-data"
-                              action="{{route('admin.datasheets.file')}}">
-                            @csrf
-                            <input type="hidden" name="storage" value="datasheets"/>
-                            <input type="hidden" name="type_id" value="4"/>
-
-                            <div class="form-group required">
-                                <label class="control-label"
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="form-row mt-2">
+                            <div class="col">
+                                <label class="control-label" class="control-label"
                                        for="file_id">@lang('site::datasheet.file_id')</label>
 
-                                <input class="d-inline-block form-control-file {{ $errors->has('file_id') ? ' is-invalid' : '' }}"
-                                       type="file"
-                                       required
-                                       accept="application/pdf"
-                                       id="file_id"
-                                       name="path"/>
-                                <span class="invalid-feedback">{{ $errors->first('file_id') }}</span>
+                                <form method="POST" enctype="multipart/form-data"
+                                      action="{{route('admin.files.store')}}">
+                                    @csrf
+                                    <input type="hidden"
+                                           name="type_id"
+                                           value="4"/>
+                                    <input type="hidden"
+                                           name="storage"
+                                           value="datasheets"/>
+                                    <input class="d-inline-block form-control-file{{ $errors->has('file_id') ? ' is-invalid' : '' }}"
+                                           type="file"
+                                           accept="{{config('site.datasheets.accept')}}"
+                                           name="path"/>
+
+                                    <input type="button" class="btn btn-ferroli file-upload-button"
+                                           value="@lang('site::messages.load')"/>
+                                    <span class="invalid-feedback">{{ $errors->first('file_id') }}</span>
+                                </form>
+
+
                             </div>
-
-                            <input type="button" class="btn btn-ferroli file-upload-button"
-                                   value="@lang('site::messages.load')"/>
-
-                        </form>
+                        </div>
                     </div>
-                    <div class="col-md-4 bg-light text-center" id="file-preview">
-                        @include('site::admin.file.preview', ['file' => $file])
+                    <div class="col-md-6">
+                        <div id="files" class="row bg-white">
+                            @include('site::admin.file.edit')
+                        </div>
                     </div>
                 </div>
-
                 <hr/>
                 <div class="form-row">
                     <div class="col text-right">
-                        <button name="_create" form="form-content" value="1" type="submit" class="btn btn-ferroli mb-1">
-                            <i class="fa fa-check"></i>
-                            <span>@lang('site::messages.save_add')</span>
-                        </button>
-                        <button name="_create" form="form-content" value="0" type="submit" class="btn btn-ferroli mb-1">
+                        <button form="form" type="submit" class="btn btn-ferroli mb-1">
                             <i class="fa fa-check"></i>
                             <span>@lang('site::messages.save')</span>
                         </button>

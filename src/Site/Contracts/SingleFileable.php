@@ -10,4 +10,14 @@ interface SingleFileable
      * @return BelongsTo
      */
     function file();
+
+    /**
+     * @return bool
+     */
+    function save();
+
+    /**
+     * @return string
+     */
+    function fileStorage();
 }

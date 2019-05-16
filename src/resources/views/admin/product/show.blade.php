@@ -160,8 +160,12 @@
                             <div>@bool(['bool' => $product->enabled == 1])@endbool</div>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center py-1">
-                            <div class="text-muted">@lang('site::product.active')</div>
-                            <div>@bool(['bool' => $product->active == 1])@endbool</div>
+                            <div class="text-muted">@lang('site::messages.show_ferroli')</div>
+                            <div>@bool(['bool' => $product->show_ferroli == 1])@endbool</div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center py-1">
+                            <div class="text-muted">@lang('site::messages.show_lamborghini')</div>
+                            <div>@bool(['bool' => $product->show_lamborghini == 1])@endbool</div>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center py-1">
                             <div class="text-muted">@lang('site::product.forsale')</div>

@@ -34,6 +34,16 @@
                         <h6 class="card-subtitle mb-2">{{$engineer->country->phone}} {{$engineer->phone}}</h6>
                         <p class="card-text">{{$engineer->address}}</p>
                     </div>
+                    @if($engineer->certificates()->exists())
+                        <ul class="list-group">
+                            @foreach($engineer->certificates as $certificate)
+                                <li class="list-group-item d-flex justify-content-between align-items-center py-0">
+                                    <div class="text-muted">@lang('site::certificate.certificate') {{$certificate->type->name}}</div>
+                                    <div class="">№ {{$certificate->id}}</div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @endif
                     <div class="card-footer">
                         <a href="{{route('engineers.edit', $engineer)}}"
                            class="@cannot('edit', $engineer) disabled @endcannot btn btn-sm btn-secondary">

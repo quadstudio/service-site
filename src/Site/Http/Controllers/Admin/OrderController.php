@@ -6,8 +6,10 @@ namespace QuadStudio\Service\Site\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use QuadStudio\Service\Site\Events\OrderScheduleEvent;
+use QuadStudio\Service\Site\Exports\Excel\OrdersExcel;
 use QuadStudio\Service\Site\Filters\Order\OrderAddressSelectFilter;
 use QuadStudio\Service\Site\Filters\Order\OrderPerPageFilter;
+use QuadStudio\Service\Site\Filters\Order\OrderUserSelectFilter;
 use QuadStudio\Service\Site\Filters\Order\ScSearchFilter;
 use QuadStudio\Service\Site\Http\Requests\MessageRequest;
 use QuadStudio\Service\Site\Models\Order;
@@ -42,10 +44,14 @@ class OrderController extends Controller
         $this->orders->trackFilter();
         $this->orders->pushTrackFilter(ScSearchFilter::class);
         $this->orders->pushTrackFilter(OrderAddressSelectFilter::class);
+        $this->orders->pushTrackFilter(OrderUserSelectFilter::class);
         $this->orders->pushTrackFilter(OrderPerPageFilter::class);
 
+		if ($request->has('excel')) {
+            (new OrdersExcel())->setRepository($this->orders)->render();
+        }
         return view('site::admin.order.index', [
-            'orders'     => $this->orders->paginate($request->input('filter.per_page', config('site.per_page.order', 10))),
+            'orders'     => $this->orders->paginate($request->input('filter.per_page', config('site.per_page.order', 10)), ['orders.*']),
             'repository' => $this->orders,
         ]);
     }

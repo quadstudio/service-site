@@ -2,9 +2,8 @@
 
 namespace QuadStudio\Service\Site\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Carbon;
 use QuadStudio\Service\Site\Contracts\SingleImageable;
 
 class Event extends Model implements SingleImageable
@@ -20,22 +19,25 @@ class Event extends Model implements SingleImageable
         'date_from', 'date_to', 'confirmed',
         'image_id', 'type_id', 'status_id',
         'region_id', 'city', 'address',
+        'show_ferroli', 'show_lamborghini'
     ];
 
     protected $casts = [
 
-        'title'       => 'string',
-        'annotation'  => 'string',
-        'description' => 'string',
-        'confirmed'   => 'boolean',
-        'image_id'    => 'integer',
-        'type_id'     => 'integer',
-        'status_id'   => 'integer',
-        'region_id'   => 'string',
-        'city'        => 'string',
-        'address'     => 'string',
-        'date_from'   => 'date',
-        'date_to'     => 'date'
+        'title'            => 'string',
+        'annotation'       => 'string',
+        'description'      => 'string',
+        'confirmed'        => 'boolean',
+        'show_ferroli'     => 'boolean',
+        'show_lamborghini' => 'boolean',
+        'image_id'         => 'integer',
+        'type_id'          => 'integer',
+        'status_id'        => 'integer',
+        'region_id'        => 'string',
+        'city'             => 'string',
+        'address'          => 'string',
+        'date_from'        => 'date:Y-m-d',
+        'date_to'          => 'date:Y-m-d',
     ];
 
     /**
@@ -50,24 +52,27 @@ class Event extends Model implements SingleImageable
     public static function boot()
     {
         parent::boot();
-
-
         self::deleting(function ($event) {
-            if($event->image()->exists()){
+            if ($event->image()->exists()) {
                 $event->image->delete();
-                //Storage::disk($event->image->storage)->delete($event->image->path);
             }
         });
     }
 
+    /**
+     * @param $value
+     */
     public function setDateFromAttribute($value)
     {
-        $this->attributes['date_from'] = date('Y-m-d', strtotime($value));
+        $this->attributes['date_from'] = $value ? Carbon::createFromFormat('d.m.Y', $value) : null;
     }
 
+    /**
+     * @param $value
+     */
     public function setDateToAttribute($value)
     {
-        $this->attributes['date_to'] = date('Y-m-d', strtotime($value));
+        $this->attributes['date_to'] = $value ? Carbon::createFromFormat('d.m.Y', $value) : null;
     }
 
     /**

@@ -26,29 +26,25 @@ class MemberRequest extends FormRequest
     {
 
         switch ($this->method()) {
-            case 'GET':
-            case 'DELETE': {
-                return [];
-            }
             case 'PUT':
             case 'PATCH':
             case 'POST': {
                 return [
-                    'type_id'                    => 'required|exists:event_types,id',
-                    'region_id'                  => 'required|exists:regions,id',
-                    'city'                       => 'required|string|max:100',
-                    'name'                       => 'required|string|max:255',
-                    'date_from'                  => 'required|date',
-                    'date_to'                    => 'required|date|after_or_equal:date_from',
-                    'email'                      => 'required|string|max:50',
-                    'contact'                    => 'required|string|max:255',
-                    'phone'                      => 'required|digits:10',
-                    'count'                      => 'required|numeric|min:1|max:50',
-                    'address'                    => 'nullable|max:255',
-                    'participant.*.name'         => 'required|string|max:100',
-                    'participant.*.headposition' => 'required|string|max:100',
-                    'participant.*.phone'        => 'nullable|digits:10',
-                    'participant.*.email'        => 'nullable|max:50|email',
+                    'member.type_id'                    => 'required|exists:event_types,id',
+                    'member.region_id'                  => 'required|exists:regions,id',
+                    'member.city'                       => 'required|string|max:100',
+                    'member.name'                       => 'required|string|max:255',
+                    'member.date_from'                  => 'required|date',
+                    'member.date_to'                    => 'required|date|after_or_equal:date_from',
+                    'member.email'                      => 'required|string|max:50',
+                    'member.contact'                    => 'required|string|max:255',
+                    'member.phone'                      =>'required|string|size:'.config('site.phone.maxlength'),
+                    'member.count'                      => 'required|numeric|min:1|max:50',
+                    'member.address'                    => 'nullable|max:255',
+                    'member.participant.*.name'         => 'required|string|max:100',
+                    'member.participant.*.headposition' => 'required|string|max:100',
+                    'member.participant.*.phone'        => 'nullable|size:'.config('site.phone.maxlength'),
+                    'member.participant.*.email'        => 'nullable|max:50|email',
 
                 ];
             }
@@ -65,7 +61,7 @@ class MemberRequest extends FormRequest
     public function messages()
     {
         return [
-            'date_to' => [
+            'member.date_to' => [
                 'after_or_equal' => trans('site::member.error.date_to.after_or_equal')
             ],
         ];
@@ -79,21 +75,21 @@ class MemberRequest extends FormRequest
     public function attributes()
     {
         return [
-            'type_id'                    => trans('site::member.type_id'),
-            'region_id'                  => trans('site::member.region_id'),
-            'city'                       => trans('site::member.city'),
-            'name'                       => trans('site::member.name'),
-            'email'                      => trans('site::member.email'),
-            'contact'                    => trans('site::member.contact'),
-            'phone'                      => trans('site::member.phone'),
-            'count'                      => trans('site::member.count'),
-            'address'                    => trans('site::member.address'),
-            'date_from'                  => trans('site::member.date_from'),
-            'date_to'                    => trans('site::member.date_to'),
-            'participant.*.name'         => trans('site::participant.name'),
-            'participant.*.headposition' => trans('site::participant.headposition'),
-            'participant.*.phone'        => trans('site::participant.phone'),
-            'participant.*.email'        => trans('site::participant.email'),
+            'member.type_id'                    => trans('site::member.type_id'),
+            'member.region_id'                  => trans('site::member.region_id'),
+            'member.city'                       => trans('site::member.city'),
+            'member.name'                       => trans('site::member.name'),
+            'member.email'                      => trans('site::member.email'),
+            'member.contact'                    => trans('site::member.contact'),
+            'member.phone'                      => trans('site::member.phone'),
+            'member.count'                      => trans('site::member.count'),
+            'member.address'                    => trans('site::member.address'),
+            'member.date_from'                  => trans('site::member.date_from'),
+            'member.date_to'                    => trans('site::member.date_to'),
+            'member.participant.*.name'         => trans('site::participant.name'),
+            'member.participant.*.headposition' => trans('site::participant.headposition'),
+            'member.participant.*.phone'        => trans('site::participant.phone'),
+            'member.participant.*.email'        => trans('site::participant.email'),
         ];
     }
 }

@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use QuadStudio\Service\Site\Contracts\Imageable;
 use QuadStudio\Service\Site\Facades\Site;
-use QuadStudio\Service\Site\Traits\Models\ProductAnalogTrait;
-use QuadStudio\Service\Site\Traits\Models\ProductDetailTrait;
-use QuadStudio\Service\Site\Traits\Models\ProductRelationTrait;
+use QuadStudio\Service\Site\Concerns\AttachAnalogs;
+use QuadStudio\Service\Site\Concerns\AttachDetails;
+use QuadStudio\Service\Site\Concerns\AttachRelations;
 
 class Product extends Model implements Imageable
 {
-    use ProductAnalogTrait, ProductDetailTrait, ProductRelationTrait;
+    use AttachAnalogs, AttachDetails, AttachRelations;
     /**
      * @var bool
      */
@@ -26,10 +26,29 @@ class Product extends Model implements Imageable
      * @var array
      */
     protected $fillable = [
-        'name', 'sku', 'old_sku', 'enabled', 'active',
-        'h1', 'title', 'metadescription',
+        'name', 'sku', 'old_sku', 'enabled',
+        'show_ferroli', 'show_lamborghini',
         'warranty', 'service', 'description',
+        'h1', 'title', 'metadescription',
         'specification', 'equipment_id', 'type_id'
+    ];
+
+    protected $casts = [
+
+        'name'             => 'string',
+        'sku'              => 'string',
+        'old_sku'          => 'string',
+        'h1'               => 'string',
+        'title'            => 'string',
+        'metadescription'  => 'string',
+        'specification'    => 'string',
+        'enabled'          => 'boolean',
+        'show_ferroli'     => 'boolean',
+        'show_lamborghini' => 'boolean',
+        'warranty'         => 'boolean',
+        'service'          => 'boolean',
+        'equipment_id'     => 'integer',
+        'type_id'          => 'integer',
     ];
 
     /**
@@ -81,7 +100,8 @@ class Product extends Model implements Imageable
         });
     }
 
-    public function getFullNameAttribute(){
+    public function getFullNameAttribute()
+    {
         $name = [];
         if (mb_strlen($this->getAttribute('name'), 'UTF-8') > 0) {
             $name[] = $this->getAttribute('name');
@@ -374,7 +394,6 @@ class Product extends Model implements Imageable
     {
         return !is_null($this->getAttribute('sku'));
     }
-
 
 
     /**

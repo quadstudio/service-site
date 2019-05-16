@@ -4,12 +4,12 @@ namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use QuadStudio\Service\Site\Traits\Models\SortOrderTrait;
+use QuadStudio\Service\Site\Concerns\Sortable;
 
 class Image extends Model
 {
 
-    use SortOrderTrait;
+    use Sortable;
     /**
      * @var string
      */
@@ -37,6 +37,10 @@ class Image extends Model
         self::deleting(function ($image) {
             Storage::disk($image->storage)->delete($image->path);
         });
+    }
+
+    public function getFileExistsAttribute(){
+        return $this->exists && Storage::disk($this->storage)->exists($this->path);
     }
 
     public function src()

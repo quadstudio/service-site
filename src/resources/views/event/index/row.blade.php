@@ -5,7 +5,7 @@
         <div class="col-md-3 news-meta-top">
 
             <time datetime="{{$event->date_from->format('d.m.Y')}}">
-                <i class="fa mr-2 fa-@lang('site::news.icon')"></i>{{$event->date_from->format('d.m.Y')}}
+                <i class="fa mr-2 fa-@lang('site::announcement.icon')"></i>{{$event->date_from->format('d.m.Y')}}
                 @if($event->date_from->format('d.m.Y') != $event->date_to->format('d.m.Y'))
                     - {{$event->date_to->format('d.m.Y')}}
                 @endif

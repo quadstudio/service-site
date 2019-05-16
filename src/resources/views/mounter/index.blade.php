@@ -53,7 +53,7 @@
                     </div>
                     <div class="col-xl-3 col-sm-6">
                         <dl class="dl-horizontal mt-2">
-                            <dt class="col-12">@lang('site::mounter.user_address_id')</dt>
+                            <dt class="col-12">@lang('site::mounter.user')</dt>
                             <dd class="col-12">
                                 <a href="{{route('admin.addresses.show', $mounter->userAddress)}}">
                                     {{$mounter->userAddress->name}}

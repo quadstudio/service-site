@@ -4,22 +4,33 @@ namespace QuadStudio\Service\Site\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use QuadStudio\Service\Site\Concerns\AttachProducts;
 use QuadStudio\Service\Site\Contracts\SingleFileable;
 
 class Datasheet extends Model implements SingleFileable
 {
+
+    use AttachProducts;
     /**
      * @var string
      */
     protected $table;
 
     protected $fillable = [
-        'date_from', 'date_to', 'name', 'tags', 'active', 'file_id'
+        'date_from', 'date_to', 'name',
+        'tags', 'file_id', 'active',
+        'show_ferroli', 'show_lamborghini'
     ];
 
     protected $casts = [
-        'date_from' => 'date:Y-m-d',
-        'date_to'   => 'date:Y-m-d',
+        'name'             => 'string',
+        'tags'             => 'string',
+        'file_id'          => 'integer',
+        'date_from'        => 'date:Y-m-d',
+        'date_to'          => 'date:Y-m-d',
+        'active'          => 'boolean',
+        'show_ferroli'     => 'boolean',
+        'show_lamborghini' => 'boolean',
     ];
 
     protected $dates = [
@@ -34,6 +45,22 @@ class Datasheet extends Model implements SingleFileable
     {
         parent::__construct($attributes);
         $this->table = 'datasheets';
+    }
+
+    /**
+     * @param $value
+     */
+    public function setDateFromAttribute($value)
+    {
+        $this->attributes['date_from'] = $value ? Carbon::createFromFormat('d.m.Y', $value) : null;
+    }
+
+    /**
+     * @param $value
+     */
+    public function setDateToAttribute($value)
+    {
+        $this->attributes['date_to'] = $value ? Carbon::createFromFormat('d.m.Y', $value) : null;
     }
 
     /**
@@ -69,45 +96,33 @@ class Datasheet extends Model implements SingleFileable
     /**
      * @return null|string
      */
-    public function date_from_to()
+    public function getDateAttribute()
     {
         $result = [];
-        if (!is_null($date_from = $this->date_from())) {
-            $result[] = trans('site::datasheet.date_from');
-            $result[] = $date_from;
+        if ($this->getAttribute('date_from')) {
+            $result[] = trans('site::messages.date_from');
+            $result[] = $this->getAttribute('date_from')->format('d.m.Y');
         }
-        if (!is_null($date_to = $this->date_to())) {
-            if (!empty($result)) {
-                $result[] = '-';
-            }
-            $result[] = trans('site::datasheet.date_to');
-            $result[] = $date_to;
+        if (!empty($result)) {
+            $result[] = '•';
         }
-
+        if ($this->getAttribute('date_to')) {
+            $result[] = trans('site::messages.date_to');
+            $result[] = $this->getAttribute('date_to')->format('d.m.Y');
+        } else {
+            $result[] = trans('site::messages.until_now');
+        }
 
         if (!empty($result)) {
-            return '(' . implode(' ', $result) . ')';
+            return implode(' ', $result);
         }
 
         return null;
     }
 
     /**
-     * Добавить связь документация - оборудование
-     *
-     * @param mixed $product
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function attachProduct($product)
-    {
-        if (is_object($product)) {
-            $product = $product->getKey();
-        }
-        if (is_array($product)) {
-            $product = $product['id'];
-        }
-        $this->products()->attach($product);
-    }
-
     public function products()
     {
         return $this->belongsToMany(
@@ -119,19 +134,10 @@ class Datasheet extends Model implements SingleFileable
     }
 
     /**
-     * Удалить связь документация - оборудование
-     *
-     * @param mixed $product
+     * @return string
      */
-    public function detachProduct($product)
+    function fileStorage()
     {
-        if (is_object($product)) {
-            $product = $product->getKey();
-        }
-        if (is_array($product)) {
-            $product = $product['id'];
-        }
-        $this->products()->detach($product);
+        return 'datasheets';
     }
-
 }

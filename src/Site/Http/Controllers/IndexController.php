@@ -8,15 +8,15 @@ use QuadStudio\Service\Site\Filters\Event\EventRunnedFilter;
 use QuadStudio\Service\Site\Filters\Event\SortDateFromFilter;
 use QuadStudio\Service\Site\Repositories\EventRepository;
 use QuadStudio\Service\Site\Repositories\EventTypeRepository;
-use QuadStudio\Service\Site\Repositories\NewsRepository;
+use QuadStudio\Service\Site\Repositories\AnnouncementRepository;
 
 class IndexController extends Controller
 {
 
     /**
-     * @var NewsRepository
+     * @var AnnouncementRepository
      */
-    protected $news;
+    protected $announcements;
     /**
      * @var EventRepository
      */
@@ -29,17 +29,17 @@ class IndexController extends Controller
     /**
      * Create a new controller instance.
      *
-     * @param NewsRepository $news
+     * @param AnnouncementRepository $announcements
      * @param EventRepository $events
      * @param EventTypeRepository $types
      */
     public function __construct(
-        NewsRepository $news,
+        AnnouncementRepository $announcements,
         EventRepository $events,
         EventTypeRepository $types
     )
     {
-        $this->news = $news;
+        $this->announcements = $announcements;
         $this->events = $events;
         $this->types = $types;
     }
@@ -51,11 +51,11 @@ class IndexController extends Controller
      */
     public function index()
     {
-        $news = $this->news
-            ->applyFilter(new Filters\News\SortDateFilter())
-            ->applyFilter(new Filters\News\PublishedFilter())
-            ->applyFilter(new Filters\News\LimitSixFilter())
-            ->all(['news.*']);
+        $announcements = $this->announcements
+            ->applyFilter(new Filters\Announcement\SortDateFilter())
+            ->applyFilter(new Filters\Announcement\PublishedFilter())
+            ->applyFilter(new Filters\Announcement\LimitSixFilter())
+            ->all(['announcements.*']);
         $events = $this->events
             ->applyFilter(new SortDateFromFilter())
             ->applyFilter(new EventRunnedFilter())
@@ -63,12 +63,12 @@ class IndexController extends Controller
 //            ->applyFilter(new PublishedFilter())
 //            ->applyFilter(new LimitSixFilter())
             ->all(['events.*']);
-        $types = $this->types
+        $event_types = $this->types
             ->applyFilter(new Filters\EventType\SortFilter())
-            ->applyFilter(new Filters\EventType\ActiveFilter())
+            ->applyFilter(new Filters\EventType\EventTypeShowFilter())
             ->all(['event_types.*']);
 
-        return view('site::index', compact('news', 'events', 'types'));
+        return view('site::index', compact('announcements', 'events', 'event_types'));
 
     }
 }

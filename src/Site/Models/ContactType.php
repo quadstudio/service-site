@@ -25,4 +25,13 @@ class ContactType extends Model
         $this->table = 'contact_types';
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class, 'type_id');
+
+    }
+
 }

@@ -15,7 +15,6 @@
             <li class="breadcrumb-item active">@lang('site::messages.create')</li>
         </ol>
         <h1 class="header-title mb-4">@lang('site::messages.create') @lang('site::repair.repair')</h1>
-
         @alert()@endalert()
         <div class=" border p-3 mb-2">
             <button form="form"
@@ -50,7 +49,6 @@
                     <div class="card mt-2 mb-2">
                         <div class="card-body">
                             <h5 class="card-title">@lang('site::repair.header.client')</h5>
-
                             <div class="form-group mt-2 required">
                                 <label class="control-label" for="client">@lang('site::repair.client')</label>
                                 <input type="text"
@@ -62,7 +60,6 @@
                                        placeholder="@lang('site::repair.placeholder.client')">
                                 <span class="invalid-feedback">{{ $errors->first('repair.client') }}</span>
                             </div>
-
                             <div class="form-group required">
                                 <label class="control-label" for="address">@lang('site::repair.address')</label>
                                 <div class="input-group">
@@ -81,7 +78,6 @@
                                 </div>
                                 <span class="invalid-feedback">{{ $errors->first('repair.address') }}</span>
                             </div>
-
                             <div class="form-group required">
                                 <label class="control-label"
                                        for="country_id">@lang('site::repair.country_id')</label>
@@ -108,7 +104,6 @@
                                 </div>
                                 <span class="invalid-feedback">{{ $errors->first('repair.country_id') }}</span>
                             </div>
-
                             <div class="form-group required ">
                                 <label class="control-label"
                                        for="phone_primary">@lang('site::repair.phone_primary')</label>
@@ -159,9 +154,7 @@
                             </div>
                         </div>
                     </div>
-
                     {{--ОРГАНИЗАЦИИ --}}
-
                     <div class="card mt-2 mb-2">
                         <div class="card-body">
                             <h5 class="card-title">@lang('site::repair.header.org')</h5>
@@ -261,9 +254,7 @@
                             </div>
                         </div>
                     </div>
-
                     {{--ВЫЕЗД НА ОБСЛУЖИВАНИЕ --}}
-
                     <div class="card mt-2 mb-2">
                         <div class="card-body">
                             <h5 class="card-title">@lang('site::repair.header.call')</h5>
@@ -272,7 +263,7 @@
                                        for="engineer_id">@lang('site::repair.engineer_id')</label>
                                 <div class="input-group">
                                     <select required
-                                            data-form-action="{{ route('engineers.create') }}"
+                                            data-form-action="{{ route('engineers.create', ['certificate_type_id' => 1]) }}"
                                             data-btn-ok="@lang('site::messages.save')"
                                             data-btn-cancel="@lang('site::messages.cancel')"
                                             data-options="#engineer_id_options"
@@ -280,7 +271,7 @@
                                             class="dynamic-modal-form form-control{{  $errors->has('repair.engineer_id') ? ' is-invalid' : '' }}"
                                             name="repair[engineer_id]"
                                             id="engineer_id">
-                                        @include('site::engineer.options', ['engineer_id' => old('repair.engineer_id', isset($engineer_id) ? $engineer_id : null)])
+                                        @include('site::engineer.options', ['certificate_type_id' => 1, 'engineer_id' => old('repair.engineer_id', isset($engineer_id) ? $engineer_id : null)])
                                     </select>
                                     <div class="input-group-append">
                                         <div class="input-group-text">
@@ -315,7 +306,6 @@
                                 </div>
                                 <span class="invalid-feedback">{{ $errors->first('repair.date_call') }}</span>
                             </div>
-
                             <div class="form-group required ">
                                 <label class="control-label"
                                        for="reason_call">@lang('site::repair.reason_call')</label>
@@ -372,14 +362,12 @@
                             </div>
                         </div>
                     </div>
-
                     {{-- ОПЛАТА --}}
                     <div class="card mt-2 mb-2">
                         <div class="card-body">
                             <h5 class="card-title">@lang('site::repair.header.payment')</h5>
                             <div class="row">
                                 <div class="col-sm-6">
-
                                     <div class="form-group required">
                                         <label class="control-label" for="product_id">
                                             @lang('site::repair.product_id')
@@ -404,8 +392,6 @@
                                         </small>
                                         <span class="invalid-feedback">{{ $errors->first('repair.product_id') }}</span>
                                     </div>
-
-
                                     <div class="form-group ">
                                         <label class="control-label"
                                                for="serial_id">@lang('site::repair.serial_id')</label>
@@ -425,7 +411,6 @@
                                         </div>
                                         <span class="invalid-feedback">{{ $errors->first('repair.serial_id') }}</span>
                                     </div>
-
                                     <div class="form-group required">
                                         <label class="control-label"
                                                for="difficulty_id">@lang('site::repair.difficulty_id')</label>
@@ -451,7 +436,6 @@
                                         </div>
                                         <span class="invalid-feedback">{{ $errors->first('repair.difficulty_id') }}</span>
                                     </div>
-
                                     <div class="form-group required">
                                         <label class="control-label"
                                                for="distance_id">@lang('site::repair.distance_id')</label>
@@ -477,7 +461,6 @@
                                         </div>
                                         <span class="invalid-feedback">{{ $errors->first('repair.distance_id') }}</span>
                                     </div>
-
                                     <div class="form-group required">
                                         <label class="control-label"
                                                for="contragent_id">@lang('site::repair.contragent_id')</label>
@@ -509,11 +492,8 @@
 
                                 </div>
                                 <div class="col-sm-6">
-
                                     <fieldset id="product-search-fieldset">
-
                                     </fieldset>
-
                                     <fieldset id="parts-search-fieldset"
                                               style="display: @if( !old('allow_parts') || old('allow_parts') == 1) block @else none @endif;">
                                         <div class="form-group">
@@ -528,23 +508,13 @@
                                                 наименование
                                                 заменённой детали и выберите её из списка
                                             </small>
-
                                         </div>
-
                                         <div class="form-group">
-
                                             <label class="control-label"
                                                    for="">@lang('site::part.parts')</label>
-                                            <div class="list-group" id="parts">
+                                            <div class="list-group" id="parts" data-currency-symbol="{{ auth()->user()->currency->symbol_right }}">
                                                 @foreach($parts as $part)
-                                                    @include('site::part.card', [
-                                                            'product_id' => $part['product_id'],
-                                                            'sku' => $part['sku'],
-                                                            'name' => $part['name'],
-                                                            'cost' => $part['cost'],
-                                                            'format' => $part['format'],
-                                                            'count' => $part['count'],
-                                                        ])
+                                                    @include('site::part.create', ['product' => $part['product'], 'count' => $part['count']])
                                                 @endforeach
                                             </div>
                                             <hr/>
@@ -575,7 +545,6 @@
                         @include('site::file.create.type')
                     </div>
                 </div>
-
                 <fieldset>
                     <div class="form-group">
                         <div class="col text-right">
@@ -600,12 +569,65 @@
 <script>
     try {
         window.addEventListener('load', function () {
-            let product_id = $('#product_id'),
+
+            let product = $('#product_id'),
                 parts_search = $('#parts_search'),
                 parts = $('#parts'),
                 selected = [];
+            let number_format = function (number, decimals, dec_point, thousands_sep) {
 
-            product_id.select2({
+                let i, j, kw, kd, km;
+
+                // input sanitation & defaults
+                if (isNaN(decimals = Math.abs(decimals))) {
+                    decimals = 0;
+                }
+                if (dec_point === undefined) {
+                    dec_point = ".";
+                }
+                if (thousands_sep === undefined) {
+                    thousands_sep = " ";
+                }
+
+                i = parseInt(number = (+number || 0).toFixed(decimals)) + "";
+
+                if ((j = i.length) > 3) {
+                    j = j % 3;
+                } else {
+                    j = 0;
+                }
+
+                km = (j ? i.substr(0, j) + thousands_sep : "");
+                kw = i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands_sep);
+                //kd = (decimals ? dec_point + Math.abs(number - i).toFixed(decimals).slice(2) : "");
+                kd = (decimals ? dec_point + Math.abs(number - i).toFixed(decimals).replace(/-/, 0).slice(2) : "");
+
+
+                return km + kw + kd;
+            };
+            $(document)
+                .on('click', '.part-delete', (function () {
+                    let index = selected.indexOf($(this).data('id'));
+                    if (index > -1) {
+                        selected.splice(index, 1);
+                        $('.product-' + $(this).data('id')).remove();
+                    }
+                    calc_parts();
+                }))
+                .on('keyup mouseup', '.parts_count', (function () {
+                    calc_parts();
+                }));
+            let calc_parts = function () {
+                let cost = 0;
+                parts.children().each(function (i) {
+                    cost += (parseInt($(this).find('.parts_cost').val()) * $(this).find('.parts_count').val());
+                });
+
+                $('#total-cost').html(number_format(cost) + ' ' + parts.data('currencySymbol'));
+            };
+            calc_parts();
+
+            product.select2({
                 theme: "bootstrap4",
                 placeholder: '@lang('site::messages.select_from_list')',
                 selectOnClose: true,
@@ -615,13 +637,13 @@
             parts_search.select2({
                 theme: "bootstrap4",
                 ajax: {
-                    url: '/api/products/repair',
+                    url: '/api/parts',
                     dataType: 'json',
                     delay: 250,
                     data: function (params) {
                         return {
                             'filter[search_part]': params.term,
-                            'filter[search_product]': product_id.val(),
+                            'filter[search_product]': product.val(),
                         };
                     },
                     processResults: function (data, params) {
@@ -637,25 +659,30 @@
                     return markup;
                 },
                 templateSelection: function (product) {
-                    return product.name;
+                    console.log(product);
+                    if(product.id !== ""){
+                        return product.name + ' (' + product.sku + ')';
+                    }
+
+
+
                 },
                 escapeMarkup: function (markup) {
                     return markup;
                 }
             });
             parts_search.on('select2:select', function (e) {
-                //console.log(e);
                 let product_id = $(this).find('option:selected').val();
                 if (!selected.includes(product_id)) {
                     parts_search.removeClass('is-invalid');
                     selected.push(product_id);
                     axios
-                        .get("/api/products/" + product_id + "/part")
+                        .get("/api/parts/create/" + product_id)
                         .then((response) => {
 
                             parts.append(response.data);
                             $('[name="parts[' + product_id + '][count]"]').focus();
-                            //calc_parts();
+                            calc_parts();
                             parts_search.val(null)
                         })
                         .catch((error) => {
@@ -663,11 +690,10 @@
                         });
                 } else {
                     parts_search.addClass('is-invalid');
-                    //alert('Такая деталь уже есть в списке');
                 }
-
-                //console.log(data.val());
             });
+
+
         });
     } catch (e) {
         console.log(e);

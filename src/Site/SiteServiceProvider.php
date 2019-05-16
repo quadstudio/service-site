@@ -161,6 +161,7 @@ class SiteServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
+                Console\SiteGenerateRoutesCommand::class,
                 Console\SiteRunCommand::class,
                 Console\SiteSetupCommand::class,
                 Console\SiteResourceMakeCommand::class,

@@ -12,7 +12,7 @@ class AddressOnlineStoreFilter extends Filter
     {
         $builder = $builder
             ->where('is_eshop', 1)
-            ->where('active', 1)
+            ->where(config('site.check_field'), 1)
             ->whereNotNull('web')
             ->whereHas('users', function ($query) {
                 $query

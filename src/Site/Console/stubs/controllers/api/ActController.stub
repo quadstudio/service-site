@@ -2,10 +2,10 @@
 
 namespace {{namespace}}Http\Controllers\Api;
 
-use QuadStudio\Service\Site\Traits\Controllers\Api\ActControllerTrait;
+use QuadStudio\Service\Site\Traits\Controllers\Api\ActController;
 use {{namespace}}Http\Controllers\Controller;
 
 class ActController extends Controller
 {
-    use ActControllerTrait;
+    use ActController;
 }

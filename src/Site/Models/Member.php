@@ -3,9 +3,12 @@
 namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
+use QuadStudio\Service\Site\Concerns\Phoneable;
 
 class Member extends Model
 {
+    use Phoneable;
 
     /**
      * @var string
@@ -16,27 +19,31 @@ class Member extends Model
         'type_id', 'event_id', 'region_id', 'city',
         'name', 'contact', 'phone', 'email', 'count',
         'address', 'date_from', 'date_to', 'status_id',
-        'verified', 'verify_token'
+        'verified', 'verify_token', 'country_id',
+        'show_ferroli', 'show_lamborghini'
     ];
 
     //protected $dateFormat = 'd.m.Y H:i:s';
 
     protected $casts = [
-        'type_id'      => 'integer',
-        'event_id'     => 'integer',
-        'status_id'    => 'string',
-        'region_id'    => 'string',
-        'city'         => 'string',
-        'name'         => 'string',
-        'phone'        => 'string',
-        'contact'      => 'string',
-        'count'        => 'integer',
-        'email'        => 'string',
-        'address'      => 'string',
-        'date_from'    => 'date',
-        'date_to'      => 'date',
-        'verified'     => 'boolean',
-        'verify_token' => 'string',
+        'type_id'          => 'integer',
+        'event_id'         => 'integer',
+        'country_id'       => 'integer',
+        'status_id'        => 'string',
+        'region_id'        => 'string',
+        'show_ferroli'     => 'boolean',
+        'show_lamborghini' => 'boolean',
+        'city'             => 'string',
+        'name'             => 'string',
+        'phone'            => 'string',
+        'contact'          => 'string',
+        'count'            => 'integer',
+        'email'            => 'string',
+        'address'          => 'string',
+        'date_from'        => 'date:Y-m-d',
+        'date_to'          => 'date:Y-m-d',
+        'verified'         => 'boolean',
+        'verify_token'     => 'string',
     ];
 
 
@@ -64,16 +71,21 @@ class Member extends Model
         $this->save();
     }
 
+    /**
+     * @param $value
+     */
     public function setDateFromAttribute($value)
     {
-        $this->attributes['date_from'] = date('Y-m-d', strtotime($value));
+        $this->attributes['date_from'] = $value ? Carbon::createFromFormat('d.m.Y', $value) : null;
     }
 
+    /**
+     * @param $value
+     */
     public function setDateToAttribute($value)
     {
-        $this->attributes['date_to'] = date('Y-m-d', strtotime($value));
+        $this->attributes['date_to'] = $value ? Carbon::createFromFormat('d.m.Y', $value) : null;
     }
-
 
     /**
      * Мероприятие

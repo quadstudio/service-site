@@ -469,7 +469,8 @@
                                 name="repair[status_id]"
                                 value="{{$status->id}}"
                                 form="form"
-                                class="pull-right mx-1 btn btn-{{$status->color}} d-block d-sm-inline-block @if($key != $statuses->count()) mb-1 @endif">
+                                style="background-color: {{$status->color}};color:white"
+                                class="pull-right mx-1 btn d-block d-sm-inline-block @if($key != $statuses->count()) mb-1 @endif">
                             <i class="fa fa-{{$status->icon}}"></i>
                             <span>{{$status->button}}</span>
                         </button>

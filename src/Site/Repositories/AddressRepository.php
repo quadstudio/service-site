@@ -3,7 +3,6 @@
 namespace QuadStudio\Service\Site\Repositories;
 
 use QuadStudio\Repo\Eloquent\Repository;
-use QuadStudio\Service\Site\Filters\Address\AddressActiveBoolFilter;
 use QuadStudio\Service\Site\Models\Address;
 
 class AddressRepository extends Repository
@@ -24,7 +23,7 @@ class AddressRepository extends Repository
     public function track(): array
     {
         return [
-            AddressActiveBoolFilter::class
+
         ];
     }
 }

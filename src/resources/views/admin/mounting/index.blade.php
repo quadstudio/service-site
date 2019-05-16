@@ -39,13 +39,12 @@
 
                 <div class="card-header with-elements">
                     <div class="card-header-elements">
-
+                        <a href="{{route('admin.mountings.show', $mounting)}}" class="mr-2 ml-0">
+                            @lang('site::mounting.header.mounting') № {{$mounting->id}}
+                        </a>
                         <span class="badge text-normal badge-pill badge-{{ $mounting->status->color }} mr-3 ml-0">
                             <i class="fa fa-{{ $mounting->status->icon }}"></i> {{ $mounting->status->name }}
                         </span>
-                        <a href="{{route('admin.mountings.show', $mounting)}}" class="mr-3 ml-0">
-                            @lang('site::mounting.header.mounting') № {{$mounting->id}}
-                        </a>
                     </div>
 
                     <div class="card-header-elements ml-md-auto">
@@ -78,7 +77,20 @@
                             <dt class="col-12">@lang('site::mounting.product_id')</dt>
                             <dd class="col-12">{{$mounting->product->name}}</dd>
                             <dt class="col-12">@lang('site::mounting.serial_id')</dt>
-                            <dd class="col-12">{{$mounting->serial_id}}</dd>
+                            <dd class="col-12">
+                            <dd class="col-12">
+                                @if($mounting->serial_id)
+                                    <div class="bg-light p-2">{{$mounting->serial_id}}</div>
+                                    @if($mounting->serial()->exists())
+                                        <div class="text-muted">{{$mounting->serial->product->name}}</div>
+                                        <div class="text-muted">{{$mounting->serial->comment}}</div>
+                                    @else
+                                        <span class="bg-danger text-white px-2">@lang('site::serial.error.not_found')</span>
+                                    @endif
+                                @else
+                                    <span class="bg-danger text-white px-2">@lang('site::serial.error.not_exist')</span>
+                                @endif
+                            </dd>
                             <dt class="col-12">@lang('site::mounting.source_id')</dt>
                             <dd class="col-12">
                                 @if($mounting->source_id == 4)

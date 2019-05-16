@@ -19,6 +19,16 @@
                 <span>@lang('site::messages.back_home')</span>
             </a>
         </div>
+        <div class="card my-2">
+            <div class="card-body">
+                <h5 class="card-title">@lang('site::authorization.request.title')</h5>
+                <p class="card-text">@lang('site::authorization.request.text')</p>
+                @foreach($authorization_roles as $authorization_role)
+                    <a href="{{route('authorizations.create', $authorization_role->role)}}"
+                       class="btn d-block d-sm-inline-block mb-1 @if($authorization_role->canCreate()) btn-ferroli @else btn-light @endif">{{$authorization_role->name}}</a>
+                @endforeach
+            </div>
+        </div>
         <div class="card mb-2">
             <div class="card-body">
                 <h5 class="card-title">@lang('site::authorization.authorizations')</h5>
@@ -56,16 +66,7 @@
                 </table>
             </div>
         </div>
-        <div class="card my-2">
-            <div class="card-body">
-                <h5 class="card-title">@lang('site::authorization.request.title')</h5>
-                <p class="card-text">@lang('site::authorization.request.text')</p>
-                @foreach($authorization_roles as $authorization_role)
-                    <a href="{{route('authorizations.create', $authorization_role->role)}}"
-                       class="btn d-block d-sm-inline-block mb-1 @if($authorization_role->canCreate()) btn-ferroli @else btn-light @endif">{{$authorization_role->name}}</a>
-                @endforeach
-            </div>
-        </div>
+
         <div class="card-deck mb-4">
             @foreach($authorizations as $authorization)
                 <div class="card mb-2">

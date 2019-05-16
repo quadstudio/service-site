@@ -103,4 +103,14 @@ class Engineer extends Model
         return $this->hasMany(Repair::class);
     }
 
+    /**
+     * Сертификаты
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function certificates()
+    {
+        return $this->hasMany(Certificate::class);
+    }
+
 }

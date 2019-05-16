@@ -2,8 +2,14 @@
 
 namespace QuadStudio\Service\Site\Http\Controllers\Admin;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Storage;
+use QuadStudio\Service\Site\Concerns\StoreFiles;
+use QuadStudio\Service\Site\Filters\Datasheet\DatasheetPerPageFilter;
+use QuadStudio\Service\Site\Filters\Datasheet\DatasheetShowFerroliBoolFilter;
+use QuadStudio\Service\Site\Filters\Datasheet\DatasheetShowLamborghiniBoolFilter;
 use QuadStudio\Service\Site\Http\Requests\Admin\DatasheetProductRequest;
 use QuadStudio\Service\Site\Http\Requests\Admin\DatasheetRequest;
 use QuadStudio\Service\Site\Http\Requests\FileRequest;
@@ -11,13 +17,12 @@ use QuadStudio\Service\Site\Models\Datasheet;
 use QuadStudio\Service\Site\Models\FileType;
 use QuadStudio\Service\Site\Models\Product;
 use QuadStudio\Service\Site\Repositories\DatasheetRepository;
-use QuadStudio\Service\Site\Traits\Support\SingleFileLoaderTrait;
 
 
 class DatasheetController extends Controller
 {
 
-    use SingleFileLoaderTrait;
+    use AuthorizesRequests, StoreFiles;
 
     protected $datasheets;
 
@@ -29,7 +34,6 @@ class DatasheetController extends Controller
     public function __construct(DatasheetRepository $datasheets)
     {
         $this->datasheets = $datasheets;
-        //$this->products = $products;
     }
 
     /**
@@ -37,14 +41,18 @@ class DatasheetController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
 
-        $this->datasheets->trackFilter();
+        $this->datasheets
+            ->trackFilter()
+            ->pushTrackFilter(DatasheetShowFerroliBoolFilter::class)
+            ->pushTrackFilter(DatasheetShowLamborghiniBoolFilter::class)
+            ->pushTrackFilter(DatasheetPerPageFilter::class);
 
         return view('site::admin.datasheet.index', [
             'repository' => $this->datasheets,
-            'datasheets' => $this->datasheets->paginate(config('site.per_page.datasheet', 10), ['datasheets.*'])
+            'datasheets' => $this->datasheets->paginate($request->input('filter.per_page', config('site.per_page.datasheet', 10)), ['datasheets.*'])
         ]);
     }
 
@@ -58,10 +66,10 @@ class DatasheetController extends Controller
     public function create(FileRequest $request)
     {
         $this->authorize('create', Datasheet::class);
-        $types = FileType::where('group_id', 2)->orderBy('sort_order')->get();
+        $file_types = FileType::query()->where('group_id', 2)->orderBy('sort_order')->get();
         $file = $this->getFile($request);
 
-        return view('site::admin.datasheet.create', compact('types', 'file'));
+        return view('site::admin.datasheet.create', compact('file_types', 'file'));
     }
 
     /**
@@ -72,42 +80,48 @@ class DatasheetController extends Controller
      */
     public function store(DatasheetRequest $request)
     {
-        $datasheet = $this->datasheets->create($request->except(['_token', '_method', '_create', 'type_id']));
-        $datasheet->file->setAttribute('type_id', $request->input('type_id'))->save();
-        if ($request->input('_create') == 1) {
-            $redirect = redirect()->route('admin.datasheets.create')->with('success', trans('site::datasheet.created'));
-        } else {
-            $redirect = redirect()->route('admin.datasheets.show', $datasheet)->with('success', trans('site::datasheet.created'));
-        }
 
-        return $redirect;
+        $datasheet = $this->datasheets->create(array_merge(
+            $request->input(['datasheet']),
+            [
+                'type_id'          => $request->input('type_id'),
+                'active'           => $request->filled('datasheet.active'),
+                'show_ferroli'     => $request->filled('datasheet.show_ferroli'),
+                'show_lamborghini' => $request->filled('datasheet.show_lamborghini')
+            ]
+        ));
+
+        return redirect()->route('admin.datasheets.show', $datasheet)->with('success', trans('site::datasheet.created'));
+    }
+
+    public function edit(FileRequest $request, Datasheet $datasheet)
+    {
+
+        $types = FileType::query()->where('group_id', 2)->orderBy('sort_order')->get();
+        $file = $this->getFile($request, $datasheet);
+
+        return view('site::admin.datasheet.edit', compact('datasheet', 'types', 'file'));
     }
 
     public function update(DatasheetRequest $request, Datasheet $datasheet)
     {
 
-        $datasheet->update($request->except(['_method', '_token', '_stay', 'type_id']));
+        $datasheet->update(array_merge(
+            $request->input(['datasheet']),
+            [
+                'active'           => $request->filled('datasheet.active'),
+                'show_ferroli'     => $request->filled('datasheet.show_ferroli'),
+                'show_lamborghini' => $request->filled('datasheet.show_lamborghini')
+            ]
+        ));
         $datasheet->file
-            ->setAttribute('type_id', $request->input('type_id'))
+            ->setAttribute('type_id', $request->input('datasheet.type_id'))
             ->setAttribute('size', filesize(Storage::disk($datasheet->file->storage)->getAdapter()->getPathPrefix() . $datasheet->file->path))
             ->save();
-        if ($request->input('_stay') == 1) {
-            $redirect = redirect()->route('admin.datasheets.edit', $datasheet)->with('success', trans('site::datasheet.updated'));
-        } else {
-            $redirect = redirect()->route('admin.datasheets.show', $datasheet)->with('success', trans('site::datasheet.updated'));
-        }
 
-        return $redirect;
+        return redirect()->route('admin.datasheets.show', $datasheet)->with('success', trans('site::datasheet.updated'));
     }
 
-    public function edit(FileRequest $request, Datasheet $datasheet)
-    {
-        $this->authorize('edit', $datasheet);
-        $types = FileType::where('group_id', 2)->orderBy('sort_order')->get();
-        $file = $this->getFile($request, $datasheet);
-
-        return view('site::admin.datasheet.edit', compact('datasheet', 'types', 'file'));
-    }
 
     /**
      * @param DatasheetProductRequest $request
@@ -127,7 +141,7 @@ class DatasheetController extends Controller
                 $sku = $sku->filter(function ($value, $key) {
                     return strpos($value, " ") === false && mb_strlen($value, 'UTF-8') > 0;
                 });
-                $products = Product::whereIn('sku', $sku->toArray())->get();
+                $products = Product::query()->whereIn('sku', $sku->toArray())->get();
                 foreach ($products as $product) {
                     if (!$datasheet->products->contains($product->id)) {
                         $datasheet->products()->attach($product);

@@ -189,16 +189,18 @@
                 <div class="col">
                     <label class="control-label"
                            for="phone_number">@lang('site::phone.number')</label>
-                    <input type="tel"
-                           required
-                           name="phone[number]"
-                           id="phone_number"
-                           title="@lang('site::phone.placeholder.number')"
-                           pattern="^\d{10}$"
-                           maxlength="10"
-                           class="form-control{{ $errors->has('phone.number') ? ' is-invalid' : '' }}"
-                           placeholder="@lang('site::phone.placeholder.number')"
-                           value="{{ old('phone.number') }}">
+                    <input required
+						   type="tel"
+						   name="phone[number]"
+						   id="number"
+						   oninput="mask_phones()"
+						   pattern="{{config('site.phone.pattern')}}"
+						   maxlength="{{config('site.phone.maxlength')}}"
+						   title="{{config('site.phone.format')}}"
+						   data-mask="{{config('site.phone.mask')}}"
+						   class="phone-mask form-control{{ $errors->has('phone.number') ? ' is-invalid' : (old('phone.number') ? ' is-valid' : '') }}"
+						   placeholder="@lang('site::phone.placeholder.number')"
+						   value="{{ old('phone.number') }}">
                     <span class="invalid-feedback">{{ $errors->first('phone.number') }}</span>
                     <small id="phone_numberHelp" class="mb-4 form-text text-success">
                         @lang('site::phone.help.number')

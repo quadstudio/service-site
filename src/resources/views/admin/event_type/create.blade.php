@@ -21,51 +21,106 @@
         <div class="card mb-5">
             <div class="card-body">
 
-                <form id="form-content" method="POST" action="{{ route('admin.event_types.store') }}">
+                <form id="form" method="POST" action="{{ route('admin.event_types.store') }}">
                     @csrf
 
-                    <div class="form-row required">
-                        <div class="col mb-3">
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox"
+                                       @if(old('event_type.show_ferroli')) checked @endif
+                                       class="custom-control-input{{  $errors->has('event_type.show_ferroli') ? ' is-invalid' : '' }}"
+                                       id="show_ferroli"
+                                       name="event_type[show_ferroli]">
+                                <label class="custom-control-label"
+                                       for="show_ferroli">@lang('site::messages.show_ferroli')</label>
+                                <span class="invalid-feedback">{{ $errors->first('event_type.show_ferroli') }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox"
+                                       @if(old('event_type.show_lamborghini')) checked
+                                       @endif
+                                       class="custom-control-input{{  $errors->has('event_type.show_lamborghini') ? ' is-invalid' : '' }}"
+                                       id="show_lamborghini"
+                                       name="event_type[show_lamborghini]">
+                                <label class="custom-control-label"
+                                       for="show_lamborghini">@lang('site::messages.show_lamborghini')</label>
+                                <span class="invalid-feedback">{{ $errors->first('event_type.show_lamborghini') }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row required mt-3">
+                        <div class="col">
                             <label class="control-label" for="name">@lang('site::event_type.name')</label>
-                            <input type="text" name="name"
+                            <input required
+                                   type="text"
+                                   name="event_type[name]"
                                    id="name"
-                                   required
-                                   class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}"
+                                   class="form-control{{ $errors->has('event_type.name') ? ' is-invalid' : '' }}"
                                    placeholder="@lang('site::event_type.placeholder.name')"
-                                   value="{{ old('name') }}">
-                            <span class="invalid-feedback">{{ $errors->first('name') }}</span>
+                                   value="{{ old('event_type.name') }}">
+                            <span class="invalid-feedback">{{ $errors->first('event_type.name') }}</span>
                         </div>
                     </div>
                     <div class="form-row required">
-                        <div class="col mb-3">
+                        <div class="col">
                             <label class="control-label"
                                    for="annotation">@lang('site::event_type.annotation')</label>
-                            <textarea class="form-control{{ $errors->has('annotation') ? ' is-invalid' : '' }}"
+                            <textarea required
+                                      name="event_type[annotation]"
+                                      class="form-control{{ $errors->has('event_type.annotation') ? ' is-invalid' : '' }}"
                                       placeholder="@lang('site::event_type.placeholder.annotation')"
-                                      required
-                                      name="annotation" id="annotation">{{ old('annotation') }}</textarea>
-                            <span class="invalid-feedback">{{ $errors->first('annotation') }}</span>
+                                      id="annotation">{{ old('event_type.annotation') }}</textarea>
+                            <span class="invalid-feedback">{{ $errors->first('event_type.annotation') }}</span>
                         </div>
                     </div>
 
-                    <div class="custom-control custom-checkbox mb-3">
-                        <input type="checkbox" @if(old('active', 1) == 1) checked @endif
-                        class="custom-control-input{{  $errors->has('active') ? ' is-invalid' : '' }}"
-                               id="active" name="active">
-                        <label class="custom-control-label" for="active">@lang('site::event_type.active')</label>
-                        <span class="invalid-feedback">{{ $errors->first('active') }}</span>
-                    </div>
-
-
                 </form>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-row mt-2">
+                            <div class="col">
+                                <label class="control-label" class="control-label"
+                                       for="image_id">@lang('site::event_type.image_id')</label>
+
+                                <form method="POST"
+                                      enctype="multipart/form-data"
+                                      action="{{route('admin.images.store')}}">
+                                    @csrf
+                                    <input type="hidden"
+                                           name="storage"
+                                           value="event_types"/>
+                                    <input class="d-inline-block form-control-file{{ $errors->has('image_id') ? ' is-invalid' : '' }}"
+                                           type="file"
+                                           accept="{{config('site.event_types.accept')}}"
+                                           name="path"/>
+
+                                    <input type="button" class="btn btn-ferroli image-upload-button"
+                                           value="@lang('site::messages.load')"/>
+                                    <span class="invalid-feedback">{{ $errors->first('image_id') }}</span>
+                                </form>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div id="images" class="row bg-white">
+                            @include('site::admin.image.edit')
+                        </div>
+                    </div>
+                </div>
+
                 <hr/>
                 <div class="form-row">
                     <div class="col text-right">
-                        <button name="_create" form="form-content" value="1" type="submit" class="btn btn-ferroli mb-1">
-                            <i class="fa fa-check"></i>
-                            <span>@lang('site::messages.save_add')</span>
-                        </button>
-                        <button name="_create" form="form-content" value="0" type="submit" class="btn btn-ferroli mb-1">
+                        <button form="form" type="submit" class="btn btn-ferroli mb-1">
                             <i class="fa fa-check"></i>
                             <span>@lang('site::messages.save')</span>
                         </button>

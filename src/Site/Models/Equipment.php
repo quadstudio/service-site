@@ -3,22 +3,39 @@
 namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use QuadStudio\Service\Site\Concerns\Sortable;
 use QuadStudio\Service\Site\Contracts\Imageable;
-use QuadStudio\Service\Site\Traits\Models\SortOrderTrait;
 
 class Equipment extends Model implements Imageable
 {
 
-    use SortOrderTrait;
+    use Sortable;
     /**
      * @var string
      */
     protected $table;
 
     protected $fillable = [
-        'name',  'annotation', 'description',
-        'h1', 'title','metadescription',
-        'specification', 'enabled', 'catalog_id', 'sort_order'
+        'name', 'annotation', 'description',
+        'h1', 'title', 'metadescription',
+        'specification', 'catalog_id', 'sort_order',
+        'enabled', 'show_ferroli', 'show_lamborghini'
+    ];
+
+    protected $casts = [
+
+        'name'             => 'string',
+        'annotation'       => 'string',
+        'description'      => 'string',
+        'h1'               => 'string',
+        'title'            => 'string',
+        'metadescription'  => 'string',
+        'specification'    => 'string',
+        'catalog_id'       => 'integer',
+        'sort_order'       => 'integer',
+        'enabled'          => 'boolean',
+        'show_ferroli'     => 'boolean',
+        'show_lamborghini' => 'boolean',
     ];
 
     /**
@@ -61,23 +78,6 @@ class Equipment extends Model implements Imageable
      */
     public function images()
     {
-        if (config('site::cache.use', true) === true) {
-            $key = $this->primaryKey;
-            $cacheKey = 'equipment_images_' . $this->{$key};
-
-            return cache()->remember($cacheKey, config('site::cache.ttl'), function () {
-                return $this->_images();
-            });
-        }
-
-        return $this->_images();
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\morphMany
-     */
-    public function _images()
-    {
         return $this->morphMany(Image::class, 'imageable');
     }
 
@@ -86,16 +86,7 @@ class Equipment extends Model implements Imageable
      */
     public function products()
     {
-        if (config('site::cache.use', true) === true) {
-            $key = $this->primaryKey;
-            $cacheKey = 'equipment_products_' . $this->{$key};
-
-            return cache()->remember($cacheKey, config('site::cache.ttl'), function () {
-                return $this->_products();
-            });
-        }
-
-        return $this->_products();
+        return $this->hasMany(Product::class);
 
     }
 
@@ -104,7 +95,7 @@ class Equipment extends Model implements Imageable
      */
     private function _products()
     {
-        return $this->hasMany(Product::class);
+
     }
 
     public function canDelete()

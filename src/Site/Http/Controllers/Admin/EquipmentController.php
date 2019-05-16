@@ -4,12 +4,14 @@ namespace QuadStudio\Service\Site\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use QuadStudio\Service\Site\Filters\Equipment\EquipmentEnabledBoolFilter;
 use QuadStudio\Service\Site\Filters\Equipment\EquipmentPerPageFilter;
+use QuadStudio\Service\Site\Filters\Equipment\EquipmentShowFerroliBoolFilter;
+use QuadStudio\Service\Site\Filters\Equipment\EquipmentShowLamborghiniBoolFilter;
 use QuadStudio\Service\Site\Http\Requests\EquipmentRequest;
 use QuadStudio\Service\Site\Models;
 use QuadStudio\Service\Site\Models\Equipment;
 use QuadStudio\Service\Site\Repositories;
-use QuadStudio\Service\Site\Traits\Support\ImageLoaderTrait;
 
 class EquipmentController extends Controller
 {
@@ -60,8 +62,13 @@ class EquipmentController extends Controller
     public function index(Request $request)
     {
 
-        $this->equipments->trackFilter();
-        $this->equipments->pushTrackFilter(EquipmentPerPageFilter::class);
+        $this->equipments
+            ->trackFilter()
+            ->pushTrackFilter(EquipmentEnabledBoolFilter::class)
+            ->pushTrackFilter(EquipmentShowFerroliBoolFilter::class)
+            ->pushTrackFilter(EquipmentShowLamborghiniBoolFilter::class)
+            ->pushTrackFilter(EquipmentPerPageFilter::class)
+        ;
 
         return view('site::admin.equipment.index', [
             'repository' => $this->equipments,
@@ -72,7 +79,7 @@ class EquipmentController extends Controller
     public function show(Models\Equipment $equipment)
     {
 
-        return view('site::admin.equipment.show', ['equipment' => $equipment]);
+        return view('site::admin.equipment.show', compact('equipment'));
     }
 
     /**
@@ -101,8 +108,12 @@ class EquipmentController extends Controller
     public function store(EquipmentRequest $request)
     {
         $equipment = $this->equipments->create(array_merge(
-            $request->except(['_token', '_method', '_create', 'image']),
-            ['enabled' => $request->filled('enabled') ? 1 : 0]
+            $request->input('equipment'),
+            [
+                'enabled'          => $request->filled('equipment.enabled'),
+                'show_ferroli'     => $request->filled('equipment.show_ferroli'),
+                'show_lamborghini' => $request->filled('equipment.show_lamborghini')
+            ]
         ));
 
         return redirect()->route('admin.equipments.show', $equipment)->with('success', trans('equipment::catalog.created'));
@@ -132,12 +143,16 @@ class EquipmentController extends Controller
      */
     public function update(EquipmentRequest $request, Models\Equipment $equipment)
     {
-        $this->equipments->update(array_merge(
-            $request->except(['_token', '_method', '_stay', 'image', 'files']),
-            ['enabled' => $request->filled('enabled') ? 1 : 0]
-        ), $equipment->id);
+        $equipment->update(array_merge(
+            $request->input('equipment'),
+            [
+                'enabled'          => $request->filled('equipment.enabled'),
+                'show_ferroli'     => $request->filled('equipment.show_ferroli'),
+                'show_lamborghini' => $request->filled('equipment.show_lamborghini')
+            ]
+        ));
 
-        return redirect()->route('admin.equipments.show', $equipment)->with('success', trans('site::catalog.updated'));
+        return redirect()->route('admin.equipments.show', $equipment)->with('success', trans('site::equipment.updated'));
     }
 
     /**

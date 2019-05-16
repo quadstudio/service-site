@@ -28,8 +28,8 @@ class EquipmentRequest extends FormRequest
             case 'PUT':
             case 'PATCH': {
                 return [
-                    'name'       => 'required|string|max:255',
-                    'annotation' => 'max:255',
+                    'equipment.name'       => 'required|string|max:255',
+                    'equipment.annotation' => 'max:255',
                 ];
             }
             default:
@@ -55,8 +55,8 @@ class EquipmentRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name'       => trans('site::equipment.name'),
-            'annotation' => trans('site::equipment.annotation'),
+            'equipment.name'       => trans('site::equipment.name'),
+            'equipment.annotation' => trans('site::equipment.annotation'),
         ];
     }
 }

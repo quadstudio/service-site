@@ -2,7 +2,7 @@
 return [
     'authorization'  => 'заявку на авторизацию',
     'authorizations' => 'Заявки на авторизацию',
-    'icon'           => 'certificate',
+    'icon'           => 'map-pin',
     //
     'created'        => 'Заявка на авторизацию успешно создана',
     'updated'        => 'Заявка на авторизацию успешно обновлена',

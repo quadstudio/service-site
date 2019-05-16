@@ -7,13 +7,9 @@
                 <a href="{{ route('index') }}">@lang('site::messages.index')</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.catalogs.index') }}">@lang('site::catalog.catalogs')</a>
+                <a href="{{ route('admin.equipments.index') }}">@lang('site::equipment.equipments')</a>
             </li>
-            @foreach($equipment->catalog->parentTree()->reverse() as $element)
-                <li class="breadcrumb-item">
-                    <a href="{{ route('admin.catalogs.show', $element) }}">{{ $element->name }}</a>
-                </li>
-            @endforeach
+
             <li class="breadcrumb-item active">{{ $equipment->name }}</li>
         </ol>
         <h1 class="header-title mb-4">{{ $equipment->name }}</h1>
@@ -60,18 +56,17 @@
         <div class="card mb-2">
             <div class="card-body">
                 <dl class="row">
-                    <dt class="col-sm-4 text-left text-sm-right"></dt>
-                    <dd class="col-sm-8">
-                        <a href="{{route('equipments.show', $equipment)}}">
-                            <i class="fa fa-folder-open"></i> @lang('site::messages.open') @lang('site::messages.in_front')
-                        </a>
-                    </dd>
 
-                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::catalog.full_name')</dt>
-                    <dd class="col-sm-8">{{ $equipment->catalog->parentTreeName() }}</dd>
+
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::equipment.enabled')</dt>
-                    <dd class="col-sm-8">@bool(['bool' => $equipment->enabled == 1])@endbool</dd>
+                    <dd class="col-sm-8">@bool(['bool' => $equipment->enabled])@endbool</dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::messages.show_ferroli')</dt>
+                    <dd class="col-sm-8">@bool(['bool' => $equipment->show_ferroli])@endbool</dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::messages.show_lamborghini')</dt>
+                    <dd class="col-sm-8">@bool(['bool' => $equipment->show_lamborghini])@endbool</dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::equipment.name')</dt>
                     <dd class="col-sm-8">{{ $equipment->name }}</dd>
@@ -91,11 +86,30 @@
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::equipment.description')</dt>
                     <dd class="col-sm-8">{!! $equipment->description !!}</dd>
 
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::equipment.catalog_id')</dt>
+                    <dd class="col-sm-8">
+                        @foreach($equipment->catalog->parentTree()->reverse() as $element)
+                            <a href="{{ route('admin.catalogs.show', $element) }}">{{ $element->name_plural }}</a>
+                            @if(!$loop->last)
+                                <span class="px-1">/</span>
+                            @endif
+                        @endforeach
+                    </dd>
+
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::product.header.boiler')</dt>
                     <dd class="col-sm-8">
                         @foreach($equipment->products as $product)
                             <a class="d-block mr-2"
-                               href="{{route('admin.products.show', $product)}}">{{$product->name}}</a>
+                               href="{{route('admin.products.show', $product)}}">
+                                @if($product->enabled)
+                                    <i data-toggle="tooltip" data-placement="top" title="@lang('site::product.enabled')"
+                                       class="fa fa-check text-success"></i>
+                                @else
+                                    <i data-toggle="tooltip" data-placement="top" title="@lang('site::product.enabled')"
+                                       class="fa fa-close text-danger"></i>
+                                @endif
+                                {{$product->name}}
+                            </a>
                         @endforeach
                     </dd>
 

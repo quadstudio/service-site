@@ -8,6 +8,8 @@ return [
     'settings'            => 'Настройки',
     //
     'updated'             => 'Товар успешно обновлен',
+    'added'               => 'Товар успешно добавлен',
+    'deleted'             => 'Товар успешно удален',
     //
     'name'                => 'Наименование',
     'metadescription'     => 'Тег Meta Description',
@@ -60,7 +62,7 @@ return [
         'has_images'         => 'Есть изображения?',
         'has_prices'         => 'Есть цены?',
         'has_analogs'        => 'Есть аналоги?',
-        'has_details'      => 'Есть детали?',
+        'has_details'        => 'Есть детали?',
         'has_mounting_bonus' => 'Указан бонус за монтаж?',
     ]
 

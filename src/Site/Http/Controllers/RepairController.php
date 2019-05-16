@@ -4,11 +4,9 @@ namespace QuadStudio\Service\Site\Http\Controllers;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Routing\Controller;
-use QuadStudio\Service\Site\Concerns\RepairMessages;
 use QuadStudio\Service\Site\Concerns\StoreMessages;
 use QuadStudio\Service\Site\Events\RepairCreateEvent;
 use QuadStudio\Service\Site\Events\RepairEditEvent;
-use QuadStudio\Service\Site\Facades\Site;
 use QuadStudio\Service\Site\Filters\BelongsUserFilter;
 use QuadStudio\Service\Site\Filters\ByNameSortFilter;
 use QuadStudio\Service\Site\Filters\CountryEnabledFilter;
@@ -17,7 +15,6 @@ use QuadStudio\Service\Site\Filters\FileType\ModelHasFilesFilter;
 use QuadStudio\Service\Site\Filters\FileType\RepairFilter;
 use QuadStudio\Service\Site\Filters\FileType\SortFilter;
 use QuadStudio\Service\Site\Filters\Repair\RepairPerPageFilter;
-use QuadStudio\Service\Site\Filters\Repair\RepairUserFilter;
 use QuadStudio\Service\Site\Http\Requests\MessageRequest;
 use QuadStudio\Service\Site\Http\Requests\RepairRequest;
 use QuadStudio\Service\Site\Http\Resources\ProductResource;
@@ -222,38 +219,25 @@ class RepairController extends Controller
      */
     private function getParts(RepairRequest $request, Repair $repair = null)
     {
-
         $parts = collect([]);
-        $old = $request->old('parts');
+        $old = $request->old('count');
         if (!is_null($old) && is_array($old)) {
 
-            foreach ($old as $product_id => $values) {
-                $product = Product::query()->findOrFail($values['product_id']);
+            foreach ($old as $product_id => $count) {
+                $product = Product::query()->findOrFail($product_id);
                 $parts->put($product->id, collect([
-                    'product_id' => $product->id,
-                    'sku'        => $product->sku,
-                    'cost'       => $product->hasPrice ? $product->price->value : 0,
-                    'format'     => $product->hasPrice ? Site::format($product->price->value) : '',
-                    'name'       => $product->name,
-                    'count'      => $values['count'],
+                    'product' => $product,
+                    'count'   => $count,
                 ]));
             }
         } elseif (!is_null($repair)) {
             foreach ($repair->parts as $part) {
-                //dd($part->product->price->getAttribute('value'));
                 $parts->put($part->product_id, collect([
-                    'product_id' => $part->product_id,
-                    'sku'        => $part->product->sku,
-                    'cost'       => $part->product->hasPrice ? $part->product->price->value : 0,
-                    'format'     => $part->product->hasPrice ? Site::format($part->product->price->value) : '',
-                    'name'       => $part->product->name,
+                    'product' => $part->product,
                     'count'      => $part->count,
                 ]));
             }
         }
-
-        //dd($parts);
-
         return $parts;
     }
 
@@ -287,13 +271,14 @@ class RepairController extends Controller
      */
     public function store(RepairRequest $request)
     {
+
         $this->authorize('create', Repair::class);
         $request->user()->repairs()->save($repair = $this->repairs->create($request->input(['repair'])));
-        $this->setFiles($request, $repair);
         if ($request->filled('parts')) {
             $parts = collect($request->input('parts'))->values()->toArray();
             $repair->parts()->createMany($parts);
         }
+        $this->setFiles($request, $repair);
 
         event(new RepairCreateEvent($repair));
 

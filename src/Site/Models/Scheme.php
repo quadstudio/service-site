@@ -3,8 +3,9 @@
 namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use QuadStudio\Service\Site\Contracts\SingleImageable;
 
-class Scheme extends Model
+class Scheme extends Model implements SingleImageable
 {
     /**
      * @var string
@@ -69,4 +70,11 @@ class Scheme extends Model
         return $this->hasMany(Element::class)->orderBy('sort_order');
     }
 
+    /**
+     * @return string
+     */
+    function imageStorage()
+    {
+        return 'schemes';
+    }
 }

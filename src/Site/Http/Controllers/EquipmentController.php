@@ -39,7 +39,10 @@ class EquipmentController extends Controller
 
     public function show(Equipment $equipment)
     {
-        if($equipment->enabled == 0){
+        if (
+            $equipment->getAttribute(config('site.check_field')) === false
+            || $equipment->getAttribute('enabled') === false
+        ) {
             abort(404);
         }
         $products = $equipment->products()->where('enabled', 1)->orderBy('name')->get();

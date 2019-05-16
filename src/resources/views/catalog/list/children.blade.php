@@ -1,7 +1,7 @@
 @foreach($catalog->catalogs()->where('enabled', 1)->orderBy(config('site.sort_order.catalog'))->get() as $children)
     @if($children->catalogs()->count() == 0 && $children->equipments()->where('enabled', 1)->count() > 0)
         <div class="col-12">
-            <h4 class="my-4">{{ $children->parentTreeName() }}</h4>
+            <h4 class="my-4">{{ $children->name_plural }}</h4>
         </div>
         @foreach($children->equipments()->where('enabled', 1)->orderBy(config('site.sort_order.equipment'))->get() as $equipment)
             <div class="col-12">

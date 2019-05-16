@@ -1,20 +1,42 @@
-<div class="form-row required">
-    <div class="col mb-3">
-        <label class="control-label" for="name">@lang('site::engineer.name')</label>
-        <input @if(request()->route()->getName() == 'engineers.create')
-               required
-               @else
-               disabled
-               @endif
-               type="text"
-               name="engineer[name]"
-               id="name"
-               class="form-control{{ $errors->has('engineer.name') ? ' is-invalid' : '' }}"
-               placeholder="@lang('site::engineer.placeholder.name')"
-               value="{{ old('engineer.name', optional($engineer)->name) }}">
-        <span class="invalid-feedback">{{ $errors->first('engineer.name') }}</span>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-row required">
+            <div class="col mb-3">
+                <label class="control-label" for="name">@lang('site::engineer.name')</label>
+                <input @if(request()->route()->getName() == 'engineers.create')
+                       required
+                       @else
+                       disabled
+                       @endif
+                       type="text"
+                       name="engineer[name]"
+                       id="name"
+                       class="form-control{{ $errors->has('engineer.name') ? ' is-invalid' : '' }}"
+                       placeholder="@lang('site::engineer.placeholder.name')"
+                       value="{{ old('engineer.name', optional($engineer)->name) }}">
+                <span class="invalid-feedback">{{ $errors->first('engineer.name') }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-row">
+            <div class="col mb-3">
+                <label class="control-label" for="address">@lang('site::engineer.address')</label>
+                <input @if(request()->route()->getName() == 'engineers.edit')
+                       disabled
+                       @endif
+                       type="text"
+                       name="engineer[address]"
+                       id="address"
+                       class="form-control{{ $errors->has('engineer.address') ? ' is-invalid' : '' }}"
+                       placeholder="@lang('site::engineer.placeholder.address')"
+                       value="{{ old('engineer.address', optional($engineer)->address) }}">
+                <span class="invalid-feedback">{{ $errors->first('engineer.address') }}</span>
+            </div>
+        </div>
     </div>
 </div>
+
 <div class="row">
     <div class="col-sm-6">
         <div class="form-row required">
@@ -44,7 +66,7 @@
     <div class="col-sm-6">
         <div class="form-row required">
             <div class="col">
-                <label class="control-label" for="contact">@lang('site::engineer.phone')</label>
+                <label class="control-label" for="phone">@lang('site::engineer.phone')</label>
                 <input required
                        type="tel"
                        name="engineer[phone]"
@@ -62,18 +84,27 @@
         </div>
     </div>
 </div>
-<div class="form-row">
-    <div class="col mb-3">
-        <label class="control-label" for="address">@lang('site::engineer.address')</label>
-        <input @if(request()->route()->getName() == 'engineers.edit')
-               disabled
-               @endif
-               type="text"
-               name="engineer[address]"
-               id="address"
-               class="form-control{{ $errors->has('engineer.address') ? ' is-invalid' : '' }}"
-               placeholder="@lang('site::engineer.placeholder.address')"
-               value="{{ old('engineer.address', optional($engineer)->address) }}">
-        <span class="invalid-feedback">{{ $errors->first('engineer.address') }}</span>
+@if($certificate_types->isNotEmpty())
+    <h4><i class="fa fa-@lang('site::certificate.icon')"></i> @lang('site::certificate.certificates')</h4>
+    <div class="row">
+        @foreach($certificate_types as $certificate_type)
+            <div class="col-sm-{{12/$certificate_types->count()}}">
+                <div class="form-row">
+                    <div class="col">
+                        <label class="control-label"
+                               for="certificate_{{$certificate_type->id}}">{{$certificate_type->name}}</label>
+                        <input type="text"
+                               name="certificate[{{$certificate_type->id}}]"
+                               id="certificate_{{$certificate_type->id}}"
+                               maxlength="{{config('site.certificate_length', 20)}}"
+                               placeholder="@lang('site::certificate.placeholder.id')"
+                               class="form-control{{ $errors->has('certificate.'.$certificate_type->id) ? ' is-invalid' : '' }}"
+                               value="{{ old('certificate.'.$certificate_type->id, optional($engineer->certificates()->where('type_id', $certificate_type->id)->first())->id) }}">
+                        <span class="invalid-feedback">{{ $errors->first('certificate.'.$certificate_type->id) }}</span>
+                    </div>
+                </div>
+            </div>
+        @endforeach
     </div>
-</div>
+@endif
+

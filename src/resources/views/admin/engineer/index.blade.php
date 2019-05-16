@@ -32,10 +32,22 @@
                         <dl class="dl-horizontal mt-2">
                             <dt class="col-12">@lang('site::engineer.name')</dt>
                             <dd class="col-12">
-                                <a href="{{route('admin.engineers.edit', $engineer)}}" class="mr-3 text-big ml-0">
+                                <a href="{{route('admin.engineers.edit', $engineer)}}" class="mr-1 text-big ml-0">
                                     {{$engineer->name}}
+
                                 </a>
+                                @if($engineer->certificates()->exists())
+
+                                    @foreach($engineer->certificates()->with('type')->get() as $certificate)
+                                        <i class="fa fa-2x text-success fa-@lang('site::certificate.icon')"
+                                           data-toggle="tooltip"
+                                           data-placement="top"
+                                           title="@lang('site::certificate.certificate') № {{$certificate->id}} &nbsp; {{$certificate->type->name}}"></i>
+                                    @endforeach
+
+                                @endif
                             </dd>
+
                         </dl>
                     </div>
                     <div class="col-xl-3 col-sm-6">

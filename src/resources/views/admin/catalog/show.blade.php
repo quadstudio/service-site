@@ -72,8 +72,14 @@
         <div class="card mb-2">
             <div class="card-body">
                 <dl class="row">
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::messages.show_ferroli')</dt>
+                    <dd class="col-sm-8">@bool(['bool' => $catalog->show_ferroli])@endbool</dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::messages.show_lamborghini')</dt>
+                    <dd class="col-sm-8">@bool(['bool' => $catalog->show_lamborghini])@endbool</dd>
+
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::catalog.enabled')</dt>
-                    <dd class="col-sm-8">@bool(['bool' => $catalog->enabled == 1])@endbool</dd>
+                    <dd class="col-sm-8">@bool(['bool' => $catalog->enabled])@endbool</dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::catalog.image_id')</dt>
                     <dd class="col-sm-8">

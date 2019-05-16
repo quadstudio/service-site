@@ -49,7 +49,7 @@ class RepairRequest extends FormRequest
                     'repair.client'        => 'required|string|max:255',
                     'repair.country_id'    => 'required|exists:countries,id',
                     'repair.address'       => 'required|string|max:255',
-                    'repair.phone_primary' => 'required|string|size:14',
+                    'repair.phone_primary' => 'required|string|size:'.config('site.phone.maxlength'),
                     'repair.trade_id'      => [
                         'required',
                         'exists:trades,id',
@@ -108,7 +108,7 @@ class RepairRequest extends FormRequest
                     $rules->put('address', 'required|string|max:255');
                 }
                 if ($fails->contains('field', 'phone_primary')) {
-                    $rules->put('phone_primary', 'required|numeric|digits:10');
+                    $rules->put('phone_primary', 'required|string|size:'.config('site.phone.maxlength'));
                 }
                 if ($fails->contains('field', 'trade_id')) {
                     $rules->put('trade_id', [

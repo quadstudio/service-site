@@ -4,6 +4,7 @@ namespace QuadStudio\Service\Site\Concerns;
 
 use Illuminate\Http\File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use QuadStudio\Service\Site\Contracts\Imageable;
@@ -55,12 +56,12 @@ trait StoreImages
     /**
      * @param ImageRequest $request
      * @param Imageable $imageable
-     * @return Image
+     * @return Collection|null
      */
     public function getImages(ImageRequest $request, Imageable $imageable = null)
     {
 
-        return !empty($images = $request->old(config('site.' . $request->input('storage') . '.dot_name'))) ? Image::findOrFail($images) : ($imageable ? $imageable->images()->orderBy('sort_order')->get() : null);
+        return !empty($images = $request->old(config('site.' . $request->input('storage') . '.dot_name'))) ? Image::query()->findOrFail($images)->get() : ($imageable ? $imageable->images()->orderBy('sort_order')->get() : collect([]));
     }
 
 
@@ -84,16 +85,5 @@ trait StoreImages
         }
 
         return $image;
-    }
-
-    /**
-     * @param ImageRequest $request
-     * @param Imageable $imageable
-     */
-    protected function setImages(ImageRequest $request, Imageable $imageable)
-    {
-        if ($request->filled('file_id')) {
-            $imageable->file()->associate(File::find($request->input('file_id')));
-        }
     }
 }

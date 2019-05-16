@@ -68,7 +68,7 @@ class ActController extends Controller
         $this->acts->pushTrackFilter(ActPerPageFilter::class);
         return view('site::admin.act.index', [
             'repository' => $this->acts,
-            'acts'       => $this->acts->paginate($request->input('filter.per_page', config('site.per_page.mounting', 10)), ['acts.*'])
+            'acts'       => $this->acts->paginate($request->input('filter.per_page', config('site.per_page.act', 10)), ['acts.*'])
         ]);
     }
 

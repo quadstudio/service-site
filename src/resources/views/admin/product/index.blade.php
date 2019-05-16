@@ -79,8 +79,12 @@
                     <div class="col-xl-3 col-sm-12">
                         <dl class="dl-horizontal mt-sm-2">
                             <dt class="col-12 mb-0 text-left text-xl-right">
-                                @lang('site::product.active')
-                                <span>@bool(['bool' => $product->active == 1])@endbool</span>
+                                @lang('site::messages.show_ferroli')
+                                <span>@bool(['bool' => $product->show_ferroli == 1])@endbool</span>
+                            </dt>
+                            <dt class="col-12 mb-0 text-left text-xl-right">
+                                @lang('site::messages.show_lamborghini')
+                                <span>@bool(['bool' => $product->show_lamborghini == 1])@endbool</span>
                             </dt>
                             <dt class="col-12 mb-0 text-left text-xl-right">
                                 @lang('site::product.forsale')

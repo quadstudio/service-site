@@ -29,13 +29,13 @@
                 <nav class="nav nav-fill flex-column" style="width:300px!important;">
 
                     <div class="nav-item">
-                        <b>Период производства</b>
+                        <b>@lang('site::scheme.period')</b>
                         <ul class="mb-2 nav bg-light nav-pills nav-fill">
                             @foreach($datasheets as $datasheet)
                                 <li class="nav-item">
                                     <a class="nav-link"
                                        href="{{route('products.scheme', [$product, $datasheet->schemes()->where('block_id', $scheme->block_id)->first()])}}">
-                                        @include('site::datasheet.date')
+                                        {{$datasheet->date}}
                                     </a>
                                 </li>
                             @endforeach

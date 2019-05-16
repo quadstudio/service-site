@@ -51,7 +51,10 @@ class CatalogRepository extends Repository
     {
         $refs = array();
         $list = array();
-        $items = Catalog::orderBy('catalog_id')->orderBy('sort_order')->get();
+        $items = Catalog::query()
+            ->orderBy('catalog_id')
+            ->orderBy('sort_order')
+            ->get();
 
         foreach ($items as $key => $row) {
 

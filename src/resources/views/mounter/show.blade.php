@@ -21,7 +21,7 @@
                href="{{ route('mounters.edit', $mounter) }}"
                role="button">
                 <i class="fa fa-pencil"></i>
-                <span>@lang('site::messages.edit') @lang('site::mounter.mounter')</span>
+                <span>@lang('site::mounter.edit') @lang('site::mounter.mounter')</span>
             </a>
             <a href="{{ route('mounters.index') }}" class="d-block d-sm-inline-block btn btn-secondary">
                 <i class="fa fa-reply"></i>

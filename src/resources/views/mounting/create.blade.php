@@ -188,7 +188,7 @@
                                 <label class="control-label"
                                        for="engineer_id">@lang('site::mounting.engineer_id')</label>
                                 <select required
-                                        data-form-action="{{ route('engineers.create') }}"
+                                        data-form-action="{{ route('engineers.create', ['certificate_type_id' => 1]) }}"
                                         data-btn-ok="@lang('site::messages.save')"
                                         data-btn-cancel="@lang('site::messages.cancel')"
                                         data-options="#engineer_id_options"
@@ -196,7 +196,7 @@
                                         class="dynamic-modal-form form-control{{  $errors->has('mounting.engineer_id') ? ' is-invalid' : '' }}"
                                         name="mounting[engineer_id]"
                                         id="engineer_id">
-                                    @include('site::engineer.options', ['engineer_id' => old('mounting.engineer_id', isset($engineer_id) ? $engineer_id : null)])
+                                    @include('site::engineer.options', ['certificate_type_id' => 2, 'engineer_id' => old('mounting.engineer_id', isset($engineer_id) ? $engineer_id : null)])
                                 </select>
                                 <span class="invalid-feedback">{{ $errors->first('mounting.engineer_id') }}</span>
                             </div>
@@ -317,7 +317,8 @@
                                         <dt class="col-sm-4 text-left text-sm-right">@lang('site::product.sku')</dt>
                                         <dd class="col-sm-8" id="product-sku">{{$selected_product->sku}}</dd>
                                         <dt class="col-sm-4 text-left text-sm-right">@lang('site::mounting.bonus')</dt>
-                                        <dd class="col-sm-8" id="product-bonus">{{$selected_product->mounting_bonus ? $selected_product->mounting_bonus->value : (!is_null(old('mounting.product_id')) ? trans('site::mounting.error.product_id') : '')}}</dd>
+                                        <dd class="col-sm-8"
+                                            id="product-bonus">{{$selected_product->mounting_bonus ? $selected_product->mounting_bonus->value : (!is_null(old('mounting.product_id')) ? trans('site::mounting.error.product_id') : '')}}</dd>
                                         <dt class="col-sm-4 text-left text-sm-right">@lang('site::mounting.social_bonus')</dt>
                                         <dd class="col-sm-8" id="product-social-bonus">
                                             {{$selected_product->mounting_bonus ? $selected_product->mounting_bonus->social : (!is_null(old('mounting.product_id')) ? trans('site::mounting.error.product_id') : '')}}
@@ -443,7 +444,7 @@
                 $('#product-name').html(data.text);
                 $('#product-sku').html(data.element.getAttribute('data-sku'));
                 let bonus = data.element.getAttribute('data-bonus'),
-                social = data.element.getAttribute('data-social-bonus');
+                    social = data.element.getAttribute('data-social-bonus');
                 $('#product-bonus').html(bonus === '0' ? '@lang('site::mounting.error.product_id')' : bonus);
                 $('#product-social-bonus').html(social === '0' ? '@lang('site::mounting.error.product_id')' : social);
             });

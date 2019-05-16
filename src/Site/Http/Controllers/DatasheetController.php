@@ -3,7 +3,8 @@
 namespace QuadStudio\Service\Site\Http\Controllers;
 
 use Illuminate\Routing\Controller;
-use QuadStudio\Service\Site\Filters\Datasheet\ActiveFilter;
+use QuadStudio\Service\Site\Filters\Datasheet\DatasheetActiveFilter;
+use QuadStudio\Service\Site\Filters\Datasheet\DatasheetShowFilter;
 use QuadStudio\Service\Site\Models\Datasheet;
 use QuadStudio\Service\Site\Repositories\DatasheetRepository;
 
@@ -31,7 +32,8 @@ class DatasheetController extends Controller
     {
 
         $this->datasheets->trackFilter();
-        $this->datasheets->applyFilter(new ActiveFilter());
+        $this->datasheets->applyFilter(new DatasheetShowFilter());
+        $this->datasheets->applyFilter(new DatasheetActiveFilter());
 
         return view('site::datasheet.index', [
             'repository' => $this->datasheets,
@@ -41,10 +43,14 @@ class DatasheetController extends Controller
 
     public function show(Datasheet $datasheet)
     {
-        if($datasheet->active == 0){
+        if (
+            $datasheet->getAttribute(config('site.check_field')) === false
+            || $datasheet->getAttribute('active') === false
+        ) {
             abort(404);
         }
         $products = $datasheet->products()->where('enabled', 1)->orderBy('name')->get();
+
         return view('site::datasheet.show', compact('datasheet', 'products'));
     }
 }

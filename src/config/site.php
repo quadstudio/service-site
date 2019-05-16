@@ -1,6 +1,13 @@
 <?php
 return [
 
+    /*
+    |--------------------------------------------------------------------------
+    | Поле для проверки отображения на сайте
+    |--------------------------------------------------------------------------
+    */
+    'check_field' => 'show_ferroli',
+
     'seeders' => [
         'countries',
         'regions',
@@ -21,13 +28,15 @@ return [
         'where-to-buy',
         'online-stores',
         'mounter-requests',
-        'news.index',
-        'news.show',
+        'announcements.index',
+        'announcements.show',
         'events.index',
         'events.show',
-        'events_fsf.index',
-        'events_fsf.show',
+        'event_types.show',
+//        'events_fsf.index',
+//        'events_fsf.show',
         'members.index',
+        'members.create',
         'datasheets.index',
         'datasheets.show',
         'catalogs.index',
@@ -63,6 +72,7 @@ return [
         'catalog'       => 25,
         'repair'        => 10,
         'mounting'      => 10,
+        'member'        => 10,
         'trade'         => 10,
         'launch'        => 10,
         'engineer'      => 10,
@@ -72,11 +82,11 @@ return [
         'order'         => 10,
         'product'       => 16,
         'product_admin' => 10,
-        'archive'       => 21,
+        'archive'       => 25,
         'product_list'  => 100,
         'product_type'  => 25,
         'message'       => 25,
-        'news'          => 15,
+        'announcement'  => 10,
     ],
 
     'per_page_range' => [
@@ -121,59 +131,99 @@ return [
     ],
 
     'schemes' => [
-        'mime' => 'jpg,jpeg',
-        'size' => [
-            'image'  => [
-                'width'  => 740,
-                'height' => null
-            ],
-            'canvas' => [
-                'width'  => 740,
-                'height' => null
-            ],
+        'process'  => true,
+        'mode'     => 'update',
+        'mime'     => 'jpg,jpeg',
+        'accept'   => 'image/jpeg',
+        'name'     => 'scheme[image_id]',
+        'dot_name' => 'scheme.image_id',
+        'size'     => 5000000, // 5мб
+        'preview'  => [
+            'width'  => 150,
+            'height' => 150
+        ],
+        'image'    => [
+            'width'  => 740,
+            'height' => 740
+        ],
+        'canvas'   => [
+            'width'  => 740,
+            'height' => 740
         ],
 
     ],
 
     'catalogs' => [
-        'process'    => true,
-        'mode'       => 'update',
-        'mime'       => 'jpg,jpeg',
-        'accept'     => 'image/jpeg',
-        'name'       => 'catalog[image_id]',
-        'dot_name'   => 'catalog.image_id',
-        'size'       => 5000000, // 5мб
-        'preview'    => [
+        'process'  => true,
+        'mode'     => 'update',
+        'mime'     => 'jpg,jpeg',
+        'accept'   => 'image/jpeg',
+        'name'     => 'catalog[image_id]',
+        'dot_name' => 'catalog.image_id',
+        'size'     => 5000000, // 5мб
+        'preview'  => [
             'width'  => 150,
             'height' => 150
         ],
-        'image'      => [
+        'image'    => [
             'width'  => 500,
             'height' => 500
         ],
-        'canvas'     => [
+        'canvas'   => [
             'width'  => 500,
             'height' => 500
         ],
     ],
 
+    'datasheets' => [
+        'process'  => true,
+        'mode'     => 'update',
+        'mime'     => 'pdf',
+        'accept'   => 'application/pdf',
+        'name'     => 'datasheet[file_id]',
+        'dot_name' => 'datasheet.file_id',
+        'size'     => 5000000, // 5мб
+    ],
+
     'events' => [
-        'process'    => true,
-        'mode'       => 'update',
-        'mime'       => 'jpg,jpeg',
-        'accept'     => 'image/jpeg',
-        'name'       => 'event[image_id]',
-        'dot_name'   => 'event.image_id',
-        'size'       => 5000000, // 5мб
-        'preview'    => [
+        'process'  => true,
+        'mode'     => 'update',
+        'mime'     => 'jpg,jpeg,png',
+        'accept'   => 'image/jpeg,image/png',
+        'name'     => 'event[image_id]',
+        'dot_name' => 'event.image_id',
+        'size'     => 5000000, // 5мб
+        'preview'  => [
             'width'  => 130,
             'height' => 70
         ],
-        'image'      => [
+        'image'    => [
             'width'  => 370,
             'height' => 200
         ],
-        'canvas'     => [
+        'canvas'   => [
+            'width'  => 370,
+            'height' => 200
+        ],
+    ],
+
+    'event_types' => [
+        'process'  => true,
+        'mode'     => 'update',
+        'mime'     => 'jpg,jpeg,png',
+        'accept'   => 'image/jpeg,image/png',
+        'name'     => 'event_type[image_id]',
+        'dot_name' => 'event_type.image_id',
+        'size'     => 5000000, // 5мб
+        'preview'  => [
+            'width'  => 130,
+            'height' => 70
+        ],
+        'image'    => [
+            'width'  => 370,
+            'height' => 200
+        ],
+        'canvas'   => [
             'width'  => 370,
             'height' => 200
         ],
@@ -186,16 +236,16 @@ return [
         'accept'   => 'image/jpeg',
         'name'     => 'images[]',
         'dot_name' => 'images',
-        'size'       => 5000000, //
-        'preview' => [
+        'size'     => 5000000, //
+        'preview'  => [
             'width'  => 150,
             'height' => 150
         ],
-        'image'   => [
+        'image'    => [
             'width'  => 500,
             'height' => 500
         ],
-        'canvas'  => [
+        'canvas'   => [
             'width'  => 500,
             'height' => 500
         ],
@@ -208,18 +258,40 @@ return [
         'accept'   => 'image/jpeg',
         'name'     => 'images[]',
         'dot_name' => 'images',
-        'size'       => 5000000, //
-        'preview' => [
+        'size'     => 5000000, //
+        'preview'  => [
             'width'  => 150,
             'height' => 150
         ],
-        'image'   => [
+        'image'    => [
             'width'  => 500,
             'height' => 500
         ],
-        'canvas'  => [
+        'canvas'   => [
             'width'  => 500,
             'height' => 500
+        ],
+    ],
+
+    'announcements' => [
+        'process'  => true,
+        'mode'     => 'update',
+        'mime'     => 'jpg,jpeg',
+        'accept'   => 'image/jpeg',
+        'name'     => 'announcement[image_id]',
+        'dot_name' => 'announcement.image_id',
+        'size'     => 5000000, // 5мб
+        'preview'  => [
+            'width'  => 130,
+            'height' => 70
+        ],
+        'image'    => [
+            'width'  => 370,
+            'height' => 200
+        ],
+        'canvas'   => [
+            'width'  => 370,
+            'height' => 200
         ],
     ],
 
@@ -372,8 +444,12 @@ return [
     ],
     'catalog_price_pdf' => 'https://yadi.sk/d/7CXTYatd-Xp4bw',
 
-    'storehouse_check' => [
+    'storehouse_check'   => [
         'gendistr',
-        'csc'
-    ]
+        'csc',
+        'distr'
+    ],
+
+    // Длина № сертфиката
+    'certificate_length' => 20
 ];

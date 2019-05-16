@@ -4,6 +4,7 @@ namespace QuadStudio\Service\Site\Http\Controllers;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Routing\Controller;
+use QuadStudio\Service\Site\Filters\Catalog\CatalogShowFilter;
 use QuadStudio\Service\Site\Filters\CatalogRootFilter;
 use QuadStudio\Service\Site\Filters\EnabledFilter;
 use QuadStudio\Service\Site\Models\Catalog;
@@ -33,9 +34,11 @@ class CatalogController extends Controller
      */
     public function index()
     {
-        $this->catalogs->trackFilter();
-        $this->catalogs->applyFilter(new CatalogRootFilter());
-        $this->catalogs->applyFilter(new EnabledFilter());
+        $this->catalogs
+            ->trackFilter()
+            ->applyFilter(new CatalogRootFilter())
+            ->applyFilter(new EnabledFilter())
+            ->applyFilter(new CatalogShowFilter());
 
         return view('site::catalog.index', [
             'catalogs' => $this->catalogs->all(['catalogs.*'])
@@ -44,15 +47,20 @@ class CatalogController extends Controller
 
     public function show(Catalog $catalog)
     {
-        if($catalog->enabled == 0){
+        if (
+            $catalog->getAttribute(config('site.check_field')) === false
+            || $catalog->getAttribute('enabled') === false
+        ) {
             abort(404);
         }
+
         return view('site::catalog.show', compact('catalog'));
     }
 
     public function list(Catalog $catalog)
     {
         $this->authorize('list', Catalog::class);
+
         return view('site::catalog.list', compact('catalog'));
     }
 

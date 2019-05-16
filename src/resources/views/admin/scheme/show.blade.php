@@ -17,25 +17,26 @@
         <h1 class="header-title mb-4">{{ $scheme->block->name }}</h1>
         @alert()@endalert
         <div class="justify-content-start border p-3 mb-2">
-            <a class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0"
+            <a class="btn btn-ferroli d-block d-sm-inline-block mr-0 mr-sm-1 mb-1 mb-sm-0"
                href="{{ route('admin.schemes.edit', $scheme) }}"
                role="button">
                 <i class="fa fa-pencil"></i>
                 <span>@lang('site::messages.edit') @lang('site::scheme.scheme')</span>
             </a>
-            <a class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0"
+            <a class="btn btn-ferroli d-block d-sm-inline-block mr-0 mr-sm-1 mb-1 mb-sm-0"
                href="{{ route('admin.schemes.elements', $scheme) }}"
                role="button">
                 <i class="fa fa-@lang('site::element.icon')"></i>
                 <span>@lang('site::element.elements')</span>
+                <span class="badge badge-light">{{$scheme->elements()->count()}}</span>
             </a>
-            <a class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0"
+            <a class="btn btn-ferroli d-block d-sm-inline-block @if($scheme->elements()->doesntExist()) disabled @endif mr-0 mr-sm-1 mb-1 mb-sm-0"
                href="{{ route('admin.schemes.pointers', $scheme) }}"
                role="button">
                 <i class="fa fa-@lang('site::pointer.icon')"></i>
                 <span>@lang('site::pointer.pointers')</span>
             </a>
-            <a class="btn btn-ferroli d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0"
+            <a class="btn btn-ferroli d-block d-sm-inline-block @if($scheme->elements()->doesntExist()) disabled @endif mr-0 mr-sm-1 mb-1 mb-sm-0"
                href="{{ route('admin.schemes.shapes', $scheme) }}"
                role="button">
                 <i class="fa fa-@lang('site::shape.icon')"></i>
@@ -45,7 +46,7 @@
                     class="btn btn-danger d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0" title="@lang('site::messages.delete')">
                 <i class="fa fa-close"></i> <span class="d-none d-sm-inline-block">@lang('site::messages.delete')</span>
             </button>
-            <a href="{{ route('admin.schemes.index') }}" class="d-block d-sm-inline btn btn-secondary">
+            <a href="{{ route('admin.schemes.index') }}" class="d-block d-sm-inline-block btn btn-secondary">
                 <i class="fa fa-reply"></i>
                 <span>@lang('site::messages.back')</span>
             </a>

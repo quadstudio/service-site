@@ -3,13 +3,13 @@
 namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use QuadStudio\Service\Site\Traits\Models\SortOrderTrait;
+use QuadStudio\Service\Site\Concerns\Sortable;
 
 
 class FileType extends Model
 {
 
-    use SortOrderTrait;
+    use Sortable;
     /**
      * @var string
      */

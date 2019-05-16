@@ -28,7 +28,7 @@
                 <i class="fa fa-@lang('site::schedule.icon')"></i>
                 <span>@lang('site::schedule.synchronize')</span>
             </a>
-            <a href="{{ route('admin.users.prices', $user) }}"
+            <a href="{{ route('admin.users.prices.index', $user) }}"
                class="d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-ferroli">
                 <i class="fa fa-@lang('site::user_price.icon')"></i>
                 <span>@lang('site::user_price.user_price')</span>
@@ -162,7 +162,7 @@
                                 {{$user->authorizations()->count()}}
                             </span>
                         </a>
-                        <a href="{{ route('admin.users.orders', $user) }}"
+                        <a href="{{ route('admin.orders.index', ['filter[user]='.$user->id]) }}"
                            class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                             <span>
                                 <i class="fa fa-@lang('site::order.icon')"></i>
@@ -172,7 +172,7 @@
                                 {{$user->orders()->count()}}
                             </span>
                         </a>
-                        <a href="{{ route('admin.users.contragents', $user) }}"
+                        <a href="{{ route('admin.contragents.index', ['filter[user]='.$user->id]) }}"
                            class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                             <span>
                                 <i class="fa fa-@lang('site::contragent.icon')"></i>
@@ -182,17 +182,7 @@
                                 {{$user->contragents()->count()}}
                             </span>
                         </a>
-                        <a href="{{ route('admin.users.contacts', $user) }}"
-                           class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                            <span>
-                                <i class="fa fa-@lang('site::contact.icon')"></i>
-                                 <span>@lang('site::contact.contacts')</span>
-                            </span>
-                            <span class="badge text-big @if($user->contacts()->exists()) badge-ferroli @else badge-light @endif">
-                                {{$user->contacts()->count()}}
-                            </span>
-                        </a>
-                        <a href="{{ route('admin.users.addresses.index', $user) }}"
+                        <a href="{{ route('admin.addresses.index', ['filter[user]='.$user->id]) }}"
                            class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                             <span>
                                 <i class="fa fa-@lang('site::address.icon')"></i>
@@ -200,6 +190,16 @@
                             </span>
                             <span class="badge text-big @if($user->addresses()->exists()) badge-ferroli @else badge-light @endif">
                                 {{$user->addresses()->count()}}
+                            </span>
+                        </a>
+                        <a href="{{ route('admin.contacts.index', ['filter[user]='.$user->id]) }}"
+                           class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="fa fa-@lang('site::contact.icon')"></i>
+                                 <span>@lang('site::contact.contacts')</span>
+                            </span>
+                            <span class="badge text-big @if($user->contacts()->exists()) badge-ferroli @else badge-light @endif">
+                                {{$user->contacts()->count()}}
                             </span>
                         </a>
                         <a href="{{ route('admin.engineers.index', ['filter[user]='.$user->id]) }}"
@@ -365,6 +365,13 @@
                                         </ul>
                                     @endif
                                 </dd>
+								<dt class="col-sm-4 text-left text-sm-right"></dt>
+                                <dd class="col-sm-8">
+								@if(( $address->is_service ))<span class="badge text-normal mb-0 mb-sm-1 badge-ferroli">Сервис</span> @endif
+								@if(( $address->is_shop ))<span class="badge text-normal mb-0 mb-sm-1 badge-ferroli">Торговая точка</span> @endif
+								@if(( $address->is_eshop ))<span class="badge text-normal mb-0 mb-sm-1 badge-ferroli">Интернет-магазин</span> @endif
+								@if(( $address->is_mounter ))<span class="badge text-normal mb-0 mb-sm-1 badge-ferroli">Монтажник</span> @endif
+								</dd>
                             </dl>
                         </div>
                     </div>

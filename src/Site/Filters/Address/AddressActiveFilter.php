@@ -10,7 +10,7 @@ class AddressActiveFilter extends Filter
 
     function apply($builder, RepositoryInterface $repository)
     {
-        return $builder->where('active', 1);
+        return $builder->where(config('site.check_field'), 1);
     }
 
 }

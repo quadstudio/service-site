@@ -26,20 +26,15 @@ class DatasheetRequest extends FormRequest
     {
 
         switch ($this->method()) {
-            case 'GET':
-            case 'DELETE': {
-                return [];
-            }
             case 'PUT':
             case 'PATCH':
             case 'POST': {
                 return [
-                    'name'      => 'required|string|max:255',
-                    'active'    => 'required|boolean',
-                    'file_id'   => 'required|exists:files,id',
-                    'type_id'   => 'required|exists:file_types,id',
-                    'date_from' => 'nullable|date',
-                    'date_to'   => 'nullable|date',
+                    'datasheet.name'      => 'required|string|max:255',
+                    'datasheet.file_id'   => 'required|exists:files,id',
+                    'datasheet.type_id'   => 'required|exists:file_types,id',
+                    'datasheet.date_from' => 'nullable|date_format:"d.m.Y"',
+                    'datasheet.date_to'   => 'nullable|date_format:"d.m.Y"',
                 ];
             }
             default:
@@ -65,10 +60,11 @@ class DatasheetRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name'    => trans('site::datasheet.name'),
-            'active'  => trans('site::datasheet.active'),
-            'file_id' => trans('site::datasheet.file_id'),
-            'type_id' => trans('site::datasheet.type_id'),
+            'datasheet.name'      => trans('site::datasheet.name'),
+            'datasheet.file_id'   => trans('site::datasheet.file_id'),
+            'datasheet.type_id'   => trans('site::datasheet.type_id'),
+            'datasheet.date_from' => trans('site::datasheet.date_from'),
+            'datasheet.date_to'   => trans('site::datasheet.date_to'),
         ];
     }
 }

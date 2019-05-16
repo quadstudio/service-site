@@ -3,9 +3,12 @@
 namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use QuadStudio\Service\Site\Concerns\Phoneable;
 
 class Participant extends Model
 {
+
+    use Phoneable;
 
     /**
      * @var string
@@ -13,7 +16,7 @@ class Participant extends Model
     protected $table;
 
     protected $fillable = [
-        'name', 'headposition', 'phone', 'email'
+        'name', 'headposition', 'phone', 'email', 'country_id'
     ];
 
     /**
@@ -25,7 +28,6 @@ class Participant extends Model
         $this->table = 'participants';
     }
 
-
     /**
      * Заявка
      *
@@ -34,6 +36,16 @@ class Participant extends Model
     public function member()
     {
         return $this->belongsTo(Member::class);
+    }
+
+    /**
+     * Страна
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
     }
 
 }

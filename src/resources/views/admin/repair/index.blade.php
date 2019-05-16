@@ -37,12 +37,13 @@
 
                 <div class="card-header py-1 with-elements">
                     <div class="card-header-elements">
-                        <span class="badge text-normal badge-pill badge-{{ $repair->status->color }}">
-                            <i class="fa fa-{{ $repair->status->icon }}"></i> {{ $repair->status->name }}
-                        </span>
-                        <a href="{{route('admin.repairs.show', $repair)}}" class="mx-3">
+                        <a href="{{route('admin.repairs.show', $repair)}}" class="mr-2">
                             @lang('site::repair.header.repair') № {{$repair->id}}
                         </a>
+                        <span class="badge text-normal badge-pill text-white"
+                              style="background-color: {{ $repair->status->color }}">
+                            <i class="fa fa-{{ $repair->status->icon }}"></i> {{ $repair->status->name }}
+                        </span>
                     </div>
 
                     <div class="card-header-elements ml-md-auto">
@@ -97,7 +98,19 @@
                             <dt class="col-12">@lang('site::product.sku')</dt>
                             <dd class="col-12">{{$repair->product->sku}}</dd>
                             <dt class="col-12">@lang('site::repair.serial_id')</dt>
-                            <dd class="col-12">{{$repair->serial_id}}</dd>
+                            <dd class="col-12">
+                                @if($repair->serial_id)
+                                    <div class="bg-light p-2">{{$repair->serial_id}}</div>
+                                    @if($repair->serial()->exists())
+                                        <div class="text-muted">{{$repair->serial->product->name}}</div>
+                                        <div class="text-muted">{{$repair->serial->comment}}</div>
+                                    @else
+                                        <span class="bg-danger text-white px-2">@lang('site::serial.error.not_found')</span>
+                                    @endif
+                                @else
+                                    <span class="bg-danger text-white px-2">@lang('site::serial.error.not_exist')</span>
+                                @endif
+                            </dd>
                         </dl>
                     </div>
                     <div class="col-xl-3 col-sm-6">

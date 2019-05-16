@@ -33,7 +33,7 @@
         {{$addresses->render()}}
 
         @foreach($addresses as $address)
-            <div class="card my-4" id="address-{{$address->id}}">
+            <div class="card my-2" id="address-{{$address->id}}">
 
                 <div class="card-header with-elements">
                     <div class="card-header-elements">

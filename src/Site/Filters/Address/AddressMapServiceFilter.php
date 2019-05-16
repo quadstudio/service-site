@@ -18,7 +18,7 @@ class AddressMapServiceFilter extends Filter
         $builder = $builder
             ->where('type_id', 2)
             ->where('is_service', 1)
-            ->where('active', 1)
+            ->where(config('site.check_field'), 1)
             ->whereHas('users', function ($query) {
                 $query
                     ->where('display', 1)

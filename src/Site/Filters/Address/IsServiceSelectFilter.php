@@ -15,8 +15,8 @@ class IsServiceSelectFilter extends WhereFilter
 
     function apply($builder, RepositoryInterface $repository)
     {
-        if ($this->canTrack() && !is_null($is_service = $this->get($this->name()))) {
-            $builder = $builder->where(DB::raw($this->column()), $this->operator(), $is_service);
+        if ($this->canTrack() && !is_null($value = $this->get($this->name()))) {
+            $builder = $builder->where(DB::raw($this->column()), $this->operator(), $value);
         }
 
         return $builder;
