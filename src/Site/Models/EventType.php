@@ -18,14 +18,17 @@ class EventType extends Model implements SingleImageable
 
     protected $fillable = [
         'name', 'annotation', 'description',
-        'route', 'sort_order','image_id',
+        'route', 'sort_order', 'image_id',
+        'meta_description', 'title',
         'show_ferroli', 'show_lamborghini'
     ];
 
     protected $casts = [
         'name'             => 'string',
+        'title'            => 'string',
         'annotation'       => 'string',
         'description'      => 'string',
+        'meta_description' => 'string',
         'show_ferroli'     => 'boolean',
         'show_lamborghini' => 'boolean',
         'sort_order'       => 'integer',

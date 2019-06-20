@@ -24,7 +24,7 @@ class BoilerFilter extends WhereFilter
         $builder->when($this->canTrack() && $this->filled($this->name()), function($query){
             return $query->whereHas('relations', function($query){
                 $boiler_id = $this->get($this->name());
-                return $query->where('details.product_id', $boiler_id);
+                return $query->where('relations.product_id', $boiler_id);
             });
         });
 
@@ -49,12 +49,15 @@ class BoilerFilter extends WhereFilter
     public function options(): array
     {
         $options = Product::query()->whereHas('details', function ($query) {
-            $query->where('enabled', 1)->where(config('site.check_field'), 1)->whereNull('equipment_id');
+            $query->where('enabled', 1)
+                ->where(config('site.check_field'), 1)
+                ->whereNull('equipment_id');
         })
             ->where('enabled', 1)
+            ->where(config('site.check_field'), 1)
             ->orderBy('name')
-            ->pluck('name', 'id');
-        $options->prepend(trans('site::messages.select_from_list'), '');
+            ->pluck('name', 'id')
+            ->prepend(trans('site::messages.select_from_list'), '');
 
         return $options->toArray();
     }

@@ -47,6 +47,7 @@ class SiteServiceProvider extends ServiceProvider
         Models\Mounting::class    => Policies\MountingPolicy::class,
         Models\Event::class       => Policies\EventPolicy::class,
         Models\Mounter::class     => Policies\MounterPolicy::class,
+        Models\Contract::class    => Policies\ContractPolicy::class,
     ];
 
     /**

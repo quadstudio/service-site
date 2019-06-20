@@ -40,7 +40,7 @@
                     <div class="card-header-elements ml-md-auto">
                         <span class="px-2 bg-light text-big">
                             <i class="fa fa-@lang('site::'.$act->type->lang.'.icon')"></i>
-                            {{$act->type->name}}
+                            {{optional($act->type)->name}}
                         </span>
                     </div>
                 </div>
@@ -83,12 +83,12 @@
                     <div class="col-xl-3 col-sm-6">
                         <dl class="dl-horizontal mt-sm-2 mt-0">
                             <dt class="col-12 mb-0 text-left text-xl-right">
-                                @lang('site::act.user.received_'.$act->received)
-                                <span>@bool(['bool' => $act->received == 1])@endbool</span>
+                                @lang('site::act.received')
+                                <span>@bool(['bool' => $act->received])@endbool</span>
                             </dt>
                             <dt class="col-12 mb-0 text-left text-xl-right">
-                                @lang('site::act.user.paid_'.$act->paid)
-                                <span>@bool(['bool' => $act->paid == 1])@endbool</span>
+                                @lang('site::act.paid')
+                                <span>@bool(['bool' => $act->paid])@endbool</span>
                             </dt>
                         </dl>
                     </div>

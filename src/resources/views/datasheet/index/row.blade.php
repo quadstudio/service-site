@@ -8,25 +8,30 @@
                        href="{{ route('datasheets.show', $datasheet) }}">{{ $datasheet->name ?: $datasheet->file->name }}</a>
                     <span class="text-muted d-block">@include('site::datasheet.date')</span>
 
-                    @if(!($products = $datasheet->products()->where('enabled', 1)->orderBy('equipment_id')->orderBy('name')->get())->isEmpty())
+                    @if(($products = $datasheet->products()->where('enabled', 1)->orderBy('equipment_id')->orderBy('name'))->exists())
                         @include('site::datasheet.index.row.products')
                     @endif
                 </div>
                 <div class="col-sm-3">
 
-                    @if($datasheet->schemes()->count() > 0)
-                        @if($products->isNotEmpty())
-                            <div class="dropdown">
-                                <a class="btn btn-ferroli dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    @lang('site::scheme.schemes')
-                                </a>
+                    @if($datasheet->schemes()->exists())
+                        @if($products->exists())
+                            @if($products->count() > 1)
+                                <div class="dropdown">
+                                    <a class="btn btn-ferroli dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        @lang('site::scheme.schemes')
+                                    </a>
 
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    @foreach($products as $product)
-                                    <a class="dropdown-item" href="{{route('products.scheme', [$product, $datasheet->schemes()->first()])}}">{!! $product->name !!}</a>
-                                    @endforeach
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        @foreach($products->get() as $product)
+                                        <a class="dropdown-item" href="{{route('products.scheme', [$product, $datasheet->schemes()->first()])}}">{!! $product->name !!}</a>
+                                        @endforeach
+                                    </div>
                                 </div>
-                            </div>
+                            @else
+                                <a class="btn btn-ferroli"
+                                   href="{{route('products.scheme', [$products->first(), $datasheet->schemes()->first()])}}">@lang('site::messages.open') @lang('site::scheme.scheme')</a>
+                            @endif
                         @endif
                     @endif
                 </div>

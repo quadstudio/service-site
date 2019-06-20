@@ -62,28 +62,6 @@
                         </p>
                         @endadmin()
                         <p>{!! $equipment->annotation !!}</p>
-                        {{--<div class="mb-4">--}}
-                        {{--<div class="ui-stars text-big">--}}
-                        {{--<div class="d-inline-block">--}}
-                        {{--<i class="fa fa-star"></i>--}}
-                        {{--</div>--}}
-                        {{--<div class="d-inline-block">--}}
-                        {{--<i class="fa fa-star"></i>--}}
-                        {{--</div>--}}
-                        {{--<div class="d-inline-block">--}}
-                        {{--<i class="fa fa-star"></i>--}}
-                        {{--</div>--}}
-                        {{--<div class="d-inline-block">--}}
-                        {{--<i class="fa fa-star"></i>--}}
-                        {{--</div>--}}
-                        {{--<div class="d-inline-block filled">--}}
-                        {{--<i class="fa fa-star-half-full"></i>--}}
-                        {{--</div>--}}
-                        {{--</div>--}}
-
-                        {{--<a href="javascript:void(0)" class="text-muted small">23 отзыва</a>--}}
-                        {{--</div>--}}
-
                     </div>
                 </div>
                 <ul class="nav nav-tabs mt-3" id="myTab" role="tablist">
@@ -168,36 +146,33 @@
                                             <div class="col-sm-6">
                                                 <a class="text-large mb-1"
                                                    href="{{ route('datasheets.show', $datasheet) }}">{{ $datasheet->name ?: $datasheet->file->name }}</a>
-                                                {{--<span class="text-lighter d-block">{{ $datasheet->name }}</span>--}}
                                                 <span class="text-muted d-block">@include('site::datasheet.date')</span>
-												@if(!($products = $datasheet->products()->where('enabled', 1)->orderBy('equipment_id')->orderBy('name')->get())->isEmpty())
+												@if(($products = $datasheet->products()->where('enabled', 1)->orderBy('equipment_id')->orderBy('name'))->exists())
 													@include('site::datasheet.index.row.products')
 												@endif
                                             </div>
 
                                         <div class="col-sm-3 text-right">
-                                                @if($datasheet->schemes()->count() > 0)
-                                                @if($products->count() > 1)
-													@if($products->isNotEmpty())
-														<div class="dropdown">
-															<a class="btn btn-ferroli dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-																@lang('site::scheme.schemes') ({{$products->count() }})
-															</a>
+                                                @if($datasheet->schemes()->exists())
+                                                    @if($products->exists())
+                                                        @if($products->count() > 1)
 
-															<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-																@foreach($products as $product)
-																<a class="dropdown-item" href="{{route('products.scheme', [$product, $datasheet->schemes()->first()])}}">{!! $product->name !!}</a>
-																@endforeach
-															</div>
-														</div>
-													@endif
+                                                            <div class="dropdown">
+                                                                <a class="btn btn-ferroli dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    @lang('site::scheme.schemes') ({{$products->count() }})
+                                                                </a>
 
-                                                                                               
-												@else
-												
-												<a class="btn btn-ferroli"
-                                                   href="{{route('products.scheme', [$product, $datasheet->schemes()->first()])}}">@lang('site::messages.open') @lang('site::scheme.scheme')</a>
-                                                @endif 
+                                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                                    @foreach($products->get() as $product)
+                                                                    <a class="dropdown-item" href="{{route('products.scheme', [$product, $datasheet->schemes()->first()])}}">{!! $product->name !!}</a>
+                                                                    @endforeach
+                                                                </div>
+                                                            </div>
+                                                        @else
+                                                            <a class="btn btn-ferroli"
+                                                            href="{{route('products.scheme', [$products->first(), $datasheet->schemes()->first()])}}">@lang('site::messages.open') @lang('site::scheme.scheme')</a>
+                                                        @endif
+                                                    @endif
 												@endif
                                             </div>
                                             <div class="col-sm-3 text-right">

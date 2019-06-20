@@ -27,7 +27,7 @@ class FileRequest extends FormRequest
         switch ($this->method()) {
             case 'POST': {
                 return [
-                    'path'    => 'required|mimes:' . config('site.files.mime', 'jpg,jpeg,png,pdf') . '|max:' . config('site.files.size', 8092),
+                    'path'    => 'required|mimes:' . config('site.' . $this->input('storage') . '.mime', 'jpg,jpeg,png,pdf') . '|max:' . config('site.files.size', 5000000),
                     'type_id' => 'required',
                 ];
             }
@@ -44,8 +44,8 @@ class FileRequest extends FormRequest
     public function messages()
     {
         return [
-            'path.mimes'  => trans('site::file.error.path'),
-            'path.max'  => trans('site::file.error.max'),
+            'path.mimes' => trans('site::file.error.path'),
+            'path.max'   => trans('site::file.error.max'),
         ];
     }
 

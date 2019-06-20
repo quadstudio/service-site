@@ -32,14 +32,12 @@ class MountingRequest extends FormRequest
             ->where('required', 1)
             ->get();
         switch ($this->method()) {
-            case 'GET':
-            case 'DELETE': {
-                return [];
-            }
+
             case 'POST': {
                 $rules = [
-                    'mounting.source_id'    => 'required|exists:mounting_sources,id',
-                    'mounting.source_other' => 'required_if:mounting.source_id,4|nullable|max:255',
+                    'accept'                 => 'required|accepted',
+                    'mounting.source_id'     => 'required|exists:mounting_sources,id',
+                    'mounting.source_other'  => 'required_if:mounting.source_id,4|nullable|max:255',
                     'mounting.contragent_id' => [
                         'required',
                         'exists:contragents,id',
@@ -91,10 +89,6 @@ class MountingRequest extends FormRequest
 
                 return $rules;
             }
-            case 'PUT':
-            case 'PATCH': {
-                return [];
-            }
             default:
                 return [];
         }
@@ -118,6 +112,7 @@ class MountingRequest extends FormRequest
     public function attributes()
     {
         $attributes = [
+            'accept'                   => trans('site::mounting.accept'),
             'mounting.source_id'       => trans('site::mounting.source_id'),
             'mounting.source_other'    => trans('site::mounting.source_other'),
             'mounting.contragent_id'   => trans('site::mounting.contragent_id'),

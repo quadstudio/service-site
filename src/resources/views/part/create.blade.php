@@ -1,4 +1,4 @@
-<li class="list-group-item p-1 product-{{$product->id}}">
+<div class="list-group-item p-1 product-{{$product->id}}">
     <div class="row">
         <div class="col-xl-6 col-sm-12">
             <dl class="dl-horizontal mt-2">
@@ -15,22 +15,16 @@
             <dl class="dl-horizontal mt-2">
                 <dt class="col-12">@lang('site::part.count')</dt>
                 <dd class="col-12">
-                    <select name="parts[{{$product->id}}][count]"
+                    <select name="count[{{$product->id}}]"
                             required
+                            data-cost="{{ $product->hasPrice ? $product->repairPrice->value : 0}}"
                             title="@lang('site::part.count')"
                             class="form-control parts_count">
                         @foreach(range(1,4,1) as $range_count)
-                            <option @if(old('parts.'.$product->id.'.count', (isset($count) ? $count : null)) == $range_count) selected
+                            <option @if(old('count.'.$product->id, (isset($count) ? $count : null)) == $range_count) selected
                                     @endif value="{{ $range_count }}">{{ $range_count }}</option>
                         @endforeach
                     </select>
-                    <input type="hidden"
-                           name="parts[{{$product->id}}][product_id]"
-                           value="{{$product->id}}">
-                    <input type="hidden"
-                           class="parts_cost"
-                           name="parts[{{$product->id}}][cost]"
-                           value="{{ $product->hasPrice ? $product->repairPrice->value : 0}}">
                 </dd>
                 <dt class="col-12"></dt>
                 <dd class="col-12">
@@ -43,4 +37,4 @@
             </dl>
         </div>
     </div>
-</li>
+</div>

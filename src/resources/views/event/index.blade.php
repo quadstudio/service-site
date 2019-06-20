@@ -12,6 +12,7 @@
 @endsection
 @section('content')
     <div class="container">
+	@include('site::event_type.events')	
         @filter(['repository' => $repository])@endfilter
         @pagination(['pagination' => $events])@endpagination
         {{$events->render()}}

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
-@section('title')@lang('site::event.events')@lang('site::messages.title_separator')@endsection
+@section('title'){{$event_type->title}}@lang('site::messages.title_separator')@endsection
+@section('description'){{$event_type->meta_description}}@endsection
 @section('header')
     @include('site::header.front',[
         'h1' => $event_type->name,

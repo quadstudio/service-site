@@ -67,8 +67,7 @@ class EquipmentController extends Controller
             ->pushTrackFilter(EquipmentEnabledBoolFilter::class)
             ->pushTrackFilter(EquipmentShowFerroliBoolFilter::class)
             ->pushTrackFilter(EquipmentShowLamborghiniBoolFilter::class)
-            ->pushTrackFilter(EquipmentPerPageFilter::class)
-        ;
+            ->pushTrackFilter(EquipmentPerPageFilter::class);
 
         return view('site::admin.equipment.index', [
             'repository' => $this->equipments,
@@ -111,6 +110,7 @@ class EquipmentController extends Controller
             $request->input('equipment'),
             [
                 'enabled'          => $request->filled('equipment.enabled'),
+                'mounter_enabled' => $request->filled('equipment.mounter_enabled'),
                 'show_ferroli'     => $request->filled('equipment.show_ferroli'),
                 'show_lamborghini' => $request->filled('equipment.show_lamborghini')
             ]
@@ -147,6 +147,7 @@ class EquipmentController extends Controller
             $request->input('equipment'),
             [
                 'enabled'          => $request->filled('equipment.enabled'),
+                'mounter_enabled' => $request->filled('equipment.mounter_enabled'),
                 'show_ferroli'     => $request->filled('equipment.show_ferroli'),
                 'show_lamborghini' => $request->filled('equipment.show_lamborghini')
             ]

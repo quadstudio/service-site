@@ -19,7 +19,8 @@ class Equipment extends Model implements Imageable
         'name', 'annotation', 'description',
         'h1', 'title', 'metadescription',
         'specification', 'catalog_id', 'sort_order',
-        'enabled', 'show_ferroli', 'show_lamborghini'
+        'enabled', 'show_ferroli', 'show_lamborghini',
+        'mounter_enabled'
     ];
 
     protected $casts = [
@@ -36,6 +37,7 @@ class Equipment extends Model implements Imageable
         'enabled'          => 'boolean',
         'show_ferroli'     => 'boolean',
         'show_lamborghini' => 'boolean',
+        'mounter_enabled' => 'boolean',
     ];
 
     /**
@@ -66,6 +68,9 @@ class Equipment extends Model implements Imageable
         return $this->belongsTo(Catalog::class);
     }
 
+    /**
+     * @return Model
+     */
     public function image()
     {
         return $this->images()->firstOrNew([]);
@@ -82,20 +87,23 @@ class Equipment extends Model implements Imageable
     }
 
     /**
+     * Оборудование
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function products()
     {
         return $this->hasMany(Product::class);
-
     }
 
     /**
+     * Заявки на монтаж
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    private function _products()
+    public function mounters()
     {
-
+        return $this->hasMany(Mounter::class);
     }
 
     public function canDelete()

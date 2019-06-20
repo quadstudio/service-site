@@ -72,6 +72,9 @@
                         <a class="dropdown-item" href="{{ route('admin.orders.index') }}">
                             <i class="fa fa-@lang('site::order.icon')"></i> @lang('site::order.orders')
                         </a>
+                        <a class="dropdown-item" href="{{ route('admin.contracts.index') }}">
+                            <i class="fa fa-@lang('site::contract.icon')"></i> @lang('site::contract.contracts')
+                        </a>
 
                         <div class="dropdown-divider"></div>
 
@@ -153,17 +156,22 @@
                                     class="fa fa-@lang('site::message.icon')"></i> @lang('site::message.messages')
                         </a>
                         @endpermission
+                        @permission('contracts')
+                        <a class="dropdown-item" href="{{ route('contracts.index') }}"><i
+                                    class="fa fa-@lang('site::contract.icon')"></i> @lang('site::contract.contracts')
+                        </a>
+                        @endpermission
                         @permission('engineers')
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ route('engineers.index') }}">
                             <i class="fa fa-@lang('site::engineer.icon')"></i> @lang('site::engineer.engineers')
                         </a>
                         @endpermission
-                        @permission('launches')
-                        <a class="dropdown-item" href="{{ route('launches.index') }}">
-                            <i class="fa fa-@lang('site::launch.icon')"></i> @lang('site::launch.launches')
-                        </a>
-                        @endpermission
+                        {{--@permission('launches')--}}
+                        {{--<a class="dropdown-item" href="{{ route('launches.index') }}">--}}
+                            {{--<i class="fa fa-@lang('site::launch.icon')"></i> @lang('site::launch.launches')--}}
+                        {{--</a>--}}
+                        {{--@endpermission--}}
                         @permission('trades')
                         <a class="dropdown-item" href="{{ route('trades.index') }}">
                             <i class="fa fa-@lang('site::trade.icon')"></i> @lang('site::trade.trades')

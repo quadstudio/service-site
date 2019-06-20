@@ -324,9 +324,11 @@
                                    type="checkbox" name="fail[][field]" class="d-none repair-error-check">
                         </dt>
                         <dd class="col-sm-8">
-                            <a href="{{route('admin.trades.edit', $repair->trade)}}">
-                                {{ $repair->trade->name }}
-                            </a>
+                            @if($repair->trade)
+                                <a href="{{route('admin.trades.edit', $repair->trade)}}">
+                                    {{ $repair->trade->name }}
+                                </a>
+                            @endif
                         </dd>
 
                         <dt class="col-sm-4 text-left text-sm-right
@@ -341,21 +343,6 @@
                                    type="checkbox" name="fail[][field]" class="d-none repair-error-check">
                         </dt>
                         <dd class="col-sm-8">{{ $repair->date_trade->format('d.m.Y') }}</dd>
-
-
-                        <dt class="col-sm-4 text-left text-sm-right @if($fails->contains('field', 'launch_id')) bg-danger text-white @endif">
-                            <label for="launch_id"
-                                   class="pointer control-label"><i
-                                        class="fa text-danger fa-hand-pointer-o"></i> @lang('site::repair.launch_id')
-                            </label>
-                            <input id="launch_id"
-                                   value="launch_id"
-                                   @if($fails->contains('field', 'launch_id')) checked @endif
-                                   type="checkbox" name="fail[][field]" class="d-none repair-error-check">
-                        </dt>
-                        <dd class="col-sm-8"><a
-                                    href="{{route('admin.launches.edit', $repair->launch)}}">{{ $repair->launch->name }}</a>
-                        </dd>
 
                         <dt class="col-sm-4 text-left text-sm-right @if($fails->contains('field', 'date_launch')) bg-danger text-white @endif">
                             <label for="date_launch"
@@ -486,13 +473,13 @@
     try {
         window.addEventListener('load', function () {
             let i, checkbox, checks = document.querySelectorAll('.repair-error-check');
-            for (i = 0; i < checks.length; i++){
-                checks[i].addEventListener('click', function(e){
+            for (i = 0; i < checks.length; i++) {
+                checks[i].addEventListener('click', function (e) {
                     checkbox = e.target;
-                    if(checkbox.checked){
+                    if (checkbox.checked) {
                         checkbox.parentNode.classList.add('bg-danger');
                         checkbox.parentNode.classList.add('text-white');
-                    } else{
+                    } else {
                         checkbox.parentNode.classList.remove('bg-danger');
                         checkbox.parentNode.classList.remove('text-white');
                     }

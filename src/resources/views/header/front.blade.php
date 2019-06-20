@@ -11,10 +11,12 @@
             <div class="col-md-12 col-lg-5">
                 <ol class="breadcrumb">
                     @foreach ($breadcrumbs as $breadcrumb)
-                        @if (!empty($breadcrumb['url']))
-                            <li><a href="{{ $breadcrumb['url'] }}">{!! $breadcrumb['name'] !!}</a></li>
-                        @else
-                            <li class="active">{!! $breadcrumb['name'] !!}</li>
+                        @if(is_array($breadcrumb))
+                            @if (!empty($breadcrumb['url']))
+                                <li><a href="{{ $breadcrumb['url'] }}">{!! $breadcrumb['name'] !!}</a></li>
+                            @else
+                                <li class="active">{!! $breadcrumb['name'] !!}</li>
+                            @endif
                         @endif
                     @endforeach
                 </ol>

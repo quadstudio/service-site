@@ -18,16 +18,10 @@
         <div class="row">
             <div class="col-12">
                 @foreach($addresses as $address)
-                    @php $user_roles = [] @endphp
-                    @foreach ($roles as $role)
-                        @if($address->addressable->hasRole($role->name))
-                            @php $user_roles[] = $role->title @endphp
-                        @endif
-                    @endforeach
                     @include('site::map.balloon', [
                         'name' => $address->name,
                         'address' => $address->address,
-                        'roles' => $user_roles,
+                        'roles' => [],
                         'phones' => $address->phones,
                         'email' => $address->email,
                         'web' => $address->web,

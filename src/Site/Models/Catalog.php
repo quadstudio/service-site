@@ -23,7 +23,8 @@ class Catalog extends Model implements SingleImageable
     protected $fillable = [
         'name', 'name_plural', 'description',
         'catalog_id', 'image_id', 'sort_order',
-        'enabled', 'show_ferroli', 'show_lamborghini'
+        'enabled', 'show_ferroli', 'show_lamborghini',
+        'mounter_enabled'
     ];
 
     protected $casts = [
@@ -37,6 +38,7 @@ class Catalog extends Model implements SingleImageable
         'enabled'          => 'boolean',
         'show_ferroli'     => 'boolean',
         'show_lamborghini' => 'boolean',
+        'mounter_enabled' => 'boolean',
     ];
 
     /**

@@ -4,8 +4,8 @@ namespace QuadStudio\Service\Site\Http\Controllers\Admin;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Routing\Controller;
-use QuadStudio\Service\Site\Events\ActRepairCreateEvent;
 use QuadStudio\Service\Site\Events\ActExport;
+use QuadStudio\Service\Site\Events\ActRepairCreateEvent;
 use QuadStudio\Service\Site\Filters\Act\ActPerPageFilter;
 use QuadStudio\Service\Site\Filters\Act\ActUserFilter;
 use QuadStudio\Service\Site\Filters\User\HasApprovedRepairFilter;
@@ -66,6 +66,7 @@ class ActController extends Controller
         $this->acts->trackFilter();
         $this->acts->pushTrackFilter(ActUserFilter::class);
         $this->acts->pushTrackFilter(ActPerPageFilter::class);
+
         return view('site::admin.act.index', [
             'repository' => $this->acts,
             'acts'       => $this->acts->paginate($request->input('filter.per_page', config('site.per_page.act', 10)), ['acts.*'])
@@ -101,8 +102,9 @@ class ActController extends Controller
                 /** @var Act $act */
                 $user->acts()->save($act = Act::create([
                     'contragent_id' => $contragent_id,
-                    'type_id' => 1
+                    'type_id'       => 1
                 ]));
+
                 $act->details()->saveMany([
                     new ActDetail($contragent->organization->toArray()),
                     new ActDetail($contragent->toArray())
@@ -114,6 +116,7 @@ class ActController extends Controller
                     $repair->act()->associate($act);
 
                     $repair->save();
+
                 }
                 $acts->push($act);
             }
@@ -143,7 +146,10 @@ class ActController extends Controller
      */
     public function update(ActRequest $request, Act $act)
     {
-        $act->update(array_merge($request->input(['act']), ['received' => $request->filled('act.received') ? 1 : 0]));
+        $act->update(array_merge($request->input(['act']), [
+            'received' => $request->filled('act.received'),
+            'paid'     => $request->filled('act.paid')
+        ]));
 
         return redirect()->route('admin.acts.show', $act)->with('success', trans('site::act.updated'));
     }

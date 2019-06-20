@@ -81,6 +81,9 @@
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::catalog.enabled')</dt>
                     <dd class="col-sm-8">@bool(['bool' => $catalog->enabled])@endbool</dd>
 
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::catalog.mounter_enabled')</dt>
+                    <dd class="col-sm-8">@bool(['bool' => $catalog->mounter_enabled])@endbool</dd>
+
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::catalog.image_id')</dt>
                     <dd class="col-sm-8">
                         @include('site::admin.image.preview', ['image' => $catalog->image])

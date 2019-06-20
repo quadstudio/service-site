@@ -126,6 +126,10 @@
                     <div class="col-xl-3 col-sm-6">
                         <dl class="dl-horizontal mt-2">
                             <dt class="col-12 mb-0 text-left text-xl-right">
+                                @lang('site::catalog.mounter_enabled')
+                                <span>@bool(['bool' => $catalog->mounter_enabled])@endbool</span>
+                            </dt>
+                            <dt class="col-12 mb-0 text-left text-xl-right">
                                 @lang('site::messages.show_ferroli')
                                 <span>@bool(['bool' => $catalog->show_ferroli])@endbool</span>
                             </dt>

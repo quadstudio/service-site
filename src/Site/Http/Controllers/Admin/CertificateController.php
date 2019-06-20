@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\BaseReader;
 use QuadStudio\Service\Site\Filters\Certificate\CertificatePerPageFilter;
@@ -14,7 +15,6 @@ use QuadStudio\Service\Site\Http\Requests\Admin\CertificateRequest;
 use QuadStudio\Service\Site\Models\Certificate;
 use QuadStudio\Service\Site\Models\CertificateType;
 use QuadStudio\Service\Site\Repositories\CertificateRepository;
-use QuadStudio\Service\Site\Support\CertificateLoadFilter;
 
 class CertificateController extends Controller
 {
@@ -121,8 +121,23 @@ class CertificateController extends Controller
         return redirect()->route('admin.certificates.create', $certificate_type)->with('success', trans('site::certificate.loaded'));
     }
 
-    public function show(Certificate $certificate)
+    /**
+     * @param  Certificate $certificate
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Certificate $certificate)
     {
-        return view('site::admin.certificate.show', compact('certificate'));
+
+        if ($certificate->delete()) {
+            Session::flash('success', trans('site::certificate.deleted'));
+
+        } else {
+            Session::flash('error', trans('site::certificate.error.deleted'));
+        }
+        $json['redirect'] = route('admin.certificates.index');;
+
+        return response()->json($json);
+
     }
+
 }

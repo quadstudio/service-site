@@ -47,6 +47,7 @@ trait RegisterControllerTrait
         $address_legal_regions = Region::where('country_id', config('site.country'))->orderBy('name')->get();
         $address_postal_regions = Region::where('country_id', config('site.country'))->orderBy('name')->get();
         $types = ContragentType::all();
+
         return view('site::auth.register', compact('countries', 'types', 'address_legal_regions', 'address_postal_regions'));
     }
 
@@ -58,26 +59,23 @@ trait RegisterControllerTrait
      */
     public function register(RegisterRequest $request)
     {
-        //dd($request->all());
         $user = $this->createUser($request->all());
         /** @var $contact Contact */
-        $user->contacts()->save($contact = Contact::create($request->input('contact')));
-        $contact->phones()->save(Phone::create($request->input('phone.contact')));
-//        if ($request->filled('sc')) {
-//            /** @var $sc Contact */
-//            $user->contacts()->save($sc = Contact::create($request->input('sc')));
-//            $sc->phones()->save(Phone::create($request->input('phone.sc')));
-//        }
-        /** @var $address Address */
-        //$user->addresses()->save($address = Address::create($request->input('address.sc')));
-        //$address->phones()->save(Phone::create($request->input('phone.sc')));
+        $user->contacts()->save($contact = Contact::query()->create($request->input('contact')));
+        $contact->phones()->save(Phone::query()->create($request->input('phone.contact')));
 
         /** @var $contragent Contragent */
-        $user->contragents()->save($contragent = Contragent::create($request->input('contragent')));
-        $contragent->addresses()->saveMany([
-            $legal = Address::query()->create($request->input('address.legal')),
-            Address::query()->create($request->input('address.postal')),
-        ]);
+        $user->contragents()->save($contragent = Contragent::query()->create($request->input('contragent')));
+
+        $legal = Address::query()->create($request->input('address.legal'));
+        if (!$request->filled('legal')) {
+            $postal = Address::query()->create($request->input('address.postal'));
+        } else{
+            $postal = Address::query()->create(array_merge($request->input('address.legal'), ['type_id' => 3]));
+        }
+
+        $contragent->addresses()->saveMany([$legal, $postal]);
+
         $user->attachRole(config('site.defaults.user.role_id', 2));
         $user->update(['region_id' => $legal->getAttribute('region_id')]);
 

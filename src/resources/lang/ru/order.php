@@ -14,7 +14,7 @@ return [
     'comment'          => 'Комментарий',
     'user_id'          => 'Сервисный центр',
     'contragent_id'    => 'Контрагент',
-    'contacts_comment' => 'Контактные данные',
+    'contacts_comment' => 'Контактные данные (телефон обязателен)',
     'created_at'       => 'Дата',
     'guid'             => 'Код 1С',
 
@@ -36,7 +36,7 @@ return [
     'placeholder'        => [
         'search_sc'        => 'Поиск СЦ',
         'search_id'        => 'Поиск по № заказа',
-        'contacts_comment' => 'Имя, телефон'
+        'contacts_comment' => 'Имя, телефон (обязательно)'
     ],
     'help'               => [
         'change_status' => 'Сменить статус заказа на',

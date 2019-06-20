@@ -74,6 +74,16 @@ class Repair extends Model implements Messagable
         $this->table = 'repairs';
     }
 
+    protected static function boot()
+    {
+        static::updating(function (Repair $model) {
+            if ($model->isDirty('status_id') && $model->getAttribute('status_id') == 5) {
+                $model->setAttribute('cost_distance', $model->distance->cost);
+                $model->setAttribute('cost_difficulty', $model->difficulty->cost);
+            }
+        });
+    }
+
     /**
      * @param $value
      */

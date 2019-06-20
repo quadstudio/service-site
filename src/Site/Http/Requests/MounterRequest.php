@@ -28,6 +28,7 @@ class MounterRequest extends FormRequest
 
             case 'POST': {
                 return [
+                    'captcha'            => 'required|captcha',
                     'mounter.client'     => 'required|string|max:255',
                     'mounter.country_id' => 'required|exists:countries,id',
                     'mounter.phone'      => 'required|string|size:' . config('site.phone.maxlength'),
@@ -56,7 +57,9 @@ class MounterRequest extends FormRequest
      */
     public function messages()
     {
-        return [];
+        return [
+            'captcha' => trans('site::mounter.error.captcha'),
+        ];
     }
 
     /**
@@ -67,6 +70,7 @@ class MounterRequest extends FormRequest
     public function attributes()
     {
         return [
+            'captcha'            => trans('site::mounter.captcha'),
             'mounter.client'     => trans('site::mounter.client'),
             'mounter.status_id'  => trans('site::mounter.status_id'),
             'mounter.country_id' => trans('site::mounter.country_id'),

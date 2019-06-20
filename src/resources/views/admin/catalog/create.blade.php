@@ -71,6 +71,21 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox"
+                                               @if(old('catalog.mounter_enabled')) checked
+                                               @endif
+                                               class="custom-control-input{{  $errors->has('catalog.mounter_enabled') ? ' is-invalid' : '' }}"
+                                               id="mounter_enabled"
+                                               name="catalog[mounter_enabled]">
+                                        <label class="custom-control-label"
+                                               for="mounter_enabled">@lang('site::catalog.mounter_enabled')</label>
+                                        <span class="invalid-feedback">{{ $errors->first('catalog.mounter_enabled') }}</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

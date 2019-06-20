@@ -155,12 +155,6 @@
                     <dt class="@if($fails->contains('field', 'date_trade')) bg-danger text-white @endif col-sm-4 text-left text-sm-right">@lang('site::repair.date_trade')</dt>
                     <dd class="col-sm-8">{{ $repair->date_trade->format('d.m.Y') }}</dd>
 
-
-                    <dt class="@if($fails->contains('field', 'launch_id')) bg-danger text-white @endif col-sm-4 text-left text-sm-right">@lang('site::repair.launch_id')</dt>
-                    <dd class="col-sm-8">
-                        <a href="{{route('launches.edit', $repair->launch)}}">{{ $repair->launch->name }}</a>
-                    </dd>
-
                     <dt class="@if($fails->contains('field', 'date_launch')) bg-danger text-white @endif col-sm-4 text-left text-sm-right">@lang('site::repair.date_launch')</dt>
                     <dd class="col-sm-8">{{ $repair->date_launch->format('d.m.Y') }}</dd>
 

@@ -63,7 +63,7 @@
                             <span class="text-dark">@bool(['bool' => $act->received])@endbool</span>
                         </div>
                         <div class="mb-2">
-                            <span class="text-muted">@lang('site::act.user.paid'):</span>&nbsp;
+                            <span class="text-muted">@lang('site::act.paid'):</span>&nbsp;
                             <span class="text-dark">@bool(['bool' => $act->paid])@endbool</span>
                         </div>
                         <div class="mb-2">

@@ -19,7 +19,8 @@ class ContactTypeSelectFilter extends WhereFilter
      */
     public function options(): array
     {
-        return ContactType::query()->has('contacts')
+        return ContactType::query()
+            ->has('contacts')
             ->orderBy('name')
             ->pluck('name', 'id')
             ->map(function ($item, $key) {

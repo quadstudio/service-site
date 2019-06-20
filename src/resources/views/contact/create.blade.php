@@ -81,7 +81,6 @@
 
                     {{-- ТЕЛЕФОН --}}
 
-                    <h4 class="mb-2 mt-2">@lang('site::contact.phone')</h4>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-row required">

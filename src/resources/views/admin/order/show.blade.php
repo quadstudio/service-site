@@ -19,20 +19,10 @@
 
         <div class=" border p-3 mb-2">
             <a href="{{ route('admin.orders.schedule', $order) }}"
-               class="@cannot('schedule', $order) disabled @endcannot d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-ferroli">
+               class="@cannot('schedule', $order) disabled @endcannot d-block d-sm-inline-block btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-ferroli">
                 <i class="fa fa-@lang('site::schedule.icon')"></i>
                 <span>@lang('site::schedule.synchronize')</span>
             </a>
-            @if($order->messages->isNotEmpty())
-                <a href="#messages-list" role="button"
-                   class="d-block d-sm-inline mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-ferroli">
-                    <i class="fa fa-@lang('site::message.icon')"></i>
-                    <span>
-                        @lang('site::messages.show') @lang('site::message.messages')
-                        <span class="badge badge-light">{{$order->messages()->count()}}</span>
-                    </span>
-                </a>
-            @endif
             <button @cannot('delete', $order) disabled @endcannot
             class="btn btn-danger btn-row-delete"
                     data-form="#order-delete-form-{{$order->id}}"
@@ -45,7 +35,7 @@
                 @lang('site::messages.delete')
             </button>
 
-            <a href="{{ route('admin.orders.index') }}" class="d-block d-sm-inline btn btn-secondary">
+            <a href="{{ route('admin.orders.index') }}" class="d-block d-sm-inline-block btn btn-secondary">
                 <i class="fa fa-reply"></i>
                 <span>@lang('site::messages.back')</span>
             </a>
@@ -143,9 +133,8 @@
                                     <div @if($schedule->status == 2)
                                          data-toggle="tooltip" data-placement="top" title="{!!$schedule->message!!}"
                                             @endif>
-                                        @lang('site::schedule.statuses.'.$schedule->status.'.text')
-                                        <i class="fa fa-@lang('site::schedule.statuses.'.$schedule->status.'.icon')
-                                                text-@lang('site::schedule.statuses.'.$schedule->status.'.color')"></i>
+                                        {{$schedule->status()->first()->name}}
+                                        <i class="fa fa-{{$schedule->status()->first()->icon}} text-{{$schedule->status()->first()->color}}"></i>
                                     </div>
                                 </li>
                             @endforeach

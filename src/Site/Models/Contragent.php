@@ -166,6 +166,16 @@ class Contragent extends Model implements Addressable
         ]);
     }
 
+    /**
+     * Договора
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function contracts()
+    {
+        return $this->hasMany(Contract::class);
+    }
+
     function path()
     {
         return 'contragents';

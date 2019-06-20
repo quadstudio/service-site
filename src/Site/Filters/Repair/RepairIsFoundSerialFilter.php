@@ -1,6 +1,6 @@
 <?php
 
-namespace QuadStudio\Service\Site\Filters\Product;
+namespace QuadStudio\Service\Site\Filters\Repair;
 
 use QuadStudio\Repo\Filters\BootstrapSelect;
 use QuadStudio\Repo\Filters\HasFilter;

@@ -99,6 +99,30 @@
                             <span class="invalid-feedback">{{ $errors->first('engineer.address') }}</span>
                         </div>
                     </div>
+
+                    @if($certificate_types->isNotEmpty())
+                        <h4><i class="fa fa-@lang('site::certificate.icon')"></i> @lang('site::certificate.certificates')</h4>
+                        <div class="row">
+                            @foreach($certificate_types as $certificate_type)
+                                <div class="col-sm-{{12/$certificate_types->count()}}">
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <label class="control-label"
+                                                   for="certificate_{{$certificate_type->id}}">{{$certificate_type->name}}</label>
+                                            <input type="text"
+                                                   name="certificate[{{$certificate_type->id}}]"
+                                                   id="certificate_{{$certificate_type->id}}"
+                                                   maxlength="{{config('site.certificate_length', 20)}}"
+                                                   placeholder="@lang('site::certificate.placeholder.id')"
+                                                   class="form-control{{ $errors->has('certificate.'.$certificate_type->id) ? ' is-invalid' : '' }}"
+                                                   value="{{ old('certificate.'.$certificate_type->id, optional($engineer->certificates()->where('type_id', $certificate_type->id)->first())->id) }}">
+                                            <span class="invalid-feedback">{{ $errors->first('certificate.'.$certificate_type->id) }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
                 </form>
                 <div class="form-row border-top pt-3">
                     <div class="col text-right">

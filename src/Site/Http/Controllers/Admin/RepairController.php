@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 use QuadStudio\Service\Site\Concerns\StoreMessages;
 use QuadStudio\Service\Site\Events\RepairStatusChangeEvent;
 use QuadStudio\Service\Site\Exports\Excel\RepairExcel;
-use QuadStudio\Service\Site\Filters\Address\RepairHasSerialBoolFilter;
+use QuadStudio\Service\Site\Filters\Repair\RepairHasSerialBoolFilter;
 use QuadStudio\Service\Site\Filters\FileType\ModelHasFilesFilter;
-use QuadStudio\Service\Site\Filters\Product\RepairIsFoundSerialFilter;
+use QuadStudio\Service\Site\Filters\Repair\RepairIsFoundSerialFilter;
 use QuadStudio\Service\Site\Filters\Repair\RegionFilter;
 use QuadStudio\Service\Site\Filters\Repair\RepairPerPageFilter;
 use QuadStudio\Service\Site\Filters\Repair\RepairUserFilter;
@@ -105,6 +105,7 @@ class RepairController
      */
     public function update(RepairRequest $request, Repair $repair)
     {
+
         $repair->update($request->input('repair'));
 
         $repair->fails()->delete();

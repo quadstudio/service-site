@@ -10,8 +10,10 @@ use QuadStudio\Service\Site\Filters\Mounter\MounterPerPageFilter;
 use QuadStudio\Service\Site\Http\Requests\MounterRequest;
 use QuadStudio\Service\Site\Models\Address;
 use QuadStudio\Service\Site\Models\Country;
+use QuadStudio\Service\Site\Models\Equipment;
 use QuadStudio\Service\Site\Models\Mounter;
 use QuadStudio\Service\Site\Models\MounterStatus;
+use QuadStudio\Service\Site\Models\Product;
 use QuadStudio\Service\Site\Repositories\MounterRepository;
 
 
@@ -57,8 +59,36 @@ class MounterController extends Controller
 
         $countries = Country::query()->where('enabled', 1)->orderBy('name')->get();
 
+        $equipments = Equipment::query()
+            ->where(config('site.check_field'), 1)
+            ->where('enabled', 1)
+            ->where('mounter_enabled', 1)
+            ->whereHas('products', function ($product) {
+                $product
+                    ->where(config('site.check_field'), 1)
+                    ->where('enabled', 1);
+            })
+            ->whereHas('catalog', function ($catalog) {
+                $catalog
+                    ->where(config('site.check_field'), 1)
+                    ->where('enabled', 1)
+                    ->where('mounter_enabled', 1);
+            })
+            ->orderBy('name')
+            ->get();
+        $products = collect([]);
+
+        if(old('mounter.equipment_id')){
+            $products = Product::query()
+                ->where('equipment_id', old('mounter.equipment_id'))
+                ->mounter()
+                ->get();
+        }
+
         return view('site::mounter.create', compact(
             'countries',
+            'equipments',
+            'products',
             'address'
         ));
     }

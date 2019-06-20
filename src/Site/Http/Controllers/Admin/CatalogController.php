@@ -84,6 +84,7 @@ class CatalogController extends Controller
             $request->input('catalog'),
             [
                 'enabled'          => $request->filled('catalog.enabled'),
+                'mounter_enabled'  => $request->filled('catalog.mounter_enabled'),
                 'show_ferroli'     => $request->filled('catalog.show_ferroli'),
                 'show_lamborghini' => $request->filled('catalog.show_lamborghini')
             ]
@@ -119,6 +120,7 @@ class CatalogController extends Controller
             $request->input('catalog'),
             [
                 'enabled'          => $request->filled('catalog.enabled'),
+                'mounter_enabled'  => $request->filled('catalog.mounter_enabled'),
                 'show_ferroli'     => $request->filled('catalog.show_ferroli'),
                 'show_lamborghini' => $request->filled('catalog.show_lamborghini')
             ]

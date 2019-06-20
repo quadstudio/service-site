@@ -45,6 +45,10 @@
                         <a class="list-group-item list-group-item-action py-1"
                            href="{{ route('admin.orders.index') }}"><i
                                     class="fa fa-@lang('site::order.icon')"></i> @lang('site::order.orders')</a>
+                        <a class="list-group-item list-group-item-action py-1"
+                           href="{{ route('admin.contracts.index') }}">
+                            <i class="fa fa-@lang('site::contract.icon')"></i> @lang('site::contract.contracts')
+                        </a>
 
                         <hr/>
 
@@ -122,6 +126,11 @@
                                 <hr/>
 
                                 <a class="list-group-item list-group-item-action py-1"
+                                   href="{{ route('admin.contract-types.index') }}">
+                                    <i class="fa fa-@lang('site::contract_type.icon')"></i> @lang('site::contract_type.contract_types')
+                                </a>
+
+                                <a class="list-group-item list-group-item-action py-1"
                                    href="{{ route('admin.pages.index') }}">
                                     <i class="fa fa-@lang('site::page.icon')"></i> @lang('site::page.pages')
                                 </a>
@@ -173,10 +182,10 @@
                                    href="{{ route('admin.engineers.index') }}">
                                     <i class="fa fa-@lang('site::engineer.icon')"></i> @lang('site::engineer.engineers')
                                 </a>
-                                <a class="list-group-item list-group-item-action py-1"
-                                   href="{{ route('admin.launches.index') }}">
-                                    <i class="fa fa-@lang('site::launch.icon')"></i> @lang('site::launch.launches')
-                                </a>
+                                {{--<a class="list-group-item list-group-item-action py-1"--}}
+                                   {{--href="{{ route('admin.launches.index') }}">--}}
+                                    {{--<i class="fa fa-@lang('site::launch.icon')"></i> @lang('site::launch.launches')--}}
+                                {{--</a>--}}
                                 <a class="list-group-item list-group-item-action py-1" href="{{ route('admin.trades.index') }}">
                                     <i class="fa fa-@lang('site::trade.icon')"></i> @lang('site::trade.trades')
                                 </a>

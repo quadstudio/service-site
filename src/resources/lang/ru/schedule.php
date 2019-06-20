@@ -16,22 +16,22 @@ return [
     //
     'error'       => 'Синхронизация невозможна...',
     //
-//    'statuses'    => [
-//        '0' => [
-//            'text'  => 'В обработке',
-//            'icon'  => 'circle-o',
-//            'color' => 'primary',
-//        ],
-//        '1' => [
-//            'text'  => 'Успех',
-//            'icon'  => 'check',
-//            'color' => 'success',
-//        ],
-//        '2' => [
-//            'text'  => 'Ошибка',
-//            'icon'  => 'close',
-//            'color' => 'danger',
-//        ],
-//    ],
+    'statuses'    => [
+        '0' => [
+            'text'  => 'В обработке',
+            'icon'  => 'circle-o',
+            'color' => 'primary',
+        ],
+        '1' => [
+            'text'  => 'Успех',
+            'icon'  => 'check',
+            'color' => 'success',
+        ],
+        '2' => [
+            'text'  => 'Ошибка',
+            'icon'  => 'close',
+            'color' => 'danger',
+        ],
+    ],
 
 ];

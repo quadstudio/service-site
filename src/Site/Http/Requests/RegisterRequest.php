@@ -84,11 +84,11 @@ class RegisterRequest extends FormRequest
                     'address.legal.building'    => 'required|string|max:255',
                     'address.legal.apartment'   => 'sometimes|max:255',
                     //
-                    'address.postal.country_id' => 'required|exists:countries,id',
+                    'address.postal.country_id' => 'required_unless:legal,1|exists:countries,id',
                     'address.postal.region_id'  => 'sometimes|exists:regions,id',
-                    'address.postal.locality'   => 'required|string|max:255',
+                    'address.postal.locality'   => 'required_unless:legal,1|string|max:255',
                     'address.postal.street'     => 'sometimes|max:255',
-                    'address.postal.building'   => 'required|string|max:255',
+                    'address.postal.building'   => 'required_unless:legal,1|string|max:255',
                     'address.postal.apartment'  => 'sometimes|max:255',
                     //
                     'contragent.inn'            => array(

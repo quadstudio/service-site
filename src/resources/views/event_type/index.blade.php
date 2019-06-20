@@ -1,4 +1,4 @@
-<h2 class="my-5">@lang('site::event_type.h1')</h2>
+<h2 class="my-5"><a href="{{ route('events.index') }}">@lang('site::event_type.h1')</a></h2>
 <div class="card-deck">
 
 <div class="card col-md-2" style="padding-left: 0px; padding-right: 0px;">

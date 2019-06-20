@@ -14,6 +14,7 @@ class Mounter extends Model
 
     protected $fillable = [
         'status_id', 'mounter_at',
+        'equipment_id', 'product_id',
         'country_id', 'model',
         'client', 'phone',
         'address', 'comment'
@@ -23,6 +24,8 @@ class Mounter extends Model
         'status_id'       => 'integer',
         'user_address_id' => 'integer',
         'mounter_at'      => 'date:Y-m-d',
+        'equipment_id'    => 'integer',
+        'product_id'      => 'string',
         'model'           => 'string',
         'country_id'      => 'string',
         'phone'           => 'string',
@@ -75,6 +78,22 @@ class Mounter extends Model
     public function status()
     {
         return $this->belongsTo(MounterStatus::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function equipment()
+    {
+        return $this->belongsTo(Equipment::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
     }
 
     /**

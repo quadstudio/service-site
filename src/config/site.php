@@ -8,91 +8,25 @@ return [
     */
     'check_field' => 'show_ferroli',
 
-    'seeders' => [
-        'countries',
-        'regions',
-        'contragent_types',
-        'address_types',
-        'contact_types',
-        'product_types',
-        'currencies',
-        'users',
-    ],
+    /*
+    |--------------------------------------------------------------------------
+    | Бренд по умолчанию для проверки
+    |--------------------------------------------------------------------------
+    */
+    'brand_default' => 1,
 
-    'front_routes' => [
-        'index',
-        'login',
-        'register',
-        'feedback',
-        'service-centers',
-        'where-to-buy',
-        'online-stores',
-        'mounter-requests',
-        'announcements.index',
-        'announcements.show',
-        'events.index',
-        'events.show',
-        'event_types.show',
-//        'events_fsf.index',
-//        'events_fsf.show',
-        'members.index',
-        'members.create',
-        'datasheets.index',
-        'datasheets.show',
-        'catalogs.index',
-        'catalogs.show',
-        'catalogs.list',
-        'equipments.show',
-        'products.index',
-        'products.show',
-        'schemes.show',
-        'products.schemes',
-        'products.scheme',
-        'products.list',
-        'whereToBuy',
-        'cart',
-        'password.reset',
-        'password.request',
-    ],
     'routes'       => [
         'rbac',
         'cart'
     ],
 
-    'nds' => 18,
+    'nds' => 20,
 
     'cache' => [
         'use' => false,
         'ttl' => 60 * 60 * 24
     ],
 
-    'per_page' => [
-        'user'          => 50,
-        'block'         => 25,
-        'catalog'       => 25,
-        'repair'        => 10,
-        'mounting'      => 10,
-        'member'        => 10,
-        'trade'         => 10,
-        'launch'        => 10,
-        'engineer'      => 10,
-        'act'           => 10,
-        'serial'        => 10,
-        'period'        => 10,
-        'order'         => 10,
-        'product'       => 16,
-        'product_admin' => 10,
-        'archive'       => 25,
-        'product_list'  => 100,
-        'product_type'  => 25,
-        'message'       => 25,
-        'announcement'  => 10,
-    ],
-
-    'per_page_range' => [
-        'r16' => [16 => 16, 32 => 32, 64 => 64, 128 => 128, 256 => 256, 512 => 512, 1024 => 1024, 9999999 => '∞...'],
-        'r10' => [10 => 10, 25 => 25, 50 => 50, 100 => 100, 250 => 250, 500 => 500, 1000 => 1000, 9999999 => '∞...'],
-    ],
     'sort_order'     => [
         'equipment' => 'sort_order',
         'catalog'   => 'sort_order',
@@ -104,13 +38,6 @@ return [
         ]
     ],
 
-    'run'       => [
-        ['site:resource', []],
-        ['rbac:resource', []],
-        ['migrate', []],
-        ['db:seed', ['--class' => 'SiteSeeder']],
-        ['db:seed', ['--class' => 'RbacSeeder']],
-    ],
     'delimiter' => ':',
 
     'geocode' => true,
@@ -153,6 +80,16 @@ return [
 
     ],
 
+    'templates' => [
+        'process'  => true,
+        'mode'     => 'update',
+        'mime'     => 'docx',
+        'accept'   => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'name'     => 'contract_type[file_id]',
+        'dot_name' => 'contract_type.file_id',
+        'size'     => 5000000, // 5мб
+    ],
+
     'catalogs' => [
         'process'  => true,
         'mode'     => 'update',
@@ -184,6 +121,8 @@ return [
         'dot_name' => 'datasheet.file_id',
         'size'     => 5000000, // 5мб
     ],
+
+
 
     'events' => [
         'process'  => true,
@@ -295,6 +234,24 @@ return [
         ],
     ],
 
+//    'repairs' => [
+//        'process'  => true,
+//        'mode'     => 'append',
+//        'mime'     => 'jpg,jpeg,png,pdf',
+//        'accept'   => 'image/jpeg,image/png,application/pdf',
+//        'name'     => 'repair[file_id][]',
+//        'dot_name' => 'repair.file_id',
+//        'size'     => 5000000, // 5мб
+//    ],
+
+
+    'files' => [
+        'mime' => 'jpg,jpeg,png,pdf',
+        'size' => 128092,
+        'path' => '',
+        //'path' => date('Ym'),
+    ],
+
     'logo'                     => [
         'mime' => 'jpg,jpeg',
         'size' => [
@@ -335,12 +292,6 @@ return [
         'attachment_max_size' => 5000000,   // 5мб
     ],
 
-    'files' => [
-        'mime' => 'jpg,jpeg,png,pdf',
-        'size' => 128092,
-        'path' => '',
-        //'path' => date('Ym'),
-    ],
 
     'defaults' => [
         'currency' => 643,
@@ -442,7 +393,7 @@ return [
         // Длина номера телефона
         'maxlength' => 15
     ],
-    'catalog_price_pdf' => 'https://yadi.sk/d/7CXTYatd-Xp4bw',
+    'catalog_price_pdf' => 'https://yadi.sk/d/lRlXWUVlIEs0ug',
 
     'storehouse_check'   => [
         'gendistr',
@@ -451,5 +402,87 @@ return [
     ],
 
     // Длина № сертфиката
-    'certificate_length' => 20
+    'certificate_length' => 20,
+
+    'per_page' => [
+        'user'          => 50,
+        'block'         => 25,
+        'catalog'       => 25,
+        'repair'        => 10,
+        'mounting'      => 10,
+        'member'        => 10,
+        'trade'         => 10,
+        'launch'        => 10,
+        'engineer'      => 10,
+        'act'           => 10,
+        'serial'        => 10,
+        'period'        => 10,
+        'order'         => 10,
+        'product'       => 16,
+        'product_admin' => 10,
+        'archive'       => 25,
+        'product_list'  => 100,
+        'product_type'  => 25,
+        'message'       => 25,
+        'announcement'  => 10,
+    ],
+
+    'per_page_range' => [
+        'r16' => [16 => 16, 32 => 32, 64 => 64, 128 => 128, 256 => 256, 512 => 512, 1024 => 1024, 9999999 => '∞...'],
+        'r10' => [10 => 10, 25 => 25, 50 => 50, 100 => 100, 250 => 250, 500 => 500, 1000 => 1000, 9999999 => '∞...'],
+    ],
+
+    'front_routes' => [
+        'index',
+        'login',
+        'register',
+        'feedback',
+        'service-centers',
+        'where-to-buy',
+        'online-stores',
+        'mounter-requests',
+        'announcements.index',
+        'announcements.show',
+        'events.index',
+        'events.show',
+        'event_types.show',
+        'members.index',
+        'members.create',
+        'datasheets.index',
+        'datasheets.show',
+        'catalogs.index',
+        'catalogs.show',
+        'catalogs.list',
+        'equipments.show',
+        'products.index',
+        'products.show',
+        'schemes.show',
+        'products.schemes',
+        'products.scheme',
+        'products.list',
+        'whereToBuy',
+        'cart',
+        'password.reset',
+        'password.request',
+    ],
+
+    'seeders' => [
+        'countries',
+        'regions',
+        'contragent_types',
+        'address_types',
+        'contact_types',
+        'product_types',
+        'currencies',
+        'users',
+    ],
+
+    'run'       => [
+        ['site:resource', []],
+        ['rbac:resource', []],
+        ['migrate', []],
+        ['db:seed', ['--class' => 'SiteSeeder']],
+        ['db:seed', ['--class' => 'RbacSeeder']],
+    ],
+
 ];

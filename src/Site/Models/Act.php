@@ -15,7 +15,20 @@ class Act extends Model
      */
     protected $table;
 
-    protected $fillable = ['number', 'contragent_id', 'received', 'paid', 'type_id'];
+    protected $fillable = [
+        'number', 'contragent_id',
+        'received', 'paid', 'type_id'
+    ];
+
+    protected $casts = [
+
+        'number'        => 'string',
+        'guid'          => 'string',
+        'contragent_id' => 'integer',
+        'received'      => 'boolean',
+        'paid'          => 'boolean',
+        'type_id'       => 'integer',
+    ];
 
     /**
      * @param array $attributes

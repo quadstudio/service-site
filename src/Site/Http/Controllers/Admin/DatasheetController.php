@@ -84,12 +84,13 @@ class DatasheetController extends Controller
         $datasheet = $this->datasheets->create(array_merge(
             $request->input(['datasheet']),
             [
-                'type_id'          => $request->input('type_id'),
                 'active'           => $request->filled('datasheet.active'),
                 'show_ferroli'     => $request->filled('datasheet.show_ferroli'),
                 'show_lamborghini' => $request->filled('datasheet.show_lamborghini')
             ]
         ));
+        /** @var Datasheet $datasheet */
+        $datasheet->file()->update(['type_id' => $request->input('datasheet.type_id')]);
 
         return redirect()->route('admin.datasheets.show', $datasheet)->with('success', trans('site::datasheet.created'));
     }

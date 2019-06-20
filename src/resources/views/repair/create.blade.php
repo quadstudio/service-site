@@ -51,12 +51,12 @@
                             <h5 class="card-title">@lang('site::repair.header.client')</h5>
                             <div class="form-group mt-2 required">
                                 <label class="control-label" for="client">@lang('site::repair.client')</label>
-                                <input type="text"
+                                <input required
+                                       type="text"
                                        id="client"
                                        name="repair[client]"
                                        class="form-control{{ $errors->has('repair.client') ? ' is-invalid' : '' }}"
                                        value="{{ old('repair.client') }}"
-                                       required
                                        placeholder="@lang('site::repair.placeholder.client')">
                                 <span class="invalid-feedback">{{ $errors->first('repair.client') }}</span>
                             </div>
@@ -158,11 +158,10 @@
                     <div class="card mt-2 mb-2">
                         <div class="card-body">
                             <h5 class="card-title">@lang('site::repair.header.org')</h5>
-                            <div class="form-group required" id="form-group-trade_id">
+                            <div class="form-group" id="form-group-trade_id">
                                 <label class="control-label" for="trade_id">@lang('site::repair.trade_id')</label>
                                 <div class="input-group">
-                                    <select required
-                                            data-form-action="{{ route('trades.create') }}"
+                                    <select data-form-action="{{ route('trades.create') }}"
                                             data-btn-ok="@lang('site::messages.save')"
                                             data-btn-cancel="@lang('site::messages.cancel')"
                                             data-options="#trade_id_options"
@@ -204,28 +203,6 @@
                                     </div>
                                 </div>
                                 <span class="invalid-feedback">{{ $errors->first('repair.date_launch') }}</span>
-                            </div>
-                            <div class="form-group required " id="form-group-launch_id">
-                                <label class="control-label" for="launch_id">@lang('site::repair.launch_id')</label>
-                                <div class="input-group">
-                                    <select required
-                                            data-form-action="{{ route('launches.create') }}"
-                                            data-btn-ok="@lang('site::messages.save')"
-                                            data-btn-cancel="@lang('site::messages.cancel')"
-                                            data-options="#launch_id_options"
-                                            data-label="@lang('site::messages.add') @lang('site::launch.launch')"
-                                            class="dynamic-modal-form form-control{{  $errors->has('repair.launch_id') ? ' is-invalid' : '' }}"
-                                            name="repair[launch_id]"
-                                            id="launch_id">
-                                        @include('site::launch.options', ['launch_id' => old('repair.launch_id', isset($launch_id) ? $launch_id : null)])
-                                    </select>
-                                    <div class="input-group-append">
-                                        <div class="input-group-text">
-                                            <i class="fa fa-@lang('site::launch.icon')"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <span class="invalid-feedback">{{ $errors->first('repair.launch_id') }}</span>
                             </div>
                             <div class="form-group required ">
                                 <label class="control-label"
@@ -505,14 +482,14 @@
                                             <span class="invalid-feedback">Такая деталь ужде есть в списке</span>
                                             <small id="partsHelp"
                                                    class="d-block form-text text-success">Введите артикул или
-                                                наименование
-                                                заменённой детали и выберите её из списка
+                                                наименование заменённой детали и выберите её из списка
                                             </small>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label"
                                                    for="">@lang('site::part.parts')</label>
-                                            <div class="list-group" id="parts" data-currency-symbol="{{ auth()->user()->currency->symbol_right }}">
+                                            <div class="list-group" id="parts"
+                                                 data-currency-symbol="{{ auth()->user()->currency->symbol_right }}">
                                                 @foreach($parts as $part)
                                                     @include('site::part.create', ['product' => $part['product'], 'count' => $part['count']])
                                                 @endforeach
@@ -545,21 +522,40 @@
                         @include('site::file.create.type')
                     </div>
                 </div>
-                <fieldset>
-                    <div class="form-group">
-                        <div class="col text-right">
-                            <button form="form" type="submit"
-                                    class="btn btn-ferroli mb-1">
-                                <i class="fa fa-check"></i>
-                                <span>@lang('site::messages.save')</span>
-                            </button>
-                            <a href="{{ route('repairs.index') }}" class="btn btn-secondary mb-1">
-                                <i class="fa fa-close"></i>
-                                <span>@lang('site::messages.cancel')</span>
-                            </a>
+                <div class="card my-2">
+                    <div class="card-body">
+                        <div class="form-row required">
+                            <div class="col mb-3">
+                                <div class="custom-control custom-checkbox">
+                                    <input required
+                                           form="form"
+                                           type="checkbox"
+                                           name="accept"
+                                           value="1"
+                                           class="custom-control-input{{ $errors->has('accept') ? ' is-invalid' : '' }}"
+                                           id="accept">
+                                    <label class="custom-control-label" for="accept">
+                                        <span style="color:red;margin-right: 2px;">*</span>
+                                        @lang('site::repair.accept')
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col text-right">
+                                <button form="form" type="submit"
+                                        class="btn btn-ferroli mb-1">
+                                    <i class="fa fa-check"></i>
+                                    <span>@lang('site::messages.save')</span>
+                                </button>
+                                <a href="{{ route('repairs.index') }}" class="btn btn-secondary mb-1">
+                                    <i class="fa fa-close"></i>
+                                    <span>@lang('site::messages.cancel')</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </fieldset>
+                </div>
             </div>
         </div>
     </div>
@@ -620,10 +616,11 @@
             let calc_parts = function () {
                 let cost = 0;
                 parts.children().each(function (i) {
-                    cost += (parseInt($(this).find('.parts_cost').val()) * $(this).find('.parts_count').val());
+                    let el = $(this).find('.parts_count');
+                    cost += (parseInt(el.data('cost')) * el.val());
                 });
 
-                $('#total-cost').html(number_format(cost) + ' ' + parts.data('currencySymbol'));
+                $('#total-cost').html(number_format(cost));
             };
             calc_parts();
 
@@ -660,10 +657,9 @@
                 },
                 templateSelection: function (product) {
                     console.log(product);
-                    if(product.id !== ""){
+                    if (product.id !== "") {
                         return product.name + ' (' + product.sku + ')';
                     }
-
 
 
                 },
@@ -681,7 +677,7 @@
                         .then((response) => {
 
                             parts.append(response.data);
-                            $('[name="parts[' + product_id + '][count]"]').focus();
+                            $('[name="count[' + product_id + ']"]').focus();
                             calc_parts();
                             parts_search.val(null)
                         })

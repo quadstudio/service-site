@@ -159,7 +159,6 @@ class MountingController extends Controller
         $files = $this->getFiles($request);
 
         $selected_product = Product::query()->findOrNew(old('mounting.product_id'));
-        //dd($request->all());
 
         return view('site::mounting.create', compact(
             'engineers',

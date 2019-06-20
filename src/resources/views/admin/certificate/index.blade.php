@@ -15,7 +15,15 @@
             <i class="fa fa-@lang('site::certificate.icon')"></i> @lang('site::certificate.certificates')
         </h1>
         @alert()@endalert
+        <style>
+            .certificate-name .btn-row-delete{
+                opacity: .1;
 
+            }
+            .certificate-name:hover .btn-row-delete{
+                opacity: 1;
+            }
+        </style>
         <div class=" border p-3 mb-2">
             <div class="dropdown d-inline-block">
                 <button class="btn btn-ferroli dropdown-toggle" type="button" id="dropdownMenuButton"
@@ -43,13 +51,29 @@
         @foreach($certificates as $certificate)
             <div class="card @if($loop->last) mb-2 @else my-2 my-sm-0 @endif"
                  id="certificate-{{$certificate->id}}">
+                <form id="certificate-delete-form-{{$certificate->id}}"
+                      action="{{route('admin.certificates.destroy', $certificate)}}"
+                      method="POST">
+                    @csrf
+                    @method('DELETE')
+                </form>
+
                 <div class="row">
-                    <div class="col-xl-3 col-sm-6">
+                    <div class="col-xl-3 col-sm-6 certificate-name">
                         <dl class="dl-horizontal mt-2">
                             <dt class="col-12">
-                                <a href="{{route('admin.certificates.show', $certificate)}}" class="text-big">
-                                    № {{$certificate->id}}
-                                </a>
+                                <span class="text-big">№ {{$certificate->id}}</span>
+                                <button class="pull-right btn btn-sm btn-danger btn-row-delete py-0"
+                                        data-form="#certificate-delete-form-{{$certificate->id}}"
+                                        data-btn-delete="@lang('site::messages.delete')"
+                                        data-btn-cancel="@lang('site::messages.cancel')"
+                                        data-label="@lang('site::messages.delete_confirm')"
+                                        data-message="@lang('site::messages.delete_sure') @lang('site::certificate.certificate')? "
+                                        data-toggle="modal" data-target="#form-modal"
+                                        title="@lang('site::messages.delete')">
+                                    <i class="fa fa-close"></i>
+{{--                                    @lang('site::messages.delete')--}}
+                                </button>
                             </dt>
                             <dd class="col-12">{{$certificate->type->name}}</dd>
                         </dl>

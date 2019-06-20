@@ -30,13 +30,13 @@
                       method="POST"
                       action="{{ route('mounters.store', $address) }}">
                     @csrf
-                    <div class="card mt-2 mb-2">
+                    <div class="card mb-2">
                         <div class="card-body">
 
                             <h5 class="card-title">{{$address->name}}</h5>
                             <h6 class="card-subtitle mb-4 text-muted">@lang('site::address.is_mounter')</h6>
 
-                            <div class="form-row required">
+                            <div class="form-row required mb-2">
                                 <label class="control-label"
                                        for="mounter_at">@lang('site::mounter.mounter_at')</label>
                                 <div class="input-group date datetimepicker" id="datetimepicker_mounter_at"
@@ -62,7 +62,47 @@
                                 <span class="invalid-feedback">{{ $errors->first('mounter.mounter_at') }}</span>
                             </div>
 
-                            <div class="form-row mt-2">
+                            <div class="form-row">
+                                <label class="control-label"
+                                       for="equipment_id">@lang('site::mounter.equipment_id')</label>
+                                <select class="form-control{{  $errors->has('mounter.equipment_id') ? ' is-invalid' : '' }}"
+                                        name="mounter[equipment_id]"
+                                        id="equipment_id">
+                                    @if($equipments->count() == 0 || $equipments->count() > 1)
+                                        <option value="">@lang('site::messages.select_from_list')</option>
+                                    @endif
+                                    @foreach($equipments as $equipment)
+                                        <option
+                                                @if(old('mounter.equipment_id') == $equipment->id) selected
+                                                @endif
+                                                value="{{ $equipment->id }}">{{ $equipment->name }} {{ $equipment->phone }}</option>
+                                    @endforeach
+                                </select>
+                                <span class="invalid-feedback">{{ $errors->first('mounter.equipment_id') }}</span>
+                            </div>
+
+                            <div class="form-row">
+                                <label class="control-label"
+                                       for="product_id">@lang('site::mounter.product_id')</label>
+                                <select class="form-control{{  $errors->has('mounter.product_id') ? ' is-invalid' : '' }}"
+                                        name="mounter[product_id]"
+                                        id="product_id">
+                                    @if($products->count() == 0)
+                                        <option value="">@lang('site::mounter.help.select_equipment')</option>
+                                    @else
+                                        <option value="">@lang('site::messages.select_from_list')</option>
+                                    @endif
+                                    @foreach($products as $product)
+                                        <option
+                                                @if(old('mounter.product_id') == $product->id) selected
+                                                @endif
+                                                value="{{ $product->id }}">{{ $product->name }} {{ $product->phone }}</option>
+                                    @endforeach
+                                </select>
+                                <span class="invalid-feedback">{{ $errors->first('mounter.product_id') }}</span>
+                            </div>
+
+                            <div class="form-row">
                                 <label class="control-label" for="client">@lang('site::mounter.model')</label>
                                 <input type="text"
                                        id="model"
@@ -85,7 +125,7 @@
                                 <span class="invalid-feedback">{{ $errors->first('mounter.address') }}</span>
                             </div>
 
-                            <div class="form-row mt-2 required">
+                            <div class="form-row required">
                                 <label class="control-label" for="client">@lang('site::mounter.client')</label>
                                 <input required
                                        type="text"
@@ -135,6 +175,39 @@
                                 <span class="invalid-feedback">{{ $errors->first('mounter.phone') }}</span>
                             </div>
 
+                            <div class="form-row required">
+                                <div class="col mb-3">
+                                    <label class="control-label"
+                                           for="captcha">@lang('site::mounter.captcha')</label>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <input type="text"
+                                                   form="form"
+                                                   name="captcha"
+                                                   required
+                                                   id="captcha"
+                                                   class="form-control{{ $errors->has('captcha') ? ' is-invalid' : '' }}"
+                                                   placeholder="@lang('site::mounter.placeholder.captcha')"
+                                                   value="">
+                                            <span class="invalid-feedback">{{ $errors->first('captcha') }}</span>
+                                        </div>
+                                        <div class="col-md-9 captcha">
+                                            <span>{!! captcha_img('flat') !!}</span>
+                                            <button data-toggle="tooltip"
+                                                    data-placement="top"
+                                                    title="@lang('site::messages.refresh')"
+                                                    type="button"
+                                                    class="btn btn-outline-secondary"
+                                                    id="captcha-refresh">
+                                                <i class="fa fa-refresh"></i>
+                                            </button>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
                             <div class="form-row">
                                 <div class="col text-right">
                                     <button form="form" type="submit"
@@ -155,3 +228,65 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+<script>
+    try {
+        window.addEventListener('load', function () {
+            document.getElementById('captcha-refresh').addEventListener('click', function () {
+                fetch('/captcha/flat')
+                    .then(response => {
+                        response.blob().then(blobResponse => {
+                            const urlCreator = window.URL || window.webkitURL;
+                            document.querySelector('.captcha span img').src = urlCreator.createObjectURL(blobResponse);
+                        });
+                    });
+            });
+
+            document.getElementById('equipment_id').addEventListener('change', function () {
+
+                let product_id = document.getElementById('product_id');
+                product_id.disabled = true;
+                product_id.innerHTML = '<option value="">{{trans('site::messages.data_load')}}</option>';
+
+                function checkStatus(response) {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response;
+                    } else {
+                        let error = new Error(response.statusText);
+                        error.response = response;
+                        throw error
+                    }
+                }
+
+                function parseJSON(response) {
+                    return response.json()
+                }
+
+                function renderProductsList(data) {
+                    product_id.disabled = false;
+                    if (data.data.length > 0) {
+                        let list = '<option value="">{{trans('site::messages.select_from_list')}}</option>';
+                        data.data.forEach(function (product, index) {
+                            list += `<option value="${product.id}">${product.name}</option>`;
+                        });
+                        product_id.innerHTML = list;
+                    } else{
+                        product_id.innerHTML = '<option value="">{{trans('site::mounter.help.select_equipment')}}</option>';
+                    }
+                }
+
+                fetch('/api/products/mounter?filter[equipment_id]=' + event.target.value)
+                    .then(checkStatus)
+                    .then(parseJSON)
+                    .then(renderProductsList)
+                    .catch(error => console.error(error));
+            });
+        });
+
+    } catch (e) {
+        console.log(e);
+    }
+
+</script>
+@endpush

@@ -29,13 +29,12 @@
         <div class="row justify-content-center mb-5">
             <div class="col">
 
-                <form id="repair-form"
+                <form id="form"
                       method="POST"
                       enctype="multipart/form-data"
                       action="{{ route('repairs.update', $repair) }}">
                     @csrf
                     @method('PUT')
-
                     <fieldset>
                         <div class="card mt-2 mb-2">
                             <div class="card-body">
@@ -56,9 +55,29 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label" for="number">@lang('site::serial.product_id')</label>
-                                    <div class="text-big">{{$repair->product->name}}</div>
-                                    <input type="hidden" value="{{$repair->product->id}}" id="product_id">
+                                    <label class="control-label" for="product_id">@lang('site::repair.product_id')</label>
+                                    @if($fails->contains('field', 'product_id'))
+                                        <span class="bg-danger text-white d-block d-sm-inline-block py-1 px-3 mb-1 mb-sm-0">@lang('site::messages.with_error')</span>
+                                        <select class="form-control{{  $errors->has('product_id') ? ' is-invalid' : '' }}"
+                                                required
+                                                name="product_id"
+                                                id="product_id">
+                                            <option></option>
+                                            @foreach($products as $product)
+                                                <option @if(old('product_id', $repair->product_id) == $product->id)
+                                                        selected
+                                                        @endif
+                                                        value="{{$product->id}}">
+                                                    {{$product->name}} / {{$product->sku}}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <span class="invalid-feedback">{{ $errors->first('product_id') }}</span>
+                                    @else
+                                        <div class="text-success text-big">{{$repair->product->name}}</div>
+                                        <input type="hidden" value="{{$repair->product_id}}" id="product_id">
+                                    @endif
+
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label" for="number">@lang('site::product.sku')</label>
@@ -183,11 +202,10 @@
                                                value="{{ old('date_trade', $repair->date_trade) }}" required>
                                         <span class="invalid-feedback">{{ $errors->first('date_trade') }}</span>
                                     @else
-                                        <div class="text-success text-big">{{$repair->date_trade()}}</div>
+                                        <div class="text-success text-big">{{$repair->date_trade->format('Y.m.d')}}</div>
                                     @endif
                                 </div>
 
-                                @include('site::repair.field.launch_id')
                                 <div class="form-group required">
                                     <label class="control-label"
                                            for="date_launch">@lang('site::repair.date_launch')</label>
@@ -199,7 +217,7 @@
                                                value="{{ old('date_launch', $repair->date_launch) }}" required>
                                         <span class="invalid-feedback">{{ $errors->first('date_launch') }}</span>
                                     @else
-                                        <div class="text-success text-big">{{$repair->date_launch()}}</div>
+                                        <div class="text-success text-big">{{$repair->date_launch->format('d.m.Y')}}</div>
                                     @endif
                                 </div>
                             </div>
@@ -221,7 +239,7 @@
                                                value="{{ old('date_call', $repair->date_call) }}" required>
                                         <span class="invalid-feedback">{{ $errors->first('date_call') }}</span>
                                     @else
-                                        <div class="text-success text-big">{{$repair->date_call()}}</div>
+                                        <div class="text-success text-big">{{$repair->date_call->format('d.m.Y')}}</div>
                                     @endif
                                 </div>
                                 <div class="form-group required">
@@ -270,13 +288,29 @@
                                            for="date_repair">@lang('site::repair.date_repair')</label>
                                     @if($fails->contains('field', 'date_repair'))
                                         <span class="bg-danger text-white d-block d-sm-inline-block py-1 px-3 mb-1 mb-sm-0">@lang('site::messages.with_error')</span>
-                                        <input type="date" name="date_repair" id="date_repair"
-                                               class="form-control{{ $errors->has('date_repair') ? ' is-invalid' : '' }}"
-                                               placeholder="@lang('site::repair.placeholder.date_repair')"
-                                               value="{{ old('date_repair', $repair->date_repair) }}" required>
+                                        <div class="input-group date datetimepicker" id="datetimepicker_date_repair"
+                                             data-target-input="nearest">
+                                            <input type="text"
+                                                   name="date_repair"
+                                                   id="date_repair"
+                                                   maxlength="10"
+                                                   required
+                                                   placeholder="@lang('site::repair.placeholder.date_repair')"
+                                                   data-target="#datetimepicker_date_repair"
+                                                   data-toggle="datetimepicker"
+                                                   class="datetimepicker-input form-control{{ $errors->has('repair.date_repair') ? ' is-invalid' : '' }}"
+                                                   value="{{ old('date_repair', $repair->date_repair->format('d.m.Y')) }}">
+                                            <div class="input-group-append"
+                                                 data-target="#datetimepicker_date_repair"
+                                                 data-toggle="datetimepicker">
+                                                <div class="input-group-text">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <span class="invalid-feedback">{{ $errors->first('date_repair') }}</span>
                                     @else
-                                        <div class="text-success text-big">{!! $repair->date_repair() !!}</div>
+                                        <div class="text-success text-big">{!! $repair->date_repair->format('d.m.Y') !!}</div>
                                     @endif
                                 </div>
                             </div>
@@ -367,7 +401,7 @@
                                             <select style="width:100%" class="form-control" id="parts_search">
                                                 <option value=""></option>
                                             </select>
-                                            <span class="invalid-feedback">Такая деталь ужде есть в списке</span>
+                                            <span class="invalid-feedback">Такая деталь уже есть в списке</span>
                                             <small id="partsHelp"
                                                    class="d-block form-text text-success">Введите артикул или
                                                 наименование
@@ -381,17 +415,11 @@
                                                 <label class="control-label"
                                                        for="">@lang('site::part.parts')</label>
                                                 <span class="bg-danger text-white d-block d-sm-inline-block py-1 px-3 mb-1 mb-sm-0">@lang('site::messages.with_error')</span>
-                                                <div class="card-group" id="parts">
+                                                <div id="parts"
+                                                     class="card-group"
+                                                     data-currency-symbol="{{ auth()->user()->currency->symbol_right }}">
                                                     @foreach($parts as $part)
-
-                                                        @include('site::part.repair.row', [
-                                                                'product_id' => $part['product_id'],
-                                                                'sku' => $part['sku'],
-                                                                'name' => $part['name'],
-                                                                'cost' => $part['cost'],
-                                                                'format' => $part['format'],
-                                                                'count' => $part['count'],
-                                                            ])
+                                                        @include('site::part.create', ['product' => $part['product'], 'count' => $part['count']])
                                                     @endforeach
                                                 </div>
                                                 <hr/>
@@ -417,24 +445,35 @@
                                                    for="">@lang('site::part.parts')</label>
                                             <div class="card-group" id="parts">
                                                 @foreach($parts as $part)
-                                                    @include('site::part.repair.show', [
-                                                            'product_id' => $part['product_id'],
-                                                            'sku' => $part['sku'],
-                                                            'name' => $part['name'],
-                                                            'cost' => $part['cost'],
-                                                            'format' => $part['format'],
-                                                            'count' => $part['count'],
-                                                        ])
+                                                    <div class="card col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+                                                        <div class="card-body text-left">
+                                                            <h4 class="card-title">{{$part['product']->name}}</h4>
+                                                            <dl class="row">
+                                                                <dt class="col-12 col-md-6 text-left text-md-right">@lang('site::product.sku')</dt>
+                                                                <dd class="col-12 col-md-6">{{$part['product']->sku}}</dd>
+                                                                <dt class="col-12 col-md-6 text-left text-md-right">@lang('site::part.cost')</dt>
+                                                                <dd class="col-12 col-md-6">
+                                                                    {{$part['product']->hasPrice ? number_format($part['product']->repairPrice->value, 0, '.', ' ') : trans('site::price.error.price')}}
+                                                                    {{ auth()->user()->currency->symbol_right }}
+                                                                </dd>
+                                                                <dt class="col-12 col-md-6 text-left text-md-right">@lang('site::part.count')</dt>
+                                                                <dd class="col-12 col-md-6">{{$part['count']}}</dd>
+                                                            </dl>
+                                                        </div>
+                                                    </div>
                                                 @endforeach
                                             </div>
                                             <hr/>
                                             <div class="text-right text-xlarge">
                                                 @lang('site::part.total'):
+{{--                                                {{dd($parts)}}--}}
                                                 @if(!$parts->isEmpty())
                                                     <span id="total-cost">
-                                                        {{Site::format($parts->sum('cost'))}}
-                                                        </span>
+                                                        {{ number_format($parts->sum(function ($p) {return $p['cost'];}), 0, '.', ' ') }}
+                                                    </span>
+                                                    {{ auth()->user()->currency->symbol_right }}
                                                 @else
+
                                                     {{Site::currency()->symbol_left}}
                                                     <span id="total-cost">0</span>
                                                     {{Site::currency()->symbol_right}}
@@ -451,40 +490,8 @@
                     <div class="card mt-2 mb-2">
                         <div class="card-body">
                             <h5 class="card-title">@lang('site::file.files')</h5>
-                            @foreach($types as $type)
-                                <div class="form-group @if($type->required == 1) required @endif form-control{{ $errors->has('file.'.$type->id) ? ' is-invalid' : '' }}">
-                                    <div>
-                                        <label class="control-label"
-                                               for="type_id">{{$type->name}}</label>
-                                        @if($fails->contains('field', 'file_'.$type->id))
-                                            <span class="bg-danger text-white d-block d-sm-inline-block py-1 px-3 mb-1 mb-sm-0">@lang('site::messages.with_error')</span>
-                                        @endif
-                                    </div>
-                                    <form method="POST" enctype="multipart/form-data"
-                                          action="{{route('files.store')}}">
-                                        @csrf
-                                        <input type="hidden" name="type_id" value="{{$type->id}}"/>
-                                        <input type="hidden" name="storage" value="repairs"/>
-                                        <input type="file" name="path"/>
-                                        <button class="btn btn-ferroli file-type-upload"><i
-                                                    class="fa fa-download"></i> @lang('site::messages.load')
-                                        </button>
-
-                                        <small id="fileHelp-{{$type->id}}"
-                                               class="form-text text-muted">{{$type->comment}}</small>
-                                    </form>
-                                    <ul class="list-group" class="file-list">
-                                        @if( !$files->isEmpty())
-                                            @foreach($files as $file)
-                                                @if($file->type_id == $type->id)
-                                                    @include('site::repair.field.file')
-                                                @endif
-                                            @endforeach
-                                        @endif
-                                    </ul>
-                                </div>
-                                <span class="invalid-feedback">{{ $errors->first('file.'.$type->id) }}</span>
-                            @endforeach
+                            <h6 class="card-subtitle mb-2 text-muted">@lang('site::file.maxsize5mb')</h6>
+                            @include('site::file.create.type')
                         </div>
                     </div>
                 </fieldset>
@@ -526,18 +533,18 @@
                                                 <label class="control-label"
                                                        for="message_text">@lang('site::message.text')</label>
                                                 <input type="hidden" name="message[receiver_id]"
-                                                       form="repair-form"
+                                                       form="form"
                                                        value="{{$repair->user_id}}">
                                                 <textarea name="message[text]"
                                                           id="message_text"
-                                                          form="repair-form"
+                                                          form="form"
                                                           rows="3"
                                                           class="form-control{{  $errors->has('message.text') ? ' is-invalid' : '' }}"></textarea>
                                                 <span class="invalid-feedback">{{ $errors->first('message.text') }}</span>
                                             </div>
                                             @foreach($statuses as $key => $status)
                                                 <button
-                                                        form="repair-form"
+                                                        form="form"
                                                         type="submit"
                                                         name="status_id"
                                                         value="{{$status->id}}"
@@ -559,3 +566,147 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+<script>
+    try {
+        window.addEventListener('load', function () {
+
+            let product = $('#product_id'),
+                product_n = $('[name="product_id"]'),
+                parts_search = $('#parts_search'),
+                parts = $('#parts'),
+                selected = [];
+            let number_format = function (number, decimals, dec_point, thousands_sep) {
+
+                let i, j, kw, kd, km;
+
+                // input sanitation & defaults
+                if (isNaN(decimals = Math.abs(decimals))) {
+                    decimals = 0;
+                }
+                if (dec_point === undefined) {
+                    dec_point = ".";
+                }
+                if (thousands_sep === undefined) {
+                    thousands_sep = " ";
+                }
+
+                i = parseInt(number = (+number || 0).toFixed(decimals)) + "";
+
+                if ((j = i.length) > 3) {
+                    j = j % 3;
+                } else {
+                    j = 0;
+                }
+
+                km = (j ? i.substr(0, j) + thousands_sep : "");
+                kw = i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands_sep);
+                //kd = (decimals ? dec_point + Math.abs(number - i).toFixed(decimals).slice(2) : "");
+                kd = (decimals ? dec_point + Math.abs(number - i).toFixed(decimals).replace(/-/, 0).slice(2) : "");
+
+
+                return km + kw + kd;
+            };
+            $(document)
+                .on('click', '.part-delete', (function () {
+                    let index = selected.indexOf($(this).data('id'));
+                    if (index > -1) {
+                        selected.splice(index, 1);
+                        $('.product-' + $(this).data('id')).remove();
+                    }
+                    calc_parts();
+                }))
+                .on('keyup mouseup', '.parts_count', (function () {
+                    calc_parts();
+                }));
+            let calc_parts = function () {
+                if($('.parts_count').length){
+                    let cost = 0;
+                    parts.children().each(function (i) {
+                        let el = $(this).find('.parts_count');
+                        cost += (parseInt(el.data('cost')) * el.val());
+                    });
+
+                    $('#total-cost').html(number_format(cost));
+                }
+            };
+            calc_parts();
+
+            product_n.select2({
+                theme: "bootstrap4",
+                placeholder: '@lang('site::messages.select_from_list')',
+                selectOnClose: true,
+                minimumInputLength: 3,
+            });
+
+            product_n.on('select2:select', function (e) {
+                selected = [];
+            });
+
+            parts_search.select2({
+                theme: "bootstrap4",
+                ajax: {
+                    url: '/api/parts',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            'filter[search_part]': params.term,
+                            'filter[search_product]': product.val(),
+                        };
+                    },
+                    processResults: function (data, params) {
+                        return {
+                            results: data.data,
+                        };
+                    }
+                },
+                minimumInputLength: 3,
+                templateResult: function (product) {
+                    if (product.loading) return "...";
+                    let markup = "<img style='width:70px;' src=" + product.image + " /> &nbsp; " + product.name + ' (' + product.sku + ')';
+                    return markup;
+                },
+                templateSelection: function (product) {
+                    console.log(product);
+                    if (product.id !== "") {
+                        return product.name + ' (' + product.sku + ')';
+                    }
+
+
+                },
+                escapeMarkup: function (markup) {
+                    return markup;
+                }
+            });
+            parts_search.on('select2:select', function (e) {
+                let product_id = $(this).find('option:selected').val();
+                if (!selected.includes(product_id)) {
+                    parts_search.removeClass('is-invalid');
+                    selected.push(product_id);
+                    axios
+                        .get("/api/parts/create/" + product_id)
+                        .then((response) => {
+
+                            parts.append(response.data);
+                            $('[name="count[' + product_id + ']"]').focus();
+                            calc_parts();
+                            parts_search.val(null)
+                        })
+                        .catch((error) => {
+                            this.status = 'Error:' + error;
+                        });
+                } else {
+                    parts_search.addClass('is-invalid');
+                }
+            });
+
+
+        });
+    } catch (e) {
+        console.log(e);
+    }
+
+</script>
+@endpush

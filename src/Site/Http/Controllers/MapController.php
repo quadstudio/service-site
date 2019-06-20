@@ -41,7 +41,7 @@ class MapController extends Controller
         $this->regions = $regions;
         $this->addresses = $addresses;
         $this->authorization_types = AuthorizationType::query()
-            ->where('brand_id', 1)
+            ->where('brand_id', config('site.brand_default'))
             ->where('enabled', 1)
             ->orderBy('name')
             ->get();

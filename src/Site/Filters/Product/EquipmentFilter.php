@@ -26,7 +26,7 @@ class EquipmentFilter extends WhereFilter
 
             $equipment_id = $this->get($this->name());
             $builder = $builder->whereHas('relations', function ($query) use ($equipment_id) {
-                $query->whereEquipmentId($equipment_id);
+                $query->where('equipment_id', $equipment_id);
             });
         }
 
@@ -48,13 +48,18 @@ class EquipmentFilter extends WhereFilter
      */
     public function options(): array
     {
-        $options = Equipment::query()->whereHas('products', function ($query) {
-            $query->where('products.enabled', 1);
-            $query->whereHas('details', function ($query) {
-                $query->where('enabled', 1)->where(config('site.check_field'), 1)->whereNull('equipment_id');
-            });
-        })->orderBy('name')->pluck('name', 'id');
-        $options->prepend(trans('site::messages.select_from_list'), '');
+        $options = Equipment::query()
+            ->where(config('site.check_field'), 1)
+            ->whereHas('products', function ($query) {
+                $query->where('products.enabled', 1);
+                $query->whereHas('details', function ($query) {
+                    $query->where('enabled', 1)
+                        ->where(config('site.check_field'), 1)
+                        ->whereNull('equipment_id');
+                });
+            })->orderBy('name')
+            ->pluck('name', 'id')
+            ->prepend(trans('site::messages.select_from_list'), '');
 
         return $options->toArray();
     }

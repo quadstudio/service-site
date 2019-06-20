@@ -65,7 +65,7 @@
                                                id="active"
                                                name="datasheet[active]">
                                         <label class="custom-control-label"
-                                               for="active">@lang('site::messages.active')</label>
+                                               for="active">@lang('site::datasheet.active')</label>
                                         <span class="invalid-feedback">{{ $errors->first('datasheet.active') }}</span>
                                     </div>
                                 </div>

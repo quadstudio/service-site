@@ -137,6 +137,30 @@
                             </span>
                         </a>
                         @endpermission()
+                        @permission('contracts')
+                        <a href="{{ route('contracts.index') }}"
+                           class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="fa fa-@lang('site::contract.icon')"></i>
+                                @lang('site::contract.contracts')
+                            </span>
+                            <span class="badge text-big @if($user->contracts()->exists()) badge-ferroli @else badge-light @endif">
+                                {{$user->contracts()->count()}}
+                            </span>
+                        </a>
+                        @endpermission()
+                        @permission('launches')
+                        <a href="{{ route('contracts.index') }}"
+                           class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="fa fa-@lang('site::contract.icon')"></i>
+                                @lang('site::contract.contracts')
+                            </span>
+                            <span class="badge text-big @if($user->contracts()->exists()) badge-ferroli @else badge-light @endif">
+                                {{$user->contracts()->count()}}
+                            </span>
+                        </a>
+                        @endpermission()
                         @permission('engineers')
                         <a href="{{ route('engineers.index') }}"
                            class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
@@ -149,18 +173,18 @@
                             </span>
                         </a>
                         @endpermission
-                        @permission('launches')
-                        <a href="{{ route('launches.index') }}"
-                           class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                            <span>
-                                <i class="fa fa-@lang('site::launch.icon')"></i>
-                                @lang('site::launch.launches')
-                            </span>
-                            <span class="badge text-big @if($user->launches()->exists()) badge-ferroli @else badge-light @endif">
-                                {{$user->launches()->count()}}
-                            </span>
-                        </a>
-                        @endpermission
+                        {{--@permission('launches')--}}
+                        {{--<a href="{{ route('launches.index') }}"--}}
+                        {{--class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">--}}
+                        {{--<span>--}}
+                        {{--<i class="fa fa-@lang('site::launch.icon')"></i>--}}
+                        {{--@lang('site::launch.launches')--}}
+                        {{--</span>--}}
+                        {{--<span class="badge text-big @if($user->launches()->exists()) badge-ferroli @else badge-light @endif">--}}
+                        {{--{{$user->launches()->count()}}--}}
+                        {{--</span>--}}
+                        {{--</a>--}}
+                        {{--@endpermission--}}
                         @permission('trades')
                         <a href="{{ route('trades.index') }}"
                            class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">

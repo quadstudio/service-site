@@ -29,7 +29,7 @@ class AddressMapServiceFilter extends Filter
                         ->join('authorization_accepts', 'authorization_accepts.user_id', '=', 'users.id')
                         ->join('authorization_types', 'authorization_types.id', '=', 'authorization_accepts.type_id')
                         ->where('authorization_accepts.role_id', 3)
-                        ->where('authorization_types.brand_id', 1)
+                        ->where('authorization_types.brand_id', config('site.brand_default'))
                         ->whereIn('authorization_accepts.type_id', $this->accepts);
                 }
 

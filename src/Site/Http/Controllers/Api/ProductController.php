@@ -4,6 +4,7 @@ namespace QuadStudio\Service\Site\Http\Controllers\Api;
 
 use Illuminate\Routing\Controller;
 use QuadStudio\Service\Site\Filters\Product\MountingFilter;
+use QuadStudio\Service\Site\Filters\Product\ProductMounterFilter;
 use QuadStudio\Service\Site\Filters\Product\ProductSearchFilter;
 use QuadStudio\Service\Site\Filters\Product\SearchFilter;
 use QuadStudio\Service\Site\Filters\ProductCanBuyFilter;
@@ -31,6 +32,12 @@ class ProductController extends Controller
         $this->products->applyFilter(new MountingFilter());
         $this->products->applyFilter(new SearchFilter());
 
+        return new ProductCollection($this->products->all());
+    }
+
+    public function mounter()
+    {
+        $this->products->applyFilter(new ProductMounterFilter());
         return new ProductCollection($this->products->all());
     }
 

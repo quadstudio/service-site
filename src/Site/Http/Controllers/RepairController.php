@@ -23,6 +23,7 @@ use QuadStudio\Service\Site\Models\Difficulty;
 use QuadStudio\Service\Site\Models\Distance;
 use QuadStudio\Service\Site\Models\File;
 use QuadStudio\Service\Site\Models\FileType;
+use QuadStudio\Service\Site\Models\Part;
 use QuadStudio\Service\Site\Models\Product;
 use QuadStudio\Service\Site\Models\Repair;
 use QuadStudio\Service\Site\Repositories\ContragentRepository;
@@ -48,10 +49,6 @@ class RepairController extends Controller
      * @var EngineerRepository
      */
     protected $engineers;
-    /**
-     * @var LaunchRepository
-     */
-    protected $launches;
     /**
      * @var TradeRepository
      */
@@ -91,7 +88,6 @@ class RepairController extends Controller
      * @param RepairRepository $repairs
      * @param EngineerRepository $engineers
      * @param TradeRepository $trades
-     * @param LaunchRepository $launches
      * @param FileTypeRepository $types
      * @param CountryRepository $countries
      * @param EquipmentRepository $equipments
@@ -104,7 +100,6 @@ class RepairController extends Controller
         RepairRepository $repairs,
         EngineerRepository $engineers,
         TradeRepository $trades,
-        LaunchRepository $launches,
         FileTypeRepository $types,
         CountryRepository $countries,
         EquipmentRepository $equipments,
@@ -117,7 +112,6 @@ class RepairController extends Controller
         $this->repairs = $repairs;
         $this->engineers = $engineers;
         $this->trades = $trades;
-        $this->launches = $launches;
         $this->types = $types;
         $this->files = $files;
         $this->countries = $countries;
@@ -128,8 +122,6 @@ class RepairController extends Controller
     }
 
     /**
-     * Show the user profile
-     *
      * @param RepairRequest $request
      * @return \Illuminate\Http\Response
      */
@@ -147,8 +139,6 @@ class RepairController extends Controller
 
 
     /**
-     * Display the specified resource.
-     *
      * @param Repair $repair
      * @return \Illuminate\Http\Response
      */
@@ -165,8 +155,6 @@ class RepairController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
      * @param RepairRequest $request
      * @return \Illuminate\Http\Response
      */
@@ -177,7 +165,6 @@ class RepairController extends Controller
 
         $engineers = $request->user()->engineers()->orderBy('name')->get();
         $trades = $request->user()->trades()->orderBy('name')->get();
-        $launches = $request->user()->launches()->orderBy('name')->get();
         $contragents = $request->user()->contragents()->orderBy('name')->get();
         $countries = Country::query()->where('enabled', 1)->orderBy('name')->get();
         $file_types = FileType::query()->where('enabled', 1)->where('group_id', 1)->orderBy('sort_order')->get();
@@ -199,7 +186,6 @@ class RepairController extends Controller
             'engineers',
             'trades',
             'contragents',
-            'launches',
             'products',
             'countries',
             'file_types',
@@ -228,6 +214,7 @@ class RepairController extends Controller
                 $parts->put($product->id, collect([
                     'product' => $product,
                     'count'   => $count,
+                    'cost' => $product->hasPrice ? $product->repairPrice->value : 0
                 ]));
             }
         } elseif (!is_null($repair)) {
@@ -235,6 +222,7 @@ class RepairController extends Controller
                 $parts->put($part->product_id, collect([
                     'product' => $part->product,
                     'count'      => $part->count,
+                    'cost' => $part->product->hasPrice ? $part->product->repairPrice->value : 0
                 ]));
             }
         }
@@ -264,8 +252,6 @@ class RepairController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
      * @param  RepairRequest $request
      * @return \Illuminate\Http\Response
      */
@@ -274,9 +260,16 @@ class RepairController extends Controller
 
         $this->authorize('create', Repair::class);
         $request->user()->repairs()->save($repair = $this->repairs->create($request->input(['repair'])));
-        if ($request->filled('parts')) {
-            $parts = collect($request->input('parts'))->values()->toArray();
-            $repair->parts()->createMany($parts);
+        if ($request->filled('count')) {
+            $parts = (collect($request->input('count')))->map(function ($count, $product_id) {
+                $product = Product::query()->findOrFail($product_id);
+                return new Part([
+                    'product_id' => $product_id,
+                    'count'=> $count,
+                    'cost' => $product->hasPrice ? $product->repairPrice->value : 0
+                ]);
+            });
+            $repair->parts()->saveMany($parts);
         }
         $this->setFiles($request, $repair);
 
@@ -310,42 +303,31 @@ class RepairController extends Controller
      */
     public function edit(RepairRequest $request, Repair $repair)
     {
-        $engineers = $this->engineers
-            ->applyFilter(new BelongsUserFilter())
-            ->applyFilter(new ByNameSortFilter())
-            ->all();
-        $trades = $this->trades
-            ->applyFilter(new BelongsUserFilter())
-            ->applyFilter(new ByNameSortFilter())
-            ->all();
-        $launches = $this->launches
-            ->applyFilter(new BelongsUserFilter())
-            ->applyFilter(new ByNameSortFilter())
-            ->all();
-        $countries = $this->countries
-            ->applyFilter(new CountryEnabledFilter())
-            ->applyFilter(new CountrySortFilter())
-            ->all();
-        $this->types->applyFilter(new SortFilter());
-        $this->types->applyFilter(new RepairFilter());
-        $types = $this->types->all();
+        $engineers = $request->user()->engineers()->orderBy('name')->get();
+        $trades = $request->user()->trades()->orderBy('name')->get();
+        $countries = Country::query()->where('enabled', 1)->orderBy('name')->get();
+        $file_types = FileType::query()->where('enabled', 1)->where('group_id', 1)->orderBy('sort_order')->get();
         $parts = $this->getParts($request, $repair);
         $files = $this->getFiles($request, $repair);
-        $difficulties = $this->difficulties->all();
-        $distances = $this->distances->all();
+        $difficulties = Difficulty::query()->where('active', 1)->orderBy('sort_order')->get();
+        $distances = Distance::query()->where('active', 1)->orderBy('sort_order')->get();
         $statuses = $repair->statuses()->get();
-
+        $products = Product::query()
+            ->whereNotNull('sku')
+            ->where('enabled', 1)
+            ->where('warranty', 1)
+            ->orderBy('name')
+            ->get(['id', 'name', 'sku']);
         $fails = $repair->fails;
 
-        //dd(old('allow_road', $repair->allow_road));
         return view('site::repair.edit', compact(
             'repair',
             'engineers',
             'trades',
-            'launches',
             'countries',
             'statuses',
-            'types',
+            'file_types',
+            'products',
             'files',
             'parts',
             'fails',
@@ -355,15 +337,21 @@ class RepairController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
      * @param  RepairRequest $request
      * @param Repair $repair
      * @return \Illuminate\Http\Response
      */
     public function update(RepairRequest $request, Repair $repair)
     {
-
+        $parts = (collect($request->input('count')))->map(function ($count, $product_id) {
+            $product = Product::query()->findOrFail($product_id);
+            return new Part([
+                'product_id' => $product_id,
+                'count'=> $count,
+                'cost' => $product->hasPrice ? $product->repairPrice->value : 0
+            ]);
+        });
+        dd($parts);
         $repair->update($request->except(['_token', '_method', '_create', 'file', 'parts']));
         if ($request->filled('message.text')) {
             $repair->messages()->save($message = $request->user()->outbox()->create($request->input('message')));
@@ -372,13 +360,20 @@ class RepairController extends Controller
 
         $repair->parts()->delete();
 
-        if ($request->filled('parts')) {
-            $parts = collect($request->input('parts'))->values()->toArray();
-            $repair->parts()->createMany($parts);
+        if ($request->filled('count')) {
+            $parts = (collect($request->input('count')))->map(function ($count, $product_id) {
+                $product = Product::query()->findOrFail($product_id);
+                return new Part([
+                    'product_id' => $product_id,
+                    'count'=> $count,
+                    'cost' => $product->hasPrice ? $product->repairPrice->value : 0
+                ]);
+            });
+            $repair->parts()->saveMany($parts);
         }
 
         event(new RepairEditEvent($repair));
-
+        dd($repair->parts);
         return redirect()->route('repairs.show', $repair)->with('success', trans('site::repair.updated'));
     }
 

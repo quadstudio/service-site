@@ -20,6 +20,7 @@ return [
     'image_id'        => 'Изображение',
     'description'     => 'Описание',
     'enabled'         => 'Включен?',
+    'mounter_enabled' => 'Включить в заявках на монтаж',
     'sort_order'      => 'Порядок сортировки',
     'metadescription' => 'Тег Meta Description',
     'title'           => 'Тег Title',

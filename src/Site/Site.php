@@ -5,9 +5,12 @@ namespace QuadStudio\Service\Site;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use QuadStudio\Service\Site\Exports\Excel\OrderExcel;
+use QuadStudio\Service\Site\Exports\Excel\SflContractProcessor;
+use QuadStudio\Service\Site\Exports\Word\ContractWordProcessor;
 use QuadStudio\Service\Site\Models\Act;
 use QuadStudio\Service\Site\Models\Block;
 use QuadStudio\Service\Site\Models\Catalog;
+use QuadStudio\Service\Site\Models\Contract;
 use QuadStudio\Service\Site\Models\Currency;
 use QuadStudio\Service\Site\Models\Element;
 use QuadStudio\Service\Site\Models\Equipment;
@@ -169,7 +172,7 @@ class Site
                     /* Мероприятия */
                     $router->resource('/events',
                         '\QuadStudio\Service\Site\Http\Controllers\EventController')
-                        ->only(['show']);
+                        ->only(['show','index']);
 
                     /* Типы мероприятий */
                     $router->resource('/event-types',
@@ -275,10 +278,10 @@ class Site
                                 ->except(['show']);
 
                             // Ввод в экплуатацию
-                            $router->resource('/launches',
-                                '\QuadStudio\Service\Site\Http\Controllers\LaunchController')
-                                ->middleware('permission:launches')
-                                ->except(['show']);
+//                            $router->resource('/launches',
+//                                '\QuadStudio\Service\Site\Http\Controllers\LaunchController')
+//                                ->middleware('permission:launches')
+//                                ->except(['show']);
 
                             // Сообщения
                             $router->resource('/messages',
@@ -371,7 +374,9 @@ class Site
                                 ->except(['destroy']);
                             $router->get('/acts/{act}/pdf', function (Act $act) {
                                 return (new ActPdf())->setModel($act)->render();
-                            })->middleware('can:pdf,act')->name('acts.pdf');
+                            })
+                                ->middleware('can:pdf,act')
+                                ->name('acts.pdf');
 
                             // Корзина
                             $router->get('/cart',
@@ -394,6 +399,25 @@ class Site
                             $router->delete('/order-items/{item}',
                                 '\QuadStudio\Service\Site\Http\Controllers\OrderItemController@destroy')
                                 ->name('orders.items.destroy');
+
+                            // Контакты
+                            $router
+                                ->group(['middleware' => ['permission:contracts']],
+                                    function () use ($router) {
+                                        $router->resource('/contracts',
+                                            '\QuadStudio\Service\Site\Http\Controllers\ContractController')
+                                            ->except(['create']);
+
+                                        $router->get('/contracts/create/{contract_type}',
+                                            '\QuadStudio\Service\Site\Http\Controllers\ContractController@create')
+                                            ->name('contracts.create');
+
+                                        $router->get('/contracts/{contract}/download', function (Contract $contract) {
+                                            (new ContractWordProcessor($contract))->render();
+                                        })->name('contracts.download')
+                                            ->middleware('can:view,contract');
+                                    });
+
 
                         });
                     $router
@@ -500,9 +524,9 @@ class Site
                                     ->only(['index', 'edit', 'update']);
 
                                 // Ввод в эксплуатацию
-                                $router->name('admin')->resource('/launches',
-                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\LaunchController')
-                                    ->only(['index', 'edit', 'update']);
+//                                $router->name('admin')->resource('/launches',
+//                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\LaunchController')
+//                                    ->only(['index', 'edit', 'update']);
 
                                 // Контрагенты
                                 $router->name('admin')->resource('/contragents',
@@ -685,18 +709,18 @@ class Site
                                 // Серийные номера
                                 $router->name('admin')->resource('/serials',
                                     '\QuadStudio\Service\Site\Http\Controllers\Admin\SerialController')
-                                    ->only(['index', 'show', 'create', 'store']);
+                                    ->only(['index', 'create', 'store']);
 
                                 // Сертификаты
                                 $router->name('admin')->resource('/certificates',
                                     '\QuadStudio\Service\Site\Http\Controllers\Admin\CertificateController')
-                                    ->only(['index', 'show']);
-                                $router->name('admin')->get('/certificates/create/{certificate_type}',
+                                    ->only(['index', 'destroy']);
+                                $router->get('/certificates/create/{certificate_type}',
                                     '\QuadStudio\Service\Site\Http\Controllers\Admin\CertificateController@create')
-                                    ->name('.certificates.create');
-                                $router->name('admin')->post('/certificates/{certificate_type}',
+                                    ->name('admin.certificates.create');
+                                $router->post('/certificates/{certificate_type}',
                                     '\QuadStudio\Service\Site\Http\Controllers\Admin\CertificateController@store')
-                                    ->name('.certificates.store');
+                                    ->name('admin.certificates.store');
 
                                 // Валюта
                                 $router->name('admin')->resource('/currencies',
@@ -860,6 +884,19 @@ class Site
                                     FileType::sort($request);
                                 })->name('.file_types.sort');
 
+                                // Договора
+                                $router->name('admin')->resource('/contracts',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\ContractController')
+                                    ->only(['index', 'show']);
+
+                                $router->get('/contracts/{contract}/download', function (Contract $contract) {
+                                    (new ContractWordProcessor($contract))->render();
+                                })->name('admin.contracts.download');
+
+                                // Типы договоров
+                                $router->name('admin')->resource('/contract-types',
+                                    '\QuadStudio\Service\Site\Http\Controllers\Admin\ContractTypeController');
+
                             });
                 });
 
@@ -875,6 +912,11 @@ class Site
                 // Товары для отчета по монтажу
                 $router->name('api')->get('/products/mounting',
                     '\QuadStudio\Service\Site\Http\Controllers\Api\ProductController@mounting');
+
+                // Товары для заявки на монтаж
+                $router->get('/products/mounter',
+                    '\QuadStudio\Service\Site\Http\Controllers\Api\ProductController@mounter')
+                    ->name('api.products.mounter');
 
                 // Товары для отчета по ремонту
                 $router->name('api')->get('/parts',

@@ -89,8 +89,6 @@ return [
     'back_home'        => 'В личный кабинет',
     'back_admin'       => 'В панель управления',
     'in_admin'         => 'в панели управления',
-//    'show_ferroli'     => 'Показывать на сайте Ferroli',
-//    'show_lamborghini' => 'Показывать на сайте Lamborghini',
     'show_ferroli'     => 'Сайт Ferroli',
     'show_lamborghini' => 'Сайт Lamborghini',
     'in_front'         => 'на сайте',

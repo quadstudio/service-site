@@ -1,6 +1,6 @@
 <?php
 
-namespace QuadStudio\Service\Site\Filters\Address;
+namespace QuadStudio\Service\Site\Filters\Repair;
 
 use QuadStudio\Repo\Contracts\RepositoryInterface;
 use QuadStudio\Repo\Filters\BooleanFilter;

@@ -194,22 +194,25 @@ class User extends Authenticatable implements Addressable
     public function storehouses()
     {
 
+        $result = collect([]);
+
+
         if ($this->hasRole(config('site.storehouse_check', []), false)) {
 
-            return User::query()
+            $result = $result->merge(User::query()
                 ->find(config('site.receiver_id'))
                 ->addresses()
                 ->where('type_id', 6)
-                ->get();
+                ->get());
         }
 
         if ($this->region) {
-            return $this->region->storehouses->filter(function ($address) {
+            $result = $result->merge($this->region->storehouses->filter(function ($address) {
                 return $address->addressable->hasRole(config('site.storehouse_check', []), false);
-            });
+            }));
         }
 
-        return collect([]);
+        return $result;
     }
 
     /**
@@ -223,6 +226,16 @@ class User extends Authenticatable implements Addressable
                     ->where('addressable_type', '=', 'users')
                     ->where('addressable_id', '=', $this->getAuthIdentifier());
             });//->orderBy('created_at', 'DESC')
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function contracts()
+    {
+        return Contract::query()->whereHas('contragent', function ($contragent) {
+            $contragent->where('user_id', '=', $this->getAuthIdentifier());
+        });
     }
 
     /**

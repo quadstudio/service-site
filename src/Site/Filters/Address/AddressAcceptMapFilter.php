@@ -20,7 +20,7 @@ class AddressAcceptMapFilter extends Filter
             ->whereHas('users', function ($query){
                 dd($query->get());
                 $query->authorization_accepts->where('role_id', 3)->whereHas('type', function($query){
-                    $query->where('brand_id', 1)
+                    $query->where('brand_id', config('site.brand_default'))
                     ->whereIn('type_id', $this->accepts);
                 });
             });

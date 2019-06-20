@@ -1,12 +1,13 @@
 @extends('layouts.app')
-@section('title'){{$product->title ?: $product->name }} @lang('site::messages.title_separator')@endsection
+@section('title'){{$product->title ?: ($product->equipment ? $product->equipment->name : $product->name) }} @lang('site::messages.title_separator')@endsection
 @section('description'){{$product->metadescription ?: $product->name }}@endsection
 @section('header')
     @include('site::header.front',[
         'h1' => '',
         'breadcrumbs' => [
             ['url' => route('index'), 'name' => __('site::messages.index')],
-            ['url' => route('products.index'), 'name' => __('site::product.products')],
+            ['url' => $product->equipment ? route('catalogs.index') : route('products.index'), 'name' => $product->equipment ? __('site::catalog.catalogs') : __('site::product.products')],
+            $product->equipment ? ['url' => route('equipments.show', $product->equipment), 'name' => $product->equipment->name] : null,
             ['name' => $product->name],
         ]
     ])
@@ -91,6 +92,14 @@
                                     <dt class="col-sm-4">@lang('site::product.type_id')</dt>
                                     <dd class="col-sm-8">{{$product->type->name}}</dd>
                                 @endif
+                                @if($product->equipment)
+                                    <dt class="col-sm-4">@lang('site::product.equipment_id')</dt>
+                                    <dd class="col-sm-8">
+                                        <a href="{{route('equipments.show', $product->equipment)}}">
+                                            {{$product->equipment->name}}
+                                        </a>
+                                    </dd>
+                                @endif
                                 <dt class="col-sm-4">@lang('site::product.quantity')</dt>
                                 <dd class="col-sm-8">
                                     @if($product->quantity > 0)
@@ -161,7 +170,7 @@
                             </a>
                         </li>
                     @endif
-                @if($details->isNotEmpty())
+                    @if($details->isNotEmpty())
                         <li class="nav-item">
                             <a class="nav-link" id="detail-tab" data-toggle="tab" href="#detail" role="tab"
                                aria-controls="detail" aria-selected="false">@lang('site::detail.details')

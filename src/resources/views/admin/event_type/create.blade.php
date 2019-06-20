@@ -80,6 +80,32 @@
                         </div>
                     </div>
 
+                    <div class="form-row mt-3">
+                        <div class="col">
+                            <label class="control-label" for="title">@lang('site::event_type.title')</label>
+                            <input type="text"
+                                   name="event_type[title]"
+                                   id="title"
+                                   class="form-control{{ $errors->has('event_type.title') ? ' is-invalid' : '' }}"
+                                   placeholder="@lang('site::event_type.placeholder.title')"
+                                   value="{{ old('event_type.title') }}">
+                            <span class="invalid-feedback">{{ $errors->first('event_type.title') }}</span>
+                        </div>
+                    </div>
+
+                    <div class="form-row mt-3">
+                        <div class="col">
+                            <label class="control-label" for="meta_description">@lang('site::event_type.meta_description')</label>
+                            <input type="text"
+                                   name="event_type[meta_description]"
+                                   id="meta_description"
+                                   class="form-control{{ $errors->has('event_type.meta_description') ? ' is-invalid' : '' }}"
+                                   placeholder="@lang('site::event_type.placeholder.meta_description')"
+                                   value="{{ old('event_type.meta_description') }}">
+                            <span class="invalid-feedback">{{ $errors->first('event_type.meta_description') }}</span>
+                        </div>
+                    </div>
+
                 </form>
 
                 <div class="row">

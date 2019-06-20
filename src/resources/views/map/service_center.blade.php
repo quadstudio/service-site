@@ -6,11 +6,11 @@
 
 @section('header')
     @include('site::header.front',[
-        'h1' => '<i class="fa fa-'.__('site::shop.service_center.icon').'"></i> '
-        .__('site::shop.service_center.title'),
+        'h1' => '<i class="fa fa-'.__('site::map.service_center.icon').'"></i> '
+        .__('site::map.service_center.title'),
         'breadcrumbs' => [
             ['url' => route('index'), 'name' => __('site::messages.index')],
-            ['name' => __('site::shop.service_center.title')]
+            ['name' => __('site::map.service_center.title')]
         ]
     ])
 @endsection
@@ -79,7 +79,7 @@
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <h3 id="addresses-list">@lang('site::shop.service_center.header')</h3>
+                        <h3 id="addresses-list">@lang('site::map.service_center.header')</h3>
                         <div id="container-addresses" data-action="{{route('api.service-centers')}}"></div>
                     </div>
                 </div>

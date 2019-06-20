@@ -17,12 +17,7 @@ class ServiceResource extends JsonResource
     {
         //$icon = $request->route()->getName() == 'api.dealers.index' ? 'islands#orangeShoppingIcon' : 'islands#orangeRepairShopIcon';
         $icon = 'islands#orangeRepairShopIcon';
-        $roles = [];
-        foreach (Role::query()->where('display', 1)->get() as $role){
-            if($this->addressable->hasRole($role->name)){
-                $roles[] = $role->title;
-            }
-        }
+
         return [
             'type'       => 'Feature',
             'id'         => $this->id,
@@ -33,14 +28,15 @@ class ServiceResource extends JsonResource
             'properties' => [
                 'balloonContentBody' => view('site::map.balloon.service_center', [
                     'name'      => $this->name,
-                    'roles'      => $roles,
                     'logo'      => $this->addressable->logo,
                     'web'      => $this->addressable->web,
                     'phones'     => $this->phones,
                     'email'   => $this->email,
+                    'is_shop' => $this->is_shop,
+                    'is_service' => $this->is_service,
                     'address' => $this->full,
                     'accepts' => $this->addressable->authorization_accepts()->where('role_id', 3)->whereHas('type', function($query){
-                        $query->where('brand_id', 1);
+                        $query->where('brand_id', config('site.brand_default'));
                     })->get()
                 ])->render(),
                 'balloonMaxWidth'    => 700

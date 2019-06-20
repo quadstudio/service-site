@@ -57,10 +57,11 @@
             <div class="card-body">
                 <dl class="row">
 
-
-
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::equipment.enabled')</dt>
                     <dd class="col-sm-8">@bool(['bool' => $equipment->enabled])@endbool</dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::equipment.mounter_enabled')</dt>
+                    <dd class="col-sm-8">@bool(['bool' => $equipment->mounter_enabled])@endbool</dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::messages.show_ferroli')</dt>
                     <dd class="col-sm-8">@bool(['bool' => $equipment->show_ferroli])@endbool</dd>

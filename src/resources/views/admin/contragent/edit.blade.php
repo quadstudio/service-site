@@ -16,7 +16,7 @@
                 <a href="{{ route('admin.users.show', $contragent->user) }}">{{$contragent->user->name}}</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{{ route('admin.users.contragents', $contragent->user) }}">@lang('site::contragent.contragents')</a>
+                <a href="{{ route('admin.contragents.index', ['filter[user]='.$contragent->user_id]) }}">@lang('site::contragent.contragents')</a>
             </li>
             <li class="breadcrumb-item">
                 <a href="{{ route('admin.contragents.show', $contragent) }}">{{ $contragent->name }}</a>

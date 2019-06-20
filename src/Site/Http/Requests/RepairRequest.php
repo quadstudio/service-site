@@ -38,6 +38,7 @@ class RepairRequest extends FormRequest
             }
             case 'POST': {
                 $rules = [
+                    'accept'               => 'required|accepted',
                     'repair.contragent_id' => [
                         'required',
                         'exists:contragents,id',
@@ -49,22 +50,16 @@ class RepairRequest extends FormRequest
                     'repair.client'        => 'required|string|max:255',
                     'repair.country_id'    => 'required|exists:countries,id',
                     'repair.address'       => 'required|string|max:255',
-                    'repair.phone_primary' => 'required|string|size:'.config('site.phone.maxlength'),
+                    'repair.phone_primary' => 'required|string|size:' . config('site.phone.maxlength'),
                     'repair.trade_id'      => [
-                        'required',
+                        'sometimes',
+                        'nullable',
                         'exists:trades,id',
                         Rule::exists('trades', 'id')->where(function ($query) {
                             $query->where('trades.user_id', $this->user()->id);
                         }),
                     ],
                     'repair.date_trade'    => 'required|date_format:"d.m.Y"',
-                    'repair.launch_id'     => [
-                        'required',
-                        'exists:launches,id',
-                        Rule::exists('launches', 'id')->where(function ($query) {
-                            $query->where('launches.user_id', $this->user()->id);
-                        }),
-                    ],
                     'repair.date_launch'   => 'required|date_format:"d.m.Y"',
                     'repair.engineer_id'   => [
                         'required',
@@ -108,11 +103,12 @@ class RepairRequest extends FormRequest
                     $rules->put('address', 'required|string|max:255');
                 }
                 if ($fails->contains('field', 'phone_primary')) {
-                    $rules->put('phone_primary', 'required|string|size:'.config('site.phone.maxlength'));
+                    $rules->put('phone_primary', 'required|string|size:' . config('site.phone.maxlength'));
                 }
                 if ($fails->contains('field', 'trade_id')) {
                     $rules->put('trade_id', [
-                        'required',
+                        'sometimes',
+                        'nullable',
                         'exists:trades,id',
                         Rule::exists('trades', 'id')->where(function ($query) {
                             $query->where('trades.user_id', $this->user()->id);
@@ -120,22 +116,13 @@ class RepairRequest extends FormRequest
                     ]);
                 }
                 if ($fails->contains('field', 'date_trade')) {
-                    $rules->put('date_trade', 'required|date_format:"Y-m-d"');
-                }
-                if ($fails->contains('field', 'launch_id')) {
-                    $rules->put('launch_id', [
-                        'required',
-                        'exists:launches,id',
-                        Rule::exists('launches', 'id')->where(function ($query) {
-                            $query->where('launches.user_id', $this->user()->id);
-                        }),
-                    ]);
+                    $rules->put('date_trade', 'required|date_format:"d.m.Y"');
                 }
                 if ($fails->contains('field', 'date_launch')) {
-                    $rules->put('date_launch', 'required|date_format:"Y-m-d"');
+                    $rules->put('date_launch', 'required|date_format:"d.m.Y"');
                 }
                 if ($fails->contains('field', 'date_call')) {
-                    $rules->put('date_call', 'required|date_format:"Y-m-d"');
+                    $rules->put('date_call', 'required|date_format:"d.m.Y"');
                 }
                 if ($fails->contains('field', 'reason_call')) {
                     $rules->put('reason_call', 'required|string');
@@ -147,7 +134,7 @@ class RepairRequest extends FormRequest
                     $rules->put('works', 'required|string');
                 }
                 if ($fails->contains('field', 'date_repair')) {
-                    $rules->put('date_repair', 'required|date_format:"Y-m-d"');
+                    $rules->put('date_repair', 'required|date_format:"d.m.Y"');
                 }
                 if ($fails->contains('field', 'distance_id')) {
                     $rules->put('distance_id', 'required|exists:distances,id');
@@ -184,6 +171,7 @@ class RepairRequest extends FormRequest
     public function attributes()
     {
         $attributes = [
+            'accept'                 => trans('site::repair.accept'),
             'repair.contragent_id'   => trans('site::repair.contragent_id'),
             'repair.client'          => trans('site::repair.client'),
             'repair.country_id'      => trans('site::repair.country_id'),
@@ -192,7 +180,6 @@ class RepairRequest extends FormRequest
             'repair.phone_secondary' => trans('site::repair.phone_secondary'),
             'repair.trade_id'        => trans('site::repair.trade_id'),
             'repair.date_trade'      => trans('site::repair.date_trade'),
-            'repair.launch_id'       => trans('site::repair.launch_id'),
             'repair.date_launch'     => trans('site::repair.date_launch'),
             'repair.engineer_id'     => trans('site::repair.engineer_id'),
             'repair.date_call'       => trans('site::repair.date_call'),

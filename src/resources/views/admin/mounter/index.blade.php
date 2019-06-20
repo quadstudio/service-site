@@ -28,7 +28,7 @@
         @pagination(['pagination' => $mounters])@endpagination
         {{$mounters->render()}}
         @foreach($mounters as $mounter)
-            <div class="card my-4" id="mounter-{{$mounter->id}}">
+            <div class="card my-2" id="mounter-{{$mounter->id}}">
 
                 <div class="card-header with-elements">
                     <div class="card-header-elements">
@@ -69,6 +69,16 @@
                     </div>
                     <div class="col-xl-3 col-sm-6">
                         <dl class="dl-horizontal mt-2">
+                            <dt class="col-12">@lang('site::mounter.equipment_id')</dt>
+                            <dd class="col-12">{{optional($mounter->equipment)->name}}</dd>
+                            <dt class="col-12">@lang('site::mounter.product_id')</dt>
+                            <dd class="col-12">{{optional($mounter->product)->name}}</dd>
+                            <dt class="col-12">@lang('site::mounter.model')</dt>
+                            <dd class="col-12">{{$mounter->model}}</dd>
+                        </dl>
+                    </div>
+                    <div class="col-xl-3 col-sm-6">
+                        <dl class="dl-horizontal mt-2">
                             <dt class="col-12">@lang('site::mounter.client')</dt>
                             <dd class="col-12">{{$mounter->client}}</dd>
 
@@ -76,14 +86,9 @@
                                 <dt class="col-12">@lang('site::mounter.comment')</dt>
                                 <dd class="col-12">{{$mounter->comment}}</dd>
                             @endif
-                        </dl>
-                    </div>
-                    <div class="col-xl-3 col-sm-6">
-                        <dl class="dl-horizontal mt-2">
                             <dt class="col-12">@lang('site::mounter.address')</dt>
                             <dd class="col-12">{{$mounter->address}}</dd>
-                            <dt class="col-12">@lang('site::mounter.model')</dt>
-                            <dd class="col-12">{{$mounter->model}}</dd>
+
                         </dl>
                     </div>
                 </div>

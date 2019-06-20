@@ -13,7 +13,7 @@ class SortDateFromFilter extends OrderByFilter
     public function defaults(): array
     {
         return [
-            'events.date_from' => 'ASC'
+            'events.date_from' => 'DESC'
         ];
     }
 

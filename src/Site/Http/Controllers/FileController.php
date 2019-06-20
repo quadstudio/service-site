@@ -5,11 +5,13 @@ namespace QuadStudio\Service\Site\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use QuadStudio\Service\Site\Http\Requests\FileRequest;
 use QuadStudio\Service\Site\Models\File;
 use QuadStudio\Service\Site\Repositories\FileRepository;
 use QuadStudio\Service\Site\Repositories\FileTypeRepository;
 use Illuminate\Routing\Controller;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class FileController extends Controller
 {
@@ -81,14 +83,13 @@ class FileController extends Controller
 
     public function show(File $file)
     {
-
         if (!is_null($file->fileable)) {
             $this->authorize('view', $file);
         }
         $file->increment('downloads');
         $file->update(['downloaded_at' => Carbon::now()]);
 
-        return Storage::disk($file->storage)->download($file->path, $file->name);
+        return Storage::disk($file->storage)->download($file->path, Str::ascii($file->name));
     }
 
     /**

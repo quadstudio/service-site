@@ -11,6 +11,7 @@ return [
     'catalog_id'      => 'Каталог',
     'enabled'         => 'Включено',
     'metadescription' => 'Тег Meta Description',
+    'mounter_enabled' => 'Включить в заявках на монтаж',
     'title'           => 'Тег Title',
     'h1'              => 'Тег H1',
     //

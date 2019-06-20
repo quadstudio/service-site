@@ -4,9 +4,8 @@
         <dl class="row">
             <dd class="col-12">{{$address}}</dd>
             <dd class="col-12">
-                @foreach($roles as $role)
-                    <span class="badge text-normal mb-0 mb-sm-1 badge-ferroli">{{$role}}</span>
-                @endforeach
+                @if($is_shop)<span class="badge text-normal mb-0 mb-sm-1 badge-ferroli">@lang('site::address.is_shop')</span>@endif
+                @if($is_service)<span class="badge text-normal mb-0 mb-sm-1 badge-ferroli">@lang('site::address.is_service')</span>@endif
             </dd>
             <dt class="col-sm-4">@lang('site::phone.phones')</dt>
             <dd class="col-sm-8">

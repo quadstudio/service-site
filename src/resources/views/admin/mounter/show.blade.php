@@ -61,6 +61,12 @@
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::mounter.address')</dt>
                     <dd class="col-sm-8">{{ $mounter->address }}</dd>
 
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::mounter.equipment_id')</dt>
+                    <dd class="col-sm-8">{{optional($mounter->equipment)->name}}</dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::mounter.product_id')</dt>
+                    <dd class="col-sm-8">{{optional($mounter->product)->name}}</dd>
+
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::mounter.model')</dt>
                     <dd class="col-sm-8">{{ $mounter->model }}</dd>
 

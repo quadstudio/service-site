@@ -45,10 +45,16 @@ class EquipmentController extends Controller
         ) {
             abort(404);
         }
-        $products = $equipment->products()->where('enabled', 1)->orderBy('name')->get();
-        $datasheets = Datasheet::query()->where('active', 1)->whereHas('products', function($query) use ($equipment){
-            $query->where('enabled', 1)->where('equipment_id', $equipment->id);
-        })->get();
+        $products = $equipment->products()
+            ->where('enabled', 1)
+            ->orderBy('name')
+            ->get();
+        $datasheets = Datasheet::query()
+            ->where('active', 1)
+            ->whereHas('products', function ($query) use ($equipment) {
+                $query->where('enabled', 1)->where('equipment_id', $equipment->id);
+            })->get();
+
         return view('site::equipment.show', compact('equipment', 'products', 'datasheets'));
     }
 }

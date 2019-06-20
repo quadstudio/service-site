@@ -8,6 +8,8 @@ use QuadStudio\Service\Site\Filters\CountryEnabledFilter;
 use QuadStudio\Service\Site\Filters\Engineer\EngineerPerPageFilter;
 use QuadStudio\Service\Site\Filters\Engineer\EngineerUserFilter;
 use QuadStudio\Service\Site\Http\Requests\EngineerRequest;
+use QuadStudio\Service\Site\Models\Certificate;
+use QuadStudio\Service\Site\Models\CertificateType;
 use QuadStudio\Service\Site\Models\Country;
 use QuadStudio\Service\Site\Models\Engineer;
 use QuadStudio\Service\Site\Repositories\CountryRepository;
@@ -60,8 +62,12 @@ class EngineerController extends Controller
     public function edit(Engineer $engineer)
     {
         $countries = Country::query()->where('enabled', 1)->orderBy('name')->get();
-
-        return view('site::admin.engineer.edit', compact('engineer', 'countries'));
+        $certificate_types = CertificateType::query()->get();
+        return view('site::admin.engineer.edit', compact(
+            'engineer',
+            'countries',
+            'certificate_types'
+        ));
     }
 
     /**
@@ -74,6 +80,20 @@ class EngineerController extends Controller
     public function update(EngineerRequest $request, Engineer $engineer)
     {
         $engineer->update($request->input('engineer'));
+
+        foreach ($engineer->certificates()->get() as $certificate){
+            $certificate->engineer()->dissociate()->save();
+        }
+        foreach ($request->input('certificate') as $certificate_type_id => $certificate_id) {
+            if (
+                !is_null($certificate_id)
+                && ($certificate = Certificate::query()
+                    ->where('type_id', $certificate_type_id)
+                    ->where('id', $certificate_id))->exists()
+            ) {
+                $certificate->first()->engineer()->associate($engineer)->save();
+            }
+        }
 
         return redirect()->route('admin.engineers.index', ['filter[user]='.$engineer->getAttribute('user_id')])->with('success', trans('site::engineer.updated'));
     }

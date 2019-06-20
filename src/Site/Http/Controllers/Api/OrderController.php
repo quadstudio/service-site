@@ -1,6 +1,6 @@
 <?php
 
-namespace QuadStudio\Service\Site\Traits\Controllers\Api;
+namespace QuadStudio\Service\Site\Http\Controllers\Api;
 
 use Illuminate\Routing\Controller;
 use QuadStudio\Service\Site\Http\Resources\OrderResource;

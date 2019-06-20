@@ -3,6 +3,7 @@
 namespace QuadStudio\Service\Site\Http\Controllers\Admin;
 
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use QuadStudio\Service\Site\Events\OrderScheduleEvent;
@@ -17,6 +18,8 @@ use QuadStudio\Service\Site\Repositories\OrderRepository as Repository;
 
 class OrderController extends Controller
 {
+
+    use AuthorizesRequests;
     /**
      * @var Repository
      */

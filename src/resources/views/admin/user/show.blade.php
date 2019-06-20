@@ -172,6 +172,16 @@
                                 {{$user->orders()->count()}}
                             </span>
                         </a>
+                        <a href="{{ route('admin.contracts.index', ['filter[user]='.$user->id]) }}"
+                           class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="fa fa-@lang('site::contract.icon')"></i>
+                                 <span>@lang('site::contract.contracts')</span>
+                            </span>
+                            <span class="badge text-big @if($user->contracts()->exists()) badge-ferroli @else badge-light @endif">
+                                {{$user->contracts()->count()}}
+                            </span>
+                        </a>
                         <a href="{{ route('admin.contragents.index', ['filter[user]='.$user->id]) }}"
                            class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                             <span>
@@ -212,16 +222,16 @@
                                 {{$user->engineers()->count()}}
                             </span>
                         </a>
-                        <a href="{{ route('admin.launches.index', ['filter[user]='.$user->id]) }}"
-                           class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                            <span>
-                                <i class="fa fa-@lang('site::launch.icon')"></i>
-                                 <span>@lang('site::launch.launches')</span>
-                            </span>
-                            <span class="badge text-big @if($user->launches()->exists()) badge-ferroli @else badge-light @endif">
-                                {{$user->launches()->count()}}
-                            </span>
-                        </a>
+                        {{--<a href="{{ route('admin.launches.index', ['filter[user]='.$user->id]) }}"--}}
+                           {{--class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">--}}
+                            {{--<span>--}}
+                                {{--<i class="fa fa-@lang('site::launch.icon')"></i>--}}
+                                 {{--<span>@lang('site::launch.launches')</span>--}}
+                            {{--</span>--}}
+                            {{--<span class="badge text-big @if($user->launches()->exists()) badge-ferroli @else badge-light @endif">--}}
+                                {{--{{$user->launches()->count()}}--}}
+                            {{--</span>--}}
+                        {{--</a>--}}
                         <a href="{{ route('admin.trades.index', ['filter[user]='.$user->id]) }}"
                            class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                             <span>

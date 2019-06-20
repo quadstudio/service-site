@@ -89,6 +89,19 @@ class Product extends Model implements Imageable
     }
 
     /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeMounter($query)
+    {
+        $query
+            ->where(config('site.check_field'), 1)
+            ->where('enabled', 1);
+
+        return $query;
+    }
+
+    /**
      * Производитель
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -190,16 +203,6 @@ class Product extends Model implements Imageable
     public function images()
     {
         return $this->morphMany(Image::class, 'imageable');
-//        if (config('site::cache.use', true) === true) {
-//            $key = $this->primaryKey;
-//            $cacheKey = 'product_images_' . $this->{$key};
-//
-//            return cache()->remember($cacheKey, config('site::cache.ttl'), function () {
-//                return $this->_images();
-//            });
-//        }
-//
-//        return $this->_images();
     }
 
     /**
@@ -251,6 +254,16 @@ class Product extends Model implements Imageable
     public function prices()
     {
         return $this->hasMany(Price::class);
+    }
+
+    /**
+     * Заявки на монтаж
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function mounters()
+    {
+        return $this->hasMany(Mounter::class);
     }
 
     /**

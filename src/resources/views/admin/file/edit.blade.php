@@ -1,17 +1,25 @@
 @if(isset($file) && is_object($file) && $file->exists)
-    <div class="col-md-12 my-2"  id="file-{{$file->id}}">
+    <div class="col-md-12 my-2" id="file-{{$file->id}}">
+
         <input form="form" type="hidden" name="{{config('site.' . $file->storage . '.name', 'files[]')}}"
                value="{{old(config('site.' . $file->storage . '.dot_name'), $file->id)}}">
         <div class="row">
-
-            <div class="col-md-6 border position-relative">
-                @include('site::admin.file.preview')
-            </div>
+            @if($file->mime != 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+                <div class="col-md-6 border position-relative">
+                    @include('site::admin.file.preview')
+                </div>
+            @endif
             <div class="col-md-6">
                 <strong class="project-attachment-filename">{{$file->name}}</strong>
-                <div class="text-muted small">{{formatFileSize($file->size)}}</div>
-                {{--<a class="btn btn-sm py-0 btn-ferroli"--}}
-                   {{--href="{{route('admin.files.show', $file)}}">@lang('site::messages.download')</a>--}}
+                <div class="text-muted small">
+                    {{formatFileSize($file->size)}}
+
+                    <span class="text-muted">(@lang('site::file.real_size'):
+                        {{formatFileSize(filesize(Storage::disk($file->storage)->getAdapter()->getPathPrefix().$file->path))}}
+                        )
+                    </span>
+                </div>
+
                 <a class="btn btn-sm py-0 btn-danger btn-row-delete"
                    data-form="#file-delete-form-{{$file->id}}"
                    data-btn-delete="@lang('site::messages.delete')"
@@ -28,6 +36,7 @@
                     @csrf
                     @method('DELETE')
                 </form>
+
             </div>
         </div>
     </div>

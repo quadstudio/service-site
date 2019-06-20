@@ -42,13 +42,13 @@
                             <span class="item-sku">({{ $item->sku }})</span>
                         @endif
                     </a>
-                    <div>
-                        @if($item->availability)
-                            <span class="item-availability badge badge-success">@lang('site::cart.in_stock')</span>
-                        @else
-                            <span class="item-availability badge badge-light">@lang('site::cart.out_of_stock')</span>
-                        @endif
-                    </div>
+                    {{--<div>--}}
+                        {{--@if($item->availability)--}}
+                            {{--<span class="item-availability badge badge-success">@lang('site::cart.in_stock')</span>--}}
+                        {{--@else--}}
+                            {{--<span class="item-availability badge badge-light">@lang('site::cart.out_of_stock')</span>--}}
+                        {{--@endif--}}
+                    {{--</div>--}}
                     <a class="text-danger d-block btn-row-delete mt-3"
                        data-form="#cart-item-delete-form-{{$item->id}}"
                        data-btn-delete="@lang('site::messages.delete')"

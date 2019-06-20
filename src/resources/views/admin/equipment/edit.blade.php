@@ -73,6 +73,21 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox"
+                                               @if(old('equipment.mounter_enabled', $equipment->mounter_enabled)) checked
+                                               @endif
+                                               class="custom-control-input{{  $errors->has('equipment.mounter_enabled') ? ' is-invalid' : '' }}"
+                                               id="mounter_enabled"
+                                               name="equipment[mounter_enabled]">
+                                        <label class="custom-control-label"
+                                               for="mounter_enabled">@lang('site::equipment.mounter_enabled')</label>
+                                        <span class="invalid-feedback">{{ $errors->first('equipment.mounter_enabled') }}</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

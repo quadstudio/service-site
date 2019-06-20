@@ -44,6 +44,12 @@
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::event_type.annotation')</dt>
                     <dd class="col-sm-8">{!! $event_type->annotation !!}</dd>
 
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::event_type.title')</dt>
+                    <dd class="col-sm-8">{{$event_type->title}}</dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::event_type.meta_description')</dt>
+                    <dd class="col-sm-8">{{$event_type->meta_description}}</dd>
+
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::event_type.image_id')</dt>
                     <dd class="col-sm-8">
                         @include('site::admin.image.preview', ['image' => $event_type->image])

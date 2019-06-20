@@ -48,7 +48,7 @@
                                 <span>@lang('site::messages.load')</span>
                             </button>
                             <span id="pathHelp" class="d-block form-text text-success">
-                                        @lang('site::messages.xls_load')
+                                        @lang('site::messages.xls_load')<br />@lang('site::certificate.help')
                                     </span>
                         </div>
                     </div>

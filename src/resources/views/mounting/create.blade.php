@@ -405,9 +405,28 @@
                 </div>
                 <div class="card my-2">
                     <div class="card-body">
+                        <div class="form-row required">
+                            <div class="col">
+                                <div class="custom-control custom-checkbox">
+                                    <input required
+                                           form="form"
+                                           type="checkbox"
+                                           name="accept"
+                                           @if(old('accept') == 1) checked @endif
+                                           value="1"
+                                           class="custom-control-input{{ $errors->has('accept') ? ' is-invalid' : '' }}"
+                                           id="accept">
+                                    <label class="custom-control-label" for="accept">
+                                        <span style="color:red;margin-right: 2px;">*</span>
+                                        @lang('site::mounting.accept')
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <div class="col text-right">
-                                <button form="form" type="submit"
+                                <button form="form"
+                                        type="submit"
                                         class="btn btn-ferroli mb-1">
                                     <i class="fa fa-check"></i>
                                     <span>@lang('site::messages.save')</span>
@@ -429,6 +448,7 @@
 <script>
     try {
         window.addEventListener('load', function () {
+
             let product_id = $('#product_id');
 
             product_id.select2({

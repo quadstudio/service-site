@@ -37,6 +37,15 @@
                         <label class="custom-control-label" for="received">@lang('site::act.received')</label>
                         <span class="invalid-feedback">{{ $errors->first('act.received') }}</span>
                     </div>
+                    <div class="custom-control custom-checkbox mb-3">
+                        <input type="checkbox" @if(old('act.paid', $act->paid)) checked @endif
+                        class="custom-control-input{{  $errors->has('act.paid') ? ' is-invalid' : '' }}"
+                               id="paid"
+                               value="1"
+                               name="act[paid]">
+                        <label class="custom-control-label" for="paid">@lang('site::act.paid')</label>
+                        <span class="invalid-feedback">{{ $errors->first('act.paid') }}</span>
+                    </div>
                     <div class="form-row">
                         <div class="col mb-3">
                             <label for="number">@lang('site::act.number')</label>

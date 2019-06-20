@@ -19,9 +19,9 @@ return [
     'full'             => 'Адрес',
     'show_ferroli'     => 'Включен Ferroli',
     'show_lamborghini' => 'Включен Lamborghini',
-    'is_shop'          => 'Торговая точка',
+    'is_shop'          => 'Официальный дилер',
     'is_eshop'         => 'Интернет-магазин',
-    'is_service'       => 'Сервис',
+    'is_service'       => 'Авторизованный сервисный центр',
     'is_mounter'       => 'Монтажник',
     //
     'created'          => 'Адрес успешно создан',
