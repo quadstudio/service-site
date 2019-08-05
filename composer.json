@@ -5,7 +5,7 @@
     "homepage": "https://github.com/quadstudio/service-site",
     "type": "library",
     "license": "MIT",
-    "version": "0.2.10",
+    "version": "0.2.11",
     "authors": [
         {
             "name": "Alexander Shuleyko",
@@ -50,7 +50,7 @@
         "quadstudio/laravel-rbac": "0.1.8",
         "quadstudio/laravel-repo": "0.1.9",
         "quadstudio/laravel-tools": "0.1.1",
-        "quadstudio/laravel-online": "dev-master"
+        "quadstudio/laravel-online": "0.1.1"
     },
     "require-dev": {
         "phpunit/phpunit": "v7.0",
