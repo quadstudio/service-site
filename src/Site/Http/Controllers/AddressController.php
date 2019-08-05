@@ -54,7 +54,7 @@ class AddressController extends Controller
         $this->addresses->applyFilter((new AddressableFilter())->setId(Auth::user()->getAuthIdentifier())->setMorph('users'));
         $address_types = AddressType::where('enabled', 1)->get();
 
-        if ($request->user()->hasRole(config('site.storehouse_check', []), false)) {
+        if ($request->user()->hasRole(config('site.warehouse_check', []), false)) {
             $address_types->push(AddressType::query()->find(6));
         }
 

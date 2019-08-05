@@ -26,7 +26,7 @@ class Part extends Model
     }
     protected static function boot()
     {
-        static::creating(function (Part $part) {
+        static::created(function (Part $part) {
             $part->cost = $part->getAttribute('rates') * $part->getAttribute('price');
         });
     }

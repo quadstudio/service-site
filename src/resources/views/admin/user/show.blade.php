@@ -19,28 +19,33 @@
 
         <div class=" border p-3 mb-2">
             <a href="{{ route('admin.users.edit', $user) }}"
-               class="d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn-ferroli">
+               class="d-block d-sm-inline-block btn mr-0 mr-sm-1 mb-1 mb-lg-0 btn-ferroli">
                 <i class="fa fa-pencil"></i>
                 <span>@lang('site::messages.edit') @lang('site::user.user')</span>
             </a>
+            <a href="{{ route('admin.users.password.create', $user) }}"
+               class="d-block d-sm-inline-block btn mr-0 mr-sm-1 mb-1 mb-lg-0 btn-ferroli">
+                <i class="fa fa-user-secret"></i>
+                <span>@lang('site::messages.change') @lang('site::user.password')</span>
+            </a>
             <a href="{{ route('admin.users.schedule', $user) }}"
-               class="@cannot('schedule', $user) disabled @endcannot d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-ferroli">
+               class="@cannot('schedule', $user) disabled @endcannot d-block d-sm-inline-block btn mr-0 mr-sm-1 mb-1 mb-lg-0 btn btn-ferroli">
                 <i class="fa fa-@lang('site::schedule.icon')"></i>
                 <span>@lang('site::schedule.synchronize')</span>
             </a>
             <a href="{{ route('admin.users.prices.index', $user) }}"
-               class="d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-ferroli">
+               class="d-block d-sm-inline-block btn mr-0 mr-sm-1 mb-1 mb-lg-0 btn btn-ferroli">
                 <i class="fa fa-@lang('site::user_price.icon')"></i>
                 <span>@lang('site::user_price.user_price')</span>
             </a>
             <a href="{{ route('admin.users.force', $user) }}"
-               class="d-block d-sm-inline btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn-warning">
+               class="d-block d-sm-inline-block btn mr-0 mr-sm-1 mb-1 mb-lg-0 btn-warning">
                 <i class="fa fa-sign-in"></i>
                 <span>@lang('site::user.force_login')</span>
             </a>
 
             <a href="{{ route('admin.users.index') }}"
-               class="d-block d-sm-inline btn btn-secondary">
+               class="d-block d-sm-inline-block btn btn-secondary">
                 <i class="fa fa-reply"></i>
                 <span>@lang('site::messages.back')</span>
             </a>
@@ -90,7 +95,7 @@
                         </div>
                         <div class="mb-2">
                             <span class="text-muted">@lang('site::user.warehouse_id'):</span>&nbsp;
-                            <span class="text-dark">{{ $user->warehouse->name }}</span>
+                            <span class="text-dark">{{ optional($user->warehouse)->name }}</span>
                         </div>
                         <div class="mb-2">
                             <span class="text-muted">@lang('site::user.region_id'):</span>&nbsp;
@@ -102,7 +107,7 @@
                         </div>
                         <div class="mb-2">
                             <span class="text-muted">@lang('site::user.created_at')
-                                :</span>&nbsp;&nbsp;{{ $user->created_at->format('d.m.Y H:i') }}
+                                :</span>&nbsp;&nbsp;{{ optional($user->created_at)->format('d.m.Y H:i') }}
                         </div>
                         <div class="mb-2">
                             <span class="text-muted">@lang('site::user.logged_at')

@@ -8,6 +8,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\URL;
 
 class MailingHtmlEmail extends Mailable implements ShouldQueue
 {
@@ -24,19 +25,30 @@ class MailingHtmlEmail extends Mailable implements ShouldQueue
      * @var string
      */
     public $content;
+    /**
+     * @var string
+     */
+    private $email;
+
+    /**
+     * @var string
+     */
+    public $unsubscribe;
 
 
     /**
      * Create a new message instance.
+     * @param $unsubscribe
      * @param $title
      * @param $content
      * @param array $files
      */
-    public function __construct($title, $content, array $files)
+    public function __construct($unsubscribe, $title, $content, array $files= [])
     {
         $this->files = $files;
         $this->title = $title;
         $this->content = $content;
+        $this->unsubscribe = $unsubscribe;
     }
 
     /**
@@ -52,10 +64,31 @@ class MailingHtmlEmail extends Mailable implements ShouldQueue
             ->subject($this->title)
             ->view('site::admin.mailing.html')
             ->embedFiles()
-            ->embedImages();
+            ->embedImages()
+            ->embedUnsubscribe();
 
     }
 
+    /**
+     * @return $this
+     */
+    private function embedUnsubscribe()
+    {
+        $this->withSwiftMessage(function (\Swift_Message $message) {
+
+
+            $headers = $message->getHeaders();
+
+            $headers->addTextHeader('List-Unsubscribe', "<{$this->unsubscribe}>");
+            $headers->addTextHeader('Precedence', 'bulk');
+        });
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
     private function embedImages()
     {
         $html = new DOMDocument();
@@ -99,6 +132,9 @@ class MailingHtmlEmail extends Mailable implements ShouldQueue
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     private function embedFiles()
     {
         if (count($this->files) > 0) {

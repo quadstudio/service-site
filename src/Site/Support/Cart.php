@@ -110,34 +110,21 @@ class Cart implements BaseCart
     }
 
     /**
-     * Shop Routes
-     */
-    public function routes()
-    {
-
-        ($router = $this->app->make('router'))
-            ->group(['middleware' => ['online']],
-                function () use ($router) {
-
-                });
-    }
-
-    /**
+     * @param array $items
      * @return array
      */
-    public function toArray()
+    public function toArray(array $items = array())
     {
-        $result = [];
-        if (!$this->isEmpty()) {
-            foreach ($this->items()->all() as $item) {
-                $result[] = $item->toArray();
-            }
-        }
+        return $this->items()->filter(function ($item, $key) use ($items) {
+            return in_array($key, $items);
+        })->map(function($item){
+            return $item->toArray();
+        })->toArray();
 
-        return $result;
     }
 
     /**
+     * Check if the cart is empty
      * @return bool
      */
     public function isEmpty()

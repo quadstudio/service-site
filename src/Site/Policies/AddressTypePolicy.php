@@ -12,7 +12,7 @@ class AddressTypePolicy
     {
 
         $address_types = AddressType::where('enabled', 1)->pluck('id');
-        if ($user->hasRole(config('site.storehouse_check', []), false)) {
+        if ($user->hasRole(config('site.warehouse_check', []), false)) {
             $address_types->push(6);
         }
 

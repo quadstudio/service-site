@@ -67,15 +67,16 @@ class OrderController extends Controller
      */
     public function store(OrderRequest $request)
     {
-        //dd($request->all());
+
         $request->user()->orders()->save($order = $this->orders->create($request->input('order')));
         if ($request->filled('message.text')) {
             $message = $request->input('message');
             $message['receiver_id'] = $order->address->addressable->id;
             $order->messages()->save($request->user()->outbox()->create($message));
         }
-        $order->items()->createMany(Cart::toArray());
-        Cart::clear();
+
+        $order->items()->createMany(Cart::toArray($products = $request->input('products', [])));
+        Cart::remove($products);
 
         event(new OrderCreateEvent($order));
 

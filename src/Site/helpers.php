@@ -18,6 +18,16 @@ if (!function_exists('numberof')) {
     }
 }
 
+if (!function_exists('pre')) {
+    /**
+     * @param mixed $data
+     */
+    function pre($data)
+    {
+        echo (new \Illuminate\Support\Debug\Dumper())->dump($data);
+    }
+}
+
 if (!function_exists('w1251')) {
     /**
      * @param $txt
@@ -26,6 +36,24 @@ if (!function_exists('w1251')) {
     function w1251($txt)
     {
         return iconv('utf-8', "windows-1251//TRANSLIT", implode("\n", explode("\n", $txt)));
+    }
+}
+if (!function_exists('url_exists')) {
+    /**
+     * @param $url
+     * @return boolean
+     */
+    function url_exists($url)
+    {
+        try {
+            $h = get_headers($url);
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        $status = array();
+        preg_match('/HTTP\/.* ([0-9]+) .*/', $h[0], $status);
+        return ($status[1] == 200);
     }
 }
 if (!function_exists('mimeToExt')) {
@@ -173,7 +201,7 @@ if (!function_exists('monthYear')) {
             9  => 'сентября',
             10 => 'октября',
             11 => 'ноября',
-            12 => 'декабря'
+            12 => 'декабря',
         );
 
         return $date->format("j") . ' ' . $months[$date->format("n")] . ' ' . $date->format("Y");

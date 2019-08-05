@@ -29,7 +29,7 @@
                     @csrf
                     @method('PUT')
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-row">
                                 <div class="col">
                                     <div class="custom-control custom-checkbox">
@@ -60,7 +60,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-row">
                                 <div class="col">
                                     <div class="custom-control custom-checkbox">
@@ -117,6 +117,28 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-md-4">
+
+                            @foreach($product_group_types as $product_group_type)
+                                <div class="form-row">
+                                    <div class="col">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox"
+                                                   @if((is_array(old('product_group_types')) && in_array($product_group_type->id, old('product_group_types'))) || (empty(old()) && $address->product_group_types()->exists() && in_array($product_group_type->id, $address->product_group_types()->pluck('id')->toArray())))
+                                                   checked
+                                                   @endif
+                                                   class="custom-control-input{{  $errors->has('product_group_types') ? ' is-invalid' : '' }}"
+                                                   id="pgt-{{$product_group_type->id}}"
+                                                   value="{{$product_group_type->id}}"
+                                                   name="product_group_types[]">
+                                            <label class="custom-control-label"
+                                                   for="pgt-{{$product_group_type->id}}">{{$product_group_type->title}}</label>
+                                            <span class="invalid-feedback">{{ $errors->first('product_group_types') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
                     </div>
                     <div class="form-row required">

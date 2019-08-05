@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use QuadStudio\Service\Site\Concerns\StoreMessages;
 use QuadStudio\Service\Site\Events\RepairStatusChangeEvent;
 use QuadStudio\Service\Site\Exports\Excel\RepairExcel;
+use QuadStudio\Service\Site\Filters\Repair\ContragentSearchFilter;
 use QuadStudio\Service\Site\Filters\Repair\RepairHasSerialBoolFilter;
 use QuadStudio\Service\Site\Filters\FileType\ModelHasFilesFilter;
 use QuadStudio\Service\Site\Filters\Repair\RepairIsFoundSerialFilter;
@@ -69,6 +70,7 @@ class RepairController
         $this->repairs->pushTrackFilter(RepairIsFoundSerialFilter::class);
         $this->repairs->pushTrackFilter(RepairUserFilter::class);
         $this->repairs->pushTrackFilter(ScSearchFilter::class);
+        $this->repairs->pushTrackFilter(ContragentSearchFilter::class);
         $this->repairs->pushTrackFilter(RepairPerPageFilter::class);
         if ($request->has('excel')) {
             (new RepairExcel())->setRepository($this->repairs)->render();

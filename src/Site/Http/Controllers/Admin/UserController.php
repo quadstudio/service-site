@@ -13,6 +13,7 @@ use QuadStudio\Service\Site\Filters\District\SortFilter;
 use QuadStudio\Service\Site\Filters\User\ActiveSelectFilter;
 use QuadStudio\Service\Site\Filters\User\AddressSearchFilter;
 use QuadStudio\Service\Site\Filters\User\ContactSearchFilter;
+use QuadStudio\Service\Site\Filters\User\ContragentSearchFilter;
 use QuadStudio\Service\Site\Filters\User\DisplaySelectFilter;
 use QuadStudio\Service\Site\Filters\User\IsAscSelectFilter;
 use QuadStudio\Service\Site\Filters\User\IsCscSelectFilter;
@@ -107,6 +108,7 @@ class UserController extends Controller
         $this->users->applyFilter(new UserNotAdminFilter);
         $this->users->pushTrackFilter(UserSearchFilter::class);
         $this->users->pushTrackFilter(ContactSearchFilter::class);
+        $this->users->pushTrackFilter(ContragentSearchFilter::class);
         $this->users->pushTrackFilter(RegionFilter::class);
         $this->users->pushTrackFilter(AddressSearchFilter::class);
         $this->users->pushTrackFilter(IsMontageSelectFilter::class);

@@ -4,11 +4,11 @@ namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use QuadStudio\Service\Site\Contracts\Imageable;
-use QuadStudio\Service\Site\Facades\Site;
 use QuadStudio\Service\Site\Concerns\AttachAnalogs;
 use QuadStudio\Service\Site\Concerns\AttachDetails;
 use QuadStudio\Service\Site\Concerns\AttachRelations;
+use QuadStudio\Service\Site\Contracts\Imageable;
+use QuadStudio\Service\Site\Facades\Site;
 
 class Product extends Model implements Imageable
 {
@@ -30,7 +30,7 @@ class Product extends Model implements Imageable
         'show_ferroli', 'show_lamborghini',
         'warranty', 'service', 'description',
         'h1', 'title', 'metadescription',
-        'specification', 'equipment_id', 'type_id'
+        'specification', 'equipment_id', 'type_id',
     ];
 
     protected $casts = [
@@ -165,18 +165,22 @@ class Product extends Model implements Imageable
     public function toCart()
     {
         return [
-            'product_id'   => $this->id,
-            'sku'          => $this->sku,
-            'name'         => $this->name,
-            'type'         => $this->type->name,
-            'unit'         => $this->unit,
-            'price'        => $this->hasPrice ? $this->price->value : null,
-            'format'       => Site::format($this->price->value),
-            'currency_id'  => Site::currency()->id,
-            'url'          => route('products.show', $this),
-            'image'        => $this->image()->src(),
-            'availability' => $this->quantity > 0,
-            'service'      => $this->service == 1,
+            'product_id'           => $this->id,
+            'sku'                  => $this->sku,
+            'name'                 => $this->name,
+            'type'                 => $this->type->name,
+            'unit'                 => $this->unit,
+            'price'                => $this->hasPrice ? $this->price->value : null,
+            'format'               => Site::format($this->price->value),
+            'currency_id'          => Site::currency()->id,
+            'url'                  => route('products.show', $this),
+            'image'                => $this->image()->src(),
+            'availability'         => $this->quantity > 0,
+            'service'              => $this->service == 1,
+            'group_type_id'        => $this->group()->exists() ? $this->group->type_id : null,
+            'group_type_name'      => $this->group()->exists() ? $this->group->type->name: null,
+            'group_type_icon'      => $this->group()->exists() ? $this->group->type->icon: null,
+            'storehouse_addresses' => $this->storehouseAddresses()->toArray(),
         ];
     }
 
@@ -188,7 +192,7 @@ class Product extends Model implements Imageable
         if ($this->images()->count() == 0) {
             return new Image([
                 'src'     => storage_path('app/public/images/products/noimage.png'),
-                'storage' => 'products'
+                'storage' => 'products',
             ]);
         }
 
@@ -203,6 +207,54 @@ class Product extends Model implements Imageable
     public function images()
     {
         return $this->morphMany(Image::class, 'imageable');
+    }
+
+    /**
+     * Товарная группа 1С
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function group()
+    {
+        return $this->belongsTo(ProductGroup::class, 'group_id');
+    }
+
+    /**
+     * Адреса оптовых складов, на которых есть товар
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function storehouseAddresses()
+    {
+
+        $storehouse_addresses = collect([]);
+
+        foreach ($this->storehouse_products()
+                     ->with('storehouse', 'storehouse.addresses')
+                     ->whereHas('storehouse', function ($storehouse) {
+                         $storehouse->where('enabled', 1);
+                     })->get() as $storehouse_product) {
+            foreach ($storehouse_product->storehouse->addresses()->whereHas('regions', function ($region) {
+                $region->where('regions.id', auth()->user()->region_id);
+            })->get() as $address) {
+                $storehouse_addresses->push([
+                    'name'     => $address->name,
+                    'quantity' => $storehouse_product->quantity,
+                ]);
+
+            }
+        }
+        return $storehouse_addresses;
+    }
+
+    /**
+     * Товар на складах дистрибюторов
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function storehouse_products()
+    {
+        return $this->hasMany(StorehouseProduct::class);
     }
 
     /**
@@ -254,6 +306,16 @@ class Product extends Model implements Imageable
     public function prices()
     {
         return $this->hasMany(Price::class);
+    }
+
+    /**
+     * Склады дистрибьютора, на которых есть данный товар
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
+     */
+    public function storehouses()
+    {
+        return $this->belongsToMany(Storehouse::class, 'storehouse_products');
     }
 
     /**

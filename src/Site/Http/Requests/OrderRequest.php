@@ -4,6 +4,8 @@ namespace QuadStudio\Service\Site\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use QuadStudio\Service\Site\Models\Address;
+use QuadStudio\Service\Site\Models\Product;
 
 class OrderRequest extends FormRequest
 {
@@ -45,6 +47,24 @@ class OrderRequest extends FormRequest
                         }),
                     ],
                     'order.address_id'       => 'required|exists:addresses,id',
+                    'products'               => [
+                        'required',
+                        'array',
+                        function ($attribute, $products, $fail) {
+                            $address = Address::query()->find($this->input('order.address_id'));
+
+                            $types = $address->product_group_types()->pluck('id');
+
+                            $result = Product::query()->find($products)->every(function ($product) use ($types) {
+                                return $types->contains($product->group->type_id);
+                            });
+
+                            if ($result === false) {
+                                $address_name = $address->name;
+                                $fail(trans('site::order.error.products.missing', compact('address_name')));
+                            }
+                        },
+                    ],
                 ];
             }
             case 'PUT':
@@ -64,7 +84,7 @@ class OrderRequest extends FormRequest
     public function messages()
     {
         return [
-            'products.required' => trans('site::messages.products_required'),
+            'products.required' => trans('site::order.error.products.required'),
         ];
     }
 

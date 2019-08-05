@@ -60,7 +60,7 @@ class ProductController extends Controller
         //dump($this->products->getBindings());
         return view('site::product.index', [
             'repository' => $this->products,
-            'products'   => $this->products->paginate(config('site.per_page.product', 20))
+            'products'   => $this->products->paginate(config('site.per_page.product', 20)),
         ]);
     }
 
@@ -81,7 +81,7 @@ class ProductController extends Controller
         //dump($this->products->getBindings());
         return view('site::product.list', [
             'repository' => $this->products,
-            'products'   => $this->products->paginate(config('site.per_page.product_list', 50))
+            'products'   => $this->products->paginate(config('site.per_page.product_list', 50)),
         ]);
     }
 
@@ -94,7 +94,7 @@ class ProductController extends Controller
     public function show(Product $product)
     {
 
-        if($product->getAttribute(config('site.check_field')) === false || $product->getAttribute('enabled') === false){
+        if ($product->getAttribute(config('site.check_field')) === false || $product->getAttribute('enabled') === false) {
             abort(404);
         }
 
@@ -110,12 +110,15 @@ class ProductController extends Controller
         $schemes = $product->schemes()->get();
         $datasheets = $product->datasheets()->with('schemes')->get();
 
+        $storehouse_addresses = $product->storehouseAddresses();
+
         return view('site::product.show', compact(
             'product',
             'equipments',
             'back_relations',
             'analogs',
-            'relations',
+            //'relations',
+            'storehouse_addresses',
             'details',
             'images',
             'schemes',

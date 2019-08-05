@@ -21,7 +21,7 @@ class AddressOnlineStoreFilter extends Filter
                     ->whereHas('roles', function ($query) {
                         $query->where('name', 'eshop');
                     });
-            });
+            })->orderBy('sort_order');
 
         return $builder;
     }

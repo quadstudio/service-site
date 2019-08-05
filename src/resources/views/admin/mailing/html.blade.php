@@ -72,12 +72,19 @@
             -webkit-box-shadow: 0 0 0 0.2rem rgba(168, 60, 13, 0.5);
             box-shadow: 0 0 0 0.2rem rgba(168, 60, 13, 0.5);
         }
+        .text-muted {
+            color: #6c757d !important;
+            font-size: 9pt;
+        }
 
     </style>
 </head>
 <body>
 <div class="content">
     {!!$content!!}
+    <div class="text-muted">
+        @lang('site::unsubscribe.html', ['site' => env('APP_URL'),'unsubscribe' => $unsubscribe])
+    </div>
 </div>
 </body>
 </html>

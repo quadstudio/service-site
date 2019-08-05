@@ -23,6 +23,10 @@ class Item implements Buyable
     protected $availability = false;
     protected $service = false;
     protected $quantity = 0;
+    protected $storehouse_addresses = [];
+    protected $group_type_id;
+    protected $group_type_name;
+    protected $group_type_icon;
 
 
     public function __construct(array $item)
@@ -119,6 +123,16 @@ class Item implements Buyable
     public function hasSku()
     {
         return !is_null($this->sku);
+    }
+    public function hasGroupType()
+    {
+        return !is_null($this->group_type_id);
+    }
+
+
+    public function hasStorehouseAddresses()
+    {
+        return !empty($this->storehouse_addresses);
     }
 
     public function setQuantity($quantity = 1)

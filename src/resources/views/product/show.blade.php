@@ -72,7 +72,7 @@
                                 <dd class="col-sm-12"><a href="{{route('admin.products.show', $product)}}">
                                         <i class="fa fa-folder-open"></i>
                                         @lang('site::messages.open')
-                                        @lang('site::messages.in_admin')
+                                            @lang('site::messages.in_admin')
                                     </a>
                                 </dd>
                                 @endadmin()
@@ -100,14 +100,32 @@
                                         </a>
                                     </dd>
                                 @endif
+                                @auth()
                                 <dt class="col-sm-4">@lang('site::product.quantity')</dt>
                                 <dd class="col-sm-8">
-                                    @if($product->quantity > 0)
-                                        <span class="badge badge-success d-block d-md-inline-block">@lang('site::product.in_stock')</span>
+                                    @if($storehouse_addresses->isNotEmpty())
+                                        <table class="table table-sm">
+                                            @foreach($storehouse_addresses as $address)
+                                                <tr>
+                                                    <td class="pl-0">{{$address['name']}}</td>
+                                                    <td class="text-right pr-0">
+                                                        <span class="badge badge-success">
+                                                        {{number_format($address['quantity'], 0, '.', ' ')}} {{$product->unit}}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </table>
                                     @else
                                         <span class="badge badge-light d-block d-md-inline-block">@lang('site::product.not_available')</span>
                                     @endif
+                                    {{--@if($product->quantity > 0)--}}
+                                    {{--<span class="badge badge-success d-block d-md-inline-block">@lang('site::product.in_stock')</span>--}}
+                                    {{--@else--}}
+                                    {{--<span class="badge badge-light d-block d-md-inline-block">@lang('site::product.not_available')</span>--}}
+                                    {{--@endif--}}
                                 </dd>
+                                @endauth
 
                                 @if($product->hasPrice)
                                     <dt class="col-sm-4">{{ $product->price->type->display_name ?: __('site::price.price')}}</dt>
@@ -164,7 +182,7 @@
                                role="tab"
                                aria-controls="back-relation"
                                aria-selected="false">@lang('site::relation.relations')
-                                <span class="text-big badge badge-secondary">
+                                    <span class="text-big badge badge-secondary">
                                     {{$back_relations->count()}}
                                 </span>
                             </a>
@@ -174,7 +192,7 @@
                         <li class="nav-item">
                             <a class="nav-link" id="detail-tab" data-toggle="tab" href="#detail" role="tab"
                                aria-controls="detail" aria-selected="false">@lang('site::detail.details')
-                                <span class="text-big badge badge-secondary">
+                                    <span class="text-big badge badge-secondary">
                                 {{$details->count()}}
                             </span>
                             </a>
@@ -184,7 +202,7 @@
                         <li class="nav-item">
                             <a class="nav-link" id="analog-tab" data-toggle="tab" href="#analog" role="tab"
                                aria-controls="analog" aria-selected="false">@lang('site::analog.analogs')
-                                <span class="text-big badge badge-secondary">
+                                    <span class="text-big badge badge-secondary">
                                 {{$analogs->count()}}
                             </span>
                             </a>
@@ -194,7 +212,7 @@
                         <li class="nav-item">
                             <a class="nav-link" id="scheme-tab" data-toggle="tab" href="#scheme" role="tab"
                                aria-controls="scheme" aria-selected="false">@lang('site::scheme.schemes')
-                                <span class="text-big badge badge-secondary">
+                                    <span class="text-big badge badge-secondary">
                                 {{$schemes->count()}}
                             </span>
                             </a>
@@ -204,7 +222,7 @@
                         <li class="nav-item">
                             <a class="nav-link" id="datasheet-tab" data-toggle="tab" href="#datasheet" role="tab"
                                aria-controls="datasheet" aria-selected="false">@lang('site::datasheet.datasheets')
-                                <span class="text-big badge badge-secondary">
+                                    <span class="text-big badge badge-secondary">
                                 {{$datasheets->count()}}
                             </span>
                             </a>

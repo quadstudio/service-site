@@ -4,8 +4,8 @@
         <dl class="row">
             <dd class="col-12">{{$address}}</dd>
             <dd class="col-12">
-                @if($is_shop)<span class="badge text-normal mb-0 mb-sm-1 badge-ferroli">@lang('site::address.is_shop')</span>@endif
-                @if($is_service)<span class="badge text-normal mb-0 mb-sm-1 badge-ferroli">@lang('site::address.is_service')</span>@endif
+                @if(isset($is_shop) && $is_shop === true)<span class="badge text-normal mb-0 mb-sm-1 badge-ferroli">@lang('site::address.is_shop')</span>@endif
+                @if(isset($is_service) && $is_service === true)<span class="badge text-normal mb-0 mb-sm-1 badge-ferroli">@lang('site::address.is_service')</span>@endif
             </dd>
             <dt class="col-sm-4">@lang('site::phone.phones')</dt>
             <dd class="col-sm-8">

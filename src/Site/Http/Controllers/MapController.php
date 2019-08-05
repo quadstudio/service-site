@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use QuadStudio\Rbac\Models\Role;
 use QuadStudio\Service\Site\Filters\Address\AddressOnlineStoreFilter;
+use QuadStudio\Service\Site\Filters\Order\AddressRegionWarehouseSelectFilter;
 use QuadStudio\Service\Site\Filters\Region\RegionDealerMapFilter;
 use QuadStudio\Service\Site\Filters\Region\RegionMounterMapFilter;
+use QuadStudio\Service\Site\Filters\Region\RegionOnlineStoreMapFilter;
 use QuadStudio\Service\Site\Filters\Region\RegionServiceMapFilter;
 use QuadStudio\Service\Site\Models\AuthorizationType;
 use QuadStudio\Service\Site\Repositories\AddressRepository;
@@ -127,18 +129,26 @@ class MapController extends Controller
     /**
      * Интернет-магазины
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function online_stores()
+    public function online_stores(Request $request)
     {
+        $regions = $this->regions
+            ->trackFilter()
+            ->applyFilter(new RegionOnlineStoreMapFilter())
+            ->all();
+        $region_id = $request->input('filter.region_id');
 
         $addresses = $this->addresses
             ->trackFilter()
             ->applyFilter(new AddressOnlineStoreFilter())
+            ->pushTrackFilter(AddressRegionWarehouseSelectFilter::class)
             ->all();
         $roles = Role::query()->where('display', 1)->get();
+        $repository = $this->addresses;
 
-        return view('site::map.online_store', compact('addresses', 'roles'));
+        return view('site::map.online_store', compact('addresses', 'roles', 'regions', 'region_id', 'repository'));
     }
 
 }

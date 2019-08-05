@@ -22,6 +22,7 @@ use QuadStudio\Service\Site\Http\Requests\AddressRequest;
 use QuadStudio\Service\Site\Models\Address;
 use QuadStudio\Service\Site\Models\AddressType;
 use QuadStudio\Service\Site\Models\Country;
+use QuadStudio\Service\Site\Models\ProductGroupType;
 use QuadStudio\Service\Site\Models\Region;
 use QuadStudio\Service\Site\Repositories\AddressRepository;
 
@@ -58,7 +59,7 @@ class AddressController extends Controller
         $this->addresses->pushTrackFilter(TypeSelectFilter::class);
         $this->addresses->pushTrackFilter(IsShopSelectFilter::class);
         $this->addresses->pushTrackFilter(IsServiceSelectFilter::class);
-        $this->addresses->pushTrackFilter(IsEshopSelectFilter::class);
+        $this->addresses->pushTrackFilter(IsEShopSelectFilter::class);
         $this->addresses->pushTrackFilter(IsMounterSelectFilter::class);
         $this->addresses->pushTrackFilter(AddressUserSelectFilter::class);
         $this->addresses->pushTrackFilter(UserFilter::class);
@@ -82,8 +83,9 @@ class AddressController extends Controller
         $address_types = AddressType::query()->find([$address->type_id, 2, 5]);
         $countries = Country::query()->where('enabled', 1)->orderBy('sort_order')->get();
         $regions = Region::query()->whereIn('country_id', $countries->toArray())->orderBy('name')->get();
+        $product_group_types = ProductGroupType::query()->get();
 
-        return view('site::admin.address.edit', compact('address', 'countries', 'regions', 'address_types'));
+        return view('site::admin.address.edit', compact('address', 'countries', 'regions', 'address_types', 'product_group_types'));
     }
 
     /**
@@ -105,6 +107,8 @@ class AddressController extends Controller
             ['is_eshop' => $request->filled('address.is_eshop')],
             ['is_mounter' => $request->filled('address.is_mounter')]
         ));
+
+        $address->product_group_types()->sync($request->input('product_group_types', []));
 
         return redirect()->route('admin.addresses.show', $address)->with('success', trans('site::address.updated'));
     }

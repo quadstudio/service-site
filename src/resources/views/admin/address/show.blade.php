@@ -121,49 +121,112 @@
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::phone.phones')</dt>
                     <dd class="col-sm-8">
-                        <ul class="list-group list-group-flush"></ul>
-                        @foreach ($address->phones()->with('country')->get() as $phone)
-                            <li class="list-group-item">
-                                {{$phone->country->phone}}
-                                {{$phone->number}}
-                                @if($phone->extra)
-                                    (@lang('site::phone.help.extra') {{$phone->extra}})
-                                @endif
+                        @if($address->phones()->exists())
+                            <ul class="list-group list-group-flush">
+                                @foreach ($address->phones()->with('country')->get() as $phone)
+                                    <li class="list-group-item">
+                                        {{$phone->country->phone}}
+                                        {{$phone->number}}
+                                        @if($phone->extra)
+                                            (@lang('site::phone.help.extra') {{$phone->extra}})
+                                            @endif
 
-                                <button class="pull-right btn btn-sm btn-danger btn-row-delete py-0"
-                                        @cannot('delete', $phone) disabled @endcannot
-                                        data-form="#phone-delete-form-{{$phone->id}}"
-                                        data-btn-delete="@lang('site::messages.delete')"
-                                        data-btn-cancel="@lang('site::messages.cancel')"
-                                        data-label="@lang('site::messages.delete_confirm')"
-                                        data-message="@lang('site::messages.delete_sure') @lang('site::phone.phone')? "
-                                        data-toggle="modal" data-target="#form-modal"
-                                        title="@lang('site::messages.delete')">
-                                    <i class="fa fa-close"></i>
-                                    @lang('site::messages.delete')
-                                </button>
-                                <a href="{{route('admin.addresses.phones.edit', [$address, $phone])}}"
-                                   class="pull-right btn btn-ferroli btn-sm py-0 mx-1">
-                                    <i class="fa fa-pencil"></i>
-                                    @lang('site::messages.edit')
-                                </a>
-                                <form id="phone-delete-form-{{$phone->id}}"
-                                      action="{{route('admin.addresses.phones.destroy', [$address, $phone])}}"
-                                      method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
-                            </li>
-                        @endforeach
+                                            <button class="pull-right btn btn-sm btn-danger btn-row-delete py-0"
+                                                    @cannot('delete', $phone) disabled @endcannot
+                                                    data-form="#phone-delete-form-{{$phone->id}}"
+                                                    data-btn-delete="@lang('site::messages.delete')"
+                                                    data-btn-cancel="@lang('site::messages.cancel')"
+                                                    data-label="@lang('site::messages.delete_confirm')"
+                                                    data-message="@lang('site::messages.delete_sure') @lang('site::phone.phone')? "
+                                                    data-toggle="modal" data-target="#form-modal"
+                                                    title="@lang('site::messages.delete')">
+                                                <i class="fa fa-close"></i>
+                                                @lang('site::messages.delete')
+                                            </button>
+                                            <a href="{{route('admin.addresses.phones.edit', [$address, $phone])}}"
+                                               class="pull-right btn btn-ferroli btn-sm py-0 mx-1">
+                                                <i class="fa fa-pencil"></i>
+                                                @lang('site::messages.edit')
+                                            </a>
+                                            <form id="phone-delete-form-{{$phone->id}}"
+                                                  action="{{route('admin.addresses.phones.destroy', [$address, $phone])}}"
+                                                  method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                            </form>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <p class="text-muted text-tiny">@lang('site::messages.not_found')</p>
+                        @endif
+
+                    </dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.storehouse_id')</dt>
+                    <dd class="col-sm-8">
+                        @if($address->storehouse)
+                            <a href="{{route('admin.storehouses.show', $address->storehouse)}}">
+                                {{ $address->storehouse->name }}
+                            </a>
+                            <table class="table table-sm">
+                                <thead>
+                                <tr>
+                                    <th>@lang('site::storehouse.help.products')</th>
+                                    <th>@lang('site::storehouse.uploaded_at')</th>
+                                    <th>@lang('site::storehouse.enabled')</th>
+                                    <th>@lang('site::storehouse.everyday')</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        @if($address->storehouse->products()->exists())
+                                            <span class="col-12">{{ $address->storehouse->products()->count()}}</span>
+                                        @else
+                                            <span class="col-12 text-danger">@lang('site::messages.no')</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($address->storehouse->uploaded_at)
+                                            <span class="col-12">{{$address->storehouse->uploaded_at->format('d.m.Y H:i')}}</span>
+                                        @else
+                                            <span class="col-12 text-danger">@lang('site::messages.never')</span>
+                                        @endif
+                                    </td>
+                                    <td>@component('site::components.bool.pill', ['bool' => $address->storehouse->enabled])@endcomponent</td>
+                                    <td>@component('site::components.bool.pill', ['bool' => $address->storehouse->everyday])@endcomponent</td>
+                                </tbody>
+                                </tr>
+                            </table>
+                        @endif
+                    </dd>
+
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::product_group_type.product_group_types')</dt>
+                    <dd class="col-sm-8">
+                        @if($address->product_group_types()->exists())
+                            <ul class="list-group">
+                                @foreach($address->product_group_types as $product_group_type)
+                                    <li class="list-group-item p-1">{{$product_group_type->name}}</li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <p class="text-muted text-tiny">@lang('site::messages.not_found')</p>
+                        @endif
+
                     </dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::address.regions')</dt>
                     <dd class="col-sm-8">
-                        <ul class="list-group">
-                            @foreach($address->regions as $region)
-                                <li class="list-group-item p-1">{{$region->name}}</li>
-                            @endforeach
-                        </ul>
+                        @if($address->regions()->exists())
+                            <ul class="list-group">
+                                @foreach($address->regions as $region)
+                                    <li class="list-group-item p-1">{{$region->name}}</li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <p class="text-muted text-tiny">@lang('site::messages.not_found')</p>
+                        @endif
                     </dd>
 
                     <dt class="col-sm-4 text-left text-sm-right"></dt>

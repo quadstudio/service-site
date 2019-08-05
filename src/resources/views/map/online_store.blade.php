@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @section('title')@lang('site::map.online_store.title')@lang('site::messages.title_separator')@endsection
 
-
 @section('header')
     @include('site::header.front',[
         'h1' => '<i class="fa fa-'.__('site::map.online_store.icon').'"></i> '
@@ -17,6 +16,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
+                @filter(['repository' => $repository])@endfilter
                 @foreach($addresses as $address)
                     @include('site::map.balloon', [
                         'name' => $address->name,

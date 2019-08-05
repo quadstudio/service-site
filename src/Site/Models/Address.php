@@ -4,6 +4,7 @@ namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use QuadStudio\Service\Site\Concerns\AttachRegions;
+use QuadStudio\Service\Site\Http\Requests\AddressRequest;
 
 class Address extends Model
 {
@@ -16,12 +17,13 @@ class Address extends Model
         'apartment', 'postal', 'name',
         'show_ferroli', 'show_lamborghini',
         'is_shop', 'is_service', 'is_eshop', 'is_mounter',
-        'sort_order', 'email', 'web'
+        'sort_order', 'email', 'web', 'storehouse_id',
     ];
 
     protected $casts = [
         'type_id'          => 'integer',
         'country_id'       => 'integer',
+        'storehouse_id'    => 'integer',
         'region_id'        => 'string',
         'locality'         => 'string',
         'street'           => 'string',
@@ -90,6 +92,7 @@ class Address extends Model
         return $this->belongsTo(AddressType::class);
     }
 
+
     public function lat()
     {
         list($lat, $lon) = explode(',', $this->geo);
@@ -112,6 +115,25 @@ class Address extends Model
     public function country()
     {
         return $this->belongsTo(Country::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function canSendMail()
+    {
+        return !is_null($this->getAttribute('email')) && Unsubscribe::where('email', $this->getAttribute('email'))->doesntExist();
+    }
+
+
+    /**
+     * Склад
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function storehouse()
+    {
+        return $this->belongsTo(Storehouse::class);
     }
 
     /**
@@ -144,6 +166,20 @@ class Address extends Model
             'address_region',
             'address_id',
             'region_id');
+    }
+
+    /**
+     * Many-to-Many relations with region model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function product_group_types()
+    {
+        return $this->belongsToMany(
+            ProductGroupType::class,
+            'address_product_group_type',
+            'address_id',
+            'type_id');
     }
 
     /**
@@ -205,6 +241,5 @@ class Address extends Model
     {
         return $this->hasMany(Mounter::class, 'user_address_id');
     }
-
 
 }

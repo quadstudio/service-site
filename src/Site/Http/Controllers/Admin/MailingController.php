@@ -4,13 +4,16 @@ namespace QuadStudio\Service\Site\Http\Controllers\Admin;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Routing\Controller;
-use QuadStudio\Service\Site\Filters\User\UserNotAdminFilter;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 use QuadStudio\Service\Site\Filters\User\RegionFilter;
+use QuadStudio\Service\Site\Filters\User\UserDoesntHaveUnsubscribeFilter;
+use QuadStudio\Service\Site\Filters\User\UserNotAdminFilter;
 use QuadStudio\Service\Site\Filters\User\UserRoleFilter;
 use QuadStudio\Service\Site\Http\Requests\Admin\MailingSendRequest;
-use Illuminate\Support\Facades\Mail;
 use QuadStudio\Service\Site\Mail\Guest\MailingHtmlEmail;
 use QuadStudio\Service\Site\Models\Address;
+use QuadStudio\Service\Site\Models\Unsubscribe;
 use QuadStudio\Service\Site\Models\User;
 use QuadStudio\Service\Site\Repositories\TemplateRepository;
 use QuadStudio\Service\Site\Repositories\UserRepository;
@@ -55,10 +58,12 @@ class MailingController extends Controller
 
         $this->users->trackFilter();
         $this->users->applyFilter(new UserNotAdminFilter);
+        $this->users->applyFilter(new UserDoesntHaveUnsubscribeFilter);
         $this->users->pushTrackFilter(RegionFilter::class);
         $this->users->pushTrackFilter(UserRoleFilter::class);
         $repository = $this->users;
         $duplicates = collect([]);
+        $unsubscribers = Unsubscribe::all();
         /** @var User $user */
         foreach ($this->users->all() as $user) {
             if ($duplicates->search($user->getAttribute('email')) === false) {
@@ -68,20 +73,21 @@ class MailingController extends Controller
                     'extra'    => [
                         'name'    => $user->getAttribute('name'),
                         'address' => '',
-                    ]
+                    ],
                 ]);
                 $duplicates->push($user->getAttribute('email'));
             }
+
             /** @var Address $address */
             foreach ($user->addresses()->get() as $address) {
-                if ($address->hasEmail() && $duplicates->search($address->getAttribute('email')) === false) {
+                if ($address->canSendMail() && $duplicates->search($address->getAttribute('email')) === false) {
                     $emails->push([
                         'email'    => $address->getAttribute('email'),
                         'verified' => false,
                         'extra'    => [
                             'name'    => $user->getAttribute('name'),
                             'address' => $address->getAttribute('name'),
-                        ]
+                        ],
                     ]);
                 }
                 $duplicates->push($address->getAttribute('email'));
@@ -104,8 +110,8 @@ class MailingController extends Controller
                     'file'    => $file->getRealPath(),
                     'options' => [
                         'as'   => $file->getClientOriginalName(),
-                        'mime' => $file->getMimeType()
-                    ]
+                        'mime' => $file->getMimeType(),
+                    ],
 
                 ];
             }
@@ -113,11 +119,13 @@ class MailingController extends Controller
 
         foreach ($request->input('recipient') as $email) {
 
-            Mail::to($email)->send(new MailingHtmlEmail(
-                $request->input('title'),
-                $request->input('content'),
-                $data
-            ));
+            Mail::to($email)
+                ->send(new MailingHtmlEmail(
+                    URL::signedRoute('unsubscribe', compact('email')),
+                    $request->input('title'),
+                    $request->input('content'),
+                    $data
+                ));
 
         }
 

@@ -51,9 +51,7 @@
                                     </option>
                                 @endforeach
                             </select>
-                            <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('country_id') }}</strong>
-                                    </span>
+                            <span class="invalid-feedback">{{ $errors->first('country_id') }}</span>
                         </div>
                     </div>
                     <div class="row">
@@ -72,9 +70,7 @@
                                            class="form-control{{ $errors->has('number') ? ' is-invalid' : '' }}"
                                            placeholder="@lang('site::phone.placeholder.number')"
                                            value="{{ old('number', $phone->number) }}">
-                                    <span class="invalid-feedback">
-                                                <strong>{{ $errors->first('number') }}</strong>
-                                            </span>
+                                    <span class="invalid-feedback">{{ $errors->first('number') }}</span>
                                     <small id="phone_numberHelp"
                                            class="mb-4 form-text text-success">
                                         @lang('site::phone.help.number')
@@ -93,9 +89,7 @@
                                            class="form-control{{ $errors->has('extra') ? ' is-invalid' : '' }}"
                                            placeholder="@lang('site::phone.placeholder.extra')"
                                            value="{{ old('extra', $phone->extra) }}">
-                                    <span class="invalid-feedback">
-                                                <strong>{{ $errors->first('extra') }}</strong>
-                                            </span>
+                                    <span class="invalid-feedback">{{ $errors->first('extra') }}</span>
                                 </div>
                             </div>
                         </div>

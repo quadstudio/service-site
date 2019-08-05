@@ -9,10 +9,9 @@ trait Sortable
 
     public static function sort(Request $request)
     {
-        $sort = array_flip($request->input('sort'));
 
-        foreach ($sort as $sort_id => $sort_order) {
-            self::query()->updateOrCreate(['id' => $sort_id], ['sort_order' => $sort_order]);
+        foreach (array_flip($request->input('sort')) as $id => $sort_order) {
+            self::query()->updateOrCreate(compact('id'), compact('sort_order'));
         }
     }
 }

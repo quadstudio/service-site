@@ -182,10 +182,6 @@
                                    href="{{ route('admin.engineers.index') }}">
                                     <i class="fa fa-@lang('site::engineer.icon')"></i> @lang('site::engineer.engineers')
                                 </a>
-                                {{--<a class="list-group-item list-group-item-action py-1"--}}
-                                   {{--href="{{ route('admin.launches.index') }}">--}}
-                                    {{--<i class="fa fa-@lang('site::launch.icon')"></i> @lang('site::launch.launches')--}}
-                                {{--</a>--}}
                                 <a class="list-group-item list-group-item-action py-1" href="{{ route('admin.trades.index') }}">
                                     <i class="fa fa-@lang('site::trade.icon')"></i> @lang('site::trade.trades')
                                 </a>
@@ -193,6 +189,10 @@
                                    href="{{ route('admin.contragents.index') }}">
                                     <i class="fa fa-@lang('site::contragent.icon')"></i> @lang('site::contragent.contragents')
                                 </a>
+                                {{--<a class="list-group-item list-group-item-action py-1"--}}
+                                   {{--href="{{ route('admin.storehouses.index') }}">--}}
+                                    {{--<i class="fa fa-@lang('site::storehouse.icon')"></i> @lang('site::storehouse.storehouses')--}}
+                                {{--</a>--}}
 
                                 <hr/>
 

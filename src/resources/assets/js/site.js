@@ -786,8 +786,9 @@
             dataType: 'json',
             data: form.serializeArray() || [],
             error: function (xhr, status, error) {
+                //console.log(xhr.responseJSON.errors);
                 if ("errors" in xhr.responseJSON) {
-                    //console.log(xhr.responseJSON.errors);
+
                     $("#form-content")
                         .find('.form-control')
                         .removeClass('is-invalid')

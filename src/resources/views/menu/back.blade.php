@@ -115,6 +115,14 @@
                         <a class="dropdown-item" href="{{ route('home') }}">
                             <i class="fa fa-desktop"></i> @lang('site::messages.home')
                         </a>
+                        @permission('buy')
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ route('cart') }}">
+                            <i class="fa fa-@lang('site::cart.icon')"></i>
+                            @lang('site::cart.cart')
+                            <span class="badge badge-dark float-right">{{Cart::quantity()}}</span>
+                        </a>
+                        @endpermission
                         @permission('orders')
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ route('orders.index') }}"><i

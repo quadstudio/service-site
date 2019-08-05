@@ -6,11 +6,11 @@ use Illuminate\Routing\Controller;
 use QuadStudio\Service\Site\Facades\Cart;
 use QuadStudio\Service\Site\Http\Requests\CartItemRequest;
 use QuadStudio\Service\Site\Models\Product;
+use QuadStudio\Service\Site\Models\ProductGroupType;
 use QuadStudio\Service\Site\Repositories\ContragentRepository;
 
 class CartController extends Controller
 {
-    protected $storehouses;
     /**
      * @var ContragentRepository
      */
@@ -36,9 +36,10 @@ class CartController extends Controller
     public function index(CartItemRequest $request)
     {
         $contragents = $request->user()->contragents;
-        $storehouses = $request->user()->storehouses();
+        $warehouses = $request->user()->warehouses();
+        $productGroupTypes = ProductGroupType::all();
 
-        return view('site::cart.index', compact('contragents', 'storehouses'));
+        return view('site::cart.index', compact('contragents', 'warehouses', 'productGroupTypes'));
 
     }
 

@@ -5,7 +5,7 @@
  */
 
 require('./bootstrap');
-require('select2');
+require('select2/dist/js/select2.full.min');
 require('select2/dist/js/i18n/ru');
 window.Sortable = require('sortablejs');
 window.Maphilight = require('maphilight');

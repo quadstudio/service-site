@@ -84,6 +84,13 @@ class User extends Authenticatable implements Addressable
         ]);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function unsubscribe(){
+        return $this->hasOne(Unsubscribe::class, 'email', 'email');
+    }
+
 
     public function addresses_count()
     {
@@ -191,13 +198,13 @@ class User extends Authenticatable implements Addressable
     /**
      * @return Collection
      */
-    public function storehouses()
+    public function warehouses()
     {
 
         $result = collect([]);
 
 
-        if ($this->hasRole(config('site.storehouse_check', []), false)) {
+        if ($this->hasRole(config('site.warehouse_check', []), false)) {
 
             $result = $result->merge(User::query()
                 ->find(config('site.receiver_id'))
@@ -207,8 +214,8 @@ class User extends Authenticatable implements Addressable
         }
 
         if ($this->region) {
-            $result = $result->merge($this->region->storehouses->filter(function ($address) {
-                return $address->addressable->hasRole(config('site.storehouse_check', []), false);
+            $result = $result->merge($this->region->warehouses->filter(function ($address) {
+                return $address->addressable->hasRole(config('site.warehouse_check', []), false);
             }));
         }
 
@@ -256,6 +263,16 @@ class User extends Authenticatable implements Addressable
     public function contragents()
     {
         return $this->hasMany(Contragent::class);
+    }
+
+    /**
+     * Склады дистрибьюторов
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function storehouses()
+    {
+        return $this->hasMany(Storehouse::class);
     }
 
     /**

@@ -21,7 +21,7 @@
         @filter(['repository' => $repository])@endfilter
 
         <div class="card mb-2">
-            <div class="card-body" id="summernote">
+            <div class="card-body text-muted" id="summernote">
                 <form id="form-content"
                       method="POST"
                       enctype="multipart/form-data"

@@ -25,7 +25,6 @@
             </a>
         </div>
         @alert()@endalert()
-        @alert()@endalert()
         @filter(['repository' => $repository])@endfilter
         @pagination(['pagination' => $orders])@endpagination
         {{$orders->render()}}

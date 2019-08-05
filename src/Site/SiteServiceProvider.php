@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use QuadStudio\Service\Site\Http\ViewComposers\CurrentRouteViewComposer;
 use QuadStudio\Service\Site\Http\ViewComposers\PageViewComposer;
@@ -16,6 +17,13 @@ use QuadStudio\Service\Site\Support\Cart;
 
 class SiteServiceProvider extends ServiceProvider
 {
+
+    /**
+     * Пространсво имен для контроллеров пакета
+     *
+     * @var string
+     */
+    protected $namespace = 'QuadStudio\Service\Site\Http\Controllers';
 
     protected $middleware = [
         'admin' => Admin::class,
@@ -48,6 +56,7 @@ class SiteServiceProvider extends ServiceProvider
         Models\Event::class       => Policies\EventPolicy::class,
         Models\Mounter::class     => Policies\MounterPolicy::class,
         Models\Contract::class    => Policies\ContractPolicy::class,
+        Models\Storehouse::class  => Policies\StorehousePolicy::class,
     ];
 
     /**
@@ -73,9 +82,10 @@ class SiteServiceProvider extends ServiceProvider
             return new Exchanges\Cbr();
         });
 
-
         $this->loadConfig()->loadMigrations();
         $this->registerMiddleware();
+
+
     }
 
     /**
@@ -141,49 +151,32 @@ class SiteServiceProvider extends ServiceProvider
     public function boot()
     {
 
-        $this
-            ->publishAssets()
-            ->publishTranslations()
-            ->publishConfig()
-            ->loadCommands();
-
+        $this->publishAssets();
+        $this->publishTranslations();
+        $this->publishConfig();
+        $this->loadCommands();
         $this->loadMorphMap();
         $this->loadViews();
         $this->extendBlade();
         $this->registerEvents();
         $this->registerPolicies();
+        $this->loadApiRoutes();
+        $this->loadWebRoutes();
+
 
     }
 
     /**
+     * Publish Portal assets
+     *
      * @return $this
      */
-    private function loadCommands()
+    private function publishAssets()
     {
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                Console\SiteGenerateRoutesCommand::class,
-                Console\SiteRunCommand::class,
-                Console\SiteSetupCommand::class,
-                Console\SiteResourceMakeCommand::class,
-            ]);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    private function publishConfig()
-    {
-        $this->publishes([
-            $this->packagePath('config/site.php') => config_path('site.php'),
-        ], 'config');
 
         $this->publishes([
-            $this->packagePath('config/cart.php') => config_path('cart.php'),
-        ], 'config');
+            $this->packagePath('resources/assets') => resource_path('assets'),
+        ], 'public');
 
         return $this;
     }
@@ -206,16 +199,34 @@ class SiteServiceProvider extends ServiceProvider
     }
 
     /**
-     * Publish Portal assets
-     *
      * @return $this
      */
-    private function publishAssets()
+    private function publishConfig()
     {
+        $this->publishes([
+            $this->packagePath('config/site.php') => config_path('site.php'),
+        ], 'config');
 
         $this->publishes([
-            $this->packagePath('resources/assets') => resource_path('assets'),
-        ], 'public');
+            $this->packagePath('config/cart.php') => config_path('cart.php'),
+        ], 'config');
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    private function loadCommands()
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                Console\SiteGenerateRoutesCommand::class,
+                Console\SiteRunCommand::class,
+                Console\SiteSetupCommand::class,
+                Console\SiteResourceMakeCommand::class,
+            ]);
+        }
 
         return $this;
     }
@@ -283,6 +294,10 @@ class SiteServiceProvider extends ServiceProvider
             Blade::directive('endadmin', function () {
                 return "<?php endif; // Site::admin ?>";
             });
+
+            Blade::directive('pre', function ($data) {
+                return "<?php pre($data); ?>";
+            });
         }
     }
 
@@ -310,6 +325,21 @@ class SiteServiceProvider extends ServiceProvider
         foreach ($this->policies as $key => $value) {
             Gate::policy($key, $value);
         }
+    }
+
+    protected function loadApiRoutes()
+    {
+        Route::prefix('api')
+            ->middleware('api')
+            ->namespace($this->namespace)
+            ->group($this->packagePath('routes/api.php'));
+    }
+
+    protected function loadWebRoutes()
+    {
+        Route::middleware('web')
+            ->namespace($this->namespace)
+            ->group($this->packagePath('routes/web.php'));
     }
 
 

@@ -34,7 +34,7 @@ class Region extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function storehouses()
+    public function warehouses()
     {
         return $this->belongsToMany(
             Address::class,

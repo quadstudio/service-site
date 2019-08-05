@@ -29,7 +29,7 @@
                     <tr>
                         <th>@lang('site::route.name')</th>
                         <th>@lang('site::route.action_name')</th>
-                        <th>@lang('site::route.prefix')</th>
+                        <th>@lang('site::route.uri')</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -37,7 +37,8 @@
                         <tr>
                             <td>{{$route->getName()}}</td>
                             <td>{{$route->getActionName()}}</td>
-                            <td>{{$route->getPrefix()}}</td>
+                            <td>{{$route->uri()}}</td>
+                            <td>{{implode(' ,', $route->methods())}}</td>
                         </tr>
                     @endforeach
                     </tbody>

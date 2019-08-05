@@ -6,7 +6,7 @@ return [
     | Поле для проверки отображения на сайте
     |--------------------------------------------------------------------------
     */
-    'check_field' => 'show_ferroli',
+    'check_field'   => 'show_ferroli',
 
     /*
     |--------------------------------------------------------------------------
@@ -15,27 +15,27 @@ return [
     */
     'brand_default' => 1,
 
-    'routes'       => [
+    'routes' => [
         'rbac',
-        'cart'
+        'cart',
     ],
 
     'nds' => 20,
 
     'cache' => [
         'use' => false,
-        'ttl' => 60 * 60 * 24
+        'ttl' => 60 * 60 * 24,
     ],
 
-    'sort_order'     => [
+    'sort_order' => [
         'equipment' => 'sort_order',
         'catalog'   => 'sort_order',
     ],
 
     'datasheet' => [
         'products' => [
-            'count' => 3
-        ]
+            'count' => 3,
+        ],
     ],
 
     'delimiter' => ':',
@@ -47,11 +47,11 @@ return [
         'size' => [
             'image'  => [
                 'width'  => 500,
-                'height' => 500
+                'height' => 500,
             ],
             'canvas' => [
                 'width'  => 500,
-                'height' => 500
+                'height' => 500,
             ],
         ],
 
@@ -67,15 +67,15 @@ return [
         'size'     => 5000000, // 5мб
         'preview'  => [
             'width'  => 150,
-            'height' => 150
+            'height' => 150,
         ],
         'image'    => [
             'width'  => 740,
-            'height' => 740
+            'height' => 740,
         ],
         'canvas'   => [
             'width'  => 740,
-            'height' => 740
+            'height' => 740,
         ],
 
     ],
@@ -100,15 +100,15 @@ return [
         'size'     => 5000000, // 5мб
         'preview'  => [
             'width'  => 150,
-            'height' => 150
+            'height' => 150,
         ],
         'image'    => [
             'width'  => 500,
-            'height' => 500
+            'height' => 500,
         ],
         'canvas'   => [
             'width'  => 500,
-            'height' => 500
+            'height' => 500,
         ],
     ],
 
@@ -123,7 +123,6 @@ return [
     ],
 
 
-
     'events' => [
         'process'  => true,
         'mode'     => 'update',
@@ -134,15 +133,15 @@ return [
         'size'     => 5000000, // 5мб
         'preview'  => [
             'width'  => 130,
-            'height' => 70
+            'height' => 70,
         ],
         'image'    => [
             'width'  => 370,
-            'height' => 200
+            'height' => 200,
         ],
         'canvas'   => [
             'width'  => 370,
-            'height' => 200
+            'height' => 200,
         ],
     ],
 
@@ -156,15 +155,15 @@ return [
         'size'     => 5000000, // 5мб
         'preview'  => [
             'width'  => 130,
-            'height' => 70
+            'height' => 70,
         ],
         'image'    => [
             'width'  => 370,
-            'height' => 200
+            'height' => 200,
         ],
         'canvas'   => [
             'width'  => 370,
-            'height' => 200
+            'height' => 200,
         ],
     ],
 
@@ -178,15 +177,15 @@ return [
         'size'     => 5000000, //
         'preview'  => [
             'width'  => 150,
-            'height' => 150
+            'height' => 150,
         ],
         'image'    => [
             'width'  => 500,
-            'height' => 500
+            'height' => 500,
         ],
         'canvas'   => [
             'width'  => 500,
-            'height' => 500
+            'height' => 500,
         ],
     ],
 
@@ -200,15 +199,15 @@ return [
         'size'     => 5000000, //
         'preview'  => [
             'width'  => 150,
-            'height' => 150
+            'height' => 150,
         ],
         'image'    => [
             'width'  => 500,
-            'height' => 500
+            'height' => 500,
         ],
         'canvas'   => [
             'width'  => 500,
-            'height' => 500
+            'height' => 500,
         ],
     ],
 
@@ -222,15 +221,15 @@ return [
         'size'     => 5000000, // 5мб
         'preview'  => [
             'width'  => 130,
-            'height' => 70
+            'height' => 70,
         ],
         'image'    => [
             'width'  => 370,
-            'height' => 200
+            'height' => 200,
         ],
         'canvas'   => [
             'width'  => 370,
-            'height' => 200
+            'height' => 200,
         ],
     ],
 
@@ -257,11 +256,11 @@ return [
         'size' => [
             'image'  => [
                 'width'  => 200,
-                'height' => 200
+                'height' => 200,
             ],
             'canvas' => [
                 'width'  => 200,
-                'height' => 200
+                'height' => 200,
             ],
         ],
 
@@ -351,23 +350,32 @@ return [
     |
     */
     'update'            => [
-        978
+        978,
     ],
 
     'exchange' => 'QuadStudio\Service\Site\Exchanges\Cbr',
 
     'admin_ip' => [
-        1 => '127.0.0.1'
+        1 => '127.0.0.1',
     ],
 
-    'name_limit'        => 25,
+    'name_limit'                      => 30,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Лимит товаров для загрузки на склад дистрибьютора
+    |--------------------------------------------------------------------------
+    */
+    'storehouse_product_limit'        => 300,
+    'storehouse_product_max_quantity' => 20000,
+
 
     /*
     |--------------------------------------------------------------------------
     | Телефоныый номер
     |--------------------------------------------------------------------------
     */
-    'phone'             => [
+    'phone'                           => [
 
         // Правило для валидации формы
         'pattern'   => '^(\(([0-9]{3})\)\s([0-9]{3})-([0-9]{2})-([0-9]{2}))$',
@@ -391,14 +399,14 @@ return [
         'format'    => '(XXX) XXX-XX-XX',
 
         // Длина номера телефона
-        'maxlength' => 15
+        'maxlength' => 15,
     ],
-    'catalog_price_pdf' => 'https://yadi.sk/d/lRlXWUVlIEs0ug',
+    'catalog_price_pdf'               => 'https://yadi.sk/d/lRlXWUVlIEs0ug',
 
-    'storehouse_check'   => [
+    'warehouse_check'    => [
         'gendistr',
         'csc',
-        'distr'
+        'distr',
     ],
 
     // Длина № сертфиката
@@ -464,6 +472,7 @@ return [
         'cart',
         'password.reset',
         'password.request',
+        'unsubscribe',
     ],
 
     'seeders' => [
@@ -477,7 +486,7 @@ return [
         'users',
     ],
 
-    'run'       => [
+    'run' => [
         ['site:resource', []],
         ['rbac:resource', []],
         ['migrate', []],

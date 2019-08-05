@@ -642,6 +642,8 @@
 
             product_n.on('select2:select', function (e) {
                 selected = [];
+                parts.text('');
+                $('#total-cost').html(number_format(0));
             });
 
             parts_search.select2({
@@ -669,7 +671,7 @@
                     return markup;
                 },
                 templateSelection: function (product) {
-                    console.log(product);
+
                     if (product.id !== "") {
                         return product.name + ' (' + product.sku + ')';
                     }
