@@ -47,7 +47,7 @@
         "stevebauman/location" : "^3.0",
         "phpoffice/phpspreadsheet" : "^1.5",
         "mews/captcha": "~2.0",
-        "quadstudio/laravel-rbac": "0.1.7",
+        "quadstudio/laravel-rbac": "0.1.8",
         "quadstudio/laravel-repo": "0.1.9",
         "quadstudio/laravel-tools": "0.1.1",
         "quadstudio/laravel-online": "dev-master"
