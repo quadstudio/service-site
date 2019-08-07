@@ -196,10 +196,26 @@
                                            for="date_trade">@lang('site::repair.date_trade')</label>
                                     @if($fails->contains('field', 'date_trade'))
                                         <span class="bg-danger text-white d-block d-sm-inline-block py-1 px-3 mb-1 mb-sm-0">@lang('site::messages.with_error')</span>
-                                        <input type="date" name="date_trade" id="date_trade"
-                                               class="form-control{{ $errors->has('date_trade') ? ' is-invalid' : '' }}"
-                                               placeholder="@lang('site::repair.placeholder.date_trade')"
-                                               value="{{ old('date_trade', $repair->date_trade) }}" required>
+                                        <div class="input-group date datetimepicker" id="datetimepicker_date_trade"
+                                             data-target-input="nearest">
+                                            <input type="text"
+                                                   name="date_trade"
+                                                   id="date_trade"
+                                                   maxlength="10"
+                                                   required
+                                                   placeholder="@lang('site::repair.placeholder.date_trade')"
+                                                   data-target="#datetimepicker_date_trade"
+                                                   data-toggle="datetimepicker"
+                                                   class="datetimepicker-input form-control{{ $errors->has('repair.date_trade') ? ' is-invalid' : '' }}"
+                                                   value="{{ old('date_trade', $repair->date_trade->format('d.m.Y')) }}">
+                                            <div class="input-group-append"
+                                                 data-target="#datetimepicker_date_trade"
+                                                 data-toggle="datetimepicker">
+                                                <div class="input-group-text">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <span class="invalid-feedback">{{ $errors->first('date_trade') }}</span>
                                     @else
                                         <div class="text-success text-big">{{$repair->date_trade->format('Y.m.d')}}</div>
@@ -211,10 +227,26 @@
                                            for="date_launch">@lang('site::repair.date_launch')</label>
                                     @if($fails->contains('field', 'date_launch'))
                                         <span class="bg-danger text-white d-block d-sm-inline-block py-1 px-3 mb-1 mb-sm-0">@lang('site::messages.with_error')</span>
-                                        <input type="date" name="date_launch" id="date_launch"
-                                               class="form-control{{ $errors->has('date_launch') ? ' is-invalid' : '' }}"
-                                               placeholder="@lang('site::repair.placeholder.date_launch')"
-                                               value="{{ old('date_launch', $repair->date_launch) }}" required>
+                                        <div class="input-group date datetimepicker" id="datetimepicker_date_launch"
+                                             data-target-input="nearest">
+                                            <input type="text"
+                                                   name="date_launch"
+                                                   id="date_launch"
+                                                   maxlength="10"
+                                                   required
+                                                   placeholder="@lang('site::repair.placeholder.date_launch')"
+                                                   data-target="#datetimepicker_date_launch"
+                                                   data-toggle="datetimepicker"
+                                                   class="datetimepicker-input form-control{{ $errors->has('repair.date_launch') ? ' is-invalid' : '' }}"
+                                                   value="{{ old('date_launch', $repair->date_launch->format('d.m.Y')) }}">
+                                            <div class="input-group-append"
+                                                 data-target="#datetimepicker_date_launch"
+                                                 data-toggle="datetimepicker">
+                                                <div class="input-group-text">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <span class="invalid-feedback">{{ $errors->first('date_launch') }}</span>
                                     @else
                                         <div class="text-success text-big">{{$repair->date_launch->format('d.m.Y')}}</div>
@@ -233,10 +265,26 @@
                                     <label class="control-label" for="date_call">@lang('site::repair.date_call')</label>
                                     @if($fails->contains('field', 'date_call'))
                                         <span class="bg-danger text-white d-block d-sm-inline-block py-1 px-3 mb-1 mb-sm-0">@lang('site::messages.with_error')</span>
-                                        <input type="date" name="date_call" id="date_call"
-                                               class="form-control{{ $errors->has('date_call') ? ' is-invalid' : '' }}"
-                                               placeholder="@lang('site::repair.placeholder.date_call')"
-                                               value="{{ old('date_call', $repair->date_call) }}" required>
+                                        <div class="input-group date datetimepicker" id="datetimepicker_date_call"
+                                             data-target-input="nearest">
+                                            <input type="text"
+                                                   name="date_call"
+                                                   id="date_call"
+                                                   maxlength="10"
+                                                   required
+                                                   placeholder="@lang('site::repair.placeholder.date_call')"
+                                                   data-target="#datetimepicker_date_call"
+                                                   data-toggle="datetimepicker"
+                                                   class="datetimepicker-input form-control{{ $errors->has('repair.date_call') ? ' is-invalid' : '' }}"
+                                                   value="{{ old('date_call', $repair->date_call->format('d.m.Y')) }}">
+                                            <div class="input-group-append"
+                                                 data-target="#datetimepicker_date_call"
+                                                 data-toggle="datetimepicker">
+                                                <div class="input-group-text">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <span class="invalid-feedback">{{ $errors->first('date_call') }}</span>
                                     @else
                                         <div class="text-success text-big">{{$repair->date_call->format('d.m.Y')}}</div>
