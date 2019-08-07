@@ -80,14 +80,15 @@ class User extends Authenticatable implements Addressable
     {
         return $this->belongsTo(Image::class)->withDefault([
             'storage' => 'images',
-            'path'    => 'logo/default.png',
+            'path' => 'logo/default.png',
         ]);
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function unsubscribe(){
+    public function unsubscribe()
+    {
         return $this->hasOne(Unsubscribe::class, 'email', 'email');
     }
 
@@ -209,14 +210,20 @@ class User extends Authenticatable implements Addressable
             $result = $result->merge(User::query()
                 ->find(config('site.receiver_id'))
                 ->addresses()
+                ->has('product_group_types')
                 ->where('type_id', 6)
                 ->get());
         }
 
         if ($this->region) {
-            $result = $result->merge($this->region->warehouses->filter(function ($address) {
-                return $address->addressable->hasRole(config('site.warehouse_check', []), false);
-            }));
+            $result = $result->merge(
+                $this->region->warehouses()
+                    ->has('product_group_types')
+                    ->get()
+                    ->filter(function ($address) {
+                        return $address->addressable->hasRole(config('site.warehouse_check', []), false);
+                    }) git
+            );
         }
 
         return $result;
