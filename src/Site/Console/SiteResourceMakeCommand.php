@@ -61,16 +61,12 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
         'layouts/email.stub' => 'layouts/email.blade.php',
     ];
 
-    protected $seeds = [
-        //'SiteSeeder.stub' => 'SiteSeeder',
-    ];
+    protected $seeds = [];
 
     /**
      * @var array
      */
-    protected $routes = [
-
-    ];
+    protected $routes = [];
 
     public function getAsset()
     {

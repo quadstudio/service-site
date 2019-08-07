@@ -222,7 +222,7 @@ class User extends Authenticatable implements Addressable
                     ->get()
                     ->filter(function ($address) {
                         return $address->addressable->hasRole(config('site.warehouse_check', []), false);
-                    }) git
+                    })
             );
         }
 
