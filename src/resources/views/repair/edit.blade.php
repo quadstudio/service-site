@@ -672,8 +672,10 @@
             let calc_parts = function () {
                 if($('.parts_count').length){
                     let cost = 0;
+                    selected.push(parts.children().data('id'));
                     parts.children().each(function (i) {
                         let el = $(this).find('.parts_count');
+
                         cost += (parseInt(el.data('cost')) * el.val());
                     });
 

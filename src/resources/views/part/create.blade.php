@@ -1,4 +1,4 @@
-<div class="list-group-item p-1 product-{{$product->id}}">
+<div class="list-group-item p-1 product-{{$product->id}}" data-id="{{$product->id}}">
     <div class="row">
         <div class="col-xl-6 col-sm-12">
             <dl class="dl-horizontal mt-2">
