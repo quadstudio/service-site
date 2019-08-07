@@ -343,15 +343,6 @@ class RepairController extends Controller
      */
     public function update(RepairRequest $request, Repair $repair)
     {
-//        $parts = (collect($request->input('count')))->map(function ($count, $product_id) {
-//            $product = Product::query()->findOrFail($product_id);
-//            return new Part([
-//                'product_id' => $product_id,
-//                'count'=> $count,
-//                'cost' => $product->hasPrice ? $product->repairPrice->value : 0
-//            ]);
-//        });
-//        dd($parts);
         $repair->update($request->except(['_token', '_method', '_create', 'file', 'parts']));
         if ($request->filled('message.text')) {
             $repair->messages()->save($message = $request->user()->outbox()->create($request->input('message')));
@@ -373,7 +364,6 @@ class RepairController extends Controller
         }
 
         event(new RepairEditEvent($repair));
-        //dd($repair->parts);
         return redirect()->route('repairs.show', $repair)->with('success', trans('site::repair.updated'));
     }
 
