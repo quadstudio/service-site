@@ -900,55 +900,55 @@ Route::group([
 
         // Товары для отчета по монтажу
         Route::name('api')->get('/products/mounting',
-            'Api\ProductController@mounting');
+            'ProductController@mounting');
 
         // Товары для заявки на монтаж
         Route::get('/products/mounter',
-            'Api\ProductController@mounter')
+            'ProductController@mounter')
             ->name('api.products.mounter');
 
         // Товары для отчета по ремонту
         Route::name('api')->get('/parts',
-            'Api\PartController@index')
+            'PartController@index')
             ->name('.parts.index');
         Route::name('api')->get('/parts/create/{product}',
-            'Api\PartController@create')
+            'PartController@create')
             ->name('.parts.create');
 
 
         // Сервисные центры на карте
         Route::name('api')->get('/services/{region?}',
-            'Api\MapController@service_centers')
+            'MapController@service_centers')
             ->name('.service-centers');
 
         // Дилеры на карте
         Route::name('api')->get('/dealers/{region?}',
-            'Api\MapController@where_to_buy')
+            'MapController@where_to_buy')
             ->name('.where-to-buy');
 
         // Монтажники на карте
         Route::name('api')->get('/mounters/{region?}',
-            'Api\MapController@mounter_requests')
+            'MapController@mounter_requests')
             ->name('.mounter-requests');
 
         // Пользователи
         Route::name('api')->resource('/users',
-            'Api\UserController')
+            'UserController')
             ->only(['show']);
 
         // Заказы
         Route::name('api')->resource('/orders',
-            'Api\OrderController')
+            'OrderController')
             ->only(['show']);
 
         // Акты выполненных работ
         Route::name('api')->resource('/acts',
-            'Api\ActController')
+            'ActController')
             ->only(['show']);
 
         // Быстрый заказ
         Route::get('/products/fast',
-            'Api\ProductController@fast')
+            'ProductController@fast')
             ->name('api.products.fast');
 
 
