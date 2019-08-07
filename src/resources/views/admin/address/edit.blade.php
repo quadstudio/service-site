@@ -133,7 +133,7 @@
                                                    value="{{$product_group_type->id}}"
                                                    name="product_group_types[]">
                                             <label class="custom-control-label"
-                                                   for="pgt-{{$product_group_type->id}}">{{$product_group_type->title}}</label>
+                                                   for="pgt-{{$product_group_type->id}}">{{$product_group_type->name}}</label>
                                             <span class="invalid-feedback">{{ $errors->first('product_group_types') }}</span>
                                         </div>
                                     </div>
