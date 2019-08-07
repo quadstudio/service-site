@@ -69,7 +69,7 @@ class SiteResourceMakeCommand extends ToolsResourceMakeCommand
      * @var array
      */
     protected $routes = [
-
+        'web' => 0, //FILE_APPEND
     ];
 
     public function getAsset()
