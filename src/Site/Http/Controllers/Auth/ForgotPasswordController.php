@@ -2,8 +2,13 @@
 
 namespace QuadStudio\Service\Site\Http\Controllers\Auth;
 
-trait ForgotPasswordControllerTrait
+use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+
+class ForgotPasswordController extends Controller
 {
+
+    use SendsPasswordResetEmails;
 
     /**
      * Create a new controller instance.

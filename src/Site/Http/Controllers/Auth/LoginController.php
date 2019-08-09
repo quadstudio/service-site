@@ -3,10 +3,14 @@
 namespace QuadStudio\Service\Site\Http\Controllers\Auth;
 
 
+use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 
-trait LoginControllerTrait
+class LoginController extends Controller
 {
+
+    use AuthenticatesUsers;
 
     /**
      * Create a new controller instance.

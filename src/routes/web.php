@@ -20,6 +20,27 @@ use QuadStudio\Service\Site\Pdf\ActPdf;
 use QuadStudio\Service\Site\Pdf\MountingPdf;
 use QuadStudio\Service\Site\Pdf\RepairPdf;
 
+Route::group([
+    'namespace' => 'Auth'
+],
+    function () {
+        // Authentication Routes...
+        Route::get('login', 'LoginController@showLoginForm')->name('login');
+        Route::post('login', 'LoginController@login');
+        Route::post('logout', 'LoginController@logout')->name('logout');
+
+        // Registration Routes...
+        Route::get('register', 'RegisterController@showRegistrationForm')->name('register');
+        Route::post('register', 'RegisterController@register');
+        Route::get('/register/confirm/{token}', 'RegisterController@confirm')->name('confirm');
+
+        // Password Reset Routes...
+        Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.request');
+        Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+        Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
+        Route::post('password/reset', 'ResetPasswordController@reset');
+    });
+
 Route::group(['middleware' => ['online']],
     function () {
 
@@ -151,28 +172,6 @@ Route::group(['middleware' => ['online']],
             'UnsubscribeController@unsubscribe')
             ->name('unsubscribe')
             ->middleware('signed');
-//                    Route::post('/unsubscribe/success',
-//                        'UnsubscribeController@success')
-//                        ->name('unsubscribe.success');
-
-        Route::get('/upload/test', function () {
-            return response('<yml_catalog date="2019-06-21 10:11">
-                                <shop>
-                                <name></name><company></company><url></url><phone></phone><email></email>
-                                <platform></platform><version></version><currencies><currency id="RUB" rate="1"/><currency id="EUR" rate="CBRF"/></currencies>
-                                <categories><category id="4"></category></categories>
-                                <offers>
-                                    <offer id="00033746000000000000" available="true">
-                                    <url></url>	<price></price>	<currencyId></currencyId>	<categoryId></categoryId>	<picture></picture>	<delivery></delivery><name>Генератор термоэлектрический</name>
-                                    <vendor>Ferroli</vendor>
-                                    <vendorCode>39849670</vendorCode>
-                                    <quantity>13</quantity>
-                                    <description/><sales_notes></sales_notes><manufacturer_warranty>true</manufacturer_warranty><country_of_origin></country_of_origin><market_category>Дом и дача/Строительство и ремонт/Отопление/Элементы систем отопления</market_category>
-                                    </offer>
-                                </offers></shop></yml_catalog>', 200)
-                ->header('Content-Type', 'text/xml');
-        })
-            ->name('storehouses.test');
 
         Route::group(['middleware' => ['auth']],
             function () {
@@ -217,10 +216,10 @@ Route::group(['middleware' => ['online']],
                     ->middleware('permission:addresses')
                     ->except(['index'])
                     ->names([
-                        'create'  => 'addresses.phones.create',
-                        'store'   => 'addresses.phones.store',
-                        'edit'    => 'addresses.phones.edit',
-                        'update'  => 'addresses.phones.update',
+                        'create' => 'addresses.phones.create',
+                        'store' => 'addresses.phones.store',
+                        'edit' => 'addresses.phones.edit',
+                        'update' => 'addresses.phones.update',
                         'destroy' => 'addresses.phones.destroy',
                     ]);
 
@@ -283,7 +282,7 @@ Route::group(['middleware' => ['online']],
                     ->middleware('permission:addresses')
                     ->only(['edit', 'update'])
                     ->names([
-                        'edit'   => 'contragents.addresses.edit',
+                        'edit' => 'contragents.addresses.edit',
                         'update' => 'contragents.addresses.update',
                     ]);
 
@@ -298,10 +297,10 @@ Route::group(['middleware' => ['online']],
                     ->middleware('permission:phones')
                     ->except(['index'])
                     ->names([
-                        'create'  => 'contacts.phones.create',
-                        'store'   => 'contacts.phones.store',
-                        'edit'    => 'contacts.phones.edit',
-                        'update'  => 'contacts.phones.update',
+                        'create' => 'contacts.phones.create',
+                        'store' => 'contacts.phones.store',
+                        'edit' => 'contacts.phones.edit',
+                        'update' => 'contacts.phones.update',
                         'destroy' => 'contacts.phones.destroy',
                     ]);
 
@@ -410,7 +409,7 @@ Route::group(['middleware' => ['online']],
             });
         Route::group([
             'middleware' => ['auth', 'admin'],
-            'prefix'     => 'admin',
+            'prefix' => 'admin',
         ],
             function () {
 
@@ -524,7 +523,7 @@ Route::group(['middleware' => ['online']],
                     'Admin\ContragentAddressController')
                     ->only(['edit', 'update'])
                     ->names([
-                        'edit'   => 'admin.contragents.addresses.edit',
+                        'edit' => 'admin.contragents.addresses.edit',
                         'update' => 'admin.contragents.addresses.update',
                     ]);
 
@@ -538,10 +537,10 @@ Route::group(['middleware' => ['online']],
                     'Admin\AddressPhoneController')
                     ->only(['create', 'store', 'edit', 'update', 'destroy'])
                     ->names([
-                        'create'  => 'admin.addresses.phones.create',
-                        'store'   => 'admin.addresses.phones.store',
-                        'edit'    => 'admin.addresses.phones.edit',
-                        'update'  => 'admin.addresses.phones.update',
+                        'create' => 'admin.addresses.phones.create',
+                        'store' => 'admin.addresses.phones.store',
+                        'edit' => 'admin.addresses.phones.edit',
+                        'update' => 'admin.addresses.phones.update',
                         'destroy' => 'admin.addresses.phones.destroy',
                     ]);
 
@@ -570,7 +569,7 @@ Route::group(['middleware' => ['online']],
                     ->only(['create', 'store'])
                     ->names([
                         'create' => 'admin.users.password.create',
-                        'store'  => 'admin.users.password.store',
+                        'store' => 'admin.users.password.store',
                     ]);
 
                 // Цены пользователя
@@ -890,11 +889,9 @@ Route::group(['middleware' => ['online']],
             });
     });
 
-Route::get('/register/confirm/{token}', 'Auth\RegisterController@confirm')->name('confirm');
-
 Route::group([
     'namespace' => 'Api',
-    'prefix'    => 'api',
+    'prefix' => 'api',
 ],
     function () {
 

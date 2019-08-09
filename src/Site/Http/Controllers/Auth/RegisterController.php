@@ -3,7 +3,9 @@
 namespace QuadStudio\Service\Site\Http\Controllers\Auth;
 
 
+use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use QuadStudio\Service\Site\Http\Requests\RegisterRequest;
@@ -16,10 +18,10 @@ use QuadStudio\Service\Site\Models\Phone;
 use QuadStudio\Service\Site\Models\Region;
 use QuadStudio\Service\Site\Models\User;
 
-//use QuadStudio\Service\Site\Http\Requests\User as Request;
-
-trait RegisterControllerTrait
+class RegisterController extends Controller
 {
+
+    use RegistersUsers;
 
     /**
      * @var \Geocoder\StatefulGeocoder

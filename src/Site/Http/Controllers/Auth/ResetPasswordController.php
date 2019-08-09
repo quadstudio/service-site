@@ -2,10 +2,14 @@
 
 namespace QuadStudio\Service\Site\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
 
-trait ResetPasswordControllerTrait
+class ResetPasswordController extends Controller
 {
+
+    use ResetsPasswords;
 
     /**
      * Create a new controller instance.
