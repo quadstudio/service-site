@@ -188,19 +188,21 @@
 @endsection
 
 @push('scripts')
-<script>
-    try {
-        window.addEventListener('load', function () {
-            let checks = document.querySelectorAll('[type="checkbox"][name="pgt[]"]');
-            for (i = 0; i < checks.length; i++) {
-                checks[i].addEventListener('click', function (e) {
-                    checkbox = e.target;
-                    document.querySelector('[data-product-group-type="' + checkbox.value + '"]').checked = checkbox.checked;
-                })
-            }
-        });
-    } catch (e) {
-        console.log(e);
-    }
-</script>
+    <script>
+        try {
+            window.addEventListener('load', function () {
+                let checks = document.querySelectorAll('[type="checkbox"][name="pgt[]"]'), checked;
+                for (i = 0; i < checks.length; i++) {
+                    checks[i].addEventListener('click', function (e) {
+                        checked = document.querySelectorAll('[data-product-group-type="' + e.target.value + '"]');
+                        for (let i in checked) {
+                            checked[i].checked = e.target.checked;
+                        }
+                    })
+                }
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    </script>
 @endpush
