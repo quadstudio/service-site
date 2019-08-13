@@ -26,7 +26,7 @@
                 @endif
                 <div class="row">
                     <div class="col-md-6">
-                        <a class="btn btn-secondary d-block d-sm-inline-block mr-0 mr-sm-1 mb-1 mb-sm-0"
+                        <a class="btn btn-secondary d-block d-sm-inline-block mr-0 mr-sm-1 mb-1 mb-md-1"
                            href="{{ route('products.index') }}"
                            role="button">
                             <i class="fa fa-reply"></i>
