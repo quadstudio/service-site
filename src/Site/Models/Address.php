@@ -68,8 +68,8 @@ class Address extends Model
             $result[] = $address->street;
             $result[] = $address->building;
             $result[] = $address->apartment;
-            $full = preg_replace('/,\s+$/', '', implode(', ', $result));
-            $address->full = $full;
+            $full = preg_replace('/(,\s)+$/', '', implode(', ', $result));
+            $address->full = trim($full);
             $result = $geocoder->geocodeQuery(\Geocoder\Query\GeocodeQuery::create($full));
             if (!$result->isEmpty()) {
                 $geocode = $result->first();
