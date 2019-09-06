@@ -96,12 +96,14 @@ class UserController extends Controller
         $this->districts = $districts;
     }
 
-    /**
-     * Show the user profile
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
+	/**
+	 * Show the user profile
+	 *
+	 * @param Request $request
+	 *
+	 * @return \Illuminate\Http\Response
+	 * @throws \PhpOffice\PhpSpreadsheet\Exception
+	 */
     public function index(Request $request)
     {
         $this->users->trackFilter();

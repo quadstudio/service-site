@@ -24,7 +24,7 @@ class User extends Authenticatable implements Addressable
      */
     protected $fillable = [
         'name', 'email', 'password', 'dealer',
-        'display', 'active', 'image_id',
+        'display', 'active', 'image_id', 'only_ferroli',
         'warehouse_id', 'currency_id', 'region_id'
     ];
 
@@ -205,7 +205,7 @@ class User extends Authenticatable implements Addressable
         $result = collect([]);
 
 
-        if ($this->hasRole(config('site.warehouse_check', []), false)) {
+        if ($this->hasRole(config('site.warehouse_check', []), false) || $this->getAttribute('only_ferroli') == 1) {
 
             $result = $result->merge(User::query()
                 ->find(config('site.receiver_id'))
@@ -215,15 +215,15 @@ class User extends Authenticatable implements Addressable
                 ->get());
         }
 
-        if ($this->region) {
-            $result = $result->merge(
-                $this->region->warehouses()
-                    ->has('product_group_types')
-                    ->get()
-                    ->filter(function ($address) {
-                        return $address->addressable->hasRole(config('site.warehouse_check', []), false);
-                    })
-            );
+        if($this->region && $this->getAttribute('only_ferroli') == 0){
+	        $result = $result->merge(
+		        $this->region->warehouses()
+			        ->has('product_group_types')
+			        ->get()
+			        ->filter(function ($address) {
+				        return $address->addressable->hasRole(config('site.warehouse_check', []), false);
+			        })
+	        );
         }
 
         return $result;

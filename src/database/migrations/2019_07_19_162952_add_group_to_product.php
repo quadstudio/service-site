@@ -14,7 +14,6 @@ class AddGroupToProduct extends Migration
      */
     public function up()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         if (Schema::hasTable('products') && !Schema::hasColumn('products', 'group_id')) {
             Schema::table('products', function (Blueprint $table) {
                 $table->string('group_id', 11)->nullable();
@@ -26,7 +25,6 @@ class AddGroupToProduct extends Migration
                     ->onDelete('set null');
             });
         }
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 
     /**

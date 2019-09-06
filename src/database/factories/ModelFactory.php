@@ -21,54 +21,6 @@ use QuadStudio\Service\Site\Models\User;
 |
 */
 
-$factory->define(Storehouse::class, function (Faker $faker) {
-    $faker->addProvider(new \Faker\Provider\ru_Ru\Company($faker));
-    return [
-        'name'     => $faker->company(),
-        'url'      => 'http://odinremont.ru/yandex.xml',//$faker->url
-        'enabled'  => $enabled = $faker->boolean($chanceOfGettingTrue = 70),
-        'everyday' => $enabled ? $faker->boolean($chanceOfGettingTrue = 50) : false,
-        'user_id'  => User::query()->whereHas('addresses', function ($address) {
-            $address->where('type_id', 6);
-        })->get()->random()->id,
-    ];
-});
-
-$factory->afterCreating(Storehouse::class, function ($storehouse, Faker $faker) {
-    Address::query()
-        ->where('type_id', 6)
-        ->where('addressable_type', 'users')
-        ->where('addressable_id', $storehouse->user_id)
-        ->where('addressable_id', '!=', 1)
-        ->each(function ($address) use ($storehouse) {
-            $address
-                ->storehouse()
-                ->associate($storehouse)
-                ->save();
-        });
-    if ($faker->boolean(70)) {
-        $storehouse->products()->createMany(factory(StorehouseProduct::class, $faker->numberBetween(1, 10))->make()->toArray());
-        $storehouse->update(['uploaded_at' => $faker->dateTimeBetween($startDate = '-3 weeks')->format('d.m.Y H:i:s')]);
-    }
-
-});
-
-$factory->define(StorehouseProduct::class, function (Faker $faker) {
-
-    return [
-        'quantity'   => $faker->numberBetween($min = 1, $max = 100),
-        'product_id' => function () {
-            return Product::query()
-                ->where('enabled', 1)
-                ->where('active', 1)
-                ->where('forsale', 1)
-                ->where(config('site.check_field'), 1)
-                ->whereNull('equipment_id')
-                ->get()->random()->id;
-        },
-    ];
-});
-
 $factory->define(ProductGroup::class, function (Faker $faker) {
     $faker->addProvider(new \Faker\Provider\ru_Ru\Company($faker));
     return [

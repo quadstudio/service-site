@@ -6,8 +6,10 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Session;
+use QuadStudio\Service\Site\Exports\Excel\StorehouseExcelUser;
 use QuadStudio\Service\Site\Filters\BelongsUserFilter;
 use QuadStudio\Service\Site\Filters\Storehouse\StorehousePerPageFilter;
+use QuadStudio\Service\Site\Filters\Storehouse\StorehouseUserExcelFilter;
 use QuadStudio\Service\Site\Filters\StorehouseProduct\StorehouseFilter;
 use QuadStudio\Service\Site\Http\Requests\StorehouseRequest;
 use QuadStudio\Service\Site\Models\Address;
@@ -37,7 +39,6 @@ class StorehouseController extends Controller
      */
     public function __construct(StorehouseRepository $storehouses, StorehouseProductRepository $products)
     {
-        abort(404);
         $this->storehouses = $storehouses;
         $this->products = $products;
     }
@@ -61,11 +62,24 @@ class StorehouseController extends Controller
         ]);
     }
 
-    /**
-     * @param Request $request
-     * @param Storehouse $storehouse
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
+	/**
+	 * @throws \PhpOffice\PhpSpreadsheet\Exception
+	 */
+	public function excel()
+	{
+
+		$this->storehouses->applyFilter(new StorehouseUserExcelFilter());
+		(new StorehouseExcelUser())->setRepository($this->storehouses)->render();
+
+	}
+
+	/**
+	 * @param Request $request
+	 * @param Storehouse $storehouse
+	 *
+	 * @return \Illuminate\View\View
+	 * @throws \Illuminate\Auth\Access\AuthorizationException
+	 */
     public function show(Request $request, Storehouse $storehouse)
     {
         $this->authorize('view', $storehouse);
@@ -80,9 +94,10 @@ class StorehouseController extends Controller
         return view('site::storehouse.show', compact('storehouse', 'products', 'repository'));
     }
 
-    /**
-     * @return \Illuminate\Http\Response
-     */
+	/**
+	 * @return \Illuminate\Http\Response
+	 * @throws \Illuminate\Auth\Access\AuthorizationException
+	 */
     public function create()
     {
 
@@ -111,10 +126,12 @@ class StorehouseController extends Controller
         return redirect()->route('storehouses.show', $storehouse)->with('success', trans('site::storehouse.created'));
     }
 
-    /**
-     * @param Storehouse $storehouse
-     * @return \Illuminate\Http\Response
-     */
+	/**
+	 * @param Storehouse $storehouse
+	 *
+	 * @return \Illuminate\Http\Response
+	 * @throws \Illuminate\Auth\Access\AuthorizationException
+	 */
     public function edit(Storehouse $storehouse)
     {
         $this->authorize('edit', $storehouse);
@@ -142,12 +159,14 @@ class StorehouseController extends Controller
         return redirect()->route('storehouses.show', $storehouse)->with('success', trans('site::storehouse.updated'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  Storehouse $storehouse
-     * @return \Illuminate\Http\Response
-     */
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  Storehouse $storehouse
+	 *
+	 * @return \Illuminate\Http\Response
+	 * @throws \Illuminate\Auth\Access\AuthorizationException
+	 */
     public function destroy(Storehouse $storehouse)
     {
 

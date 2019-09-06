@@ -132,8 +132,4 @@ return [
     'select_no_matter' => '- не важно -',
     'pagination'       => 'Показано с :from по :to из :total :of',
     'per_page'         => 'Показывать по',
-    'error'            => [
-        'url_not_exists' => 'Указаный URL адрес недействительный',
-        'xml_load_failed' => 'Не удалось загрузить корректный XML файл',
-    ],
 ];

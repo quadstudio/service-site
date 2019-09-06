@@ -16,8 +16,13 @@
         </ol>
         <h1 class="header-title mb-4">{{ $storehouse->name }}</h1>
         <div class="justify-content-start border p-3 mb-2">
-
-            <a href="{{ route('admin.storehouses.index') }}" class="d-block d-sm-inline btn btn-secondary">
+            <a class="@cannot('download', $storehouse) disabled @endcannot btn btn-primary d-block d-sm-inline-block mr-0 mr-sm-1 mb-1 mb-sm-0"
+               href="{{ route('admin.storehouses.show', [$storehouse, 'excel']) }}"
+               role="button">
+                <i class="fa fa-upload"></i>
+                <span>@lang('site::storehouse.header.download')</span>
+            </a>
+            <a href="{{ route('admin.storehouses.index') }}" class="d-block d-sm-inline-block btn btn-secondary">
                 <i class="fa fa-reply"></i>
                 <span>@lang('site::messages.back')</span>
             </a>

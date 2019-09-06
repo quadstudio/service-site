@@ -30,6 +30,7 @@ return [
     'dealer'           => 'Не является сервисным центром',
     'dealer_comment'   => '(Если "Да" - пользователь при регистрации указал, что он не является сервисным центром)',
     'verified'         => 'E-mail подтведжен?',
+    'only_ferroli'     => 'Только склад Ferroli?',
     'guid'             => 'Код 1С',
     'price_type_id'    => 'Тип цены',
     'currency_id'      => 'Валюта',
@@ -48,6 +49,8 @@ return [
     'verified_0'       => 'E-mail не подтвержден ✖',
     'active_1'         => 'Включен ✔',
     'active_0'         => 'Заблокирован ✖',
+	'only_ferroli_1'   => 'Только склад Ferroli ✔',
+    'only_ferroli_0'   => 'Только склад Ferroli ✖',
 
     'verified_ico_1' => '✉',
     'verified_ico_0' => '✖',

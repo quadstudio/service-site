@@ -16,7 +16,7 @@ class StorehousePolicy
      */
     public function create(User $user)
     {
-        return $user->id > 0;
+        return $user->admin == 0 || $user->storehouses()->doesntExist();
     }
 
     /**
@@ -54,6 +54,18 @@ class StorehousePolicy
     {
         return $user->id == $storehouse->getAttribute('user_id');
     }
+
+	/**
+	 * Determine whether the user can view the post.
+	 *
+	 * @param User $user
+	 * @param Storehouse $storehouse
+	 * @return bool
+	 */
+	public function download(User $user, Storehouse $storehouse)
+	{
+		return $storehouse->products()->exists();
+	}
 
 
 }

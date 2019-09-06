@@ -41,14 +41,19 @@ class AddressController extends Controller
         $this->regions = $regions;
     }
 
-    /**
-     * Show the user profile
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
+	/**
+	 * Show the user profile
+	 *
+	 * @param Request $request
+	 *
+	 * @return \Illuminate\Http\Response
+	 * @throws \Illuminate\Auth\Access\AuthorizationException
+	 */
     public function index(Request $request)
     {
+
+    	$full = 'Россия, Владимирская область, Владимир, , ';
+    	//dd(preg_re)
         $this->authorize('index', Address::class);
         $this->addresses->trackFilter();
         $this->addresses->applyFilter((new AddressableFilter())->setId(Auth::user()->getAuthIdentifier())->setMorph('users'));

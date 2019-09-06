@@ -19,33 +19,33 @@
 
         <div class=" border p-3 mb-2">
             <a href="{{ route('admin.users.edit', $user) }}"
-               class="d-block d-sm-inline-block btn mr-0 mr-sm-1 mb-1 mb-lg-0 btn-ferroli">
+               class="d-block d-sm-inline-block btn mr-0 mr-sm-1 mb-1 btn-ferroli">
                 <i class="fa fa-pencil"></i>
                 <span>@lang('site::messages.edit') @lang('site::user.user')</span>
             </a>
             <a href="{{ route('admin.users.password.create', $user) }}"
-               class="d-block d-sm-inline-block btn mr-0 mr-sm-1 mb-1 mb-lg-0 btn-ferroli">
+               class="d-block d-sm-inline-block btn mr-0 mr-sm-1 mb-1 btn-ferroli">
                 <i class="fa fa-user-secret"></i>
                 <span>@lang('site::messages.change') @lang('site::user.password')</span>
             </a>
             <a href="{{ route('admin.users.schedule', $user) }}"
-               class="@cannot('schedule', $user) disabled @endcannot d-block d-sm-inline-block btn mr-0 mr-sm-1 mb-1 mb-lg-0 btn btn-ferroli">
+               class="@cannot('schedule', $user) disabled @endcannot d-block d-sm-inline-block btn mr-0 mr-sm-1 mb-1 btn btn-ferroli">
                 <i class="fa fa-@lang('site::schedule.icon')"></i>
                 <span>@lang('site::schedule.synchronize')</span>
             </a>
             <a href="{{ route('admin.users.prices.index', $user) }}"
-               class="d-block d-sm-inline-block btn mr-0 mr-sm-1 mb-1 mb-lg-0 btn btn-ferroli">
+               class="d-block d-sm-inline-block btn mr-0 mr-sm-1 mb-1 btn btn-ferroli">
                 <i class="fa fa-@lang('site::user_price.icon')"></i>
                 <span>@lang('site::user_price.user_price')</span>
             </a>
             <a href="{{ route('admin.users.force', $user) }}"
-               class="d-block d-sm-inline-block btn mr-0 mr-sm-1 mb-1 mb-lg-0 btn-warning">
+               class="d-block d-sm-inline-block btn mr-0 mr-sm-1 mb-1 btn-warning">
                 <i class="fa fa-sign-in"></i>
                 <span>@lang('site::user.force_login')</span>
             </a>
 
             <a href="{{ route('admin.users.index') }}"
-               class="d-block d-sm-inline-block btn btn-secondary">
+               class="d-block d-sm-inline-block btn mb-1 btn-secondary">
                 <i class="fa fa-reply"></i>
                 <span>@lang('site::messages.back')</span>
             </a>
@@ -94,10 +94,6 @@
                             <span class="text-dark">{{ $user->currency->title }}</span>
                         </div>
                         <div class="mb-2">
-                            <span class="text-muted">@lang('site::user.warehouse_id'):</span>&nbsp;
-                            <span class="text-dark">{{ optional($user->warehouse)->name }}</span>
-                        </div>
-                        <div class="mb-2">
                             <span class="text-muted">@lang('site::user.region_id'):</span>&nbsp;
                             <span class="text-dark">{{ optional($user->region)->name }}</span>
                         </div>
@@ -123,6 +119,9 @@
                             </span>
                             <span class="d-block text-normal @if($user->display) text-success @else text-danger @endif">
                                 @lang('site::user.display_'.($user->display))
+                            </span>
+                            <span class="d-block text-normal @if($user->only_ferroli) text-success @else text-danger @endif">
+                                @lang('site::user.only_ferroli_'.($user->only_ferroli))
                             </span>
                         </div>
 
@@ -197,6 +196,16 @@
                                 {{$user->contragents()->count()}}
                             </span>
                         </a>
+                        <a href="{{ route('admin.storehouses.index', ['filter[user]='.$user->id]) }}"
+                           class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="fa fa-@lang('site::storehouse.icon')"></i>
+                                 <span>@lang('site::storehouse.storehouses')</span>
+                            </span>
+                            <span class="badge text-big @if($user->storehouses()->exists()) badge-ferroli @else badge-light @endif">
+                                {{$user->storehouses()->count()}}
+                            </span>
+                        </a>
                         <a href="{{ route('admin.addresses.index', ['filter[user]='.$user->id]) }}"
                            class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                             <span>
@@ -227,16 +236,6 @@
                                 {{$user->engineers()->count()}}
                             </span>
                         </a>
-                        {{--<a href="{{ route('admin.launches.index', ['filter[user]='.$user->id]) }}"--}}
-                           {{--class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">--}}
-                            {{--<span>--}}
-                                {{--<i class="fa fa-@lang('site::launch.icon')"></i>--}}
-                                 {{--<span>@lang('site::launch.launches')</span>--}}
-                            {{--</span>--}}
-                            {{--<span class="badge text-big @if($user->launches()->exists()) badge-ferroli @else badge-light @endif">--}}
-                                {{--{{$user->launches()->count()}}--}}
-                            {{--</span>--}}
-                        {{--</a>--}}
                         <a href="{{ route('admin.trades.index', ['filter[user]='.$user->id]) }}"
                            class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                             <span>

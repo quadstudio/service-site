@@ -21,6 +21,7 @@ class CreateStorehousesTable extends Migration
             $table->boolean('enabled')->default(1);
             $table->boolean('everyday')->default(0);
             $table->dateTime('uploaded_at')->nullable();
+            $table->dateTime('tried at')->nullable();
             $table->timestamps();
 
             $table

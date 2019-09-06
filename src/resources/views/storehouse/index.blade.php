@@ -69,7 +69,6 @@
                     <div class="col-xl-4 col-sm-6">
                         @if($storehouse->addresses()->exists())
                             <dl class="dl-horizontal mt-2">
-                                {{--<dt class="col-12">@lang('site::storehouse.help.addresses')</dt>--}}
                                 <dd class="col-12">
                                     <div class="list-group"></div>
                                     @foreach($storehouse->addresses as $address)
@@ -86,11 +85,11 @@
                         <dl class="dl-horizontal mt-sm-2 mt-0">
                             <dt class="col-12 mb-0 text-left text-xl-right">
                                 @lang('site::storehouse.enabled')
-                                    <span>@bool(['bool' => $storehouse->enabled])@endbool</span>
+                                <span>@bool(['bool' => $storehouse->enabled])@endbool</span>
                             </dt>
                             <dt class="col-12 mb-0 text-left text-xl-right">
                                 @lang('site::storehouse.everyday')
-                                    <span>@bool(['bool' => $storehouse->everyday])@endbool</span>
+                                <span>@bool(['bool' => $storehouse->everyday])@endbool</span>
                             </dt>
                         </dl>
                     </div>

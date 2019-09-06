@@ -1,25 +1,22 @@
 <?php
 
-namespace QuadStudio\Service\Site\Filters\Act;
+namespace QuadStudio\Service\Site\Filters\Storehouse;
 
 use Illuminate\Support\Collection;
 use QuadStudio\Repo\Filters\BootstrapTempusDominusDate;
 use QuadStudio\Repo\Filters\DateFilter;
 
-class ActDateCreatedToFilter extends DateFilter
+class StorehouseDateUploadedFromFilter extends DateFilter
 {
 
     use BootstrapTempusDominusDate;
 
     protected $render = true;
-    protected $search = 'date_created_to';
+    protected $search = 'date_uploaded_from';
 
-    /**
-     * @return string
-     */
     public function label()
     {
-        return trans('site::act.created_at');
+        return trans('site::storehouse.uploaded_at');
     }
 
     /**
@@ -27,7 +24,7 @@ class ActDateCreatedToFilter extends DateFilter
      */
     public function column()
     {
-        return 'acts.created_at';
+        return 'storehouses.uploaded_at';
     }
 
     /**
@@ -35,7 +32,7 @@ class ActDateCreatedToFilter extends DateFilter
      */
     protected function placeholder()
     {
-        return trans('site::messages.date_to');
+        return trans('site::messages.date_from');
     }
 
     /**
@@ -51,7 +48,7 @@ class ActDateCreatedToFilter extends DateFilter
      */
     protected function operator()
     {
-        return '<=';
+        return '>=';
     }
 
 

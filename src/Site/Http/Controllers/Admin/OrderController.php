@@ -36,12 +36,14 @@ class OrderController extends Controller
         $this->orders = $orders;
     }
 
-    /**
-     * Show the shop index page
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
+	/**
+	 * Show the shop index page
+	 *
+	 * @param Request $request
+	 *
+	 * @return \Illuminate\Http\Response
+	 * @throws \PhpOffice\PhpSpreadsheet\Exception
+	 */
     public function index(Request $request)
     {
         $this->orders->trackFilter();
@@ -71,10 +73,12 @@ class OrderController extends Controller
         return view('site::admin.order.show', compact('order'));
     }
 
-    /**
-     * @param Order $order
-     * @return \Illuminate\Http\RedirectResponse
-     */
+	/**
+	 * @param Order $order
+	 *
+	 * @return \Illuminate\Http\RedirectResponse
+	 * @throws \Illuminate\Auth\Access\AuthorizationException
+	 */
     public function schedule(Order $order)
     {
         $this->authorize('schedule', $order);
@@ -84,12 +88,14 @@ class OrderController extends Controller
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  Order $order
-     * @return \Illuminate\Http\Response
-     */
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  Order $order
+	 *
+	 * @return \Illuminate\Http\Response
+	 * @throws \Illuminate\Auth\Access\AuthorizationException
+	 */
     public function destroy(Order $order)
     {
 

@@ -40,6 +40,10 @@
                                 :</span>&nbsp;&nbsp;{{ $user->created_at->format('d.m.Y H:i') }}
                         </div>
                         <div class="mb-2">
+                            <span class="text-muted">@lang('site::region.region'):</span>&nbsp;
+                            <span class="text-dark">{{ $user->region->name }}</span>
+                        </div>
+                        <div class="mb-2">
                             <span class="text-muted">@lang('site::user.email'):</span>&nbsp;
                             <span class="text-dark">{{ $user->email }}</span>
                         </div>
@@ -149,18 +153,18 @@
                             </span>
                         </a>
                         @endpermission()
-                        {{--@permission('storehouses')--}}
-                        {{--<a href="{{ route('storehouses.index') }}"--}}
-                           {{--class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">--}}
-                            {{--<span>--}}
-                                {{--<i class="fa fa-@lang('site::storehouse.icon')"></i>--}}
-                                {{--@lang('site::storehouse.storehouses')--}}
-                            {{--</span>--}}
-                            {{--<span class="badge text-big @if($user->storehouses()->exists()) badge-ferroli @else badge-light @endif">--}}
-                                {{--{{$user->storehouses()->count()}}--}}
-                            {{--</span>--}}
-                        {{--</a>--}}
-                        {{--@endpermission()--}}
+                        @permission('storehouses')
+                        <a href="{{ route('storehouses.index') }}"
+                           class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="fa fa-@lang('site::storehouse.icon')"></i>
+                                @lang('site::storehouse.storehouses')
+                            </span>
+                            <span class="badge text-big @if($user->storehouses()->exists()) badge-ferroli @else badge-light @endif">
+                                {{$user->storehouses()->count()}}
+                            </span>
+                        </a>
+                        @endpermission()
                         @permission('engineers')
                         <a href="{{ route('engineers.index') }}"
                            class="py-2 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
@@ -233,7 +237,17 @@
                     </div>
                 </div>
                 @endpermission()
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">@lang('site::storehouse.header.quantity')</h5>
 
+                            <a href="{{route('storehouses.excel')}}" class="btn btn-primary">
+                                <i class="fa fa-upload"></i>
+                                @lang('site::storehouse.header.download')
+                            </a>
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>

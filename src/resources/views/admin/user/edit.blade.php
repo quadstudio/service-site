@@ -23,14 +23,13 @@
 
         <div class="row justify-content-center my-4">
             <div class="col-md-12">
-                <div class="card">
+                <form id="user-form" method="POST"
+                      action="{{ route('admin.users.update', $user) }}">
 
-                    <div class="card-body">
-                        <form id="user-form" method="POST"
-                              action="{{ route('admin.users.update', $user) }}">
-
-                            @csrf
-                            @method('PUT')
+                    @csrf
+                    @method('PUT')
+                    <div class="card mb-4">
+                        <div class="card-body">
 
                             <div class="form-row required">
                                 <div class="col mb-3">
@@ -209,6 +208,41 @@
                                 </div>
                             </div>
 
+                            <div class="form-row required">
+                                <div class="col mb-3">
+                                    <label class="control-label d-block"
+                                           for="user_only_ferroli">@lang('site::user.only_ferroli')</label>
+                                    <div class="custom-control custom-radio  custom-control-inline">
+                                        <input class="custom-control-input
+                                                    {{$errors->has('user.only_ferroli') ? ' is-invalid' : ''}}"
+                                               type="radio"
+                                               name="user[only_ferroli]"
+                                               required
+                                               @if(old('user.only_ferroli', $user->only_ferroli) == 1) checked @endif
+                                               id="user_only_ferroli_1"
+                                               value="1">
+                                        <label class="custom-control-label"
+                                               for="user_only_ferroli_1">@lang('site::messages.yes')</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input class="custom-control-input
+                                                    {{$errors->has('user.only_ferroli') ? ' is-invalid' : ''}}"
+                                               type="radio"
+                                               name="user[only_ferroli]"
+                                               required
+                                               @if(old('user.only_ferroli', $user->only_ferroli) == 0) checked @endif
+                                               id="user_only_ferroli_0"
+                                               value="0">
+                                        <label class="custom-control-label"
+                                               for="user_only_ferroli_0">@lang('site::messages.no')</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">@lang('rbac::role.roles')</h5>
                             <div class="form-row">
                                 <div class="col mb-3">
                                     @foreach($roles->all() as $role)
@@ -241,11 +275,10 @@
                                     </a>
                                 </div>
                             </div>
-                        </form>
+
+                        </div>
                     </div>
-                </div>
-
-
+                </form>
             </div>
         </div>
     </div>

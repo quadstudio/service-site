@@ -38,7 +38,10 @@ abstract class Excel extends Spreadsheet
         return $this;
     }
 
-    public function render()
+	/**
+	 * @throws \PhpOffice\PhpSpreadsheet\Exception
+	 */
+	public function render()
     {
         $this->build();
         $this->getProperties()

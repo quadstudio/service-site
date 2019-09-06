@@ -4,28 +4,30 @@ namespace QuadStudio\Service\Site\Imports\Excel;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\BaseReader;
-use QuadStudio\Service\Site\Http\Requests\StorehouseExcelRequest;
 use QuadStudio\Service\Site\Models\Product;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class StorehouseExcel
 {
     private $_data = [];
 
-    /**
-     * @param StorehouseExcelRequest $request
-     * @return array
-     */
-    public function get(StorehouseExcelRequest $request)
+	/**
+	 * @param UploadedFile $path
+	 *
+	 * @return array
+	 * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
+	 */
+    public function get(UploadedFile $path)
     {
 
-        $inputFileType = ucfirst($request->path->getClientOriginalExtension());
+        $inputFileType = ucfirst($path->getClientOriginalExtension());
         $filterSubset = new StorehouseExcelLoadFilter();
         /** @var BaseReader $reader */
         $reader = IOFactory::createReader($inputFileType);
         $reader->setReadDataOnly(true);
         $reader->setReadFilter($filterSubset);
 
-        $spreadsheet = $reader->load($request->path->getPathname());
+        $spreadsheet = $reader->load($path->getPathname());
 
         $rowIterator = $spreadsheet->getActiveSheet()->getRowIterator();
 
@@ -34,7 +36,6 @@ class StorehouseExcel
             $cellIterator = $row->getCellIterator();
 
             foreach ($cellIterator as $c => $cell) {
-
 
                 switch ($c) {
                     case 'A':

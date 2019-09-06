@@ -43,21 +43,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-row">
-                        <div class="col">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox"
-                                       @if(old('storehouse.everyday', $storehouse->everyday)) checked
-                                       @endif
-                                       class="custom-control-input{{  $errors->has('storehouse.everyday') ? ' is-invalid' : '' }}"
-                                       id="everyday"
-                                       name="storehouse[everyday]">
-                                <label class="custom-control-label"
-                                       for="everyday">@lang('site::storehouse.everyday')</label>
-                                <span class="invalid-feedback">{{ $errors->first('storehouse.everyday') }}</span>
-                            </div>
-                        </div>
-                    </div>
+
                     <div class="form-row mt-2 required">
                         <label class="control-label" for="name">@lang('site::storehouse.name')</label>
                         <input required
@@ -70,15 +56,35 @@
                         <span class="invalid-feedback">{{ $errors->first('storehouse.name') }}</span>
                     </div>
 
-                    <div class="form-row required">
+                    <div class="form-row">
                         <div class="col">
                             <label class="control-label" for="url">@lang('site::storehouse.url')</label>
-                            <textarea required
+                            <small id="urlHelp"
+                                   class="form-text text-success">
+                                @lang('site::storehouse.help.url')
+                            </small>
+                            <textarea
                                       class="form-control{{ $errors->has('storehouse.url') ? ' is-invalid' : '' }}"
                                       placeholder="@lang('site::storehouse.placeholder.url')"
                                       name="storehouse[url]"
                                       id="url">{!! old('storehouse.url', $storehouse->url) !!}</textarea>
                             <span class="invalid-feedback">{{ $errors->first('storehouse.url') }}</span>
+                        </div>
+                    </div>
+
+                    <div class="form-row mb-4">
+                        <div class="col">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox"
+                                       @if(old('storehouse.everyday', $storehouse->everyday)) checked
+                                       @endif
+                                       class="custom-control-input{{  $errors->has('storehouse.everyday') ? ' is-invalid' : '' }}"
+                                       id="everyday"
+                                       name="storehouse[everyday]">
+                                <label class="custom-control-label"
+                                       for="everyday">@lang('site::storehouse.everyday')</label>
+                                <span class="invalid-feedback">{{ $errors->first('storehouse.everyday') }}</span>
+                            </div>
                         </div>
                     </div>
 

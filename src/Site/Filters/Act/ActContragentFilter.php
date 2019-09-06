@@ -10,69 +10,71 @@ use QuadStudio\Service\Site\Models\Contragent;
 
 class ActContragentFilter extends WhereFilter
 {
-    use BootstrapSelect;
 
-    protected $render = true;
+	use BootstrapSelect;
 
-    function apply($builder, RepositoryInterface $repository)
-    {
-        if ($this->canTrack() && !is_null($contragent_id = $this->get($this->name()))) {
-            $builder = $builder->where(DB::raw($this->column()), $this->operator(), $contragent_id);
-        }
+	protected $render = true;
 
-        return $builder;
-    }
+	function apply($builder, RepositoryInterface $repository)
+	{
+		if ($this->canTrack() && !is_null($contragent_id = $this->get($this->name()))) {
+			$builder = $builder->where(DB::raw($this->column()), $this->operator(), $contragent_id);
+		}
 
-    /**
-     * @return string
-     */
-    public function name(): string
-    {
-        return 'contragent';
-    }
+		return $builder;
+	}
 
-    /**
-     * @return string
-     */
-    public function column(): string
-    {
+	/**
+	 * @return string
+	 */
+	public function name(): string
+	{
+		return 'contragent';
+	}
 
-        return 'acts.contragent_id';
+	/**
+	 * @return string
+	 */
+	public function column(): string
+	{
 
-    }
+		return 'acts.contragent_id';
 
-    /**
-     * Get the evaluated contents of the object.
-     *
-     * @return array
-     */
-    public function options(): array
-    {
-        return Contragent::where(function ($query) {
-            if (auth()->user()->admin == 1) {
-                $query->has('acts');
-            } else {
-                $query->whereHas('acts', function ($query) {
-                    $query->where('user_id', auth()->user()->getAuthIdentifier());
-                });
-            }
+	}
 
-        })->orderBy('name')
-            ->pluck('name', 'id')
+	/**
+	 * Get the evaluated contents of the object.
+	 *
+	 * @return array
+	 */
+	public function options(): array
+	{
+		return Contragent::query()
+			->where(function ($query) {
+				if (auth()->user()->admin == 1) {
+					$query->has('acts');
+				} else {
+					$query->whereHas('acts', function ($query) {
+						$query->where('user_id', auth()->user()->getAuthIdentifier());
+					});
+				}
+
+			})->orderBy('name')
+			->pluck('name', 'id')
 //            ->map(function ($item, $key) {
 //                return str_limit($item, config('site.name_limit', 25));
 //            })
-            ->prepend(trans('site::messages.select_no_matter'), '')
-            ->toArray();
-    }
+			->prepend(trans('site::messages.select_no_matter'), '')
+			->toArray();
+	}
 
-    public function defaults(): array
-    {
-        return [''];
-    }
+	public function defaults(): array
+	{
+		return [''];
+	}
 
-    public function label()
-    {
-        return trans('site::act.contragent_id');
-    }
+	public function label()
+	{
+		return trans('site::act.contragent_id');
+	}
 }

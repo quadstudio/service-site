@@ -2,20 +2,22 @@
 
 namespace QuadStudio\Service\Site\Http\Controllers\Api;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Routing\Controller;
+use QuadStudio\Service\Site\Jobs\ProcessStorehouseUrl;
 use QuadStudio\Service\Site\Models\Storehouse;
 
 class StorehouseController extends Controller
 {
-    public function automatic()
-    {
 
-        foreach (Storehouse::needAutomaticUpdate()->limit(1)->get() as $storehouse) {
-            $storehouse->updateFromUrl();
-            return redirect()->route('api.storehouses.automatic');
-        }
-        return null;
+	public function cron()
+	{
 
-    }
+		/** @var Builder $storehouse */
+		if (($storehouse = Storehouse::uploadRequired())->exists()) {
+			ProcessStorehouseUrl::dispatch($storehouse->first());
+		}
+
+	}
 
 }

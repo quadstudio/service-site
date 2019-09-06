@@ -30,7 +30,7 @@ class StorehouseRequest extends FormRequest
             case 'POST': {
                 return [
                     'storehouse.name' => 'required|string|max:255',
-                    'storehouse.url'  => 'required|string|url',
+                    'storehouse.url'  => 'sometimes|string|url',
                 ];
             }
 

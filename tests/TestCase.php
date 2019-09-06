@@ -22,6 +22,7 @@ class TestCase extends OrchestraTestCase
     public function setUp()
     {
         parent::setUp();
+	    $this->loadMigrationsFrom(realpath(__DIR__.'../src/database/migrations'));
         $this->withFactories(__DIR__.'../src/database/factories');
     }
 
@@ -165,26 +166,26 @@ class TestCase extends OrchestraTestCase
                 'visibility' => 'public',
             ],
         ]);
-        $app['config']->set('database.default', 'mysql');
-        $app['config']->set('database.connections.mysql', [
-            'driver' => 'mysql',
-            'host' => 'localhost',
-            'port' => env('DB_PORT', '3306'),
-            'database' => 'ferroli',
-            'username' => 'root',
-            'password' => '',
-            'unix_socket' => env('DB_SOCKET', ''),
-            'charset' => 'utf8mb4',
-            'collation' => 'utf8mb4_general_ci',
-            'prefix' => '',
-            'strict' => true,
-            'engine' => null,
-        ]);
-//        $app['config']->set('database.default', 'testing');
-//        $app['config']->set('database.connections.testing', [
-//            'driver'   => 'sqlite',
-//            'database' => ':memory:',
-//            'prefix'   => '',
+//        $app['config']->set('database.default', 'mysql');
+//        $app['config']->set('database.connections.mysql', [
+//            'driver' => 'mysql',
+//            'host' => 'localhost',
+//            'port' => env('DB_PORT', '3306'),
+//            'database' => 'ferroli',
+//            'username' => 'root',
+//            'password' => '',
+//            'unix_socket' => env('DB_SOCKET', ''),
+//            'charset' => 'utf8mb4',
+//            'collation' => 'utf8mb4_general_ci',
+//            'prefix' => '',
+//            'strict' => true,
+//            'engine' => null,
 //        ]);
+        $app['config']->set('database.default', 'testing');
+        $app['config']->set('database.connections.testing', [
+            'driver'   => 'sqlite',
+            'database' => ':memory:',
+            'prefix'   => '',
+        ]);
     }
 }

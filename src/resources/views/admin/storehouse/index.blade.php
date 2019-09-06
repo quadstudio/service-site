@@ -15,14 +15,20 @@
                     class="fa fa-@lang('site::storehouse.icon')"></i> @lang('site::storehouse.storehouses')
         </h1>
         <div class=" border p-3 mb-2">
-            {{--<button form="repository-form"--}}
-            {{--type="submit"--}}
-            {{--name="excel"--}}
-            {{--class="d-block d-sm-inline-block mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-primary">--}}
-            {{--<i class="fa fa-upload"></i>--}}
-            {{--<span>@lang('site::messages.upload') @lang('site::messages.to_excel')</span>--}}
-            {{--</button>--}}
-            <a href="{{ route('admin') }}" class="d-block d-sm-inline-block btn btn-secondary">
+            <button form="repository-form"
+                    type="submit"
+                    name="excel"
+                    class="d-block d-sm-inline-block mr-0 mr-sm-1 mb-1 btn btn-primary">
+                <i class="fa fa-upload"></i>
+                <span>@lang('site::storehouse.header.download')</span>
+            </button>
+            <a class="@cannot('create', \QuadStudio\Service\Site\Models\Storehouse::class) disabled @endcannot btn btn-ferroli d-scheme d-sm-inline-block mr-0 mr-sm-1 mb-1"
+               href="{{ route('admin.storehouses.create') }}"
+               role="button">
+                <i class="fa fa-magic"></i>
+                <span>@lang('site::messages.create') @lang('site::storehouse.storehouse')</span>
+            </a>
+            <a href="{{ route('admin') }}" class="d-block d-sm-inline-block btn btn-secondary mb-1">
                 <i class="fa fa-reply"></i>
                 <span>@lang('site::messages.back_admin')</span>
             </a>
@@ -104,12 +110,17 @@
                         <dl class="dl-horizontal mt-sm-2 mt-0">
                             <dt class="col-12 mb-0 text-left text-xl-right">
                                 @lang('site::storehouse.enabled')
-                                    <span>@bool(['bool' => $storehouse->enabled])@endbool</span>
+                                <span>@bool(['bool' => $storehouse->enabled])@endbool</span>
                             </dt>
                             <dt class="col-12 mb-0 text-left text-xl-right">
                                 @lang('site::storehouse.everyday')
-                                    <span>@bool(['bool' => $storehouse->everyday])@endbool</span>
+                                <span>@bool(['bool' => $storehouse->everyday])@endbool</span>
                             </dt>
+                            @if($storehouse->url)
+                            <dt class="col-12 mb-0 text-left text-xl-right">
+                                <code>{{$storehouse->url}}</code>
+                            </dt>
+                            @endif
                         </dl>
                     </div>
                 </div>
