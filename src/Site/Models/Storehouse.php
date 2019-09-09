@@ -170,10 +170,10 @@ class Storehouse extends Model
 
 		return $this->logs()->exists() && (
 				is_null($this->getAttribute('uploaded_at'))
-				|| $this->logs()->whereDate(
+				|| $this->logs()->where(
 					'created_at',
-					'>',
-					$this->getAttribute('uploaded_at')->toDateString()
+					'>=',
+					$this->getAttribute('uploaded_at')->toDateTimeString()
 				)->exists());
 	}
 
