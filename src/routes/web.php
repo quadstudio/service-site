@@ -414,10 +414,6 @@ Route::group(['middleware' => ['online']],
 							]);
 					});
 
-				Route::get('/test', function(){
-					return new \QuadStudio\Service\Site\Mail\Storehouse\UserStorehouseLogCreateEmail(\QuadStudio\Service\Site\Models\StorehouseLog::query()->latest()->first());
-				});
-
 				/*
 				|--------------------------------------------------------------------------
 				|                               АДМИНКА

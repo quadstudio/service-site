@@ -17,48 +17,42 @@
                     </label>
                 </div>
             </td>
-            <td class="text-center text-dark">@lang('site::storehouse_product.product_id')</td>
+            <td class="text-center text-dark">@lang('site::product.sku')</td>
             <td class="text-center text-dark">@lang('site::storehouse_product.quantity')</td>
         </tr>
         </thead>
         <tbody>
-        @foreach($data as $id => $rows)
-            <tr title="{{$id}}">
-                <td class="text-left @if(isset($errors[$id])) text-danger @else text-success @endif">
+        @foreach($data as $offer_id => $product)
+            <tr>
+                <td class="text-left">
                     <div class="custom-control custom-checkbox ">
                         <input type="checkbox"
-                               @if(isset($errors[$id]))
+                               @if(isset($exceptions[$offer_id]))
                                disabled
                                @else
                                checked
                                @endif
-                               class="custom-control-input storehouse-product-check @if(isset($errors[$id])) disabled @endif"
-                               id="check-{{$id}}"
-                               value="{{$rows['quantity']}}"
-                               name="check[{{$products[$id]['product_id']}}]">
-
-                        <label class="custom-control-label" for="check-{{$id}}">{{$products[$id]['name']}}</label>
+                               class="custom-control-input storehouse-product-check @if(isset($exceptions[$offer_id])) disabled @endif"
+                               id="check-{{$offer_id}}"
+                               @if(!isset($exceptions[$offer_id]))
+                               value="{{$product['quantity']}}"
+                               name="check[{{$product['product_id']}}]"
+                                @endif
+                        >
+                        <label class="custom-control-label" for="check-{{$offer_id}}">{{$product['name']}}</label>
                     </div>
+                    @if(isset($exceptions[$offer_id])) <div class="text-big badge badge-danger text-white">{{$exceptions[$offer_id]}}</div> @endif
                 </td>
-                @foreach($rows as $c => $col)
-                    @if(isset($errors[$id][$c]))
-                        <td data-toggle="tooltip" data-placement="top" title=""
-                            class="text-center text-big text-white bg-danger">
-                            {{$col}} ({{$errors[$id][$c]}})
-                        </td>
-                    @else
-                        <td class="text-center text-big text-success">
-                            {{$col}}
-                        </td>
-                    @endif
-                @endforeach
+                <td class="text-center text-big ">{{$product['sku']}}</td>
+                <td class="text-right text-big">{{$product['quantity']}}</td>
             </tr>
         @endforeach
         </tbody>
         <tfoot>
         <tr>
             <td colspan="3" class="text-center">
-                <button class="btn btn-ferroli" type="submit">@lang('site::storehouse_product.button.load')</button>
+                <button class="btn btn-ferroli" type="submit"><i class="fa fa-download"></i> @lang('site::storehouse_product.button.load')</button>
+                <a href="{{route('storehouses.show', request()->route('storehouse'))}}" class="btn btn-secondary"><i class="fa fa-close"></i> @lang('site::messages.cancel')</a>
             </td>
         </tr>
         </tfoot>

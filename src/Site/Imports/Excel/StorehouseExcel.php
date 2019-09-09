@@ -1,6 +1,6 @@
 <?php
 
-namespace QuadStudio\Service\Site\Imports\Excel;
+namespace QuadStudio\Service\Site\Imports\Url;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\BaseReader;
@@ -15,6 +15,7 @@ class StorehouseExcel
 	 * @param UploadedFile $path
 	 *
 	 * @return array
+	 * @throws \PhpOffice\PhpSpreadsheet\Exception
 	 * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
 	 */
     public function get(UploadedFile $path)

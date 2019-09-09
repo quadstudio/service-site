@@ -5,9 +5,8 @@ namespace QuadStudio\Service\Site\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use QuadStudio\Service\Site\Http\Requests\StorehouseRequest;
-use QuadStudio\Service\Site\Imports\Excel\StorehouseUrl;
-use QuadStudio\Service\Site\Imports\Excel\StorehouseExcel;
-use QuadStudio\Service\Site\Repositories\StorehouseLogRepository;
+use QuadStudio\Service\Site\Imports\Url\StorehouseExcel;
+use QuadStudio\Service\Site\Site\Imports\Url\StorehouseXml;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Storehouse extends Model
@@ -75,15 +74,34 @@ class Storehouse extends Model
 	}
 
 	/**
-	 * @return bool
+	 * Обновить остатки из файла
+	 *
+	 * @param array $params
 	 */
-	public function updateFromUrl()
+	public function updateFromUrl(array $params = [])
 	{
-		$data = (new StorehouseUrl())->get($this);
-		$this->products()->delete();
-		$this->products()->createMany($data);
 
-		return $this->update(['uploaded_at' => date('d.m.Y H:i:s')]);
+		try {
+			$this->update(['tried_at' => now()]);
+			$storehouseXml = new StorehouseXml($this->getAttribute('url'));
+			$storehouseXml->import();
+
+			if ($storehouseXml->values()->isNotEmpty()) {
+				$this->products()->delete();
+				$this->products()->createMany($storehouseXml->values()->toArray());
+				$this->update(['uploaded_at' => date('d.m.Y H:i:s')]);
+			}
+
+			if (key_exists('log', $params) && $params['log'] === true && $storehouseXml->errors()->isNotEmpty()) {
+				$this->createLog($storehouseXml->errors()->toJson(JSON_UNESCAPED_UNICODE));
+			}
+
+		} catch (\Exception $e) {
+			//$this->failed($e);
+		} finally {
+			$this->update(['tried_at' => null]);
+		}
+
 	}
 
 	/**
@@ -135,6 +153,7 @@ class Storehouse extends Model
 			});
 	}
 
+
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
 	 */
@@ -148,13 +167,14 @@ class Storehouse extends Model
 	 */
 	public function hasLatestLogErrors()
 	{
+
 		return $this->logs()->exists() && (
 				is_null($this->getAttribute('uploaded_at'))
 				|| $this->logs()->whereDate(
 					'created_at',
 					'>',
 					$this->getAttribute('uploaded_at')->toDateString()
-				));
+				)->exists());
 	}
 
 	public function latestLog()

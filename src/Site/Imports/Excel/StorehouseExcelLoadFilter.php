@@ -1,6 +1,6 @@
 <?php
 
-namespace QuadStudio\Service\Site\Imports\Excel;
+namespace QuadStudio\Service\Site\Imports\Url;
 
 use PhpOffice\PhpSpreadsheet\Reader\IReadFilter;
 

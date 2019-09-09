@@ -8,7 +8,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\BaseReader;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use QuadStudio\Service\Site\Models\Product;
-use QuadStudio\Service\Site\Imports\Excel\StorehouseExcelLoadFilter;
+use QuadStudio\Service\Site\Imports\Url\StorehouseExcelLoadFilter;
 
 class StorehouseExcelLoad implements Rule
 {

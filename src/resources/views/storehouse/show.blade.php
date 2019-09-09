@@ -181,7 +181,6 @@
                         <span class="invalid-feedback">{!! $errors->first('check') !!}</span>
                     </div>
                 </div>
-                {{--{{dump($errors)}}--}}
             </div>
         </div>
         @include('site::storehouse.products', compact('products', 'repository'))
