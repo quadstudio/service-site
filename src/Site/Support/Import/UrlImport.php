@@ -2,10 +2,10 @@
 
 namespace QuadStudio\Service\Site\Site\Support\Import;
 
-use Illuminate\Support\Collection;
-use QuadStudio\Service\Site\Site\Contracts\Importable;
 
-abstract class UrlImport implements Importable
+use QuadStudio\Service\Site\Site\Support\Import;
+
+abstract class UrlImport extends Import
 {
 
 	/**
@@ -13,20 +13,7 @@ abstract class UrlImport implements Importable
 	 */
 	private $url;
 
-	/**
-	 * @var \Illuminate\Support\Collection
-	 */
-	protected $errors;
 
-	/**
-	 * @var \Illuminate\Support\Collection
-	 */
-	protected $data;
-
-	/**
-	 * @var \Illuminate\Support\Collection
-	 */
-	protected $values;
 
 	/**
 	 * UrlImport constructor.
@@ -60,39 +47,7 @@ abstract class UrlImport implements Importable
 		return $this->url;
 	}
 
-	/**
-	 * @return Collection
-	 */
-	final public function errors(): Collection
-	{
-		return $this->errors;
-	}
 
-	/**
-	 * @return Collection
-	 */
-	final public function data(): Collection
-	{
-		return $this->data;
-	}
-
-	/**
-	 * @return Collection
-	 */
-	final public function values(): Collection
-	{
-		return $this->values;
-	}
-
-	/**
-	 * @return void
-	 */
-	final public function reset(): void
-	{
-		$this->data = collect([]);
-		$this->values = collect([]);
-		$this->errors = collect([]);
-	}
 
 
 }

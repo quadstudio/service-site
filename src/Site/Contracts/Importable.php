@@ -28,5 +28,10 @@ interface Importable
 	 */
 	function values(): Collection;
 
+	/**
+	 * @return Importable
+	 */
+	function reset(): self;
+
 
 }

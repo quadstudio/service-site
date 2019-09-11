@@ -125,6 +125,7 @@ class Storehouse extends Model
 	 * @param UploadedFile $path
 	 *
 	 * @return bool
+	 * @throws \PhpOffice\PhpSpreadsheet\Exception
 	 * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
 	 */
 	public function updateFromExcel(UploadedFile $path)
