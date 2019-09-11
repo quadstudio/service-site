@@ -47,6 +47,7 @@ class EquipmentController extends Controller
         }
         $products = $equipment->products()
             ->where('enabled', 1)
+	        ->where(config('site.check_field'), 1)
             ->orderBy('name')
             ->get();
         $datasheets = Datasheet::query()

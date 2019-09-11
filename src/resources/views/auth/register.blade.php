@@ -13,6 +13,7 @@
 @section('content')
     <div class="container">
         @if ($errors->any())
+            <h4 class="alert-heading">@lang('site::register.help.mail')</h4>
             <div class="alert alert-danger" role="alert">
                 <h4 class="alert-heading">@lang('site::messages.has_error')</h4>
                 <ul>
@@ -765,7 +766,9 @@
                 <div class="text-center">
                     <a class="d-block" href="{{route('login')}}">@lang('site::user.already')</a>
                 </div>
-
+                <div class="text-center mb-3">
+                    <h5>@lang('site::register.help.mail')</h5>
+                </div>
             </div>
         </div>
     </div>

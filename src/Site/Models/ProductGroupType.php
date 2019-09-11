@@ -9,7 +9,7 @@ class ProductGroupType extends Model
     /**
      * @var string
      */
-    protected $table;
+    protected $table = 'product_group_types';
 
     protected $fillable = ['name', 'title', 'icon', 'check_cart'];
 
@@ -19,15 +19,6 @@ class ProductGroupType extends Model
         'title'      => 'string',
         'check_cart' => 'boolean',
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'product_group_types';
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

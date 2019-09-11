@@ -24,7 +24,7 @@ class User extends Authenticatable implements Addressable
      */
     protected $fillable = [
         'name', 'email', 'password', 'dealer',
-        'display', 'active', 'image_id', 'only_ferroli',
+        'display', 'active', 'image_id', 'only_ferroli', 'verified',
         'warehouse_id', 'currency_id', 'region_id'
     ];
 

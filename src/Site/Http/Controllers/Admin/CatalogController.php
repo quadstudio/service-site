@@ -94,11 +94,13 @@ class CatalogController extends Controller
     }
 
 
-    /**
-     * @param CatalogRequest $request
-     * @param  Catalog $catalog
-     * @return \Illuminate\Http\Response
-     */
+	/**
+	 * @param CatalogRequest $request
+	 * @param  Catalog $catalog
+	 *
+	 * @return \Illuminate\Http\Response
+	 * @throws \Illuminate\Auth\Access\AuthorizationException
+	 */
     public function edit(CatalogRequest $request, Catalog $catalog)
     {
         $this->authorize('update', $catalog);

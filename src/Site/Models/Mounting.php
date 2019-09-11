@@ -9,11 +9,15 @@ use QuadStudio\Service\Site\Contracts\Messagable;
 
 class Mounting extends Model implements Messagable
 {
-    /**
-     * @var string
-     */
-    protected $table;
 
+	/**
+	 * @var string
+	 */
+	protected $table = 'mountings';
+
+	/**
+	 * @var array
+	 */
     protected $fillable = [
         'status_id', 'serial_id', 'product_id',
         'source_id', 'source_other',
@@ -25,6 +29,10 @@ class Mounting extends Model implements Messagable
         'address', 'social_url',
         'social_enabled', 'comment'
     ];
+
+	/**
+	 * @var array
+	 */
     protected $casts = [
 
         'serial_id'       => 'string',
@@ -49,19 +57,13 @@ class Mounting extends Model implements Messagable
         'comment'         => 'string',
     ];
 
+	/**
+	 * @var array
+	 */
     protected $dates = [
         'date_trade',
         'date_mounting'
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'mountings';
-    }
 
     protected static function boot()
     {

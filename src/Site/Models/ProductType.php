@@ -7,21 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ProductType extends Model
 {
 
-    /**
-     * @var string
-     */
-    protected $table;
-
     protected $fillable = ['name', 'description'];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'product_types';
-    }
 
     /**
      * Товары

@@ -8,24 +8,11 @@ class Template extends Model
 {
 
     /**
-     * @var string
-     */
-    protected $table;
-    /**
      * @var array
      */
     protected $fillable = [
         'title', 'name', 'type_id', 'content'
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'templates';
-    }
 
     /**
      * Тип шаблона

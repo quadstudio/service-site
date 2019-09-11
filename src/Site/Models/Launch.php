@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Launch extends Model
 {
-    /**
-     * @var string
-     */
-    protected $table;
+
+	/**
+	 * @var string
+	 */
+	protected $table = 'launches';
+
     /**
      * @var array
      */
@@ -20,6 +22,9 @@ class Launch extends Model
         'document_who',
     ];
 
+	/**
+	 * @var array
+	 */
     protected $casts = [
         'name'            => 'string',
         'country_id'      => 'integer',
@@ -31,18 +36,12 @@ class Launch extends Model
         'document_who'    => 'string',
     ];
 
+	/**
+	 * @var array
+	 */
     protected $dates = [
         'document_date'
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'launches';
-    }
 
     protected static function boot()
     {

@@ -6,21 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductGroup extends Model
 {
-    /**
-     * @var string
-     */
-    protected $table;
 
     protected $fillable = ['id', 'name', 'type_id'];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'product_groups';
-    }
 
     /**
      * Товары

@@ -7,19 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class TemplateType extends Model
 {
 
-    /**
-     * @var string
-     */
-    protected $table;
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'template_types';
-    }
+	/**
+	 * @var string
+	 */
+	protected $table = 'template_types';
 
     /**
      * Шаблоны

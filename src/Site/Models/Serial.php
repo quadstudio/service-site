@@ -6,21 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Serial extends Model
 {
-    /**
-     * @var string
-     */
-    protected $table;
+
+	/**
+	 * @var string
+	 */
+	protected $table = 'serials';
 
     public $incrementing = false;
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'serials';
-    }
 
     /**
      * Тип файла

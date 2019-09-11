@@ -10,21 +10,12 @@ class PriceType extends Model
     /**
      * @var string
      */
-    protected $table;
+    protected $table = 'price_types';
 
     public $incrementing = false;
     public $timestamps = false;
 
     protected $fillable = ['display_name'];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'price_types';
-    }
 
     /**
      * Валюта цены

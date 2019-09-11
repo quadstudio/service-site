@@ -21,7 +21,7 @@ class MemberTypeSelectFilter extends WhereFilter
     public function options(): array
     {
         $options = EventType::query()->orderBy('sort_order');
-        if (auth()->user()->admin == 0) {
+        if (!auth()->check() || auth()->user()->admin == 0) {
             $options->where(config('site.check_field'), 1);
         }
         return $options

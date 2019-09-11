@@ -9,20 +9,8 @@ class Shape extends Model
     /**
      * @var string
      */
-    protected $table;
-    /**
-     * @var array
-     */
-    protected $fillable = ['element_id', 'shape', 'coords'];
 
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'shapes';
-    }
+    protected $fillable = ['element_id', 'shape', 'coords'];
 
     /**
      * Элемент схемы

@@ -27,7 +27,7 @@
                 {!! $event->annotation !!}
             </p>
         </div><div class="col-md-2 ">
-			<a class="btn btn-ferroli" href="{{route('members.create', ['event_id' => $event->id])}}">@lang('site::event.register')</a>
+			<a class="btn btn-ferroli" href="{{route('members.register', $event)}}">@lang('site::event.register')</a>
 		</div>
     </div>
 </div></div></div>

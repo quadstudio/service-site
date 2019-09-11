@@ -13,10 +13,6 @@ use QuadStudio\Service\Site\Facades\Site;
 
 class Repair extends Model implements Messagable
 {
-    /**
-     * @var string
-     */
-    protected $table;
 
     protected $fillable = [
         'serial_id', 'product_id', 'contragent_id',
@@ -64,15 +60,6 @@ class Repair extends Model implements Messagable
         'date_launch',
         'date_call',
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'repairs';
-    }
 
     protected static function boot()
     {

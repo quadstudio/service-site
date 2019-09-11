@@ -7,19 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class MemberStatus extends Model
 {
 
-    /**
-     * @var string
-     */
-    protected $table;
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'member_statuses';
-    }
+	/**
+	 * @var string
+	 */
+	protected $table = 'member_statuses';
 
     /**
      * Заявки

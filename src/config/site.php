@@ -8,6 +8,13 @@ return [
     */
     'check_field'   => 'show_ferroli',
 
+	/*
+    |--------------------------------------------------------------------------
+    | Требовать наличие сертификата у инженера
+    |--------------------------------------------------------------------------
+    */
+	'engineer_certificate_required'   => false,
+
     /*
     |--------------------------------------------------------------------------
     | Бренд по умолчанию для проверки
@@ -64,7 +71,7 @@ return [
         'accept'   => 'image/jpeg',
         'name'     => 'scheme[image_id]',
         'dot_name' => 'scheme.image_id',
-        'size'     => 5000000, // 5мб
+        'size'     => 15000000, // 15мб
         'preview'  => [
             'width'  => 150,
             'height' => 150,
@@ -87,7 +94,7 @@ return [
         'accept'   => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         'name'     => 'contract_type[file_id]',
         'dot_name' => 'contract_type.file_id',
-        'size'     => 5000000, // 5мб
+        'size'     => 15000000, // 15мб
     ],
 
     'catalogs' => [
@@ -97,7 +104,7 @@ return [
         'accept'   => 'image/jpeg',
         'name'     => 'catalog[image_id]',
         'dot_name' => 'catalog.image_id',
-        'size'     => 5000000, // 5мб
+        'size'     => 15000000, // 15мб
         'preview'  => [
             'width'  => 150,
             'height' => 150,
@@ -119,7 +126,7 @@ return [
         'accept'   => 'application/pdf',
         'name'     => 'datasheet[file_id]',
         'dot_name' => 'datasheet.file_id',
-        'size'     => 5000000, // 5мб
+        'size'     => 15000000, // 15мб
     ],
 
 
@@ -130,7 +137,7 @@ return [
         'accept'   => 'image/jpeg,image/png',
         'name'     => 'event[image_id]',
         'dot_name' => 'event.image_id',
-        'size'     => 5000000, // 5мб
+        'size'     => 15000000, // 15мб
         'preview'  => [
             'width'  => 130,
             'height' => 70,
@@ -152,7 +159,7 @@ return [
         'accept'   => 'image/jpeg,image/png',
         'name'     => 'event_type[image_id]',
         'dot_name' => 'event_type.image_id',
-        'size'     => 5000000, // 5мб
+        'size'     => 15000000, // 15мб
         'preview'  => [
             'width'  => 130,
             'height' => 70,
@@ -174,7 +181,7 @@ return [
         'accept'   => 'image/jpeg',
         'name'     => 'images[]',
         'dot_name' => 'images',
-        'size'     => 5000000, //
+        'size'     => 15000000, //
         'preview'  => [
             'width'  => 150,
             'height' => 150,
@@ -196,7 +203,7 @@ return [
         'accept'   => 'image/jpeg',
         'name'     => 'images[]',
         'dot_name' => 'images',
-        'size'     => 5000000, //
+        'size'     => 15000000, //
         'preview'  => [
             'width'  => 150,
             'height' => 150,
@@ -218,7 +225,7 @@ return [
         'accept'   => 'image/jpeg',
         'name'     => 'announcement[image_id]',
         'dot_name' => 'announcement.image_id',
-        'size'     => 5000000, // 5мб
+        'size'     => 15000000, // 5мб
         'preview'  => [
             'width'  => 130,
             'height' => 70,

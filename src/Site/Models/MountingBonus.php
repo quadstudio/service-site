@@ -6,10 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class MountingBonus extends Model
 {
-    /**
-     * @var string
-     */
-    protected $table;
 
     protected $fillable = [
         'product_id', 'value', 'social',
@@ -20,15 +16,6 @@ class MountingBonus extends Model
         'value'      => 'integer',
         'social'     => 'integer',
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'mounting_bonuses';
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

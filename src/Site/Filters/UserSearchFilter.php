@@ -13,6 +13,14 @@ class UserSearchFilter extends SearchFilter
     protected $render = true;
     protected $search = 'search_user';
 
+	/**
+	 * @var array
+	 */
+	protected $restricted = [
+		"'", '"', '!', '#', '$', '%', '^', '&', '*', '?', '=', '+', ':',
+		'|', '`', '№', '~', '!', '<', '>', '{', '}', '[', ']', '\\', '/'
+	];
+
     public function label()
     {
         return trans('site::user.placeholder.search');

@@ -6,10 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class StorehouseProduct extends Model
 {
-    /**
-     * @var string
-     */
-    protected $table;
+
     /**
      * @var array
      */
@@ -22,16 +19,6 @@ class StorehouseProduct extends Model
         'product_id' => 'string',
         'quantity' => 'integer',
     ];
-
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'storehouse_products';
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

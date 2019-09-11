@@ -7,21 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Organization extends Model
 {
     public $incrementing = false;
-    /**
-     * @var string
-     */
-    protected $table;
 
     protected $fillable = ['account_id'];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'organizations';
-    }
 
     /**
      * Расчетный счет

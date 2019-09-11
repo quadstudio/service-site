@@ -6,23 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Schedule extends Model
 {
-    /**
-     * @var string
-     */
-    protected $table;
 
+	/**
+	 * @var string
+	 */
+	protected $table = 'schedules';
+
+	/**
+	 * @var array
+	 */
     protected $fillable = [
         'status', 'action_id', 'url'
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'schedules';
-    }
 
     /**
      * Get all of the owning contactable models.

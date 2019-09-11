@@ -6,23 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pointer extends Model
 {
-    /**
-     * @var string
-     */
-    protected $table;
+
     /**
      * @var array
      */
     protected $fillable = ['element_id', 'x', 'y'];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'pointers';
-    }
 
     /**
      * Элемент схемы

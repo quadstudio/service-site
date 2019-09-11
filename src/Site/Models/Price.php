@@ -9,20 +9,6 @@ class Price extends Model
 {
 
     /**
-     * @var string
-     */
-    protected $table;
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'prices';
-    }
-
-    /**
      * Currency
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

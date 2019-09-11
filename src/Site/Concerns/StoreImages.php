@@ -15,11 +15,14 @@ use QuadStudio\Service\Site\Models\Image;
 
 trait StoreImages
 {
-    /**
-     * @param \QuadStudio\Service\Site\Http\Requests\ImageRequest $request
-     * @param \QuadStudio\Service\Site\Contracts\Imageable $imageable
-     * @return \Illuminate\Http\JsonResponse
-     */
+
+	/**
+	 * @param \QuadStudio\Service\Site\Http\Requests\ImageRequest $request
+	 * @param \QuadStudio\Service\Site\Contracts\Imageable $imageable
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 * @throws \Throwable
+	 */
     public function storeImages(ImageRequest $request, Imageable $imageable = null)
     {
 

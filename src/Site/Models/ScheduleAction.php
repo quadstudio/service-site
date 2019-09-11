@@ -6,22 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class ScheduleAction extends Model
 {
-    /**
-     * @var string
-     */
-    protected $table;
+
+	/**
+	 * @var string
+	 */
+	protected $table = 'schedule_actions';
 
     protected $fillable = [
         'name'
     ];
 
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'schedule_actions';
-    }
 
 }

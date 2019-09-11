@@ -7,24 +7,18 @@ use Illuminate\Support\Carbon;
 
 class Message extends Model
 {
+
+	/**
+	 * @var string
+	 */
+	protected $table = 'messages';
+
+	/**
+	 * @var array
+	 */
     protected $fillable = [
         'text', 'receiver_id', 'received'
     ];
-
-    /**
-     * @var string
-     */
-    protected $table;
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'messages';
-    }
-
 
     /**
      * Get all of the owning contactable models.

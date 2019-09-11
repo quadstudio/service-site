@@ -13,20 +13,11 @@ class Participant extends Model
     /**
      * @var string
      */
-    protected $table;
+    protected $table = 'participants';
 
     protected $fillable = [
         'name', 'headposition', 'phone', 'email', 'country_id'
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'participants';
-    }
 
     /**
      * Заявка

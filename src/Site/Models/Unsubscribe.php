@@ -10,19 +10,10 @@ class Unsubscribe extends Model
     /**
      * @var string
      */
-    protected $table;
+    protected $table = 'unsubscribes';
     /**
      * @var array
      */
     protected $fillable = ['email'];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'unsubscribes';
-    }
 
 }

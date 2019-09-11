@@ -10,11 +10,14 @@ class Member extends Model
 {
     use Phoneable;
 
-    /**
-     * @var string
-     */
-    protected $table;
+	/**
+	 * @var string
+	 */
+	protected $table = 'members';
 
+	/**
+	 * @var array
+	 */
     protected $fillable = [
         'type_id', 'event_id', 'region_id', 'city',
         'name', 'contact', 'phone', 'email', 'count',
@@ -22,9 +25,9 @@ class Member extends Model
         'verified', 'verify_token', 'country_id',
         'show_ferroli', 'show_lamborghini'
     ];
-
-    //protected $dateFormat = 'd.m.Y H:i:s';
-
+	/**
+	 * @var array
+	 */
     protected $casts = [
         'type_id'          => 'integer',
         'event_id'         => 'integer',
@@ -45,16 +48,6 @@ class Member extends Model
         'verified'         => 'boolean',
         'verify_token'     => 'string',
     ];
-
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'members';
-    }
 
     public static function boot()
     {

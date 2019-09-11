@@ -3,7 +3,7 @@
     <option @if(isset($engineer_id) && $engineer_id == $engineer->id)
             selected
             @endif
-            @if($engineer->certificates()->where('type_id', $certificate_type_id)->doesntExist())
+            @if(config('site.engineer_certificate_required') && $engineer->certificates()->where('type_id', $certificate_type_id)->doesntExist())
             disabled
             @endif
             value="{{ $engineer->id }}">

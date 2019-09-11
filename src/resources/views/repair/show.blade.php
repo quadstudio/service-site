@@ -146,11 +146,12 @@
             <div class="card-body">
                 <h5 class="card-title">@lang('site::repair.header.org')</h5>
                 <dl class="row">
-
-                    <dt class="@if($fails->contains('field', 'trade_id')) bg-danger text-white @endif col-sm-4 text-left text-sm-right">@lang('site::repair.trade_id')</dt>
-                    <dd class="col-sm-8">
-                        <a href="{{route('trades.edit', $repair->trade)}}">{{ $repair->trade->name }}</a>
-                    </dd>
+                    @if($repair->trade)
+                        <dt class="@if($fails->contains('field', 'trade_id')) bg-danger text-white @endif col-sm-4 text-left text-sm-right">@lang('site::repair.trade_id')</dt>
+                        <dd class="col-sm-8">
+                            <a href="{{route('trades.edit', $repair->trade)}}">{{ $repair->trade->name }}</a>
+                        </dd>
+                    @endif
 
                     <dt class="@if($fails->contains('field', 'date_trade')) bg-danger text-white @endif col-sm-4 text-left text-sm-right">@lang('site::repair.date_trade')</dt>
                     <dd class="col-sm-8">{{ $repair->date_trade->format('d.m.Y') }}</dd>

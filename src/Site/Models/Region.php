@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Region extends Model
 {
 
+	/**
+	 * @var string
+	 */
+	protected $table = 'regions';
+
     /**
      * @var bool
      */
@@ -15,19 +20,6 @@ class Region extends Model
      * @var bool
      */
     public $incrementing = false;
-    /**
-     * @var string
-     */
-    protected $table;
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'regions';
-    }
 
     /**
      * Many-to-Many relations with address model.

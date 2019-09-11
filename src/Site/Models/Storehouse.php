@@ -13,10 +13,6 @@ class Storehouse extends Model
 {
 
 	/**
-	 * @var string
-	 */
-	protected $table = 'storehouses';
-	/**
 	 * @var array
 	 */
 	protected $fillable = ['name', 'url', 'enabled', 'everyday', 'uploaded_at', 'tried_at'];

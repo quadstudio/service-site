@@ -6,22 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class RepairFail extends Model
 {
-    /**
-     * @var string
-     */
-    protected $table;
+
+	/**
+	 * @var string
+	 */
+	protected $table = 'repair_fails';
 
     protected $fillable = [
         'field', 'comment'
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'repair_fails';
-    }
 
 }

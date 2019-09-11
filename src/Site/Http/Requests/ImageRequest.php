@@ -31,7 +31,7 @@ class ImageRequest extends FormRequest
                         'required',
                         'image',
                         'mimes:' . config("site.{$this->input('storage')}.mimes", 'jpg,jpeg,png,gif'),
-                        'max:' . config("site.{$this->input('storage')}.size", 5000000)
+                        'max:' . config("site.{$this->input('storage')}.size", 15000000)
                     ]
                 ];
             }

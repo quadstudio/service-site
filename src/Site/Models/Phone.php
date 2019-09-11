@@ -11,20 +11,6 @@ class Phone extends Model
     ];
 
     /**
-     * @var string
-     */
-    protected $table;
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'phones';
-    }
-
-    /**
      * @param $value
      * @return mixed|null
      */

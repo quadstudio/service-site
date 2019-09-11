@@ -9,10 +9,7 @@ class Trade extends Model
     /**
      * @var string
      */
-    protected $table;
-    /**
-     * @var array
-     */
+
     protected $fillable = [
         'name', 'country_id', 'phone', 'address'
     ];
@@ -24,15 +21,6 @@ class Trade extends Model
         'phone'      => 'string',
         'address'    => 'string',
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'trades';
-    }
 
     protected static function boot()
     {

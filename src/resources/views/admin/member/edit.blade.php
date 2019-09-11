@@ -86,7 +86,7 @@
 
                                     <label class="control-label" for="status_id">@lang('site::member.status_id')</label>
                                     <select class="form-control{{  $errors->has('member.event_id') ? ' is-invalid' : '' }}"
-                                            name="member.status_id"
+                                            name="member[status_id]"
                                             id="status_id">
                                         @foreach($member_statuses as $member_status)
                                             <option

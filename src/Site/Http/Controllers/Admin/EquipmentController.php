@@ -94,7 +94,7 @@ class EquipmentController extends Controller
         $parent_catalog_id = !is_null($catalog) ? $catalog->id : null;
         $tree = $this->catalogs->tree();
 
-        return view('site::admin.equipment.create', compact('images', 'currencies', 'parent_catalog_id', 'tree'));
+        return view('site::admin.equipment.create', compact('currencies', 'parent_catalog_id', 'tree'));
     }
 
 
@@ -131,7 +131,7 @@ class EquipmentController extends Controller
         $currencies = $this->currencies->all();
         $tree = $this->catalogs->tree();
 
-        return view('site::admin.equipment.edit', compact('images', 'currencies', 'tree', 'equipment'));
+        return view('site::admin.equipment.edit', compact('currencies', 'tree', 'equipment'));
     }
 
     /**

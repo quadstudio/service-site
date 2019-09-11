@@ -7,11 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Mounter extends Model
 {
-    /**
-     * @var string
-     */
-    protected $table;
 
+	/**
+	 * @var string
+	 */
+	protected $table = 'mounters';
+
+	/**
+	 * @var array
+	 */
     protected $fillable = [
         'status_id', 'mounter_at',
         'equipment_id', 'product_id',
@@ -19,6 +23,10 @@ class Mounter extends Model
         'client', 'phone',
         'address', 'comment'
     ];
+
+	/**
+	 * @var array
+	 */
     protected $casts = [
 
         'status_id'       => 'integer',
@@ -34,18 +42,12 @@ class Mounter extends Model
         'comment'         => 'string',
     ];
 
+	/**
+	 * @var array
+	 */
     protected $dates = [
         'mounter_at'
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'mounters';
-    }
 
     /**
      * @param $value

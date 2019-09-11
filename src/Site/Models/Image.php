@@ -10,25 +10,13 @@ class Image extends Model
 {
 
     use Sortable;
-    /**
-     * @var string
-     */
-    protected $table;
+
     /**
      * @var array
      */
     protected $fillable = [
         'path', 'name', 'mime', 'size', 'sort_order', 'storage'
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'images';
-    }
 
     public static function boot()
     {

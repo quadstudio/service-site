@@ -7,25 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class OrderItem extends Model
 {
 
-    /**
-     * @var string
-     */
-    protected $table;
-
     protected $fillable = [
         'product_id', 'name', 'quantity', 'price',
         'currency_id', 'sku', 'weight', 'brand_id', 'unit',
         'type_id', 'service', 'availability'
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'order_items';
-    }
 
     /**
      * @return mixed

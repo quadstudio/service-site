@@ -91,17 +91,8 @@
                         </div>
 
                         <div class="mb-2">
-                            <span class="text-muted">@lang('site::contragent.organization_id'):</span>&nbsp;
-                            <span class="text-dark">
-                                @if($order->contragent->organization)
-                                    <a href="{{route('admin.organizations.show', $order->contragent->organization)}}">{{ $order->contragent->organization->name }}</a>
-                                @else
-                                    [
-                                    <a href="{{route('admin.contragents.edit', [$order->contragent, '#contragent_organization_id'])}}">@lang('site::messages.select')</a>
-                                    ]
-                                @endif
-
-                            </span>
+                            <span class="text-muted">@lang('site::order.address_id'):</span>&nbsp;
+                            <span class="text-dark">{{ optional($order->address)->name }}</span>
                         </div>
 
                         <div class="mb-2">

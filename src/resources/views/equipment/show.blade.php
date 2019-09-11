@@ -94,7 +94,7 @@
                          id="equipments"
                          role="tabpanel"
                          aria-labelledby="equipments-tab">
-                        @foreach($equipment->products()->where('enabled', 1)->where('active', 1)->orderBy('name')->get() as $product)
+                        @foreach($equipment->availableProducts()->get() as $product)
                             <div class="row border-bottom py-2">
                                 <div class="col-12 col-md-6">
                                     <a class="d-block text-large"
@@ -132,7 +132,7 @@
                                     <a class="btn btn-sm btn-ferroli"
                                        href="{{route('products.index', ['filter[boiler_id]' => $product->id])}}">
                                         @lang('site::messages.show') <span
-                                                class="badge badge-light">{{$product->details()->whereEnabled(1)->whereActive(1)->count()}}</span></a>
+                                                class="badge badge-light">{{$product->availableDetails()->count()}}</span></a>
                                 </div>
                             </div>
                         @endforeach

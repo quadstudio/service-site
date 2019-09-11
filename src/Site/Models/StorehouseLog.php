@@ -11,10 +11,7 @@ class StorehouseLog extends Model
 
 	const TYPE_ERROR = 'error';
 	const TYPE_SUCCESS = 'success';
-	/**
-	 * @var string
-	 */
-	protected $table = 'storehouse_logs';
+
 	/**
 	 * @var array
 	 */

@@ -7,23 +7,11 @@ use QuadStudio\Service\Site\Facades\Site;
 
 class Part extends Model
 {
-    /**
-     * @var string
-     */
-    protected $table;
 
     protected $fillable = [
         'product_id', 'count', 'cost'
     ];
 
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'parts';
-    }
     protected static function boot()
     {
         static::created(function (Part $part) {

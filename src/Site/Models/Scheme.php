@@ -7,25 +7,18 @@ use QuadStudio\Service\Site\Contracts\SingleImageable;
 
 class Scheme extends Model implements SingleImageable
 {
-    /**
-     * @var string
-     */
-    protected $table;
+
+	/**
+	 * @var string
+	 */
+	protected $table = 'schemes';
+
     /**
      * @var array
      */
     protected $fillable = [
         'block_id', 'datasheet_id', 'image_id'
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'schemes';
-    }
 
     /**
      * Блок

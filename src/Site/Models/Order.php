@@ -10,21 +10,7 @@ class Order extends Model implements Messagable
 {
     use Schedulable;
 
-    /**
-     * @var string
-     */
-    protected $table;
-
     protected $fillable = ['status_id', 'contragent_id', 'address_id', 'contacts_comment'];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'orders';
-    }
 
     /**
      * @return mixed
@@ -126,9 +112,9 @@ class Order extends Model implements Messagable
         if (auth()->user()->admin == 1) {
             $route = 'admin.orders.show';
         } elseif ($this->address->addressable->id == auth()->user()->getAuthIdentifier()) {
-            $route = 'orders.show';
+	        $route = 'distributors.show';
         } else {
-            $route = 'distributors.show';
+	        $route = 'orders.show';
         }
 
         return route($route, $this);
