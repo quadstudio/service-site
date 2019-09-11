@@ -12,22 +12,13 @@ class Element extends Model
     /**
      * @var string
      */
-    protected $table;
+    protected $table = 'elements';
     /**
      * @var array
      */
     protected $fillable = [
         'product_id', 'number', 'sort_order'
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'elements';
-    }
 
     /**
      * Схема

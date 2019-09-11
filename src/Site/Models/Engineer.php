@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Engineer extends Model
 {
-    /**
-     * @var string
-     */
-    protected $table;
+
+	/**
+	 * @var string
+	 */
+	protected $table = 'engineers';
+
     /**
      * @var array
      */
@@ -23,16 +25,6 @@ class Engineer extends Model
         'phone'      => 'string',
         'address'    => 'string',
     ];
-
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'engineers';
-    }
 
     protected static function boot()
     {

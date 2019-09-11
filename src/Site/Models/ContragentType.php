@@ -9,20 +9,11 @@ class ContragentType extends Model
     /**
      * @var string
      */
-    protected $table;
+    protected $table = 'contragent_types';
 
     /**
      * @var bool
      */
     public $timestamps = false;
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'contragent_types';
-    }
 
 }

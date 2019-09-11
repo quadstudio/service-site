@@ -9,7 +9,7 @@ class ActDetail extends Model
     /**
      * @var string
      */
-    protected $table;
+    protected $table = 'act_details';
 
     protected $fillable = [
         'our', 'name', 'inn', 'kpp', 'okpo',
@@ -17,15 +17,6 @@ class ActDetail extends Model
         'nds_act', 'address', 'nds_value',
         'guid'
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'act_details';
-    }
 
     /**
      * Акт выполненных работ

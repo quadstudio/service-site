@@ -12,7 +12,7 @@ class Contract extends Model
     /**
      * @var string
      */
-    protected $table;
+    protected $table = 'contracts';
 
     protected $fillable = [
         'contragent_id', 'date', 'territory',
@@ -34,15 +34,6 @@ class Contract extends Model
     protected $dates = [
         'date',
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'contracts';
-    }
 
     protected static function boot()
     {

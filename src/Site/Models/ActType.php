@@ -9,16 +9,7 @@ class ActType extends Model
     /**
      * @var string
      */
-    protected $table;
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'act_types';
-    }
+    protected $table = 'act_types';
 
     /**
      * Акты

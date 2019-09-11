@@ -14,16 +14,7 @@ class Currency extends Model
     /**
      * @var string
      */
-    protected $table;
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'currencies';
-    }
+    protected $table = 'currencies';
 
     /**
      * История курсов

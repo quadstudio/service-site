@@ -9,21 +9,12 @@ class CertificateType extends Model
     /**
      * @var string
      */
-    protected $table;
+    protected $table = 'certificate_types';
 
     /**
      * @var bool
      */
     public $timestamps = false;
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'certificate_types';
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

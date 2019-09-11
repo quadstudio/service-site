@@ -11,11 +11,15 @@ class EventType extends Model implements SingleImageable
 {
 
     use Sortable;
-    /**
-     * @var string
-     */
-    protected $table;
 
+	/**
+	 * @var string
+	 */
+	protected $table = 'event_types';
+
+	/**
+	 * @var array
+	 */
     protected $fillable = [
         'name', 'annotation', 'description',
         'route', 'sort_order', 'image_id',
@@ -23,6 +27,9 @@ class EventType extends Model implements SingleImageable
         'show_ferroli', 'show_lamborghini'
     ];
 
+	/**
+	 * @var array
+	 */
     protected $casts = [
         'name'             => 'string',
         'title'            => 'string',
@@ -33,20 +40,6 @@ class EventType extends Model implements SingleImageable
         'show_lamborghini' => 'boolean',
         'sort_order'       => 'integer',
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'event_types';
-    }
-
-//    public function resolveRouteBinding($value)
-//    {
-//        return $this->where('alias', $value)->first() ?? abort(404);
-//    }
 
     public function scopeActive($query)
     {

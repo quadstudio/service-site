@@ -9,18 +9,9 @@ class Difficulty extends Model
     /**
      * @var string
      */
-    protected $table;
+    protected $table = 'difficulties';
 
     protected $fillable = ['name', 'cost', 'active', 'sort_order'];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'difficulties';
-    }
 
     /**
      * Currency

@@ -9,20 +9,11 @@ class Analog extends Model
     /**
      * @var string
      */
-    protected $table;
+    protected $table = 'analogs';
 
     protected $fillable = [
         'product_id', 'analog_id', 'ratio'
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'analogs';
-    }
 
     /**
      * Оригигал

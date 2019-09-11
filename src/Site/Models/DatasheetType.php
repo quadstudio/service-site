@@ -9,19 +9,10 @@ class DatasheetType extends Model
     /**
      * @var string
      */
-    protected $table;
+    protected $table = 'datasheet_types';
 
     protected $fillable = [
         'name'
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'datasheet_types';
-    }
 
 }

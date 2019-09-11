@@ -9,11 +9,14 @@ use QuadStudio\Service\Site\Contracts\SingleImageable;
 class Event extends Model implements SingleImageable
 {
 
-    /**
-     * @var string
-     */
-    protected $table;
+	/**
+	 * @var string
+	 */
+	protected $table = 'events';
 
+	/**
+	 * @var array
+	 */
     protected $fillable = [
         'title', 'annotation', 'description',
         'date_from', 'date_to', 'confirmed',
@@ -22,6 +25,9 @@ class Event extends Model implements SingleImageable
         'show_ferroli', 'show_lamborghini'
     ];
 
+	/**
+	 * @var array
+	 */
     protected $casts = [
 
         'title'            => 'string',
@@ -39,15 +45,6 @@ class Event extends Model implements SingleImageable
         'date_from'        => 'date:Y-m-d',
         'date_to'          => 'date:Y-m-d',
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'events';
-    }
 
     public static function boot()
     {

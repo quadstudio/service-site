@@ -17,17 +17,7 @@ class District extends Model
     /**
      * @var string
      */
-    protected $table;
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'districts';
-    }
-
+    protected $table = 'districts';
 
     /**
      * Регионы

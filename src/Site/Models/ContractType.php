@@ -10,7 +10,7 @@ class ContractType extends Model implements SingleFileable
     /**
      * @var string
      */
-    protected $table;
+    protected $table = 'contract_types';
 
     protected $fillable = [
         'name', 'prefix', 'file_id', 'active',
@@ -22,15 +22,6 @@ class ContractType extends Model implements SingleFileable
         'active'  => 'boolean',
         'file_id' => 'integer',
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'contract_types';
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

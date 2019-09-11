@@ -9,21 +9,12 @@ class ContactType extends Model
     /**
      * @var string
      */
-    protected $table;
+    protected $table = 'contact_types';
 
     /**
      * @var bool
      */
     public $timestamps = false;
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'contact_types';
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

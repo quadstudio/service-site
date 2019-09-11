@@ -15,21 +15,12 @@ class AuthorizationRole extends Model
     /**
      * @var string
      */
-    protected $table;
+    protected $table = 'authorization_roles';
 
     /**
      * @var array
      */
     protected $fillable = ['name', 'title', 'role_id', 'address_type_id'];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'authorization_roles';
-    }
 
     /**
      * @return bool

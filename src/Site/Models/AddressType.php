@@ -9,21 +9,12 @@ class AddressType extends Model
     /**
      * @var string
      */
-    protected $table;
+    protected $table = 'address_types';
 
     /**
      * @var bool
      */
     public $timestamps = false;
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'address_types';
-    }
 
     /**
      * Адреса

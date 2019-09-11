@@ -9,10 +9,6 @@ use Illuminate\Support\Facades\Storage;
 
 class File extends Model
 {
-    /**
-     * @var string
-     */
-    protected $table;
 
     protected $fillable = [
         'name', 'path', 'type_id', 'size', 'mime', 'storage', 'downloaded_at'
@@ -25,15 +21,6 @@ class File extends Model
     protected $dates = [
         'downloaded_at',
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'files';
-    }
 
     public static function boot()
     {

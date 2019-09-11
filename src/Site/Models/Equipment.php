@@ -10,10 +10,8 @@ class Equipment extends Model implements Imageable
 {
 
     use Sortable;
-    /**
-     * @var string
-     */
-    protected $table;
+
+    protected $table = 'equipments';
 
     protected $fillable = [
         'name', 'annotation', 'description',
@@ -39,15 +37,6 @@ class Equipment extends Model implements Imageable
         'show_lamborghini' => 'boolean',
         'mounter_enabled' => 'boolean',
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'equipments';
-    }
 
     public function detachImages()
     {
@@ -94,6 +83,13 @@ class Equipment extends Model implements Imageable
     public function products()
     {
         return $this->hasMany(Product::class);
+    }
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+    public function availableProducts(){
+    	return $this->products()->where('enabled', 1)->where(config('site.check_field'), 1)->orderBy('name');
     }
 
     /**

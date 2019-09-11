@@ -6,29 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Bank extends Model
 {
-    /**
-     * @var array id
-     */
-    protected $fillable = [
-        'ks', 'bank', 'city',
-        'address', 'phones', 'inn',
-        'disabled', 'date',
-    ];
 
-    /**
-     * @var string
-     */
-    protected $table;
+	/**
+	 * @var array id
+	 */
+	protected $fillable = [
+		'ks', 'bank', 'city',
+		'address', 'phones', 'inn',
+		'disabled', 'date',
+	];
 
-    public $incrementing = false;
+	/**
+	 * @var string
+	 */
+	protected $table = 'banks';
 
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'banks';
-    }
+	public $incrementing = false;
 
 }

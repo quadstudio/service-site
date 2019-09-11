@@ -15,7 +15,7 @@ class Catalog extends Model implements SingleImageable
     /**
      * @var string
      */
-    protected $table;
+    protected $table = 'catalogs';
 
     /**
      * @var array
@@ -40,15 +40,6 @@ class Catalog extends Model implements SingleImageable
         'show_lamborghini' => 'boolean',
         'mounter_enabled' => 'boolean',
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'catalogs';
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

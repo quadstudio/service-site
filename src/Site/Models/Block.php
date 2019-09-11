@@ -12,22 +12,13 @@ class Block extends Model
     /**
      * @var string
      */
-    protected $table;
+    protected $table = 'blocks';
     /**
      * @var array
      */
     protected $fillable = [
         'name', 'sort_order'
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'blocks';
-    }
 
     /**
      * Взрывные схемы

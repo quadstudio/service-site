@@ -14,7 +14,7 @@ class Datasheet extends Model implements SingleFileable
     /**
      * @var string
      */
-    protected $table;
+    protected $table = 'datasheets';
 
     protected $fillable = [
         'date_from', 'date_to', 'name',
@@ -37,15 +37,6 @@ class Datasheet extends Model implements SingleFileable
         'date_from',
         'date_to'
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'datasheets';
-    }
 
     /**
      * @param $value

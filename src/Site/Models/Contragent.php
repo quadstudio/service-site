@@ -16,16 +16,7 @@ class Contragent extends Model implements Addressable
     /**
      * @var string
      */
-    protected $table;
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'contragents';
-    }
+    protected $table = 'contragents';
 
     public static function boot()
     {

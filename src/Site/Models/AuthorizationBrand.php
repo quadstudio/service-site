@@ -13,21 +13,12 @@ class AuthorizationBrand extends Model
     /**
      * @var string
      */
-    protected $table;
+    protected $table = 'authorization_brands';
 
     /**
      * @var array
      */
     protected $fillable = ['name'];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'authorization_brands';
-    }
 
     /**
      * Типы авторизаций

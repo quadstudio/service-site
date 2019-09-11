@@ -9,21 +9,12 @@ class AuthorizationType extends Model
     /**
      * @var string
      */
-    protected $table;
+    protected $table = 'authorization_types';
 
     /**
      * @var array
      */
     protected $fillable = ['name', 'brand_id', 'enabled'];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'authorization_types';
-    }
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $query

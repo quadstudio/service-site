@@ -13,7 +13,7 @@ class Act extends Model
     /**
      * @var string
      */
-    protected $table;
+    protected $table = 'acts';
 
     protected $fillable = [
         'number', 'contragent_id',
@@ -29,15 +29,6 @@ class Act extends Model
         'paid'          => 'boolean',
         'type_id'       => 'integer',
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'acts';
-    }
 
     /**
      * Реквизиты

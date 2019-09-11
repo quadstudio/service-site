@@ -10,7 +10,7 @@ class CurrencyArchive extends Model
     /**
      * @var string
      */
-    protected $table;
+    protected $table = 'currency_archives';
 
     protected $fillable = ['currency_id', 'date', 'rates', 'multiplicity'];
 
@@ -27,15 +27,6 @@ class CurrencyArchive extends Model
     protected $dates = [
         'date'
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'currency_archives';
-    }
 
     /**
      * Валюта

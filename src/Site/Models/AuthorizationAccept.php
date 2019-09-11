@@ -14,20 +14,11 @@ class AuthorizationAccept extends Model
     /**
      * @var string
      */
-    protected $table;
+    protected $table = 'authorization_accepts';
 
     protected $fillable = [
         'role_id', 'user_id', 'type_id'
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'authorization_accepts';
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

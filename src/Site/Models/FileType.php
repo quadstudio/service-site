@@ -9,22 +9,14 @@ use QuadStudio\Service\Site\Concerns\Sortable;
 class FileType extends Model
 {
 
+	/**
+	 * @var string
+	 */
+	protected $table = 'file_types';
+
     use Sortable;
-    /**
-     * @var string
-     */
-    protected $table;
 
     protected $fillable = ['name', 'comment', 'group_id', 'enabled', 'required', 'sort_order'];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'file_types';
-    }
 
     /**
      * Группа файла

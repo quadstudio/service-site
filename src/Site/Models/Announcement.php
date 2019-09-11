@@ -12,7 +12,7 @@ class Announcement extends Model implements SingleImageable
     /**
      * @var string
      */
-    protected $table;
+    protected $table = 'announcements';
 
     protected $fillable = [
         'title', 'annotation', 'description',
@@ -34,15 +34,6 @@ class Announcement extends Model implements SingleImageable
     protected $dates = [
         'date',
     ];
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'announcements';
-    }
 
     public static function boot()
     {

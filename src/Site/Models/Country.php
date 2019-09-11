@@ -13,16 +13,7 @@ class Country extends Model
     /**
      * @var string
      */
-    protected $table;
-
-    /**
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = 'countries';
-    }
+    protected $table = 'countries';
 
     /**
      * Scope a query to only enabled countries.
