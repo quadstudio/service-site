@@ -218,6 +218,8 @@ class User extends Authenticatable implements Addressable
         if($this->region && $this->getAttribute('only_ferroli') == 0){
 	        $result = $result->merge(
 		        $this->region->warehouses()
+			        ->where('addresses.addressable_type', 'users')
+			        ->where('addresses.addressable_id', '!=', auth()->id())
 			        ->has('product_group_types')
 			        ->get()
 			        ->filter(function ($address) {
