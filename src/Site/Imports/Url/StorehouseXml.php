@@ -59,6 +59,14 @@ class StorehouseXml extends UrlImport
 
 						try {
 
+							if ($duplicates->contains($offer_id)) {
+
+								// Найден дубликат номенклатуры
+								throw new ProductException(trans('site::storehouse.error.upload.offer_duplicate_found', compact( 'offer_id')));
+							}
+
+							$duplicates->push($offer_id);
+
 							if ((bool)$offer->vendorCode === false) {
 
 								// Артикул не найден
@@ -75,8 +83,8 @@ class StorehouseXml extends UrlImport
 
 							if ($duplicates->contains($sku)) {
 
-								// Найден дубликат
-								throw new ProductException(trans('site::storehouse.error.upload.sku_duplicate_found', compact('sku', 'offer_id')));
+								// Найден дубликат артикула
+								throw new ProductException(trans('site::storehouse.error.upload.sku_duplicate_found', compact('sku')));
 							}
 
 							$duplicates->push($sku);
