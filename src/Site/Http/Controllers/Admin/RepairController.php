@@ -56,12 +56,13 @@ class RepairController
         $this->messages = $messages;
     }
 
-    /**
-     * Show the user profile
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
+	/**
+	 *
+	 * @param Request $request
+	 *
+	 * @return \Illuminate\Http\Response
+	 * @throws \PhpOffice\PhpSpreadsheet\Exception
+	 */
     public function index(Request $request)
     {
         $this->repairs->trackFilter();

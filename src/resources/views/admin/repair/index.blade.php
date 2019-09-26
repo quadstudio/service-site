@@ -76,6 +76,14 @@
                                 <i class="fa fa-comment"></i> {{ $repair->messages()->count() }}
                             </span>
                         @endif
+                        @if($repair->duplicates->isNotEmpty())
+                            <a href="{{route('admin.repairs.index', ['filter[search_act]' => $repair->serial_id])}}">
+                            <span data-toggle="tooltip" data-placement="top" title="@lang('site::repair.help.duplicates')"
+                                  class="badge text-normal badge-pill badge-danger">
+                                <i class="fa fa-copy"></i> {{$repair->duplicates->count()}}
+                            </span>
+                            </a>
+                        @endif
                     </div>
                 </div>
                 <div class="row">

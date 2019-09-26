@@ -457,6 +457,16 @@ class Repair extends Model implements Messagable
         return $this->belongsTo(Product::class);
     }
 
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+    public function duplicates() {
+    	return $this
+		    ->hasMany(Repair::class, 'serial_id', 'serial_id')
+		    ->whereNotNull('serial_id')
+		    ->where('id', '!=', $this->getKey());
+    }
+
     /**
      * @return string
      */

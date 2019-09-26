@@ -33,6 +33,12 @@
             </a>
 
         </div>
+        @if($repair->duplicates()->exists())
+            <div class="alert alert-danger" role="alert">
+                <h4 class="alert-heading">@lang('site::messages.attention')</h4>
+                <p>@lang('site::repair.help.duplicates_link', ['serial' => $repair->serial_id, 'link' => route('admin.repairs.index', ['filter[search_act]' => $repair->serial_id])])</p>
+            </div>
+        @endif
 
         @include('site::message.create', ['messagable' => $repair])
 
@@ -469,25 +475,25 @@
 @endsection
 
 @push('scripts')
-<script>
-    try {
-        window.addEventListener('load', function () {
-            let i, checkbox, checks = document.querySelectorAll('.repair-error-check');
-            for (i = 0; i < checks.length; i++) {
-                checks[i].addEventListener('click', function (e) {
-                    checkbox = e.target;
-                    if (checkbox.checked) {
-                        checkbox.parentNode.classList.add('bg-danger');
-                        checkbox.parentNode.classList.add('text-white');
-                    } else {
-                        checkbox.parentNode.classList.remove('bg-danger');
-                        checkbox.parentNode.classList.remove('text-white');
-                    }
-                })
-            }
-        });
-    } catch (e) {
-        console.log(e);
-    }
-</script>
+    <script>
+        try {
+            window.addEventListener('load', function () {
+                let i, checkbox, checks = document.querySelectorAll('.repair-error-check');
+                for (i = 0; i < checks.length; i++) {
+                    checks[i].addEventListener('click', function (e) {
+                        checkbox = e.target;
+                        if (checkbox.checked) {
+                            checkbox.parentNode.classList.add('bg-danger');
+                            checkbox.parentNode.classList.add('text-white');
+                        } else {
+                            checkbox.parentNode.classList.remove('bg-danger');
+                            checkbox.parentNode.classList.remove('text-white');
+                        }
+                    })
+                }
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    </script>
 @endpush
