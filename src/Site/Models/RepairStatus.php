@@ -10,5 +10,5 @@ class RepairStatus extends Model
 	/**
 	 * @var string
 	 */
-	protected $table = 'repair_statusess';
+	protected $table = 'repair_statuses';
 }
