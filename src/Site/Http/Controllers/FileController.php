@@ -11,7 +11,6 @@ use QuadStudio\Service\Site\Models\File;
 use QuadStudio\Service\Site\Repositories\FileRepository;
 use QuadStudio\Service\Site\Repositories\FileTypeRepository;
 use Illuminate\Routing\Controller;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class FileController extends Controller
 {
@@ -50,12 +49,15 @@ class FileController extends Controller
     }
 
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  FileRequest $request
-     * @return \Illuminate\Http\Response
-     */
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @param  FileRequest $request
+	 *
+	 * @return \Illuminate\Http\Response
+	 * @throws \Illuminate\Auth\Access\AuthorizationException
+	 * @throws \Throwable
+	 */
     public function store(FileRequest $request)
     {
 
@@ -81,7 +83,13 @@ class FileController extends Controller
         ]);
     }
 
-    public function show(File $file)
+	/**
+	 * @param File $file
+	 *
+	 * @return mixed
+	 * @throws \Illuminate\Auth\Access\AuthorizationException
+	 */
+	public function show(File $file)
     {
         if (!is_null($file->fileable)) {
             $this->authorize('view', $file);
@@ -92,12 +100,14 @@ class FileController extends Controller
         return Storage::disk($file->storage)->download($file->path, Str::ascii($file->name));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param File $file
-     * @return \Illuminate\Http\JsonResponse
-     */
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param File $file
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 * @throws \Exception
+	 */
     public function destroy(File $file)
     {
         $json = [];

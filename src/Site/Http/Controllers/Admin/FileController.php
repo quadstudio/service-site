@@ -8,6 +8,7 @@ use QuadStudio\Service\Site\Concerns\StoreFiles;
 use QuadStudio\Service\Site\Contracts\Fileable;
 use QuadStudio\Service\Site\Http\Requests\FileRequest;
 use QuadStudio\Service\Site\Models\File;
+use Illuminate\Support\Str;
 
 class FileController extends Controller
 {
@@ -31,7 +32,7 @@ class FileController extends Controller
 
     public function show(File $file)
     {
-        return Storage::disk($file->getAttribute('storage'))->download($file->getAttribute('path'), $file->getAttribute('name'));
+	    return Storage::disk($file->getAttribute('storage'))->download($file->getAttribute('path'), Str::ascii($file->getAttribute('name')));
     }
 
 	/**
