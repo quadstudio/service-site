@@ -263,31 +263,13 @@
                     <h6 class="card-header with-elements">
                         <span class="card-header-title">@lang('site::schedule.schedules')</span>
                         <div class="card-header-elements ml-auto">
-                            {{--<a href="#" class="btn btn-sm btn-light">--}}
-                            {{--<i class="fa fa-pencil"></i>--}}
-                            {{--</a>--}}
+                            <a href="{{ route('admin.users.schedule', $user) }}"
+                               class="@cannot('schedule', $user) disabled @endcannot btn btn-sm btn-light">
+                                <i class="fa fa-@lang('site::schedule.icon')"></i>
+                            </a>
                         </div>
                     </h6>
-                    <ul class="list-group list-group-flush">
-                        @if($user->schedules()->count())
-                            @foreach($user->schedules as $schedule)
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <div class="text-muted">
-                                        {{$schedule->status == 0 ? $schedule->created_at->format('d.m.Y H:i' ) : $schedule->updated_at->format('d.m.Y H:i' )}}
-                                    </div>
-                                    <div @if($schedule->status == 2)
-                                         data-toggle="tooltip" data-placement="top" title="{!!$schedule->message!!}"
-                                            @endif>
-                                        @lang('site::schedule.statuses.'.$schedule->status.'.text')
-                                        <i class="fa fa-@lang('site::schedule.statuses.'.$schedule->status.'.icon')
-                                                text-@lang('site::schedule.statuses.'.$schedule->status.'.color')"></i>
-                                    </div>
-                                </li>
-                            @endforeach
-                        @else
-                            <li class="list-group-item d-flex justify-content-between align-items-center">@lang('site::messages.not_found')</li>
-                        @endif
-                    </ul>
+                    @include('site::schedule.index', ['schedules' => $user->schedules])
                 </div>
             </div>
             <div class="col">

@@ -154,10 +154,12 @@ class ActController extends Controller
         return redirect()->route('admin.acts.show', $act)->with('success', trans('site::act.updated'));
     }
 
-    /**
-     * @param Act $act
-     * @return \Illuminate\Http\RedirectResponse
-     */
+	/**
+	 * @param Act $act
+	 *
+	 * @return \Illuminate\Http\RedirectResponse
+	 * @throws \Illuminate\Auth\Access\AuthorizationException
+	 */
     public function schedule(Act $act)
     {
         $this->authorize('schedule', $act);

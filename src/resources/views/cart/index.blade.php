@@ -154,8 +154,9 @@
                                         <div class="form-row text-right">
                                             <textarea placeholder="@lang('site::cart.order_comment')"
                                                       class="form-control"
-                                                      name="message[text]" maxlength="5000" rows="3">
-                                            </textarea>
+                                                      name="message[text]"
+                                                      maxlength="5000"
+                                                      rows="3"></textarea>
                                             <input type="hidden" name="message[receiver_id]"
                                                    value="{{config('site.receiver_id')}}">
                                             <input type="hidden" name="order[status_id]" value="1">

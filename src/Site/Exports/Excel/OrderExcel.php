@@ -6,6 +6,7 @@ use QuadStudio\Service\Site\Models\Message;
 use QuadStudio\Service\Site\Models\Order;
 use QuadStudio\Service\Site\Models\OrderItem;
 use QuadStudio\Service\Site\Support\Excel;
+use Site;
 
 class OrderExcel extends Excel
 {
@@ -13,7 +14,10 @@ class OrderExcel extends Excel
     private $_sheet;
 
 
-    function build()
+	/**
+	 * @throws \PhpOffice\PhpSpreadsheet\Exception
+	 */
+	function build()
     {
         if (is_null($this->model)) {
             echo "Невозможно создать xls файл, т.к. не указана модель с данными";
@@ -70,13 +74,18 @@ class OrderExcel extends Excel
 
     private function _buildOrder(OrderItem $item, &$count)
     {
+
         $this->_sheet
             ->setCellValue('A' . $count, $item->product->name)
             ->setCellValue('B' . $count, $item->product->sku)
             ->setCellValue('C' . $count, $item->quantity)
             ->setCellValue('D' . $count, $item->product->unit)
-            ->setCellValue('E' . $count, $item->price > 0 ? $item->price : trans('site::price.help.price'))
-            ->setCellValue('F' . $count, $item->subtotal() > 0 ? $item->subtotal() : trans('site::price.help.price'));
+            ->setCellValue('E' . $count, $item->price > 0
+	            ? Site::convert($item->price, $item->currency_id, $item->currency_id, 1, false, false)
+	            : trans('site::price.help.price'))
+            ->setCellValue('F' . $count, $item->price > 0
+	            ? Site::convert($item->price, $item->currency_id, $item->currency_id, $item->quantity, false, false)
+	            : trans('site::price.help.price'));
         $count++;
     }
 }

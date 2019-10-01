@@ -1,6 +1,6 @@
 <?php
 
-namespace QuadStudio\Service\Site\Mail\Admin\Order;
+namespace QuadStudio\Service\Site\Mail\Order;
 
 
 use Illuminate\Bus\Queueable;
@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use QuadStudio\Service\Site\Models\Order;
 
-class OrderCreateEmail extends Mailable implements ShouldQueue
+class UserOrderCreateEmail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
     /**
@@ -34,7 +34,7 @@ class OrderCreateEmail extends Mailable implements ShouldQueue
     public function build()
     {
         return $this
-            ->subject('Оформлен новый ' . trans('site::order.order'))
-            ->view('site::email.admin.order.create');
+            ->subject(trans('site::order.email.create.title'))
+            ->view('site::email.order.user.create');
     }
 }

@@ -218,20 +218,28 @@ class Product extends Model implements Imageable
 	{
 
 		$storehouse_addresses = collect([]);
+		if (auth()->check()) {
+			$warehouses = auth()->user()->warehouses()->pluck('id')->toArray();
 
-		foreach ($this->storehouse_products()
-			         ->with('storehouse', 'storehouse.addresses')
-			         ->whereHas('storehouse', function ($storehouse) {
-				         $storehouse->where('enabled', 1);
-			         })->get() as $storehouse_product) {
-			foreach ($storehouse_product->storehouse->addresses()->whereHas('regions', function ($region) {
-				$region->where('regions.id', auth()->user()->region_id);
-			})->get() as $address) {
-				$storehouse_addresses->push([
-					'name' => $address->name,
-					'quantity' => $storehouse_product->quantity,
-				]);
+			foreach ($this->storehouse_products()
+				         ->with('storehouse', 'storehouse.addresses')
+				         ->whereHas('storehouse', function ($storehouse) {
+					         $storehouse->where('enabled', 1);
+				         })->get() as $storehouse_product) {
+				foreach ($storehouse_product->storehouse->addresses()
+					         ->when(auth()->user()->only_ferroli == 1, function ($query) use ($warehouses) {
+						         return $query->whereIn('id', $warehouses);
+					         })
+					         ->whereHas('regions', function ($region) {
+						         $region->where('regions.id', auth()->user()->region_id);
+					         })->get() as $address) {
+					$storehouse_addresses->push([
+						'id' => $address->id,
+						'name' => $address->name,
+						'quantity' => $storehouse_product->quantity,
+					]);
 
+				}
 			}
 		}
 

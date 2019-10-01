@@ -48,21 +48,18 @@ class DistributorController extends Controller
         ]);
     }
 
-    /**
-     * @param Order $order
-     * @return \Illuminate\Http\Response
-     */
+	/**
+	 * @param Order $order
+	 *
+	 * @return \Illuminate\Http\Response
+	 * @throws \Illuminate\Auth\Access\AuthorizationException
+	 */
     public function show(Order $order)
     {
-        //$order = Order::query()->findOrFail($order_id);
-        $this->authorize('distributor', $order);
-        $order_statuses = OrderStatus::query()->where('id', '!=', $order->getAttribute('status_id'))->orderBy('id')->get();
 
-        return view('site::distributor.show', compact(
-            'order',
-            'order_statuses',
-            'messagable'
-        ));
+        $this->authorize('distributor', $order);
+
+        return view('site::distributor.show', compact('order'));
     }
 
     /**

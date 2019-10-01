@@ -72,9 +72,7 @@
                                 <dt class="col-12">@lang('site::schedule.schedules')</dt>
                                 <dd class="col-12">
                                     @foreach($act->schedules as $schedule)
-                                        {{$schedule->status()->first()->name}}
-                                        <i class="fa fa-{{$schedule->status()->first()->icon}}
-                                                text-{{$schedule->status()->first()->color}}"></i>
+                                        @include('site::schedule.status')
                                     @endforeach
                                 </dd>
                             </dl>

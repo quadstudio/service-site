@@ -31,19 +31,25 @@
                 <div class="card-header with-elements">
 				
                     <div class="card-header-elements">
-					<a href="{{route('distributors.show', $order)}}" class="mr-3">
+                        <a href="{{route('distributors.show', $order)}}" class="mr-3">
                             @lang('site::order.header.order') № {{$order->id}}
                         </a>
-                        <span class="badge text-normal badge-pill badge-{{ $order->status->color }}">
+                        <span class="badge text-normal badge-pill text-white" style="background-color: {{ $order->status->color }}">
                             <i class="fa fa-{{ $order->status->icon }}"></i> {{ $order->status->name }}
                         </span>
-                        
                     </div>
-
                     <div class="card-header-elements ml-md-auto">
-					
+                         <span data-toggle="tooltip"
+                               data-placement="top"
+                               title="@lang('site::order.in_stock_type')"
+                               class="badge badge-secondary">
+                            @lang('site::order.help.in_stock_type.'.$order->in_stock_type)
+                        </span>
                         @if( $order->messages()->exists())
-                            <span class="badge badge-secondary text-normal badge-pill">
+                            <span data-toggle="tooltip"
+                                  data-placement="top"
+                                  title="@lang('site::message.messages')"
+                                  class="badge badge-secondary text-normal badge-pill">
                                 <i class="fa fa-comment"></i> {{ $order->messages()->count() }}
                             </span>
                         @endif
@@ -54,21 +60,12 @@
                         <dl class="dl-horizontal mt-2">
                             <dt class="col-12">@lang('site::messages.created_at')</dt>
                             <dd class="col-12">{{$order->created_at->format('d.m.Y H:i')}}</dd>
-                            
-
                         </dl>
                     </div>
                     <div class="col-xl-3 col-sm-5">
                         <dl class="dl-horizontal mt-2">
                             <dt class="col-12">@lang('site::order.client')</dt>
                             <dd class="col-12"><img id="user-logo" src="{{$order->user->logo}}" style="width:25px!important;height: 25px" class="rounded-circle mr-2">{{$order->user->name}}</dd>
-                            {{--<dt class="col-12">@lang('site::order.user_id')</dt>--}}
-                            {{--<dd class="col-12">--}}
-                                {{--<img id="user-logo"--}}
-                                     {{--src="{{$order->user->logo}}"--}}
-                                     {{--style="width:25px!important;height: 25px"--}}
-                                     {{--class="rounded-circle mr-2">{{$order->user->name}}--}}
-                            {{--</dd>--}}
                         </dl>
                     </div>
                     <div class="col-xl-4 col-sm-6">
@@ -92,17 +89,15 @@
                         <dl class="dl-horizontal mt-2">
                             <dt class="col-12">@lang('site::order.total')</dt>
                             <dd class="col-12">
-                                {{number_format($order->total(), 0, '.', ' ')}}
-                                {{ $order->user->currency->symbol_right }} <br />
-								{{ $order->address->name }}
+                                @if(in_array($order->status_id, array(1,6,7,8)) && $order->in_stock_type == 2)
+                                    {{ $order->total(978, false, true) }} ({{ $order->total(643, false, true) }})
+                                @else
+                                    {{ $order->total(643, true, true) }}
+                                @endif
                             </dd>
+                            <dd class="col-12">{{ $order->address->name }}</dd>
                         </dl>
                     </div>
-                </div>
-                <div class="card-footer py-1">
-
-                    
-
                 </div>
             </div>
         @endforeach

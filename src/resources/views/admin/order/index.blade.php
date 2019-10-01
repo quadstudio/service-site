@@ -48,6 +48,19 @@
 
                     <div class="card-header-elements ml-md-auto">
 
+
+                        <span data-toggle="tooltip"
+                              data-placement="top"
+                              title="@lang('site::order.percent_compl')"
+                              class="badge badge-warning badge-pill">
+                                <i class="fa fa-percent"></i> {{ $order->percent_compl }}
+                        </span>
+                        <span data-toggle="tooltip"
+                              data-placement="top"
+                              title="@lang('site::order.in_stock_type')"
+                              class="badge badge-secondary">
+                            @lang('site::order.help.in_stock_type.'.$order->in_stock_type)
+                        </span>
                         <a href="{{route('admin.users.show', $order->user)}}">
                             @if($order->user->image->fileExists)
                                 <img id="user-logo" src="{{$order->user->logo}}"
@@ -129,8 +142,11 @@
                         <dl class="dl-horizontal mt-2">
                             <dt class="col-12">@lang('site::order.total')</dt>
                             <dd class="col-12">
-                                {{number_format($order->total(), 0, '.', ' ')}}
-                                {{ $order->user->currency->symbol_right }}
+                                @if(in_array($order->status_id, array(1,6,7,8)) && $order->in_stock_type == 2)
+                                    {{ $order->total(978, false, true) }} ({{ $order->total(643, false, true) }})
+                                @else
+                                    {{ $order->total(643, true, true) }}
+                                @endif
                             </dd>
                         </dl>
                     </div>

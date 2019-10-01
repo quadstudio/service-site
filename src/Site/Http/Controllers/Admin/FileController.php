@@ -14,16 +14,17 @@ class FileController extends Controller
 
     use StoreFiles;
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  FileRequest $request
-     * @param Fileable $fileable
-     * @return \Illuminate\Http\JsonResponse
-     */
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @param  FileRequest $request
+	 * @param Fileable $fileable
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 * @throws \Throwable
+	 */
     public function store(FileRequest $request, Fileable $fileable = null)
     {
-        //dd($request->all());
         return $this->storeFiles($request, $fileable);
 
     }
@@ -33,12 +34,14 @@ class FileController extends Controller
         return Storage::disk($file->getAttribute('storage'))->download($file->getAttribute('path'), $file->getAttribute('name'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param File $file
-     * @return \Illuminate\Http\JsonResponse
-     */
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param File $file
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 * @throws \Exception
+	 */
     public function destroy(File $file)
     {
         $json = [];

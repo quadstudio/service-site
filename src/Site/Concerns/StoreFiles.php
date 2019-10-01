@@ -4,6 +4,7 @@ namespace QuadStudio\Service\Site\Concerns;
 
 use Illuminate\Http\File as HttpFile;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use QuadStudio\Service\Site\Contracts\Fileable;
@@ -13,24 +14,19 @@ use QuadStudio\Service\Site\Models\File;
 
 trait StoreFiles
 {
-    /**
-     * @param \QuadStudio\Service\Site\Http\Requests\FileRequest $request
-     * @param \QuadStudio\Service\Site\Contracts\Fileable $fileable
-     * @return \Illuminate\Http\JsonResponse
-     */
+	protected $store_file;
+
+	/**
+	 * @param \QuadStudio\Service\Site\Http\Requests\FileRequest $request
+	 * @param \QuadStudio\Service\Site\Contracts\Fileable $fileable
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 * @throws \Throwable
+	 */
     public function storeFiles(FileRequest $request, Fileable $fileable = null)
     {
 
-        $file = $request->file('path');
-
-        $model = new File([
-            'path'    => Storage::disk($request->input('storage'))->putFile('', new HttpFile($file->getPathName())),
-            'mime'    => $file->getMimeType(),
-            'storage' => $request->input('storage'),
-            'type_id' => $request->input('type_id'),
-            'size'    => $file->getSize(),
-            'name'    => $file->getClientOriginalName(),
-        ]);
+		$model = $this->makeFile($request);
 
         $mode = config("site.{$request->input('storage')}.mode");
 
@@ -47,6 +43,42 @@ trait StoreFiles
                     ->render(),
             ],
         ]);
+    }
+    /**
+	 * @param \QuadStudio\Service\Site\Http\Requests\FileRequest $request
+	 * @param \QuadStudio\Service\Site\Contracts\SingleFileable $fileable
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 * @throws \Throwable
+	 */
+    public function storeFile(FileRequest $request, SingleFileable $fileable = null)
+    {
+
+		$model = $this->makeFile($request);
+
+	    $fileable->file()->save($model);
+
+        return response()->json([
+            'update' => [
+                '#files' => view('site::admin.file.edit')
+                    ->with('file', $model)
+                    ->render(),
+            ],
+        ]);
+    }
+
+    private function makeFile(FileRequest $request){
+
+	    $file = $request->file('path');
+
+	    return File::query()->make([
+		    'path'    => Storage::disk($request->input('storage'))->putFile('', new HttpFile($file->getPathName())),
+		    'mime'    => $file->getMimeType(),
+		    'storage' => $request->input('storage'),
+		    'type_id' => $request->input('type_id'),
+		    'size'    => $file->getSize(),
+		    'name'    => $file->getClientOriginalName(),
+	    ]);
     }
 
     /**

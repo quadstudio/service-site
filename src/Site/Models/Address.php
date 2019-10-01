@@ -50,7 +50,7 @@ class Address extends Model
 
         static::saving(function (Address $address) {
             $httpClient = new \Http\Adapter\Guzzle6\Client();
-            $provider = new \Geocoder\Provider\Yandex\Yandex($httpClient);
+            $provider = new \Geocoder\Provider\Yandex\Yandex($httpClient, null, env('YANDEX_GEOCODER_API_KEY'));
             $geocoder = new \Geocoder\StatefulGeocoder($provider, 'ru');
             $result = [];
             $result[] = $address->country->name;

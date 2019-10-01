@@ -234,10 +234,12 @@ class UserController extends Controller
     }
 
 
-    /**
-     * @param User $user
-     * @return \Illuminate\Http\RedirectResponse
-     */
+	/**
+	 * @param User $user
+	 *
+	 * @return \Illuminate\Http\RedirectResponse
+	 * @throws \Illuminate\Auth\Access\AuthorizationException
+	 */
     public function schedule(User $user)
     {
         $this->authorize('schedule', $user);

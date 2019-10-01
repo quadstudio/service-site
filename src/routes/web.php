@@ -307,7 +307,7 @@ Route::group(['middleware' => ['online']],
 						Route::get('/distributors/{order}',
 							'DistributorController@show')
 							->name('distributors.show');
-						Route::put('/distributors/{order}',
+						Route::patch('/distributors/{order}',
 							'DistributorController@update')
 							->name('distributors.update');
 						Route::post('/distributors/{order}/message',
@@ -326,7 +326,8 @@ Route::group(['middleware' => ['online']],
 					->name('orders.load');
 				Route::resource('/orders',
 					'OrderController')
-					->except(['edit', 'update'])->middleware('permission:orders');
+					->except(['edit'])
+					->middleware('permission:orders');
 				Route::post('/orders/{order}/message',
 					'OrderController@message')
 					->middleware('permission:messages')
@@ -360,9 +361,9 @@ Route::group(['middleware' => ['online']],
 					'CartController@clear')
 					->name('clearCart');
 
-				Route::delete('/order-items/{item}',
-					'OrderItemController@destroy')
-					->name('orders.items.destroy');
+				Route::resource('/order-items',
+					'OrderItemController')
+					->only(['destroy']);
 
 				// Контакты
 				Route::group(['middleware' => ['permission:contracts']],
@@ -414,491 +415,546 @@ Route::group(['middleware' => ['online']],
 							]);
 					});
 
+				Route::get('/test', function () {
+
+					$reader = new \XMLReader();
+					$reader->open('https://odinremont.ru/yml.xml');
+					$doc = new \DOMDocument;
+					//$reader->setParserProperty(\XMLReader::VALIDATE, true);
+
+					//dd($reader->isValid());
+					$a = 'yml.shop.offers.offer:*';
+					$a = [
+						'yml' => [
+							'shop' => [
+								'offers' => [
+									'offer' => [
+										':id' => [
+											'vendorCode',
+											'quantity',
+										],
+									],
+								],
+							],
+						],
+					];
+					$a = [];
+					while ($reader->read()) {
+						if ($reader->nodeType == XMLReader::ELEMENT) {
+							if ($reader->localName == 'offer') {
+								dump($reader->getAttribute('id'));
+								$reader->read();
+								while ($reader->localName != 'offer') {
+									if ($reader->nodeType == XMLReader::ELEMENT and $reader->localName == 'vendorCode') {
+										$reader->read();
+										if ($reader->nodeType == XMLReader::TEXT) {
+											print $reader->value . "\n";
+										}
+									}
+									if ($reader->nodeType == XMLReader::ELEMENT and $reader->localName == 'quantity') {
+										$reader->read();
+										if ($reader->nodeType == XMLReader::TEXT) {
+											print $reader->value . "\n";
+										}
+									}
+									$reader->read();
+								}
+							}
+						}
+					}
+
+					dd($a);
+				});
+
 				/*
 				|--------------------------------------------------------------------------
 				|                               АДМИНКА
 				|--------------------------------------------------------------------------
 				*/
 
-				Route::group([
-					'middleware' => ['admin'],
-					'namespace' => 'Admin',
-					'prefix' => 'admin',
-				],
-					function () {
+				Route::middleware('admin')
+					->namespace('Admin')
+					->prefix('admin')
+					->group(function () {
 
 						// Панель управления
-						Route::name('admin')->get('/',
-							'IndexController@index');
-
-						// Авторизации
-						Route::name('admin')->resource('/authorization-brands',
-							'AuthorizationBrandController')
-							->except(['delete']);
-						Route::name('admin')->resource('/authorization-roles',
-							'AuthorizationRoleController')
-							->except(['delete', 'show', 'create']);
-						Route::name('admin')->get('/authorization-roles/create/{role}',
-							'AuthorizationRoleController@create')
-							->name('.authorization-roles.create');
-						Route::name('admin')->resource('/authorization-types',
-							'AuthorizationTypeController')
-							->except(['delete']);
-						Route::name('admin')->resource('/authorizations',
-							'AuthorizationController')
-							->except(['delete']);
-						Route::name('admin')->resource('/mounters',
-							'MounterController')
-							->except(['delete']);
-						Route::name('admin')->post('/authorizations/{authorization}/message',
-							'AuthorizationController@message')
-							->name('.authorizations.message');
-
-						// Роуты
-						Route::name('admin')->get('routes',
-							'RouteController@index')
-							->name('.routes.index');
-
-						// Отчеты по монтажу
-						Route::name('admin')->resource('/mountings',
-							'MountingController')
-							->only(['index', 'show', 'update']);
-
-						// Отчеты по ремонту
-						Route::name('admin')->resource('/repairs',
-							'RepairController')
-							->only(['index', 'show', 'update']);
-						Route::name('admin')->post('/repairs/{repair}/message',
-							'RepairController@message')
-							->name('.repairs.message');
-
-						// Бонусы за монтаж
-						Route::name('admin')->resource('/mounting-bonuses',
-							'MountingBonusController')
-							->except(['show']);
-
-
-						// Банки
-						Route::name('admin')->resource('/banks',
-							'BankController');
-
-						// Органищации
-						Route::name('admin')->resource('/organizations',
-							'OrganizationController');
-
-						// Классы сложности
-						Route::name('admin')->put('/difficulties/sort',
-							'DifficultyController@sort')
-							->name('.difficulties.sort');
-						Route::name('admin')->resource('/difficulties',
-							'DifficultyController');
-
-						// Тарифы на транспорт
-						Route::name('admin')->put('/distances/sort',
-							'DistanceController@sort')
-							->name('.distances.sort');
-						Route::name('admin')->resource('/distances',
-							'DistanceController')->except(['show']);
-
-						// Акты
-						Route::name('admin')->resource('/acts',
-							'ActController');
-						Route::name('admin')->get('/acts/{act}/schedule',
-							'ActController@schedule')
-							->name('.acts.schedule');
-
-						// Сообщения
-						Route::name('admin')->resource('/messages',
-							'MessageController')
-							->only(['index', 'show']);
-
-						// Инженеры
-						Route::name('admin')->resource('/engineers',
-							'EngineerController')
-							->only(['index', 'edit', 'update']);
-
-						// Торговые организации
-						Route::name('admin')->resource('/trades',
-							'TradeController')
-							->only(['index', 'edit', 'update']);
-
-						// Контрагенты
-						Route::name('admin')->resource('/contragents',
-							'ContragentController')
-							->except(['create', 'store', 'destroy']);
-
-						// Адреса контрагентов
-						Route::name('admin')->resource('/contragents/{contragent}/addresses',
-							'ContragentAddressController')
-							->only(['edit', 'update'])
-							->names([
-								'edit' => 'admin.contragents.addresses.edit',
-								'update' => 'admin.contragents.addresses.update',
-							]);
-
-						// Адреса
-						Route::name('admin')->resource('/addresses',
-							'AddressController')
-							->except(['create', 'store']);
-
-						// Телефоны адреса
-						Route::name('admin')->resource('/addresses/{address}/phones',
-							'AddressPhoneController')
-							->only(['create', 'store', 'edit', 'update', 'destroy'])
-							->names([
-								'create' => 'admin.addresses.phones.create',
-								'store' => 'admin.addresses.phones.store',
-								'edit' => 'admin.addresses.phones.edit',
-								'update' => 'admin.addresses.phones.update',
-								'destroy' => 'admin.addresses.phones.destroy',
-							]);
-
-						// Зоны дистрибуции адреса
-						Route::name('admin')->resource('/addresses/{address}/regions',
-							'AddressRegionController')
-							->only(['index', 'store'])
-							->names([
-								'index' => 'admin.addresses.regions.index',
-								'store' => 'admin.addresses.regions.store',
-							]);
-
-						// Пользователи
-						Route::name('admin')->resource('/users',
-							'UserController');
-						Route::name('admin')->get('/users/{user}/schedule',
-							'UserController@schedule')
-							->name('.users.schedule');
-						Route::name('admin')->get('/users/{user}/force',
-							'UserController@force')
-							->name('.users.force');
-
-						// Сброс пароля пользователя
-						Route::name('admin')->resource('/users/{user}/password',
-							'UserPasswordController')
-							->only(['create', 'store'])
-							->names([
-								'create' => 'admin.users.password.create',
-								'store' => 'admin.users.password.store',
-							]);
-
-						// Цены пользователя
-						Route::name('admin')->resource('/users/{user}/prices',
-							'UserPriceController')
-							->only(['index', 'store'])
-							->names([
-								'index' => 'admin.users.prices.index',
-								'store' => 'admin.users.prices.store',
-							]);
-
-						// Узлы схемы
-						Route::name('admin')->resource('/blocks',
-							'BlockController');
-
-						// Документация
-						Route::name('admin')->resource('/datasheets',
-							'DatasheetController');
-
-						// Оборудование, к которому подходит документация
-						Route::resource('/datasheets/{datasheet}/products',
-							'DatasheetProductController')
-							->only(['index', 'store'])
-							->names([
-								'index' => 'admin.datasheets.products.index',
-								'store' => 'admin.datasheets.products.store',
-							]);
-						Route::name('admin')->delete('/datasheets/{datasheet}/products/destroy',
-							'DatasheetProductController@destroy')
-							->name('.datasheets.products.destroy');
-
-						// Аналоги
-						Route::resource('/products/{product}/analogs',
-							'ProductAnalogController')
-							->only(['index', 'store'])
-							->names([
-								'index' => 'admin.products.analogs.index',
-								'store' => 'admin.products.analogs.store',
-							]);
-						Route::name('admin')->delete('/products/{product}/analogs/destroy',
-							'ProductAnalogController@destroy')
-							->name('.products.analogs.destroy');
-
-						// Детали
-						Route::resource('/products/{product}/details',
-							'ProductDetailController')
-							->only(['index', 'store'])
-							->names([
-								'index' => 'admin.products.details.index',
-								'store' => 'admin.products.details.store',
-							]);
-						Route::name('admin')->delete('/products/{product}/details/destroy',
-							'ProductDetailController@destroy')
-							->name('.products.details.destroy');
-
-						// Подходит к
-						Route::resource('/products/{product}/relations',
-							'ProductRelationController')
-							->only(['index', 'store'])
-							->names([
-								'index' => 'admin.products.relations.index',
-								'store' => 'admin.products.relations.store',
-							]);
-						Route::name('admin')->delete('/products/{product}/relations/destroy',
-							'ProductRelationController@destroy')
-							->name('.products.relations.destroy');
-
-						Route::name('admin')->put('/product-images/{product}/sort',
-							'ProductImageController@sort')
-							->name('.products.images.sort');
-
-						// Каталог
-						Route::name('admin')->put('/catalogs/sort', function (Request $request) {
-							Catalog::sort($request);
-						})->name('.catalogs.sort');
-						Route::name('admin')->resource('/catalogs',
-							'CatalogController');
-						Route::name('admin')->get('/catalogs/create/{catalog?}',
-							'CatalogController@create')
-							->name('.catalogs.create.parent');
-						Route::name('admin')->get('/tree',
-							'CatalogController@tree')
-							->name('.catalogs.tree');
-
-						// Товары
-						Route::name('admin')->resource('/products',
-							'ProductController');
-
-						// Изображения товара
-						Route::resource('/products/{product}/images',
-							'ProductImageController')
-							->only(['index', 'store'])
-							->names([
-								'index' => 'admin.products.images.index',
-								'store' => 'admin.products.images.store',
-							]);
-
-						Route::name('admin')->put('/equipments/sort', function (Request $request) {
-							Equipment::sort($request);
-						})->name('.equipments.sort');
-
-						// Оборудование
-						Route::name('admin')->resource('/equipments',
-							'EquipmentController');
-						Route::name('admin')->get('/equipments/create/{catalog?}',
-							'EquipmentController@create')
-							->name('.equipments.create.parent');
-
-						// Изображения оборудования
-						Route::resource('/equipments/{equipment}/images',
-							'EquipmentImageController')
-							->only(['index', 'store'])
-							->names([
-								'index' => 'admin.equipments.images.index',
-								'store' => 'admin.equipments.images.store',
-							]);
-
-						// Изображения
-						Route::name('admin')->put('/images/sort', function (Request $request) {
-							Image::sort($request);
-						})->name('.images.sort');
-
-						Route::name('admin')->resource('/images',
-							'ImageController')
-							->only(['index', 'store', 'show', 'destroy']);
-
-						Route::name('admin')->resource('/files',
-							'FileController')
-							->only(['index', 'store', 'show', 'destroy']);
-
-						// Серийные номера
-						Route::name('admin')->resource('/serials',
-							'SerialController')
-							->only(['index', 'create', 'store']);
-
-						// Сертификаты
-						Route::name('admin')->resource('/certificates',
-							'CertificateController')
-							->only(['index', 'destroy']);
-						Route::get('/certificates/create/{certificate_type}',
-							'CertificateController@create')
-							->name('admin.certificates.create');
-						Route::post('/certificates/{certificate_type}',
-							'CertificateController@store')
-							->name('admin.certificates.store');
-
-						// Валюта
-						Route::name('admin')->resource('/currencies',
-							'CurrencyController');
-						Route::name('admin')->resource('/currency_archives',
-							'CurrencyArchiveController')->only(['index']);
-
-						// Типы товаров
-						Route::name('admin')->resource('/product_types',
-							'ProductTypeController');
-
-						// Типы цен
-						Route::name('admin')->resource('/price_types',
-							'PriceTypeController')
-							->except(['create', 'store', 'destroy']);
-
-						// Типы файлов
-						Route::name('admin')->resource('/file_types',
-							'FileTypeController');
-
-						// Группы файлов
-						Route::name('admin')->resource('/file_groups',
-							'FileGroupController');
-
-						// Склады
-						Route::name('admin')->resource('/warehouses',
-							'WarehouseController');
-
-						// Страницы
-						Route::name('admin')->resource('/pages',
-							'PageController');
-
-						//Контакты
-						Route::name('admin')->resource('/contacts',
-							'ContactController');
-
-						// Телефоны
-						Route::name('admin')->resource('/phones',
-							'PhoneController')
-							->except(['show']);
-
-						// Заказы
-						Route::name('admin')->resource('/orders',
-							'OrderController')
-							->only(['index', 'show', 'destroy']);
-						Route::name('admin')->post('/orders/{order}/message',
-							'OrderController@message')
-							->name('.orders.message');
-						Route::name('admin')->delete('/order-items/{item}',
-							'OrderItemController@destroy')
-							->name('.orders.items.destroy');
-						Route::name('admin')->get('/orders/{order}/schedule',
-							'OrderController@schedule')
-							->name('.orders.schedule');
-
-						// Типы мероприятий
-						Route::name('admin')->put('/event_types/sort', function (Request $request) {
-							EventType::sort($request);
-						})->name('.event_types.sort');
-						Route::name('admin')->resource('/event_types',
-							'EventTypeController');
-
-						// Мероприятия
-						Route::name('admin')->resource('/events',
-							'EventController');
-						Route::name('admin')->get('/events/{event}/mailing',
-							'EventController@mailing')
-							->name('.events.mailing');
-						Route::name('admin')->get('/events/{event}/attachment',
-							'EventController@attachment')
-							->name('.events.attachment');
-						Route::name('admin')->get('/events/create/{member?}',
-							'EventController@create')
-							->name('.events.create');
-						Route::name('admin')->post('/events/store/{member?}',
-							'EventController@store')
-							->name('.events.store');
-
-						Route::name('admin')->resource('/parts',
-							'PartController')
-							->only(['edit', 'update', 'destroy']);
-
-
-						Route::name('admin')->resource('/members',
-							'MemberController');
-
-						Route::name('admin')->resource('/elements',
-							'ElementController');
-						Route::name('admin')->resource('/pointers',
-							'PointerController');
-						Route::name('admin')->resource('/shapes',
-							'ShapeController');
-
-						Route::name('admin')->resource('/templates',
-							'TemplateController');
-
-						Route::name('admin')->get('/participants/create/{member}',
-							'ParticipantController@create')
-							->name('.participants.create');
-						Route::name('admin')->post('/participants/store/{member}',
-							'ParticipantController@store')
-							->name('.participants.store');
-						Route::name('admin')->resource('/participants',
-							'ParticipantController')
-							->only(['destroy']);
-
-						// Новости
-						Route::name('admin')->post('/announcements/image',
-							'AnnouncementController@image')
-							->name('.announcements.image');
-						Route::name('admin')->resource('/announcements',
-							'AnnouncementController');
-
-						Route::name('admin')->post('/schemes/image',
-							'SchemeController@image')
-							->name('.schemes.image');
-						Route::name('admin')->get('/schemes/{scheme}/pointers',
-							'SchemeController@pointers')
-							->name('.schemes.pointers');
-						Route::name('admin')->get('/schemes/{scheme}/shapes',
-							'SchemeController@shapes')
-							->name('.schemes.shapes');
-						Route::name('admin')->get('/schemes/{scheme}/elements',
-							'SchemeController@elements')
-							->name('.schemes.elements');
-						Route::name('admin')->post('/schemes/{scheme}/elements',
-							'SchemeController@elements')
-							->name('.schemes.elements.update');
-						Route::name('admin')->delete('/schemes/{scheme}/elements',
-							'SchemeController@elements')
-							->name('.schemes.elements.delete');
-						Route::name('admin')->resource('/schemes',
-							'SchemeController');
-
-						// Рассылка пользователям
-						Route::name('admin')->resource('/mailings',
-							'MailingController')
-							->only(['create', 'store']);
-
-						Route::name('admin')->resource('/prices',
-							'PriceController');
-
-						Route::name('admin')->put('/blocks/sort', function (Request $request) {
-							Block::sort($request);
-						})->name('.blocks.sort');
-
-
-						Route::name('admin')->put('/elements/sort', function (Request $request) {
-							Element::sort($request);
-						})->name('.elements.sort');
-
-						Route::name('admin')->put('/file_types/sort', function (Request $request) {
-							FileType::sort($request);
-						})->name('.file_types.sort');
-
-						// Договора
-						Route::name('admin')->resource('/contracts',
-							'ContractController')
-							->only(['index', 'show']);
-
-						Route::get('/contracts/{contract}/download', function (Contract $contract) {
-							(new ContractWordProcessor($contract))->render();
-						})->name('admin.contracts.download');
-
-						// Типы договоров
-						Route::name('admin')->resource('/contract-types',
-							'ContractTypeController');
-
-						// Склады дистрибьютора
-						Route::name('admin')->resource('/storehouses',
-							'StorehouseController')
-							->only(['index', 'show', 'create', 'store']);
+						Route::get('/',
+							'IndexController@index')
+						->name('admin');
+
+						Route::name('admin.')->group(function (){
+
+							// Авторизации
+							Route::resource('/authorization-brands',
+								'AuthorizationBrandController')
+								->except(['delete']);
+							Route::resource('/authorization-roles',
+								'AuthorizationRoleController')
+								->except(['delete', 'show', 'create']);
+							Route::get('/authorization-roles/create/{role}',
+								'AuthorizationRoleController@create')
+								->name('authorization-roles.create');
+							Route::resource('/authorization-types',
+								'AuthorizationTypeController')
+								->except(['delete']);
+							Route::resource('/authorizations',
+								'AuthorizationController')
+								->except(['delete']);
+							Route::resource('/mounters',
+								'MounterController')
+								->except(['delete']);
+							Route::post('/authorizations/{authorization}/message',
+								'AuthorizationController@message')
+								->name('authorizations.message');
+
+							// Роуты
+							Route::get('routes',
+								'RouteController@index')
+								->name('routes.index');
+
+							// Отчеты по монтажу
+							Route::resource('/mountings',
+								'MountingController')
+								->only(['index', 'show', 'update']);
+
+							// Отчеты по ремонту
+							Route::resource('/repairs',
+								'RepairController')
+								->only(['index', 'show', 'update']);
+							Route::post('/repairs/{repair}/message',
+								'RepairController@message')
+								->name('repairs.message');
+
+							// Бонусы за монтаж
+							Route::resource('/mounting-bonuses',
+								'MountingBonusController')
+								->except(['show']);
+
+
+							// Банки
+							Route::resource('/banks',
+								'BankController');
+
+							// Органищации
+							Route::resource('/organizations',
+								'OrganizationController');
+
+							// Классы сложности
+							Route::put('/difficulties/sort',
+								'DifficultyController@sort')
+								->name('difficulties.sort');
+							Route::resource('/difficulties',
+								'DifficultyController');
+
+							// Тарифы на транспорт
+							Route::put('/distances/sort',
+								'DistanceController@sort')
+								->name('distances.sort');
+							Route::resource('/distances',
+								'DistanceController')->except(['show']);
+
+							// Акты
+							Route::resource('/acts',
+								'ActController');
+							Route::get('/acts/{act}/schedule',
+								'ActController@schedule')
+								->name('acts.schedule');
+
+							// Сообщения
+							Route::resource('/messages',
+								'MessageController')
+								->only(['index', 'show']);
+
+							// Инженеры
+							Route::resource('/engineers',
+								'EngineerController')
+								->only(['index', 'edit', 'update']);
+
+							// Торговые организации
+							Route::resource('/trades',
+								'TradeController')
+								->only(['index', 'edit', 'update']);
+
+							// Контрагенты
+							Route::resource('/contragents',
+								'ContragentController')
+								->except(['create', 'store', 'destroy']);
+
+							// Адреса контрагентов
+							Route::resource('/contragents/{contragent}/addresses',
+								'ContragentAddressController')
+								->only(['edit', 'update'])
+								->names([
+									'edit' => 'contragents.addresses.edit',
+									'update' => 'contragents.addresses.update',
+								]);
+
+							// Адреса
+							Route::resource('/addresses',
+								'AddressController')
+								->except(['create', 'store']);
+
+							// Телефоны адреса
+							Route::resource('/addresses/{address}/phones',
+								'AddressPhoneController')
+								->only(['create', 'store', 'edit', 'update', 'destroy'])
+								->names([
+									'create' => 'addresses.phones.create',
+									'store' => 'addresses.phones.store',
+									'edit' => 'addresses.phones.edit',
+									'update' => 'addresses.phones.update',
+									'destroy' => 'addresses.phones.destroy',
+								]);
+
+							// Зоны дистрибуции адреса
+							Route::resource('/addresses/{address}/regions',
+								'AddressRegionController')
+								->only(['index', 'store'])
+								->names([
+									'index' => 'addresses.regions.index',
+									'store' => 'addresses.regions.store',
+								]);
+
+							// Пользователи
+							Route::resource('/users',
+								'UserController');
+							Route::get('/users/{user}/schedule',
+								'UserController@schedule')
+								->name('users.schedule');
+							Route::get('/users/{user}/force',
+								'UserController@force')
+								->name('users.force');
+
+							// Сброс пароля пользователя
+							Route::resource('/users/{user}/password',
+								'UserPasswordController')
+								->only(['create', 'store'])
+								->names([
+									'create' => 'users.password.create',
+									'store' => 'users.password.store',
+								]);
+
+							// Цены пользователя
+							Route::resource('/users/{user}/prices',
+								'UserPriceController')
+								->only(['index', 'store'])
+								->names([
+									'index' => 'users.prices.index',
+									'store' => 'users.prices.store',
+								]);
+
+							// Узлы схемы
+							Route::resource('/blocks',
+								'BlockController');
+
+							// Документация
+							Route::resource('/datasheets',
+								'DatasheetController');
+
+							// Оборудование, к которому подходит документация
+							Route::resource('/datasheets/{datasheet}/products',
+								'DatasheetProductController')
+								->only(['index', 'store'])
+								->names([
+									'index' => 'datasheets.products.index',
+									'store' => 'datasheets.products.store',
+								]);
+							Route::delete('/datasheets/{datasheet}/products/destroy',
+								'DatasheetProductController@destroy')
+								->name('datasheets.products.destroy');
+
+							// Аналоги
+							Route::resource('/products/{product}/analogs',
+								'ProductAnalogController')
+								->only(['index', 'store'])
+								->names([
+									'index' => 'products.analogs.index',
+									'store' => 'products.analogs.store',
+								]);
+							Route::delete('/products/{product}/analogs/destroy',
+								'ProductAnalogController@destroy')
+								->name('products.analogs.destroy');
+
+							// Детали
+							Route::resource('/products/{product}/details',
+								'ProductDetailController')
+								->only(['index', 'store'])
+								->names([
+									'index' => 'products.details.index',
+									'store' => 'products.details.store',
+								]);
+							Route::delete('/products/{product}/details/destroy',
+								'ProductDetailController@destroy')
+								->name('products.details.destroy');
+
+							// Подходит к
+							Route::resource('/products/{product}/relations',
+								'ProductRelationController')
+								->only(['index', 'store'])
+								->names([
+									'index' => 'products.relations.index',
+									'store' => 'products.relations.store',
+								]);
+							Route::delete('/products/{product}/relations/destroy',
+								'ProductRelationController@destroy')
+								->name('products.relations.destroy');
+
+							Route::put('/product-images/{product}/sort',
+								'ProductImageController@sort')
+								->name('products.images.sort');
+
+							// Каталог
+							Route::put('/catalogs/sort', function (Request $request) {
+								Catalog::sort($request);
+							})->name('catalogs.sort');
+							Route::resource('/catalogs',
+								'CatalogController');
+							Route::get('/catalogs/create/{catalog?}',
+								'CatalogController@create')
+								->name('catalogs.create.parent');
+							Route::get('/tree',
+								'CatalogController@tree')
+								->name('catalogs.tree');
+
+							// Товары
+							Route::resource('/products',
+								'ProductController');
+
+							// Изображения товара
+							Route::resource('/products/{product}/images',
+								'ProductImageController')
+								->only(['index', 'store'])
+								->names([
+									'index' => 'products.images.index',
+									'store' => 'products.images.store',
+								]);
+
+							Route::put('/equipments/sort', function (Request $request) {
+								Equipment::sort($request);
+							})->name('equipments.sort');
+
+							// Оборудование
+							Route::resource('/equipments',
+								'EquipmentController');
+							Route::get('/equipments/create/{catalog?}',
+								'EquipmentController@create')
+								->name('equipments.create.parent');
+
+							// Изображения оборудования
+							Route::resource('/equipments/{equipment}/images',
+								'EquipmentImageController')
+								->only(['index', 'store'])
+								->names([
+									'index' => 'equipments.images.index',
+									'store' => 'equipments.images.store',
+								]);
+
+							// Изображения
+							Route::put('/images/sort', function (Request $request) {
+								Image::sort($request);
+							})->name('images.sort');
+
+							Route::resource('/images',
+								'ImageController')
+								->only(['index', 'store', 'show', 'destroy']);
+
+							Route::resource('/files',
+								'FileController')
+								->only(['index', 'store', 'show', 'destroy']);
+
+							// Серийные номера
+							Route::resource('/serials',
+								'SerialController')
+								->only(['index', 'create', 'store']);
+
+							// Сертификаты
+							Route::resource('/certificates',
+								'CertificateController')
+								->only(['index', 'destroy']);
+							Route::get('/certificates/create/{certificate_type}',
+								'CertificateController@create')
+								->name('certificates.create');
+							Route::post('/certificates/{certificate_type}',
+								'CertificateController@store')
+								->name('certificates.store');
+
+							// Валюта
+							Route::resource('/currencies',
+								'CurrencyController');
+							Route::resource('/currency_archives',
+								'CurrencyArchiveController')->only(['index']);
+
+							// Типы товаров
+							Route::resource('/product_types',
+								'ProductTypeController');
+
+							// Типы цен
+							Route::resource('/price_types',
+								'PriceTypeController')
+								->except(['create', 'store', 'destroy']);
+
+							// Типы файлов
+							Route::resource('/file_types',
+								'FileTypeController');
+
+							// Группы файлов
+							Route::resource('/file_groups',
+								'FileGroupController');
+
+							// Склады
+							Route::resource('/warehouses',
+								'WarehouseController');
+
+							// Страницы
+							Route::resource('/pages',
+								'PageController');
+
+							//Контакты
+							Route::resource('/contacts',
+								'ContactController');
+
+							// Телефоны
+							Route::resource('/phones',
+								'PhoneController')
+								->except(['show']);
+
+							// Заказы
+							Route::resource('/orders',
+								'OrderController')
+								->only(['index', 'show', 'update']);
+							Route::post('/orders/{order}/message',
+								'OrderController@message')
+								->name('orders.message');
+							Route::resource('/order-items',
+								'OrderItemController')
+							->only(['destroy', 'update']);
+							Route::get('/orders/{order}/schedule',
+								'OrderController@schedule')
+								->name('orders.schedule');
+							Route::post('/orders/{order}/payment',
+								'OrderController@payment')
+								->name('orders.payment');
+
+							// Типы мероприятий
+							Route::put('/event_types/sort', function (Request $request) {
+								EventType::sort($request);
+							})->name('event_types.sort');
+							Route::resource('/event_types',
+								'EventTypeController');
+
+							// Мероприятия
+							Route::resource('/events',
+								'EventController');
+							Route::get('/events/{event}/mailing',
+								'EventController@mailing')
+								->name('events.mailing');
+							Route::get('/events/{event}/attachment',
+								'EventController@attachment')
+								->name('events.attachment');
+							Route::get('/events/create/{member?}',
+								'EventController@create')
+								->name('events.create');
+							Route::post('/events/store/{member?}',
+								'EventController@store')
+								->name('events.store');
+
+							Route::resource('/parts',
+								'PartController')
+								->only(['edit', 'update', 'destroy']);
+
+
+							Route::resource('/members',
+								'MemberController');
+
+							Route::resource('/elements',
+								'ElementController');
+							Route::resource('/pointers',
+								'PointerController');
+							Route::resource('/shapes',
+								'ShapeController');
+
+							Route::resource('/templates',
+								'TemplateController');
+
+							Route::get('/participants/create/{member}',
+								'ParticipantController@create')
+								->name('participants.create');
+							Route::post('/participants/store/{member}',
+								'ParticipantController@store')
+								->name('participants.store');
+							Route::resource('/participants',
+								'ParticipantController')
+								->only(['destroy']);
+
+							// Новости
+							Route::post('/announcements/image',
+								'AnnouncementController@image')
+								->name('announcements.image');
+							Route::resource('/announcements',
+								'AnnouncementController');
+
+							Route::post('/schemes/image',
+								'SchemeController@image')
+								->name('schemes.image');
+							Route::get('/schemes/{scheme}/pointers',
+								'SchemeController@pointers')
+								->name('schemes.pointers');
+							Route::get('/schemes/{scheme}/shapes',
+								'SchemeController@shapes')
+								->name('schemes.shapes');
+							Route::get('/schemes/{scheme}/elements',
+								'SchemeController@elements')
+								->name('schemes.elements');
+							Route::post('/schemes/{scheme}/elements',
+								'SchemeController@elements')
+								->name('schemes.elements.update');
+							Route::delete('/schemes/{scheme}/elements',
+								'SchemeController@elements')
+								->name('schemes.elements.delete');
+							Route::resource('/schemes',
+								'SchemeController');
+
+							// Рассылка пользователям
+							Route::resource('/mailings',
+								'MailingController')
+								->only(['create', 'store']);
+
+							Route::resource('/prices',
+								'PriceController');
+
+							Route::put('/blocks/sort', function (Request $request) {
+								Block::sort($request);
+							})->name('blocks.sort');
+
+
+							Route::put('/elements/sort', function (Request $request) {
+								Element::sort($request);
+							})->name('elements.sort');
+
+							Route::put('/file_types/sort', function (Request $request) {
+								FileType::sort($request);
+							})->name('file_types.sort');
+
+							// Договора
+							Route::resource('/contracts',
+								'ContractController')
+								->only(['index', 'show']);
+
+							Route::get('/contracts/{contract}/download', function (Contract $contract) {
+								(new ContractWordProcessor($contract))->render();
+							})->name('contracts.download');
+
+							// Типы договоров
+							Route::resource('/contract-types',
+								'ContractTypeController');
+
+							// Склады дистрибьютора
+							Route::resource('/storehouses',
+								'StorehouseController')
+								->only(['index', 'show', 'create', 'store']);
+						});
 
 					});
-
 			});
 	});
 
@@ -970,8 +1026,8 @@ Route::group([
 
 		Route::name('api')->get('/products/{product}', 'ProductController@show');
 		//
-		Route::name('api')->get('/boilers', 'BoilerController@index')->name('.boilers.search');
-		Route::name('api')->get('/boilers/{product}', 'BoilerController@show')->name('.boilers.show');
+		//Route::name('api')->get('/boilers', 'BoilerController@index')->name('.boilers.search');
+		//Route::name('api')->get('/boilers/{product}', 'BoilerController@show')->name('.boilers.show');
 
 		Route::name('api')->get('/storehouses/cron',
 			'StorehouseController@cron')

@@ -63,7 +63,13 @@ class DatasheetController extends Controller
         return view('site::admin.datasheet.show', compact('datasheet'));
     }
 
-    public function create(FileRequest $request)
+	/**
+	 * @param FileRequest $request
+	 *
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 * @throws \Illuminate\Auth\Access\AuthorizationException
+	 */
+	public function create(FileRequest $request)
     {
         $this->authorize('create', Datasheet::class);
         $file_types = FileType::query()->where('group_id', 2)->orderBy('sort_order')->get();

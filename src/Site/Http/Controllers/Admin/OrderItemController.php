@@ -3,7 +3,9 @@
 namespace QuadStudio\Service\Site\Http\Controllers\Admin;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use QuadStudio\Service\Site\Http\Requests\Admin\OrderItemRequest;
 use QuadStudio\Service\Site\Models\OrderItem;
 
 class OrderItemController extends Controller
@@ -11,23 +13,30 @@ class OrderItemController extends Controller
 
     use AuthorizesRequests;
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  OrderItem $item
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(OrderItem $item)
-    {
+    public function update(OrderItemRequest $request, OrderItem $order_item) {
+	    $order_item->update($request->input('order_item.'.$order_item->getKey()));
+	    return redirect()->route('admin.orders.show', $order_item->order)->with('success', trans('site::order_item.updated'));
+    }
 
-        $this->authorize('delete', $item);
-        if ($item->delete()) {
-            $json['redirect'] = route('admin.orders.show', $item->order);
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  OrderItem $orderItem
+	 *
+	 * @return \Illuminate\Http\Response
+	 * @throws \Illuminate\Auth\Access\AuthorizationException
+	 * @throws \Exception
+	 */
+    public function destroy(OrderItem $orderItem)
+    {
+        $this->authorize('delete', $orderItem);
+        if ($orderItem->delete()) {
+            $json['redirect'] = route('admin.orders.show', $orderItem->order);
         } else{
-            $json['errors'] = 'Ошибка удаления';
+            $json['errors'] = trans('site::order_item.error.deleted');
         }
 
-        return response()->json($json);
+        return response()->json($json, Response::HTTP_OK);
 
     }
 

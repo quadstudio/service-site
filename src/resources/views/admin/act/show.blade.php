@@ -101,29 +101,7 @@
                             </a>
                         </div>
                     </div>
-                    {{--<div class="card-body">--}}
-                    <ul class="list-group list-group-flush">
-                        @if($act->schedules()->count())
-                            @foreach($act->schedules as $schedule)
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <div class="text-muted">
-                                        {{$schedule->status == 0 ? $schedule->created_at->format('d.m.Y H:i') : $schedule->updated_at->format('d.m.Y H:i')}}
-                                    </div>
-                                    <div @if($schedule->status == 2)
-                                         data-toggle="tooltip" data-placement="top" title="{!!$schedule->message!!}"
-                                            @endif>
-                                        @lang('site::schedule.statuses.'.$schedule->status.'.text')
-                                        <i class="fa fa-@lang('site::schedule.statuses.'.$schedule->status.'.icon')
-                                                text-@lang('site::schedule.statuses.'.$schedule->status.'.color')"></i>
-                                    </div>
-                                </li>
-                            @endforeach
-                        @else
-                            <li class="list-group-item d-flex justify-content-between align-items-center">@lang('site::messages.not_found')</li>
-                        @endif
-                    </ul>
-                    {{--</div>--}}
-
+                    @include('site::schedule.index', ['schedules' => $act->schedules])
                     @cannot('schedule', $act)
                         <div class="card-footer">
                             <div class="font-weight-bold text-danger">@lang('site::schedule.error')</div>

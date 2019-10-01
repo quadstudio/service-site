@@ -97,7 +97,6 @@ class ProductController extends Controller
         if ($product->getAttribute(config('site.check_field')) === false || $product->getAttribute('enabled') === false) {
             abort(404);
         }
-
         $equipments = $this
             ->equipments
             ->applyFilter(new SortFilter())

@@ -54,25 +54,7 @@ class OrderPolicy
      */
     public function update(User $user, Order $order)
     {
-        return false;
-    }
-
-    /**
-     * @param  User $user
-     * @param  Order $order
-     * @return bool
-     */
-    public function delete(User $user, Order $order)
-    {
-        return !$order->hasGuid()
-            && $order->getAttribute('status_id') == 1
-            && (
-                $user->getAttribute('id') == $order->getAttribute('user_id')
-                || (
-                    $user->getAttribute('admin') == 1
-                    && $order->address->addressable->id == $user->getAttribute('id')
-                )
-            );
+        return $user->getAttribute('admin') == 1;
     }
 
     /**

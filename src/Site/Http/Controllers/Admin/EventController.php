@@ -250,10 +250,13 @@ class EventController extends Controller
         return view('site::admin.event.mailing', compact('event', 'headers', 'emails', 'templates', 'route', 'repository'));
     }
 
-    /**
-     * @param Event $event
-     * @return \Illuminate\Http\RedirectResponse
-     */
+	/**
+	 * @param Event $event
+	 *
+	 * @return \Illuminate\Http\RedirectResponse
+	 * @throws \Illuminate\Auth\Access\AuthorizationException
+	 * @throws \Exception
+	 */
     public function destroy(Event $event)
     {
         $this->authorize('delete', $event);
