@@ -316,6 +316,9 @@ Route::group(['middleware' => ['online']],
 						Route::get('/distributors/{order}/excel', function (Order $order) {
 							(new OrderExcel())->setModel($order)->render();
 						})->name('distributors.excel');
+						Route::post('/distributors/{order}/payment',
+							'DistributorController@payment')
+							->name('distributors.payment');
 					});
 
 
@@ -332,6 +335,7 @@ Route::group(['middleware' => ['online']],
 					'OrderController@message')
 					->middleware('permission:messages')
 					->name('orders.message');
+
 
 				// Акты
 				Route::resource('/acts',

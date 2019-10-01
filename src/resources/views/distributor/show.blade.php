@@ -78,6 +78,41 @@
                         </div>
 
                         <hr class="p-0"/>
+                        <div class="mb-2">
+                            <div class="font-weight-bold mb-0">@lang('site::order.help.payment')</div>&nbsp;
+                            @if(in_array($order->status_id, array(1,2,3,4,5)))
+                                <div class="form-row mt-2">
+                                    <div class="col">
+
+                                        <form method="POST" enctype="multipart/form-data"
+                                              action="{{route('distributors.payment', $order)}}">
+                                            @csrf
+                                            <input type="hidden"
+                                                   name="type_id"
+                                                   value="19"/>
+                                            <input type="hidden"
+                                                   name="storage"
+                                                   value="payments"/>
+                                            <input class="d-inline-block form-control-file{{ $errors->has('file_id') ? ' is-invalid' : '' }}"
+                                                   type="file"
+                                                   accept="{{config('site.payments.accept')}}"
+                                                   name="path"/>
+
+                                            <button type="submit"
+                                                    class="py-0 px-1 btn-sm btn btn-ferroli file-upload-button">
+                                                @lang('site::messages.attach')
+                                            </button>
+                                            <span class="invalid-feedback">{{ $errors->first('file_id') }}</span>
+                                        </form>
+                                    </div>
+                                </div>
+                            @endif
+                            <div id="files" class="form-row bg-white ml-2">
+                                @include('site::admin.file.edit', ['delete' => in_array($order->status_id, array(1,2,3,4,5))])
+                            </div>
+                        </div>
+
+                        <hr class="p-0"/>
                         <div>
                             <form action="{{route('distributors.update', $order)}}"
                                   method="POST">

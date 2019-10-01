@@ -5,18 +5,19 @@ namespace QuadStudio\Service\Site\Http\Controllers;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use QuadStudio\Service\Site\Concerns\StoreFiles;
 use QuadStudio\Service\Site\Concerns\StoreMessages;
 use QuadStudio\Service\Site\Events\OrderStatusChangeEvent;
 use QuadStudio\Service\Site\Filters\Order\DistributorFilter;
+use QuadStudio\Service\Site\Http\Requests\FileRequest;
 use QuadStudio\Service\Site\Http\Requests\MessageRequest;
 use QuadStudio\Service\Site\Models\Order;
-use QuadStudio\Service\Site\Models\OrderStatus;
 use QuadStudio\Service\Site\Repositories\OrderRepository;
 
 class DistributorController extends Controller
 {
 
-    use AuthorizesRequests, StoreMessages;
+    use AuthorizesRequests, StoreMessages, StoreFiles;
 
     /**
      * @var OrderRepository
@@ -58,9 +59,22 @@ class DistributorController extends Controller
     {
 
         $this->authorize('distributor', $order);
+	    $file = $order->file;
 
-        return view('site::distributor.show', compact('order'));
+        return view('site::distributor.show', compact('order', 'file'));
     }
+
+	/**
+	 * @param FileRequest $request
+	 * @param Order $order
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 * @throws \Throwable
+	 */
+	public function payment(FileRequest $request, Order $order)
+	{
+		return $this->storeFile($request, $order);
+	}
 
     /**
      * @param Request $request

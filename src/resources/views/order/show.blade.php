@@ -71,7 +71,15 @@
                                 @include('site::order.total')
                             </div>
                         </div>
-
+                        @if($order->file)
+                            <hr class="p-0"/>
+                            <div class="mb-2">
+                                <div class="font-weight-bold mb-0">@lang('site::order.help.payment')</div>&nbsp;
+                                <div class="form-row bg-white">
+                                    @include('site::file.download', ['file' => $order->file])
+                                </div>
+                            </div>
+                        @endif
                         <hr class="p-0"/>
                         <div>
                             <form action="{{route('orders.update', $order)}}"
