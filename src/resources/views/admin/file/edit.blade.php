@@ -4,7 +4,10 @@
         <input form="form" type="hidden" name="{{config('site.' . $file->storage . '.name', 'files[]')}}"
                value="{{old(config('site.' . $file->storage . '.dot_name'), $file->id)}}">
         <div class="row">
-            @if($file->mime != 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+            @if(!in_array($file->mime, array(
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            )))
                 <div class="col-md-6 border position-relative">
                     @include('site::admin.file.preview')
                 </div>

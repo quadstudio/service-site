@@ -3,6 +3,7 @@
 namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use QuadStudio\Service\Site\Concerns\AttachAnalogs;
 use QuadStudio\Service\Site\Concerns\AttachDetails;
@@ -219,6 +220,11 @@ class Product extends Model implements Imageable
 
 		$storehouse_addresses = collect([]);
 		if (auth()->check()) {
+			/**
+			 *  Адреса склады в зависимости от региона
+			 *
+			 *  @var array $warehouses
+			 */
 			$warehouses = auth()->user()->warehouses()->pluck('id')->toArray();
 
 			foreach ($this->storehouse_products()
@@ -227,12 +233,16 @@ class Product extends Model implements Imageable
 					         $storehouse->where('enabled', 1);
 				         })->get() as $storehouse_product) {
 				foreach ($storehouse_product->storehouse->addresses()
-					         ->when(auth()->user()->only_ferroli == 1, function ($query) use ($warehouses) {
-						         return $query->whereIn('id', $warehouses);
-					         })
-					         ->whereHas('regions', function ($region) {
-						         $region->where('regions.id', auth()->user()->region_id);
-					         })->get() as $address) {
+					         ->when(auth()->user()->only_ferroli == 1,
+						         function ($query) use ($warehouses) {
+							         return $query->whereIn('id', $warehouses);
+						         },
+						         function ($query) {
+							         $query->whereHas('regions', function ($region) {
+								         $region->where('regions.id', auth()->user()->region_id);
+							         });
+						         })
+					         ->get() as $address) {
 					$storehouse_addresses->push([
 						'id' => $address->id,
 						'name' => $address->name,
