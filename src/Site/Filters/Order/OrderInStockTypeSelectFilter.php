@@ -6,7 +6,7 @@ use QuadStudio\Repo\Filters\BootstrapSelect;
 use QuadStudio\Repo\Filters\WhereFilter;
 use QuadStudio\Service\Site\Models\OrderStatus;
 
-class OrderStatusFilter extends WhereFilter
+class OrderInStockTypeSelectFilter extends WhereFilter
 {
 
 	use BootstrapSelect;
@@ -20,13 +20,7 @@ class OrderStatusFilter extends WhereFilter
 	 */
 	public function options(): array
 	{
-		return OrderStatus::query()->whereHas('orders', function ($query) {
-			if (auth()->user()->admin == 0) {
-				$query->where('user_id', auth()->user()->getAuthIdentifier());
-			}
-		})
-			->orderBy('id')
-			->pluck('name', 'id')
+		return collect(trans('site::order.help.in_stock_type', []))
 			->prepend(trans('site::messages.select_no_matter'), '')
 			->toArray();
 	}
@@ -36,7 +30,7 @@ class OrderStatusFilter extends WhereFilter
 	 */
 	public function name(): string
 	{
-		return 'status_id';
+		return 'in_stock_type';
 	}
 
 	/**
@@ -45,7 +39,7 @@ class OrderStatusFilter extends WhereFilter
 	public function column(): string
 	{
 
-		return 'orders.status_id';
+		return 'orders.in_stock_type';
 
 	}
 
@@ -56,6 +50,6 @@ class OrderStatusFilter extends WhereFilter
 
 	public function label()
 	{
-		return trans('site::order.status_id');
+		return trans('site::order.in_stock_type');
 	}
 }

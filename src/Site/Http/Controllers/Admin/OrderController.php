@@ -11,6 +11,7 @@ use QuadStudio\Service\Site\Events\OrderScheduleEvent;
 use QuadStudio\Service\Site\Events\OrderStatusChangeEvent;
 use QuadStudio\Service\Site\Exports\Excel\OrdersExcel;
 use QuadStudio\Service\Site\Filters\Order\OrderAddressSelectFilter;
+use QuadStudio\Service\Site\Filters\Order\OrderInStockTypeSelectFilter;
 use QuadStudio\Service\Site\Filters\Order\OrderPerPageFilter;
 use QuadStudio\Service\Site\Filters\Order\OrderUserSelectFilter;
 use QuadStudio\Service\Site\Filters\Order\ScSearchFilter;
@@ -53,6 +54,7 @@ class OrderController extends Controller
 		$this->orders->trackFilter();
 		$this->orders->pushTrackFilter(ScSearchFilter::class);
 		$this->orders->pushTrackFilter(OrderAddressSelectFilter::class);
+		$this->orders->pushTrackFilter(OrderInStockTypeSelectFilter::class);
 		$this->orders->pushTrackFilter(OrderUserSelectFilter::class);
 		$this->orders->pushTrackFilter(OrderPerPageFilter::class);
 
