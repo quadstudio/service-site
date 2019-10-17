@@ -17,9 +17,9 @@ class OrderItem extends Model
 	protected static function boot()
 	{
 		static::creating(function (OrderItem $item) {
-			if ($item->order->status_id = 1 && $item->order->in_stock_type == 2) {
-				$item->setAttribute('price', $item->product->price->getAttribute('price'));
-				$item->setAttribute('currency_id', $item->product->price->getAttribute('currency_id'));
+			if ($item->order->status_id = 1 && in_array($item->order->in_stock_type, array(1, 2))) {
+				$item->setAttribute('price', $item->product->price->getAttribute('price') ?? 0);
+				$item->setAttribute('currency_id', $item->product->price->getAttribute('currency_id') ?? 978);
 			}
 		});
 	}
