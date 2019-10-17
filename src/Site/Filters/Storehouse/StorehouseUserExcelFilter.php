@@ -26,9 +26,13 @@ class StorehouseUserExcelFilter extends Filter
 
 			})
 			->whereHas('addresses', function ($address) {
-				$address->whereHas('regions', function ($region) {
-					$region->where('regions.id', auth()->user()->region->id);
-				});
+
+				$address->when(auth()->user()->only_ferroli == 0,
+					function ($query) {
+						$query->whereHas('regions', function ($region) {
+							$region->where('regions.id', auth()->user()->region_id);
+						});
+					});
 			});
 	}
 }
