@@ -167,6 +167,16 @@ class Order extends Model implements Messagable, SingleFileable
 	}
 
 	/**
+	 * Связанный заказ
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasOne
+	 */
+	public function brother()
+	{
+		return $this->hasOne(Order::class, 'brother_id');
+	}
+
+	/**
 	 * @return \Illuminate\Routing\Route
 	 */
 	function messageMailRoute()
