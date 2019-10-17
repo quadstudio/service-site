@@ -82,6 +82,13 @@
                                 <i class="fa fa-percent"></i> {{ $order->percent_compl }}
                             </span>
                         </div>
+                        @if($order->brother)
+                            <div class="mb-2">
+                                <span class="text-primary font-weight-bold">@lang('site::order.brother_id'):</span>&nbsp;
+                                <a href="{{route('admin.orders.show', $order->brother)}}">№ {{$order->brother->id}}</a>
+                            </span>
+                            </div>
+                        @endif
 
                         <hr class="p-0"/>
 
@@ -293,10 +300,25 @@
                                                                    min="0.01"
                                                                    step="0.01"
                                                                    id="price"
-                                                                   value="{{old('order_item.price', $item->price)}}"
+                                                                   value="{{old('order_item.'.$item->id.'.price', $item->price)}}"
                                                                    class="form-control{{ $errors->has('order_item.'.$item->id.'.price') ? ' is-invalid' : '' }}"
                                                                    name="order_item[{{$item->id}}][price]"/>
                                                             <span class="invalid-feedback">{{ $errors->first('order_item.'.$item->id.'.price') }}</span>
+                                                        </div>
+                                                        <div class="form-group mt-2 required">
+                                                            <label class="control-label" for="client">
+                                                                @lang('site::order_item.quantity')
+                                                            </label>
+                                                            <input required
+                                                                   type="number"
+                                                                   min="1"
+                                                                   max="{{config('cart.item_max_quantity')}}"
+                                                                   step="1"
+                                                                   id="price"
+                                                                   value="{{old('order_item.'.$item->id.'.price', $item->quantity)}}"
+                                                                   class="form-control{{ $errors->has('order_item.'.$item->id.'.quantity') ? ' is-invalid' : '' }}"
+                                                                   name="order_item[{{$item->id}}][quantity]"/>
+                                                            <span class="invalid-feedback">{{ $errors->first('order_item.'.$item->id.'.quantity') }}</span>
                                                         </div>
                                                         @if($order->status_id == 1)
                                                             <div class="form-group mt-2 required">
