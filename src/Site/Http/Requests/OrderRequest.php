@@ -61,7 +61,7 @@ class OrderRequest extends FormRequest
 								$types = $address->product_group_types()->pluck('id');
 
 								$result = Product::query()->find($products)->every(function ($product) use ($types) {
-									return $types->contains($product->group->type_id);
+									return $types->contains(optional($product->group)->type_id);
 								});
 
 								if ($result === false) {
@@ -116,15 +116,23 @@ class OrderRequest extends FormRequest
 		$data = [];
 		$orders = collect([]);
 		$cart_products = Cart::toArray($this->input('products', []));
-
 		if ($this->user()->getAttribute('only_ferroli') == 0) {
 			$data[0] = $cart_products;
 		} else {
 			$address = Address::query()->find($this->input('order.address_id'));
-			$storehouse_products = $address->storehouse->products()->pluck('product_id');
+			$storehouse_products = $address->storehouse->products()->pluck('quantity', 'product_id');
+
 			foreach (array_keys($cart_products) as $cart_product_id) {
-				if ($storehouse_products->contains($cart_product_id)) {
-					$data[1][$cart_product_id] = $cart_products[$cart_product_id];
+				if ($storehouse_products->has($cart_product_id)) {
+					if($cart_products[$cart_product_id]['quantity'] <= $storehouse_products->get($cart_product_id)){
+						$data[1][$cart_product_id] = $cart_products[$cart_product_id];
+					} else {
+						$cart_product = $cart_products[$cart_product_id];
+						$cart_product['quantity'] -= $storehouse_products->get($cart_product_id);
+						$data[2][$cart_product_id] = $cart_product;
+						$cart_product['quantity'] = $storehouse_products->get($cart_product_id);
+						$data[1][$cart_product_id] = $cart_product;
+					}
 				} else {
 					$data[2][$cart_product_id] = $cart_products[$cart_product_id];
 				}
