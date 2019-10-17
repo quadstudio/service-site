@@ -19,6 +19,7 @@ return [
 	'in_stock_type' => 'Тип заказа по наличию',
 	'percent_compl' => 'Процент выполнения',
 	'created_at' => 'Дата',
+	'brother_id' => 'Связанный заказ',
 	'guid' => 'Код 1С',
 
 	'distributor' => 'Входящий заказ',
