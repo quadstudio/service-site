@@ -30,6 +30,7 @@ class OrderItemRequest extends FormRequest
 					return [
 						'order_item.*.weeks_delivery' => 'sometimes|required|numeric|between:' . config('site.weeks_delivery.min') . ',' . config('site.weeks_delivery.max'),
 						'order_item.*.price' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+						'order_item.*.quantity' => 'sometimes|required|min:1|max:'.config('cart.item_max_quantity'),
 					];
 				}
 			default:
@@ -47,6 +48,7 @@ class OrderItemRequest extends FormRequest
 		return [
 			'order_item.*.weeks_delivery' => trans('site::order_item.weeks_delivery'),
 			'order_item.*.price' => trans('site::order_item.price'),
+			'order_item.*.quantity' => trans('site::order_item.quantity'),
 		];
 	}
 
