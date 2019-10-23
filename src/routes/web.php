@@ -315,7 +315,7 @@ Route::group(['middleware' => ['online']],
 							->name('distributors.message');
 						Route::get('/distributors/{order}/excel', function (Order $order) {
 							(new OrderExcel())->setModel($order)->render();
-						})->name('distributors.excel');
+						})->name('distributors.excel')->middleware('can:distributor,order');
 						Route::post('/distributors/{order}/payment',
 							'DistributorController@payment')
 							->name('distributors.payment');
