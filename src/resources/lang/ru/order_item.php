@@ -14,6 +14,15 @@ return [
 	'error' => [
 		'deleted' => 'Ошибка удаления товара',
 	],
+	'message' => [
+		'product' => "У товара :product были изменены поля:",
+		'item' => ":column с :original на :change",
+		'columns' => [
+			'price' => ' (€)',
+			'quantity' => ' (шт.)',
+			'weeks_delivery' => ' (недель)',
+		],
+	],
 
 
 ];
