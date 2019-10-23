@@ -128,7 +128,7 @@ class Product extends Model implements Imageable
 		}
 
 
-		return !empty($name) ? implode(' &bull; ', $name) : $this->id;
+		return !empty($name) ? implode(' • ', $name) : $this->id;
 	}
 
 	public function getNameAttribute($name)
