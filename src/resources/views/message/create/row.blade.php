@@ -10,6 +10,6 @@
     <div class="flex-shrink-1 bg-lighter rounded py-2 px-3
         @if($message->user_id == auth()->user()->getAuthIdentifier()) mr-3 @else ml-3 @endif">
         <div class="mb-1"><b>{{$message->user->name}}</b></div>
-        <span class="text-big">{!! $message->text !!}</span>
+        <span class="text-big">{!! nl2br($message->text) !!}</span>
     </div>
 </div>

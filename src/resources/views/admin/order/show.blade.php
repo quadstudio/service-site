@@ -129,7 +129,7 @@
                                     </div>
                                 </div>
                             @endif
-                            <div id="files" class="form-row bg-white ml-2">
+                            <div id="files" class="form-row bg-white">
                                 @include('site::admin.file.edit', ['delete' => in_array($order->status_id, array(2,3))])
                             </div>
                         </div>
@@ -394,7 +394,7 @@
                                                     </div>
                                                     <div class="flex-shrink-1 bg-lighter rounded py-2 px-3 @if($message->user_id == auth()->user()->getAuthIdentifier()) mr-3 @else ml-3 @endif">
                                                         <div class="mb-1"><b>{{$message->user->name}}</b></div>
-                                                        <span class="text-big">{!! $message->text !!}</span>
+                                                        <span class="text-big">{!! nl2br($message->text) !!}</span>
                                                     </div>
                                                 </div>
                                             @endforeach
