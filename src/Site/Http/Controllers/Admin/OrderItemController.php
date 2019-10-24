@@ -24,7 +24,7 @@ class OrderItemController extends Controller
 
 			foreach ($order_item->getChanges() as $key => $value) {
 				$changes[] = trans('site::order_item.message.item', [
-					'column' => trans('site::order_item.' . $key).trans('site::order_item.message.columns.' . $key),
+					'column' => trans('site::order_item.' . $key) . trans('site::order_item.message.columns.' . $key),
 					'original' => $order_item->getOriginal($key),
 					'change' => $value,
 				]);
@@ -45,16 +45,30 @@ class OrderItemController extends Controller
 	/**
 	 * Remove the specified resource from storage.
 	 *
+	 * @param OrderItemRequest $request
 	 * @param  OrderItem $orderItem
 	 *
 	 * @return \Illuminate\Http\Response
 	 * @throws \Illuminate\Auth\Access\AuthorizationException
 	 * @throws \Exception
 	 */
-	public function destroy(OrderItem $orderItem)
+	public function destroy(OrderItemRequest $request, OrderItem $orderItem)
 	{
 		$this->authorize('delete', $orderItem);
 		if ($orderItem->delete()) {
+
+			$changes = [
+				trans('site::order_item.message.delete', ['product' => $orderItem->product->name()]),
+			];
+			foreach (['price', 'quantity', 'weeks_delivery'] as $key) {
+				$changes[] = trans('site::order_item.' . $key) . trans('site::order_item.message.columns.' . $key) . $orderItem->getOriginal($key);
+			}
+
+			$text = implode("\r\n", $changes);
+
+			$receiver_id = $request->user()->getKey();
+			$orderItem->order->messages()->save($request->user()->outbox()->create(compact('text', 'receiver_id')));
+
 			$json['redirect'] = route('admin.orders.show', $orderItem->order);
 		} else {
 			$json['errors'] = trans('site::order_item.error.deleted');

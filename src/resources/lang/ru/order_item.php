@@ -15,12 +15,13 @@ return [
 		'deleted' => 'Ошибка удаления товара',
 	],
 	'message' => [
+		'delete' => 'Товар :product был удален',
 		'product' => "У товара :product были изменены поля:",
 		'item' => ":column с :original на :change",
 		'columns' => [
-			'price' => ' (€)',
-			'quantity' => ' (шт.)',
-			'weeks_delivery' => ' (недель)',
+			'price' => ' (€) ',
+			'quantity' => ' (шт.) ',
+			'weeks_delivery' => ' (недель) ',
 		],
 	],
 
