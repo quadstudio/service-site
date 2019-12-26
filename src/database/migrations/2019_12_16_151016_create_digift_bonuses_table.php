@@ -22,7 +22,7 @@ class CreateDigiftBonusesTable extends Migration
 			$table->boolean('blocked')->default(0);
 			$table->boolean('sended')->default(0);
 			$table->string('digift_resp')->nullable();
-			$table->timestamp('checked_at')->nullable();
+			$table->timestamp('sended_at')->nullable();
 			$table->timestamps();
 
 			$table
