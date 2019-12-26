@@ -1,0 +1,11 @@
+<?php
+
+namespace {{namespace}}Http\Controllers\Auth;
+
+use {{namespace}}Http\Controllers\Controller;
+use QuadStudio\Service\Site\Traits\Controllers\Auth\RegisterControllerTrait;
+
+class RegisterController extends Controller
+{
+    use RegisterControllerTrait;
+}

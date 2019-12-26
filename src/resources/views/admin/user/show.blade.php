@@ -305,7 +305,13 @@
                         </table>
                     </div>
                 </div>
-
+                @if($user->digiftUser()->exists())
+                    @include('site::admin.user.digift_bonus.index', ['digiftUser' => $user->digiftUser])
+                @else
+                    <div class="alert alert-warning" role="alert">
+                        @lang('site::digift_user.help.digift_user_not_exists')
+                    </div>
+                @endif
                 @foreach($contacts as $contact)
                     <div class="card mb-2">
                         <div class="card-body">
@@ -361,13 +367,17 @@
                                         </ul>
                                     @endif
                                 </dd>
-								<dt class="col-sm-4 text-left text-sm-right"></dt>
+                                <dt class="col-sm-4 text-left text-sm-right"></dt>
                                 <dd class="col-sm-8">
-								@if(( $address->is_service ))<span class="badge text-normal mb-0 mb-sm-1 badge-ferroli">Сервис</span> @endif
-								@if(( $address->is_shop ))<span class="badge text-normal mb-0 mb-sm-1 badge-ferroli">Торговая точка</span> @endif
-								@if(( $address->is_eshop ))<span class="badge text-normal mb-0 mb-sm-1 badge-ferroli">Интернет-магазин</span> @endif
-								@if(( $address->is_mounter ))<span class="badge text-normal mb-0 mb-sm-1 badge-ferroli">Монтажник</span> @endif
-								</dd>
+                                    @if(( $address->is_service ))<span
+                                            class="badge text-normal mb-0 mb-sm-1 badge-ferroli">Сервис</span> @endif
+                                    @if(( $address->is_shop ))<span
+                                            class="badge text-normal mb-0 mb-sm-1 badge-ferroli">Торговая точка</span> @endif
+                                    @if(( $address->is_eshop ))<span
+                                            class="badge text-normal mb-0 mb-sm-1 badge-ferroli">Интернет-магазин</span> @endif
+                                    @if(( $address->is_mounter ))<span
+                                            class="badge text-normal mb-0 mb-sm-1 badge-ferroli">Монтажник</span> @endif
+                                </dd>
                             </dl>
                         </div>
                     </div>

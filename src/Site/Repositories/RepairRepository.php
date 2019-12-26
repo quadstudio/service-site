@@ -4,6 +4,7 @@ namespace QuadStudio\Service\Site\Repositories;
 
 
 use QuadStudio\Repo\Eloquent\Repository;
+use QuadStudio\Service\Site\Filters\Repair\RepairIdSearchFilter;
 use QuadStudio\Service\Site\Filters\Repair\ActIncludeFilter;
 use QuadStudio\Service\Site\Filters\Repair\ClientSearchFilter;
 use QuadStudio\Service\Site\Filters\Repair\RepairDateActFromFilter;
@@ -36,16 +37,17 @@ class RepairRepository extends Repository
     {
         return [
             SortFilter::class,
+            RepairIdSearchFilter::class,
             SearchFilter::class,
             ClientSearchFilter::class,
             PartSearchFilter::class,
             StatusFilter::class,
             ActIncludeFilter::class,
-            EquipmentFilter::class,
             RepairDateFromFilter::class,
             RepairDateToFilter::class,
             RepairDateActFromFilter::class,
             RepairDateActToFilter::class,
+            EquipmentFilter::class,
 
         ];
     }

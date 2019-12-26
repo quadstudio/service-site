@@ -31,8 +31,11 @@ Route::group([
 
 		// Registration Routes...
 		Route::get('register', 'RegisterController@showRegistrationForm')->name('register');
+		Route::get('register/fl', 'RegisterController@showRegistrationFlForm')->name('register_fl');
+		Route::post('register/fl', 'RegisterController@register_fl');
 		Route::post('register', 'RegisterController@register');
 		Route::get('/register/confirm/{token}', 'RegisterController@confirm')->name('confirm');
+
 
 		// Password Reset Routes...
 		Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.request');
@@ -186,6 +189,18 @@ Route::group(['middleware' => ['online']],
 					'HomeController@force')
 					->name('users.admin');
 
+				/*
+				|--------------------------------------------------------------------------
+				|                   БОНУСЫ ДИГИФТ
+				|--------------------------------------------------------------------------
+				*/
+				// Получить бонусы (вознаграждение) Дигифт
+				Route::post('/digift/users/{digiftUser}/fullUrlToRedirect',
+					'DigiftUserController@fullUrlToRedirect')
+					->name('digift.users.fullUrlToRedirect');
+
+
+				//-------------------------------------------------------------------------
 				// Авторизации
 				Route::resource('/authorizations',
 					'AuthorizationController')
@@ -520,6 +535,37 @@ Route::group(['middleware' => ['online']],
 							Route::resource('/mountings',
 								'MountingController')
 								->only(['index', 'show', 'update']);
+
+							/*
+							|--------------------------------------------------------------------------
+							|                   БОНУСЫ ДИГИФТ
+							|--------------------------------------------------------------------------
+							*/
+							// Добавить бонус вручную к отчету по монтажу
+							Route::post('/mountings/{mounting}/digift-bonuses',
+								'MountingDigiftBonusController@store')
+							->name('mountings.digift-bonuses.store');
+
+							// Отправить бонус вручную в Дигифт
+							Route::patch('/digift/bonuses/{digiftBonus}/changeBalance',
+								'DigiftBonusController@changeBalance')
+								->name('digift.bonuses.changeBalance');
+
+							// Отменить бонус отчета
+							Route::delete('/digift/bonuses/{digiftBonus}/rollbackBalanceChange',
+								'DigiftBonusController@rollbackBalanceChange')
+								->name('digift.bonuses.rollbackBalanceChange');
+
+							// Отменить все бонусы пользователя
+							Route::delete('/digift/users/{digiftUser}/rollbackBalanceChange',
+								'DigiftUserController@rollbackBalanceChange')
+								->name('digift.users.rollbackBalanceChange');
+
+							// Обновить access токен пользователя вручную
+							Route::patch('/digift/users/{digiftUser}/refreshToken',
+								'DigiftUserController@refreshToken')
+								->name('digift.users.refreshToken');
+							//-------------------------------------------------------------------------
 
 							// Отчеты по ремонту
 							Route::resource('/repairs',
@@ -956,6 +1002,10 @@ Route::group(['middleware' => ['online']],
 							Route::resource('/storehouses',
 								'StorehouseController')
 								->only(['index', 'show', 'create', 'store']);
+								
+							// Отчеты
+							Route::resource('/reports/asc',
+								'ReportAscController');
 						});
 
 					});

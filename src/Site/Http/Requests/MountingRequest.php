@@ -39,6 +39,7 @@ class MountingRequest extends FormRequest
                     'mounting.source_id'     => 'required|exists:mounting_sources,id',
                     'mounting.source_other'  => 'required_if:mounting.source_id,4|nullable|max:255',
                     'mounting.contragent_id' => [
+                    	'sometimes',
                         'required',
                         'exists:contragents,id',
                         Rule::exists('contragents', 'id')->where(function ($query) {
@@ -72,6 +73,7 @@ class MountingRequest extends FormRequest
                     ],
                     'mounting.date_trade'    => 'required|date_format:"d.m.Y"',
                     'mounting.engineer_id'   => [
+                    	'sometimes',
                         'required',
                         'exists:engineers,id',
                         Rule::exists('engineers', 'id')->where(function ($query) {

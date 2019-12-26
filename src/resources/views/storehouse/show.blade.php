@@ -95,6 +95,7 @@
                                     <a href="{{route('addresses.show', $address)}}"
                                        class="list-group-item list-group-item-action p-1">
                                         <i class="fa fa-@lang('site::address.icon')"></i> {{ $address->full }}
+										<br><b>@lang('site::address.regions'): {{$address->regions->count()}}</b>
                                     </a>
                                 @endforeach
                             </div>

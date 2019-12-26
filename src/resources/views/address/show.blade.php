@@ -119,6 +119,21 @@
                             </li>
                         @endforeach
                     </dd>
+					@if($address->type_id==6)
+					<dt class="col-sm-4 text-left text-sm-right">@lang('site::address.regions')</dt>
+                    <dd class="col-sm-8">
+                        @if($address->regions()->exists())
+                            <ul class="list-group">
+                                @foreach($address->regions as $region)
+                                    <li class="list-group-item p-1">{{$region->name}}</li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <p class="text-muted text-tiny">@lang('site::messages.not_found')</p>
+                        @endif
+                    </dd>
+					@endif
+					
                     <dt class="col-sm-4 text-left text-sm-right"></dt>
                     <dd class="col-sm-8">
                         <div id="address-map" style="height: 320px;width: 100%;"></div>

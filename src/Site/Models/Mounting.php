@@ -2,12 +2,13 @@
 
 namespace QuadStudio\Service\Site\Models;
 
-use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
+use QuadStudio\Service\Site\Contracts\Bonusable;
 use QuadStudio\Service\Site\Contracts\Messagable;
 
 
-class Mounting extends Model implements Messagable
+class Mounting extends Model implements Messagable, Bonusable
 {
 
 	/**
@@ -18,284 +19,346 @@ class Mounting extends Model implements Messagable
 	/**
 	 * @var array
 	 */
-    protected $fillable = [
-        'status_id', 'serial_id', 'product_id',
-        'source_id', 'source_other',
-        'bonus_social', 'bonus',
-        'date_trade', 'date_mounting',
-        'engineer_id', 'trade_id', 'contragent_id',
-        'source_id', 'country_id',
-        'client', 'phone_primary', 'phone_secondary',
-        'address', 'social_url',
-        'social_enabled', 'comment'
-    ];
+	protected $fillable = [
+		'status_id', 'serial_id', 'product_id',
+		'source_id', 'source_other',
+		'bonus_social', 'bonus',
+		'date_trade', 'date_mounting',
+		'engineer_id', 'trade_id', 'contragent_id',
+		'source_id', 'country_id',
+		'client', 'phone_primary', 'phone_secondary',
+		'address', 'social_url',
+		'social_enabled', 'comment',
+	];
 
 	/**
 	 * @var array
 	 */
-    protected $casts = [
+	protected $casts = [
 
-        'serial_id'       => 'string',
-        'product_id'      => 'string',
-        'source_id'       => 'integer',
-        'source_other'    => 'string',
-        'status_id'       => 'integer',
-        'contragent_id'   => 'integer',
-        'bonus'           => 'integer',
-        'bonus_social'    => 'integer',
-        'date_trade'      => 'date:Y-m-d',
-        'date_mounting'   => 'date:Y-m-d',
-        'engineer_id'     => 'integer',
-        'trade_id'        => 'integer',
-        'country_id'      => 'string',
-        'phone_primary'   => 'string',
-        'phone_secondary' => 'string',
-        'social_url'      => 'string',
-        'client'          => 'string',
-        'address'         => 'string',
-        'social_enabled'  => 'boolean',
-        'comment'         => 'string',
-    ];
+		'serial_id' => 'string',
+		'product_id' => 'string',
+		'source_id' => 'integer',
+		'source_other' => 'string',
+		'status_id' => 'integer',
+		'contragent_id' => 'integer',
+		'bonus' => 'integer',
+		'bonus_social' => 'integer',
+		'date_trade' => 'date:Y-m-d',
+		'date_mounting' => 'date:Y-m-d',
+		'engineer_id' => 'integer',
+		'trade_id' => 'integer',
+		'country_id' => 'string',
+		'phone_primary' => 'string',
+		'phone_secondary' => 'string',
+		'social_url' => 'string',
+		'client' => 'string',
+		'address' => 'string',
+		'social_enabled' => 'boolean',
+		'comment' => 'string',
+	];
 
 	/**
 	 * @var array
 	 */
-    protected $dates = [
-        'date_trade',
-        'date_mounting'
-    ];
+	protected $dates = [
+		'date_trade',
+		'date_mounting',
+	];
 
-    protected static function boot()
-    {
+	protected static function boot()
+	{
 
-        static::creating(function ($model) {
+		static::creating(function ($model) {
 
-            /** @var Mounting $model */
-            $model->setAttribute('bonus', $model->product->mounting_bonus->value);
-            $model->setAttribute('social_bonus', $model->product->mounting_bonus->social);
-        });
+			/** @var Mounting $model */
+			$model->setAttribute('bonus', $model->product->mounting_bonus->value);
+			$model->setAttribute('social_bonus', $model->product->mounting_bonus->social);
+		});
 
-    }
+	}
 
-    /**
-     * @param $value
-     */
-    public function setDateTradeAttribute($value)
-    {
-        $this->attributes['date_trade'] = $value ? Carbon::createFromFormat('d.m.Y', $value) : null;
-    }
+	/**
+	 * @param $value
+	 */
+	public function setDateTradeAttribute($value)
+	{
+		$this->attributes['date_trade'] = $value ? Carbon::createFromFormat('d.m.Y', $value) : null;
+	}
 
-    /**
-     * @param $value
-     */
-    public function setDateMountingAttribute($value)
-    {
-        $this->attributes['date_mounting'] = $value ? Carbon::createFromFormat('d.m.Y', $value) : null;
-    }
+	/**
+	 * @param $value
+	 */
+	public function setDateMountingAttribute($value)
+	{
+		$this->attributes['date_mounting'] = $value ? Carbon::createFromFormat('d.m.Y', $value) : null;
+	}
 
-    /**
-     * @param $value
-     * @return mixed|null
-     */
-    public function getPhonePrimaryAttribute($value)
-    {
-        return $value ? preg_replace(config('site.phone.get.pattern'), config('site.phone.get.replacement'), $value) : null;
-    }
+	/**
+	 * @param $value
+	 *
+	 * @return mixed|null
+	 */
+	public function getPhonePrimaryAttribute($value)
+	{
+		return $value ? preg_replace(config('site.phone.get.pattern'), config('site.phone.get.replacement'), $value) : null;
+	}
 
-    /**
-     * @param $value
-     */
-    public function setPhonePrimaryAttribute($value)
-    {
-        $this->attributes['phone_primary'] = $value ? preg_replace(config('site.phone.set.pattern'), config('site.phone.set.replacement'), $value) : null;
-    }
+	/**
+	 * @param $value
+	 */
+	public function setPhonePrimaryAttribute($value)
+	{
+		$this->attributes['phone_primary'] = $value ? preg_replace(config('site.phone.set.pattern'), config('site.phone.set.replacement'), $value) : null;
+	}
 
-    /**
-     * @param $value
-     * @return mixed|null
-     */
-    public function getPhoneSecondaryAttribute($value)
-    {
-        return $value ? preg_replace(config('site.phone.get.pattern'), config('site.phone.get.replacement'), $value) : null;
-    }
+	/**
+	 * @param $value
+	 *
+	 * @return mixed|null
+	 */
+	public function getPhoneSecondaryAttribute($value)
+	{
+		return $value ? preg_replace(config('site.phone.get.pattern'), config('site.phone.get.replacement'), $value) : null;
+	}
 
-    /**
-     * @param $value
-     */
-    public function setPhoneSecondaryAttribute($value)
-    {
-        $this->attributes['phone_secondary'] = $value ? preg_replace(config('site.phone.set.pattern'), config('site.phone.set.replacement'), $value) : null;
-    }
+	/**
+	 * @param $value
+	 */
+	public function setPhoneSecondaryAttribute($value)
+	{
+		$this->attributes['phone_secondary'] = $value ? preg_replace(config('site.phone.set.pattern'), config('site.phone.set.replacement'), $value) : null;
+	}
 
-    public function getTotalAttribute()
-    {
-        return $this->getAttribute('bonus') + $this->getAttribute('enabled_social_bonus');
-    }
+	public function getTotalAttribute()
+	{
+		return $this->getAttribute('bonus') + $this->getAttribute('enabled_social_bonus');
+	}
 
-    public function getEnabledSocialBonusAttribute()
-    {
-        return $this->getAttribute('social_enabled') == 1 ? $this->getAttribute('social_bonus') : 0;
-    }
+	public function getEnabledSocialBonusAttribute()
+	{
+		return $this->getAttribute('social_enabled') == 1 ? $this->getAttribute('social_bonus') : 0;
+	}
 
 
-    /**
-     * Файлы
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\morphMany
-     */
-    public function files()
-    {
-        return $this->morphMany(File::class, 'fileable');
-    }
+	/**
+	 * Файлы
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\morphMany
+	 */
+	public function files()
+	{
+		return $this->morphMany(File::class, 'fileable');
+	}
 
-    public function detachFiles()
-    {
-        foreach ($this->files as $file) {
-            $file->fileable_id = null;
-            $file->fileable_type = null;
-            $file->save();
-        }
-    }
+	public function detachFiles()
+	{
+		foreach ($this->files as $file) {
+			$file->fileable_id = null;
+			$file->fileable_type = null;
+			$file->save();
+		}
+	}
 
-    /**
-     * Серийный номер
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function serial()
-    {
-        return $this->belongsTo(Serial::class);
-    }
+	/**
+	 * Серийный номер
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function serial()
+	{
+		return $this->belongsTo(Serial::class);
+	}
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function status()
-    {
-        return $this->belongsTo(MountingStatus::class);
-    }
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function status()
+	{
+		return $this->belongsTo(MountingStatus::class);
+	}
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function source()
-    {
-        return $this->belongsTo(MountingSource::class);
-    }
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function source()
+	{
+		return $this->belongsTo(MountingSource::class);
+	}
 
-    /**
-     * Акт выполненных работ
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function act()
-    {
-        return $this->belongsTo(Act::class);
-    }
+	/**
+	 * Акт выполненных работ
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function act()
+	{
+		return $this->belongsTo(Act::class);
+	}
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function contragent()
-    {
-        return $this->belongsTo(Contragent::class);
-    }
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function contragent()
+	{
+		return $this->belongsTo(Contragent::class)->withDefault();
+	}
 
-    /**
-     * Страна
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function country()
-    {
-        return $this->belongsTo(Country::class);
-    }
+	/**
+	 * Страна
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function country()
+	{
+		return $this->belongsTo(Country::class);
+	}
 
-    /**
-     * Пользователь
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+	/**
+	 * Пользователь
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function user()
+	{
+		return $this->belongsTo(User::class);
+	}
 
-    /**
-     * Торговая организация
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function trade()
-    {
-        return $this->belongsTo(Trade::class);
-    }
+	/**
+	 * Торговая организация
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function trade()
+	{
+		return $this->belongsTo(Trade::class);
+	}
 
-    /**
-     * Сервисный инженер
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function engineer()
-    {
-        return $this->belongsTo(Engineer::class);
-    }
+	/**
+	 * Сервисный инженер
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function engineer()
+	{
+		return $this->belongsTo(Engineer::class)->withDefault();;
+	}
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function product()
-    {
-        return $this->belongsTo(Product::class);
-    }
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function product()
+	{
+		return $this->belongsTo(Product::class);
+	}
 
-    /**
-     * Сообщения
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function messages()
-    {
-        return $this->morphMany(Message::class, 'messagable');
-    }
+	public function statuses()
+	{
+		$digiftBonus = $this->digiftBonus();
 
-    /**
-     * @return string
-     */
-    function messageSubject()
-    {
-        return ucfirst(trans('site::mounting.mounting')) . ' № ' . $this->getAttribute('id');
-    }
+		if ($digiftBonus->where('blocked', 1)->exists()) {
+			return collect();
+		}
 
-    /**
-     * @return \Illuminate\Routing\Route
-     */
-    function messageRoute()
-    {
-        return route((auth()->user()->admin == 1 ? 'admin.' : '') . 'mountings.show', $this);
-    }
+		$statuses = MountingStatus::query()->where('id', '!=', $this->getAttribute('status_id'));
 
-    /**
-     * @return \Illuminate\Routing\Route
-     */
-    function messageMailRoute()
-    {
-        return route((auth()->user()->admin == 1 ? '' : 'admin.') . 'mountings.show', $this);
-    }
+		if ($digiftBonus->doesntExist()) {
+			return $statuses->getQuery()->get();
+		}
+		dd('111');
 
-    /**
-     * @return \Illuminate\Routing\Route
-     */
-    function messageStoreRoute()
-    {
-        return route('mountings.message', $this);
-    }
 
-    /** @return User */
-    function messageReceiver()
-    {
-        return $this->user->id == auth()->user()->getAuthIdentifier()
-            ? User::query()->findOrFail(config('site.receiver_id'))
-            : $this->user;
-    }
+		return MountingStatus::query()
+			->when($digiftBonus->doesntExist(),
+				function ($query) {
+					return $query->where('id', '!=', $this->getAttribute('status_id'));
+				},
+				function ($query) use ($digiftBonus) {
+					$query->when($digiftBonus->where('blocked', 0),
+						function ($query) {
+
+						},
+						function () {
+
+						}
+					);
+				})
+			->orderBy('sort_order');
+	}
+
+	/**
+	 * Бонусы Digift
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+	 */
+	public function digiftBonus()
+	{
+		return $this->morphOne(DigiftBonus::class, 'bonusable');
+	}
+
+	/**
+	 * Сообщения
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+	 */
+	public function messages()
+	{
+		return $this->morphMany(Message::class, 'messagable');
+	}
+
+	/**
+	 * @return string
+	 */
+	function messageSubject()
+	{
+		return ucfirst(trans('site::mounting.mounting')) . ' № ' . $this->getAttribute('id');
+	}
+
+	/**
+	 * @return \Illuminate\Routing\Route
+	 */
+	function messageRoute()
+	{
+		return route((auth()->user()->admin == 1 ? 'admin.' : '') . 'mountings.show', $this);
+	}
+
+	/**
+	 * @return \Illuminate\Routing\Route
+	 */
+	function messageMailRoute()
+	{
+		return route((auth()->user()->admin == 1 ? '' : 'admin.') . 'mountings.show', $this);
+	}
+
+	/**
+	 * @return \Illuminate\Routing\Route
+	 */
+	function messageStoreRoute()
+	{
+		return route('mountings.message', $this);
+	}
+
+	/** @return User */
+	function messageReceiver()
+	{
+		return $this->user->id == auth()->user()->getAuthIdentifier()
+			? User::query()->findOrFail(config('site.receiver_id'))
+			: $this->user;
+	}
+
+	/**
+	 * @return string
+	 */
+	function bonusCreateMessage()
+	{
+		return 'Для начисления бонусов необходимо одобрить отчет по монтажу';
+	}
+
+	/**
+	 * @return \Illuminate\Routing\Route
+	 */
+	function bonusStoreRoute()
+	{
+		return route('admin.mountings.digift-bonuses.store', $this);
+	}
 }

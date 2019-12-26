@@ -76,10 +76,10 @@
 
                 <h5 class="card-title">@lang('site::mounting.header.payment')</h5>
                 <dl class="row">
-
-                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::mounting.contragent_id')</dt>
-                    <dd class="col-sm-8">{{ $mounting->contragent->name }}</dd>
-
+                    @if($current_user->type_id != 3)
+                        <dt class="col-sm-4 text-left text-sm-right">@lang('site::mounting.contragent_id')</dt>
+                        <dd class="col-sm-8">{{ $mounting->contragent->name }}</dd>
+                    @endif
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::mounting.bonus')</dt>
                     <dd class="col-sm-8 ">
                         {{number_format($mounting->bonus, 0, '.', ' ')}}
@@ -144,10 +144,10 @@
             <div class="card-body">
                 <h5 class="card-title">@lang('site::mounting.header.call')</h5>
                 <dl class="row">
-
-                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::mounting.engineer_id')</dt>
-                    <dd class="col-sm-8">{{ $mounting->engineer->name }}</dd>
-
+                    @if($current_user->type_id != 3)
+                        <dt class="col-sm-4 text-left text-sm-right">@lang('site::mounting.engineer_id')</dt>
+                        <dd class="col-sm-8">{{ $mounting->engineer->name }}</dd>
+                    @endif
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::mounting.date_mounting')</dt>
                     <dd class="col-sm-8">{{ $mounting->date_mounting->format('d.m.Y') }}</dd>
 

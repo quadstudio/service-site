@@ -78,6 +78,20 @@ class AuthorizationController extends Controller
         ));
     }
 
+	public function show(Authorization $authorization)
+    {
+        $authorization_accepts = $authorization->user->authorization_accepts()->get();
+        $authorization_roles = AuthorizationRole::query()->get();
+        $authorization_types = AuthorizationType::query()->where('enabled', 1)->get();
+
+        return view('site::authorization.show', compact(
+            'authorization',
+            'authorization_accepts',
+            'authorization_roles',
+            'authorization_types'
+        ));
+    }
+	
     /**
      * @param  AuthorizationRequest $request
      * @return \Illuminate\Http\Response

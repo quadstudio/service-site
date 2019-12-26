@@ -15,7 +15,7 @@ class PriceType extends Model
     public $incrementing = false;
     public $timestamps = false;
 
-    protected $fillable = ['display_name'];
+    protected $fillable = ['display_name', 'enabled'];
 
     /**
      * Валюта цены

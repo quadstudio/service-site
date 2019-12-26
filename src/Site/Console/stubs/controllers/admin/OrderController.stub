@@ -1,0 +1,11 @@
+<?php
+
+namespace {{namespace}}Http\Controllers\Admin;
+
+use QuadStudio\Service\Site\Traits\Controllers\Admin\OrderController;
+use {{namespace}}Http\Controllers\Controller;
+
+class OrderController extends Controller
+{
+    use OrderController;
+}

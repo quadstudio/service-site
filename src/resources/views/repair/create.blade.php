@@ -356,12 +356,7 @@
                                                 class="form-control">
                                             <option></option>
                                             @foreach($products as $product)
-                                                <option @if(old('repair.product_id') == $product->id)
-                                                        selected
-                                                        @endif
-                                                        value="{{$product->id}}">
-                                                    {{$product->name}} / {{$product->sku}}
-                                                </option>
+                                                <option @if(old('repair.product_id') == $product->id) selected @endif value="{{$product->id}}"> {{$product->name}} / {{$product->sku}} </option>
                                             @endforeach
                                         </select>
                                         <small id="product_idHelp" class="d-block form-text text-success">

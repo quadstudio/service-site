@@ -237,17 +237,32 @@
                     </div>
                 </div>
                 @endpermission()
+                @permission('storehouses.excel')
                 <div class="card mb-4">
                     <div class="card-body">
                         <h5 class="card-title">@lang('site::storehouse.header.quantity')</h5>
 
-                            <a href="{{route('storehouses.excel')}}" class="btn btn-primary">
-                                <i class="fa fa-upload"></i>
-                                @lang('site::storehouse.header.download')
-                            </a>
-
+                        <a href="{{route('storehouses.excel')}}" class="btn btn-primary">
+                            <i class="fa fa-upload"></i>
+                            @lang('site::storehouse.header.download')
+                        </a>
                     </div>
                 </div>
+                @endpermission()
+                @permission('ferroli_contacts')
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">@lang('site::home.ferroli_contacts_h') </h5>
+                        @lang('site::home.ferroli_contacts_w')
+                        @lang('site::home.ferroli_contacts_text')
+                    </div>
+                </div>
+                @endpermission()
+                @permission('mountings')
+                @if($user->digiftUser()->exists())
+                    @include('site::digift_bonus.index', ['digiftUser' => $user->digiftUser])
+                @endif
+                @endpermission()
             </div>
         </div>
     </div>

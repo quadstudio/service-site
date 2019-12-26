@@ -30,7 +30,7 @@
 
                             @method('PUT')
                             <div class="row">
-                                <div class="col-md-3 col-sm-6">
+                                <div class="col-md-2 col-sm-6">
                                     <div class="form-row">
                                         <div class="col">
                                             <div class="custom-control custom-checkbox">
@@ -61,7 +61,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3 col-sm-6">
+                                <div class="col-md-2 col-sm-6">
                                     <div class="form-row required">
                                         <div class="col">
                                             <label class="control-label d-block"
@@ -95,7 +95,77 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3 col-sm-6">
+                                <div class="col-md-2 col-sm-6">
+                                    <div class="form-row required">
+                                        <div class="col">
+                                            <label class="control-label d-block"
+                                                   for="forsale">@lang('site::product.forsale')</label>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input class="custom-control-input
+                                                    {{$errors->has('product.forsale') ? ' is-invalid' : ''}}"
+                                                       type="radio"
+                                                       name="product[forsale]"
+                                                       required
+                                                       @if(old('product.forsale', $product->forsale) == 1) checked
+                                                       @endif
+                                                       id="forsale_1"
+                                                       value="1">
+                                                <label class="custom-control-label"
+                                                       for="forsale_1">@lang('site::messages.yes')</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input class="custom-control-input
+                                                    {{$errors->has('product.forsale') ? ' is-invalid' : ''}}"
+                                                       type="radio"
+                                                       name="product[forsale]"
+                                                       required
+                                                       @if(old('product.forsale', $product->forsale) == 0) checked
+                                                       @endif
+                                                       id="forsale_0"
+                                                       value="0">
+                                                <label class="custom-control-label"
+                                                       for="forsale_0">@lang('site::messages.no')</label>
+                                            </div>
+                                        </div>
+					@lang('site::product.forsale_help')
+                                    </div>
+								</div>
+                                <div class="col-md-2 col-sm-6">
+                                    <div class="form-row required">
+                                        <div class="col">
+                                            <label class="control-label d-block"
+                                                   for="for_preorder">@lang('site::product.for_preorder')</label>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input class="custom-control-input
+                                                    {{$errors->has('product.for_preorder') ? ' is-invalid' : ''}}"
+                                                       type="radio"
+                                                       name="product[for_preorder]"
+                                                       required
+                                                       @if(old('product.for_preorder', $product->for_preorder) == 1) checked
+                                                       @endif
+                                                       id="for_preorder_1"
+                                                       value="1">
+                                                <label class="custom-control-label"
+                                                       for="for_preorder_1">@lang('site::messages.yes')</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input class="custom-control-input
+                                                    {{$errors->has('product.for_preorder') ? ' is-invalid' : ''}}"
+                                                       type="radio"
+                                                       name="product[for_preorder]"
+                                                       required
+                                                       @if(old('product.for_preorder', $product->for_preorder) == 0) checked
+                                                       @endif
+                                                       id="for_preorder_0"
+                                                       value="0">
+                                                <label class="custom-control-label"
+                                                       for="for_preorder_0">@lang('site::messages.no')</label>
+                                            </div>
+                                        </div>
+					@lang('site::product.for_preorder_help')
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-6">
                                     <div class="form-row required">
                                         <div class="col">
                                             <label class="control-label d-block"
@@ -127,9 +197,10 @@
                                                        for="warranty_0">@lang('site::messages.no')</label>
                                             </div>
                                         </div>
+					@lang('site::product.warranty_help')
                                     </div>
                                 </div>
-                                <div class="col-md-3 col-sm-6">
+                                <div class="col-md-2 col-sm-6">
                                     <div class="form-row required">
                                         <div class="col">
                                             <label class="control-label d-block"

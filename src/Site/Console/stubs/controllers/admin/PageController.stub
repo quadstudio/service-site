@@ -1,0 +1,11 @@
+<?php
+
+namespace {{namespace}}Http\Controllers\Admin;
+
+use QuadStudio\Service\Site\Traits\Controllers\Admin\PageControllerTrait;
+use {{namespace}}Http\Controllers\Controller;
+
+class PageController extends Controller
+{
+    use PageControllerTrait;
+}

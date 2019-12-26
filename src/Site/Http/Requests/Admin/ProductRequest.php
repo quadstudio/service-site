@@ -34,6 +34,7 @@ class ProductRequest extends FormRequest
                     'product.type_id'  => 'required|exists:product_types,id',
                     'product.enabled'  => 'required|boolean',
                     'product.warranty' => 'required|boolean',
+                    'product.for_preorder' => 'required|boolean',
                     'product.service'  => 'required|boolean',
                 ];
             }
@@ -66,6 +67,7 @@ class ProductRequest extends FormRequest
             'product.type_id'  => trans('site::product.type_id'),
             'product.enabled'  => trans('site::product.enabled'),
             'product.warranty' => trans('site::product.warranty'),
+            'product.for_preorder' => trans('site::product.for_preorder'),
             'product.service'  => trans('site::product.service'),
         ];
     }

@@ -1,0 +1,11 @@
+<?php
+
+namespace {{namespace}}Http\Controllers\Admin;
+
+use QuadStudio\Service\Site\Traits\Controllers\Admin\DifficultyControllerTrait;
+use {{namespace}}Http\Controllers\Controller;
+
+class DifficultyController extends Controller
+{
+    use DifficultyControllerTrait;
+}

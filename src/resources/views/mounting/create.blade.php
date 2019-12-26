@@ -184,22 +184,24 @@
                     <div class="card mt-2 mb-2">
                         <div class="card-body">
                             <h5 class="card-title">@lang('site::mounting.header.call')</h5>
-                            <div class="form-group required" id="form-group-engineer_id">
-                                <label class="control-label"
-                                       for="engineer_id">@lang('site::mounting.engineer_id')</label>
-                                <select required
-                                        data-form-action="{{ route('engineers.create', ['certificate_type_id' => 1]) }}"
-                                        data-btn-ok="@lang('site::messages.save')"
-                                        data-btn-cancel="@lang('site::messages.cancel')"
-                                        data-options="#engineer_id_options"
-                                        data-label="@lang('site::messages.add') @lang('site::engineer.engineer')"
-                                        class="dynamic-modal-form form-control{{  $errors->has('mounting.engineer_id') ? ' is-invalid' : '' }}"
-                                        name="mounting[engineer_id]"
-                                        id="engineer_id">
-                                    @include('site::engineer.options', ['certificate_type_id' => 2, 'engineer_id' => old('mounting.engineer_id', isset($engineer_id) ? $engineer_id : null)])
-                                </select>
-                                <span class="invalid-feedback">{{ $errors->first('mounting.engineer_id') }}</span>
-                            </div>
+                            @if($current_user->type_id != 3)
+                                <div class="form-group required" id="form-group-engineer_id">
+                                    <label class="control-label"
+                                           for="engineer_id">@lang('site::mounting.engineer_id')</label>
+                                    <select required
+                                            data-form-action="{{ route('engineers.create', ['certificate_type_id' => 1]) }}"
+                                            data-btn-ok="@lang('site::messages.save')"
+                                            data-btn-cancel="@lang('site::messages.cancel')"
+                                            data-options="#engineer_id_options"
+                                            data-label="@lang('site::messages.add') @lang('site::engineer.engineer')"
+                                            class="dynamic-modal-form form-control{{  $errors->has('mounting.engineer_id') ? ' is-invalid' : '' }}"
+                                            name="mounting[engineer_id]"
+                                            id="engineer_id">
+                                        @include('site::engineer.options', ['certificate_type_id' => 2, 'engineer_id' => old('mounting.engineer_id', isset($engineer_id) ? $engineer_id : null)])
+                                    </select>
+                                    <span class="invalid-feedback">{{ $errors->first('mounting.engineer_id') }}</span>
+                                </div>
+                            @endif
                             <div class="form-group required">
                                 <label class="control-label"
                                        for="date_mounting">@lang('site::mounting.date_mounting')</label>
@@ -277,35 +279,36 @@
                                         <span class="invalid-feedback">{{ $errors->first('mounting.serial_id') }}</span>
 
                                     </div>
-
-                                    <div class="form-group required">
-                                        <label class="control-label"
-                                               for="contragent_id">@lang('site::mounting.contragent_id')</label>
-                                        <div class="input-group">
-                                            <select required
-                                                    class="form-control{{  $errors->has('mounting.contragent_id') ? ' is-invalid' : '' }}"
-                                                    name="mounting[contragent_id]"
-                                                    id="contragent_id">
-                                                @if($contragents->count() == 0 || $contragents->count() > 1)
-                                                    <option value="">@lang('site::messages.select_from_list')</option>
-                                                @endif
-                                                @foreach($contragents as $contragent)
-                                                    <option
-                                                            @if(old('mounting.contragent_id') == $contragent->id) selected
-                                                            @endif
-                                                            value="{{ $contragent->id }}">
-                                                        {{ $contragent->name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            <div class="input-group-append">
-                                                <div class="input-group-text">
-                                                    <i class="fa fa-@lang('site::contragent.icon')"></i>
+                                    @if($current_user->type_id != 3)
+                                        <div class="form-group required">
+                                            <label class="control-label"
+                                                   for="contragent_id">@lang('site::mounting.contragent_id')</label>
+                                            <div class="input-group">
+                                                <select required
+                                                        class="form-control{{  $errors->has('mounting.contragent_id') ? ' is-invalid' : '' }}"
+                                                        name="mounting[contragent_id]"
+                                                        id="contragent_id">
+                                                    @if($contragents->count() == 0 || $contragents->count() > 1)
+                                                        <option value="">@lang('site::messages.select_from_list')</option>
+                                                    @endif
+                                                    @foreach($contragents as $contragent)
+                                                        <option
+                                                                @if(old('mounting.contragent_id') == $contragent->id) selected
+                                                                @endif
+                                                                value="{{ $contragent->id }}">
+                                                            {{ $contragent->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                <div class="input-group-append">
+                                                    <div class="input-group-text">
+                                                        <i class="fa fa-@lang('site::contragent.icon')"></i>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <span class="invalid-feedback">{{ $errors->first('mounting.contragent_id') }}</span>
                                         </div>
-                                        <span class="invalid-feedback">{{ $errors->first('mounting.contragent_id') }}</span>
-                                    </div>
+                                    @endif
                                 </div>
                                 <div class="col-sm-6" id="mounting-product">
                                     {{--<input type="hidden" name="mounting[product_id]"--}}
@@ -445,33 +448,33 @@
 @endsection
 
 @push('scripts')
-<script>
-    try {
-        window.addEventListener('load', function () {
+    <script>
+        try {
+            window.addEventListener('load', function () {
 
-            let product_id = $('#product_id');
+                let product_id = $('#product_id');
 
-            product_id.select2({
-                theme: "bootstrap4",
-                placeholder: '@lang('site::messages.select_from_list')',
-                selectOnClose: true,
-                minimumInputLength: 3,
+                product_id.select2({
+                    theme: "bootstrap4",
+                    placeholder: '@lang('site::messages.select_from_list')',
+                    selectOnClose: true,
+                    minimumInputLength: 3,
+                });
+
+                product_id.on('select2:select', function (e) {
+                    let data = e.params.data;
+                    //console.log(data);
+                    $('#product-name').html(data.text);
+                    $('#product-sku').html(data.element.getAttribute('data-sku'));
+                    let bonus = data.element.getAttribute('data-bonus'),
+                        social = data.element.getAttribute('data-social-bonus');
+                    $('#product-bonus').html(bonus === '0' ? '@lang('site::mounting.error.product_id')' : bonus);
+                    $('#product-social-bonus').html(social === '0' ? '@lang('site::mounting.error.product_id')' : social);
+                });
             });
+        } catch (e) {
+            console.log(e);
+        }
 
-            product_id.on('select2:select', function (e) {
-                let data = e.params.data;
-                //console.log(data);
-                $('#product-name').html(data.text);
-                $('#product-sku').html(data.element.getAttribute('data-sku'));
-                let bonus = data.element.getAttribute('data-bonus'),
-                    social = data.element.getAttribute('data-social-bonus');
-                $('#product-bonus').html(bonus === '0' ? '@lang('site::mounting.error.product_id')' : bonus);
-                $('#product-social-bonus').html(social === '0' ? '@lang('site::mounting.error.product_id')' : social);
-            });
-        });
-    } catch (e) {
-        console.log(e);
-    }
-
-</script>
+    </script>
 @endpush

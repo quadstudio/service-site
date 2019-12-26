@@ -8,6 +8,7 @@ use QuadStudio\Service\Site\Events\RepairStatusChangeEvent;
 use QuadStudio\Service\Site\Exports\Excel\RepairExcel;
 use QuadStudio\Service\Site\Filters\Repair\ContragentSearchFilter;
 use QuadStudio\Service\Site\Filters\Repair\RepairHasSerialBoolFilter;
+use QuadStudio\Service\Site\Filters\Repair\RepairCalledClientSelectFilter;
 use QuadStudio\Service\Site\Filters\FileType\ModelHasFilesFilter;
 use QuadStudio\Service\Site\Filters\Repair\RepairIsFoundSerialFilter;
 use QuadStudio\Service\Site\Filters\Repair\RegionFilter;
@@ -66,12 +67,13 @@ class RepairController
     public function index(Request $request)
     {
         $this->repairs->trackFilter();
-        $this->repairs->pushTrackFilter(RegionFilter::class);
         $this->repairs->pushTrackFilter(RepairHasSerialBoolFilter::class);
+        $this->repairs->pushTrackFilter(RepairCalledClientSelectFilter::class);
         $this->repairs->pushTrackFilter(RepairIsFoundSerialFilter::class);
         $this->repairs->pushTrackFilter(RepairUserFilter::class);
         $this->repairs->pushTrackFilter(ScSearchFilter::class);
         $this->repairs->pushTrackFilter(ContragentSearchFilter::class);
+        $this->repairs->pushTrackFilter(RegionFilter::class);
         $this->repairs->pushTrackFilter(RepairPerPageFilter::class);
         if ($request->has('excel')) {
             (new RepairExcel())->setRepository($this->repairs)->render();
@@ -97,7 +99,7 @@ class RepairController
         $files = $repair->files;
         $this->types->applyFilter((new ModelHasFilesFilter())->setId($repair->id)->setMorph('repairs'));
         $file_types = $this->types->all();
-
+		
         return view('site::admin.repair.show', compact('repair', 'statuses', 'fails', 'files', 'file_types'));
     }
 
@@ -108,16 +110,23 @@ class RepairController
      */
     public function update(RepairRequest $request, Repair $repair)
     {
-
-        $repair->update($request->input('repair'));
-
+		
+        $repair->update(array_merge(
+            (array)$request->input('repair'),
+            (array)['called_client' => $request->filled('repair.called_client')]
+        ));
+		
         $repair->fails()->delete();
         if ($request->filled('fail')) {
             $repair->fails()->createMany($request->input('fail'));
         }
-
+		
+		
+		
+		if($request->filled('repair.status_id')) {
         event(new RepairStatusChangeEvent($repair));
-
+		}
+		
         return redirect()->route('admin.repairs.show', $repair)->with('success', trans('site::repair.updated'));
     }
 

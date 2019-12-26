@@ -16,30 +16,69 @@
         </ol>
         <h1 class="header-title mb-4">@lang('site::repair.header.repair') № {{ $repair->id }}</h1>
         @alert()@endalert()
-        <div class=" border p-3 mb-2">
-            <a href="{{ route('repairs.pdf', $repair) }}"
-               class="@cannot('pdf', $repair) disabled @endcannot d-block d-sm-inline-block mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-primary">
-                <i class="fa fa-print"></i>
-                <span>@lang('site::messages.print')</span>
-            </a>
-            <a href="{{ route('admin.users.force', $repair->user) }}"
-               class="d-block d-sm-inline-block btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn-warning">
-                <i class="fa fa-sign-in"></i>
-                <span>@lang('site::user.force_login')</span>
-            </a>
-            <a href="{{ route('admin.repairs.index') }}" class="d-block d-sm-inline-block btn btn-secondary">
-                <i class="fa fa-reply"></i>
-                <span>@lang('site::messages.back')</span>
-            </a>
+        <div class="border p-2 mb-2">
+			<div class="d-sm-inline-block">
+				<a href="{{ route('repairs.pdf', $repair) }}" 
+					class="@cannot('pdf', $repair) disabled @endcannot d-block d-sm-inline-block mr-0 mr-sm-1 mb-1 mb-sm-0 btn btn-primary">
+					<i class="fa fa-print"></i>
+					<span>@lang('site::messages.print')</span>
+				</a>
+				<a href="{{ route('admin.users.force', $repair->user) }}"
+				   class="d-block d-sm-inline-block btn mr-0 mr-sm-1 mb-1 mb-sm-0 btn-warning">
+					<i class="fa fa-sign-in"></i>
+					<span>@lang('site::user.force_login')</span>
+				</a>
+				<a href="{{ route('admin.repairs.index') }}" class="d-block d-sm-inline-block btn btn-secondary">
+					<i class="fa fa-reply"></i>
+					<span>@lang('site::messages.back')</span>
+				</a>
+			</div>
+			<form id="called"  class="custom-control custom-checkbox d-sm-inline-block text-sm-right col-6 badge text-normal"
+              method="POST"
+              action="{{route('admin.repairs.update', $repair)}}">
+			
+			
+            @csrf
+            @method('PUT')
+						
+				<input name="repair[called_client]"
+						   type="checkbox"
+						   @if($repair->called_client)
+						   checked
+						   @endif
+						   class="custom-control-input" id="called_client">
+					<label class="custom-control-label" for="called_client">@lang('site::repair.called_1')</label>
+				<button type="submit"
+						form="called"
+						class="d-block d-sm-inline-block btn btn-secondary">
+					
+					<span>Сохранить</span>
+				</button>
+			
+			</form>	
+			
 
         </div>
-        @if($repair->duplicates()->exists())
+		
+		@if($repair->duplicates_phones()->exists() || $repair->duplicates_serial()->exists() || $repair->date_trade->diffInDays($repair->date_call, false)>730 || $repair->date_launch->diffInDays($repair->date_call, false)>730)
             <div class="alert alert-danger" role="alert">
+		
+        @if($repair->duplicates_serial()->exists())
                 <h4 class="alert-heading">@lang('site::messages.attention')</h4>
                 <p>@lang('site::repair.help.duplicates_link', ['serial' => $repair->serial_id, 'link' => route('admin.repairs.index', ['filter[search_act]' => $repair->serial_id])])</p>
-            </div>
         @endif
-
+        @if($repair->duplicates_phones()->exists())
+                <h4 class="alert-heading">@lang('site::messages.attention')</h4>
+                <p>@lang('site::repair.help.duplicates_phones_link', ['phone_primary' => $repair->phone_primary_raw, 'link' => route('admin.repairs.index', ['filter[search_client]' => $repair->phone_primary_raw])])</p>
+        @endif
+		
+		@if($repair->date_trade->diffInDays($repair->date_call, false)>730 || $repair->date_launch->diffInDays($repair->date_call, false)>730)
+		<p>С даты продажи <b />{{ $repair->date_trade->diffInDays($repair->date_call, false) }} дней</b></p>
+		<p>С даты ввода в эксплуатацию <b />{{ $repair->date_launch->diffInDays($repair->date_call, false) }} дней</b></p>
+		@endif
+		
+		</div>
+		@endif
         @include('site::message.create', ['messagable' => $repair])
 
         <div class="alert alert-warning alert-dismissible fade show" role="alert">

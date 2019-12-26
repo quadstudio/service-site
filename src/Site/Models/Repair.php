@@ -24,12 +24,13 @@ class Repair extends Model implements Messagable
         'reason_call', 'diagnostics', 'works',
         'recommends', 'remarks', 'country_id',
         'client', 'phone_primary', 'phone_secondary',
-        'address', 'status_id'
+        'address', 'status_id', 'called_client'
     ];
 
     protected $casts = [
 
         'serial_id'       => 'string',
+		'called_client'   => 'integer',
         'product_id'      => 'string',
         'contragent_id'   => 'integer',
         'cost_difficulty' => 'integer',
@@ -49,9 +50,11 @@ class Repair extends Model implements Messagable
         'country_id'      => 'string',
         'client'          => 'string',
         'phone_primary'   => 'string',
+        'phone_primary_raw'   => 'string',
         'phone_secondary' => 'string',
         'address'         => 'string',
         'status_id'       => 'integer',
+		
     ];
 
     protected $dates = [
@@ -101,40 +104,6 @@ class Repair extends Model implements Messagable
     public function setDateCallAttribute($value)
     {
         $this->attributes['date_call'] = $value ? Carbon::createFromFormat('d.m.Y', $value) : null;
-    }
-
-    /**
-     * @param $value
-     * @return mixed|null
-     */
-    public function getPhonePrimaryAttribute($value)
-    {
-        return $value ? preg_replace(config('site.phone.get.pattern'), config('site.phone.get.replacement'), $value) : null;
-    }
-
-    /**
-     * @param $value
-     */
-    public function setPhonePrimaryAttribute($value)
-    {
-        $this->attributes['phone_primary'] = $value ? preg_replace(config('site.phone.set.pattern'), config('site.phone.set.replacement'), $value) : null;
-    }
-
-    /**
-     * @param $value
-     * @return mixed|null
-     */
-    public function getPhoneSecondaryAttribute($value)
-    {
-        return $value ? preg_replace(config('site.phone.get.pattern'), config('site.phone.get.replacement'), $value) : null;
-    }
-
-    /**
-     * @param $value
-     */
-    public function setPhoneSecondaryAttribute($value)
-    {
-        $this->attributes['phone_secondary'] = $value ? preg_replace(config('site.phone.set.pattern'), config('site.phone.set.replacement'), $value) : null;
     }
 
     public function setStatus($status_id)
@@ -357,6 +326,7 @@ class Repair extends Model implements Messagable
         return $this->belongsTo(Serial::class);
     }
 
+	
     /**
      * Акт выполненных работ
      *
@@ -460,13 +430,20 @@ class Repair extends Model implements Messagable
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
 	 */
-    public function duplicates() {
+    public function duplicates_serial() {
     	return $this
 		    ->hasMany(Repair::class, 'serial_id', 'serial_id')
 		    ->whereNotNull('serial_id')
 		    ->where('id', '!=', $this->getKey());
     }
-
+	
+	public function duplicates_phones() {
+    	return $this
+		    ->hasMany(Repair::class, 'phone_primary', 'phone_primary_raw')
+		    ->whereNotNull('phone_primary')
+		    ->where('id', '!=', $this->getKey());
+    }
+	
     /**
      * @return string
      */
@@ -506,4 +483,47 @@ class Repair extends Model implements Messagable
             ? User::query()->findOrFail(config('site.receiver_id'))
             : $this->user;
     }
+	
+	
+	
+	/**
+     * @param $value
+     * @return mixed|null
+     */
+    public function getPhonePrimaryAttribute($value)
+    {
+        return $value ? preg_replace(config('site.phone.get.pattern'), config('site.phone.get.replacement'), $value) : null;
+    }
+
+    /**
+     * @param $value
+     */
+    public function setPhonePrimaryAttribute($value)
+    {
+        $this->attributes['phone_primary'] = $value ? preg_replace(config('site.phone.set.pattern'), config('site.phone.set.replacement'), $value) : null;
+    }
+	
+    public function getPhonePrimaryRawAttribute()
+    {
+        return $this->attributes['phone_primary'];
+    }
+
+    /**
+     * @param $value
+     * @return mixed|null
+     */
+    public function getPhoneSecondaryAttribute($value)
+    {
+        return $value ? preg_replace(config('site.phone.get.pattern'), config('site.phone.get.replacement'), $value) : null;
+    }
+
+    /**
+     * @param $value
+     */
+    public function setPhoneSecondaryAttribute($value)
+    {
+        $this->attributes['phone_secondary'] = $value ? preg_replace(config('site.phone.set.pattern'), config('site.phone.set.replacement'), $value) : null;
+    }
+
+    
 }

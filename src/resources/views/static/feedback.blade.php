@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title')@lang('site::feedback.contacts')@lang('site::messages.title_separator')@endsection
 @push('scripts')
-<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+<script src="https://api-maps.yandex.ru/2.1/?apikey=0218c2ca-609f-4289-a09f-e6e3b4738691&lang=ru_RU" type="text/javascript"></script>
 @endpush
 
 @push('scripts')
@@ -12,8 +12,8 @@
 
     function init() {
         myMap = new ymaps.Map('contact-map', {
-            center: [55.76, 37.64],
-            zoom: 4,
+            center: [55.856038, 37.558921],
+            zoom: 14,
             controls: ['zoomControl', 'typeSelector', 'fullscreenControl']
         }, {
             searchControlProvider: 'yandex#search'

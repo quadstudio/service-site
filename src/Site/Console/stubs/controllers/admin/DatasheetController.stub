@@ -1,0 +1,11 @@
+<?php
+
+namespace {{namespace}}Http\Controllers\Admin;
+
+use QuadStudio\Service\Site\Traits\Controllers\Admin\DatasheetControllerTrait;
+use {{namespace}}Http\Controllers\Controller;
+
+class DatasheetController extends Controller
+{
+    use DatasheetControllerTrait;
+}

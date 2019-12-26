@@ -60,6 +60,16 @@
                         </div>
 
                         <div class="mb-2">
+                            <span class="text-muted">@lang('site::user.email'):</span>&nbsp;
+                            <span class="text-dark">{{$order->user->email}}</span>
+                        </div>
+
+                        <div class="mb-2">
+                            <span class="text-muted">@lang('site::order.contacts_comment'):</span>&nbsp;
+                            <span class="text-dark">{{$order->contacts_comment}}</span>
+                        </div>
+
+                        <div class="mb-2">
                             <span class="text-muted">@lang('site::order.address_id'):</span>&nbsp;
                             <span class="text-dark">{{ optional($order->address)->name }}</span>
                         </div>

@@ -38,20 +38,38 @@
                     <fieldset>
                         <div class="card mt-2 mb-2">
                             <div class="card-body">
-                                {{--                                <h5 class="card-title">@lang('site::repair.serial_id')</h5>--}}
                                 <div class="form-group">
                                     <label class="control-label" for="number">@lang('site::repair.serial_id')</label>
-                                    <div class="text-success text-big">{{$repair->serial_id}}</div>
+                                    @if($fails->contains('field', 'serial_id'))
+					<span class="bg-danger text-white d-block d-sm-inline-block py-1 px-3 mb-1 mb-sm-0">@lang('site::messages.with_error')</span>
+					<div class="input-group">
+                                            <input type="text"
+                                                   name="serial_id"
+                                                   id="serial_id"
+                                                   class="form-control{{ $errors->has('repair.serial_id') ? ' is-invalid' : '' }}"
+                                                   placeholder="@lang('site::repair.placeholder.serial_id')"
+                                                   maxlength="20"
+                                                   value="{{ old('repair.serial_id') }}">
+                                            <div class="input-group-append">
+                                                <div class="input-group-text">
+                                                    <i class="fa fa-@lang('site::serial.icon')"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+				    @else
+				    <div class="text-success text-big">{{$repair->serial_id}}</div>
                                     <input type="hidden" id="serial_id" value="{{$repair->serial_id}}">
+				    @endif
                                 </div>
+
                                 <div class="form-group">
                                     <label class="control-label"
                                            for="number">@lang('site::product.equipment_id')</label>
                                     <div class="text-big">
-                                        <a href="{{route('equipments.show', $repair->product->equipment)}}">
+                                        @if(!empty($repair->product->equipment))<a href="{{route('equipments.show', $repair->product->equipment)}}">
                                             {{$repair->product->equipment->catalog->name_plural}}
                                             {{$repair->product->equipment->name}}
-                                        </a>
+                                        </a>@endif
                                     </div>
                                 </div>
                                 <div class="form-group">

@@ -43,16 +43,10 @@
                             </div>
                         @endif
                     </div>
-                    <div class="col-xl-3 col-sm-12">
+                    <div class="col-xl-2 col-sm-12">
                         <dl class="dl-horizontal mt-sm-2">
                             <dt class="col-12">@lang('site::product.type_id')</dt>
                             <dd class="col-12">{{$product->type->name}}</dd>
-                            <dt class="col-12">@lang('site::product.quantity')</dt>
-                            <dd class="col-12">
-                                 <span class="badge text-normal @if($product->quantity) badge-ferroli @else badge-light @endif">
-                                    {{ $product->quantity }}
-                                </span>
-                            </dd>
                             @if($product->mounting_bonus)
                                 <dt class="col-12">@lang('site::mounting_bonus.header.mounting_bonus')</dt>
                                 <dd class="col-12">
@@ -65,18 +59,16 @@
                             @endif
                         </dl>
                     </div>
-                    <div class="col-xl-3 col-sm-12">
+                    <div class="col-xl-5 col-sm-12">
                         <dl class="dl-horizontal mt-sm-2">
                             @foreach($product->prices()->typeEnabled()->get() as $price)
                                 <dt class="col-12">{{$price->type->name}}</dt>
-                                <dd class="col-12 mb-0">
-                                    {{$price->price}} {{$price->currency->name}}
-                                </dd>
+                                <dd class="col-3 mb-0">{{$price->price}} {{$price->currency->name}}</dd>
                             @endforeach
                         </dl>
                     </div>
 
-                    <div class="col-xl-3 col-sm-12">
+                    <div class="col-xl-2 col-sm-12">
                         <dl class="dl-horizontal mt-sm-2">
                             <dt class="col-12 mb-0 text-left text-xl-right">
                                 @lang('site::messages.show_ferroli')
@@ -89,6 +81,10 @@
                             <dt class="col-12 mb-0 text-left text-xl-right">
                                 @lang('site::product.forsale')
                                 <span>@bool(['bool' => $product->forsale == 1])@endbool</span>
+                            </dt>
+                            <dt class="col-12 mb-0 text-left text-xl-right">
+                                @lang('site::product.for_preorder')
+                                <span>@bool(['bool' => $product->for_preorder == 1])@endbool</span>
                             </dt>
                             <dt class="col-12 mb-0 text-left text-xl-right">
                                 @lang('site::product.warranty')

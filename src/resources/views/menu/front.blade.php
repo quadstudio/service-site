@@ -50,8 +50,6 @@
                                     class="fa fa-@lang('site::message.icon')"></i> @lang('site::message.messages')</a>
                         <a class="dropdown-item" href="{{ route('admin.orders.index') }}"><i
                                     class="fa fa-@lang('site::order.icon')"></i> @lang('site::order.orders')</a>
-                        <a class="dropdown-item" href="{{ route('admin.contracts.index') }}"><i
-                                    class="fa fa-@lang('site::contract.icon')"></i> @lang('site::contract.contracts')</a>
 
                         <div class="dropdown-divider"></div>
 
@@ -117,11 +115,6 @@
                         @permission('messages')
                         <a class="dropdown-item" href="{{ route('messages.index') }}"><i
                                     class="fa fa-@lang('site::message.icon')"></i> @lang('site::message.messages')
-                        </a>
-                        @endpermission
-                        @permission('contracts')
-                        <a class="dropdown-item" href="{{ route('contracts.index') }}"><i
-                                    class="fa fa-@lang('site::contract.icon')"></i> @lang('site::contract.contracts')
                         </a>
                         @endpermission
                         @permission('engineers')
@@ -206,7 +199,7 @@
 
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{config('catalog_price_pdf')}}">
+                            <a class="nav-link" href="{{config('site.catalog_price_pdf')}}">
                                 Каталог и прайс (PDF)
                             </a>
                         </li>
@@ -228,12 +221,12 @@
                                 @lang('site::map.online_store.menu')
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link" href="{{ route('mounter-requests') }}">
                                 <i class="fa fa-@lang('site::map.mounter_request.icon')"></i>
                                 @lang('site::map.mounter_request.menu')
                             </a>
-                        </li>
+                        </li> -->
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('feedback') }}">
                                 <i class="fa fa-@lang('site::feedback.icon')"></i>
@@ -263,11 +256,11 @@
                 </li>
                 <li><a href="{{ route('products.index') }}">@lang('site::product.products')</a></li>
                 <li><a href="{{ route('catalogs.index') }}">@lang('site::catalog.catalogs')</a></li>
-                <li><a href="{{config('catalog_price_pdf')}}">Каталог и прайс (PDF)</a></li>
+                <li><a href="{{config('site.catalog_price_pdf')}}">Каталог и прайс (PDF)</a></li>
                 <li><a href="{{ route('datasheets.index') }}">@lang('site::datasheet.datasheets')</a></li>
-                <li><a href="{{ route('service-centers') }}">@lang('site::map.service_center.menu')#</a></li>
-                <li><a href="{{ route('where-to-buy') }}">@lang('site::map.where_to_buy.menu')#</a></li>
-                <li><a href="{{ route('online-stores') }}">@lang('site::map.online_store.menu')#</a></li>
+                <li><a href="{{ route('service-centers') }}">@lang('site::map.service_center.menu')</a></li>
+                <li><a href="{{ route('where-to-buy') }}">@lang('site::map.where_to_buy.menu')</a></li>
+                <li><a href="{{ route('online-stores') }}">@lang('site::map.online_store.menu')</a></li>
                 <li><a href="{{ route('feedback') }}">@lang('site::messages.feedback')</a></li>
             </ul>
         </div>
@@ -280,18 +273,10 @@
 
         <div class="container">
             <ul class="menu">
-                <li class="neromenu has-dropdown @if(in_array(
-                    Request::route()->getName(),
-                    ['products.index', 'products.list'])
-                    || (Request::route()->getName() == 'products.show' && !$product->equipment)
-                ) active @endif">
+                <li class="neromenu has-dropdown @if(in_array(Request::route()->getName(), ['products.index', 'products.list', 'products.show'])) active @endif">
                     <a href="{{ route('products.index') }}" class="menuprinc">@lang('site::product.products')</a>
                 </li>
-                <li class="neromenu has-dropdown @if(in_array(
-                    Request::route()->getName(),
-                    ['catalogs.index', 'catalogs.show', 'catalogs.list', 'equipments.show']) ||
-                     (Request::route()->getName() == 'products.show' && $product->equipment)
-                ) active @endif">
+                <li class="neromenu has-dropdown @if(in_array(Request::route()->getName(), ['catalogs.index', 'catalogs.show', 'catalogs.list', 'equipments.show']) ) active @endif">
                     <a href="{{ route('catalogs.index') }}" class="menuprinc">@lang('site::catalog.catalogs')</a>
                 </li>
                 <li class="neromenu has-dropdown @if(in_array(Request::route()->getName(), ['datasheets.index','datasheets.show'] )) active @endif">

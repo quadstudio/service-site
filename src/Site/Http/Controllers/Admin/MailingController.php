@@ -130,6 +130,25 @@ class MailingController extends Controller
         }
 
 
+	     Mail::to(env('MAIL_COPY_ADDRESS'))
+                ->send(new MailingHtmlEmail(
+                    URL::signedRoute('unsubscribe', compact('email')),
+                    $request->input('title'),
+                    $request->input('content'),
+                    $data
+                ));
+
+             Mail::to(env('MAIL_DIRECTOR_ADDRESS'))
+                ->send(new MailingHtmlEmail(
+                    URL::signedRoute('unsubscribe', compact('email')),
+                    $request->input('title'),
+                    $request->input('content'),
+                    $data
+                ));
+
+
+
+
         return redirect()->back()->with('success', trans('site::mailing.created'));
     }
 }

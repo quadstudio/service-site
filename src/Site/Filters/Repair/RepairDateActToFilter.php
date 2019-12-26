@@ -18,8 +18,10 @@ class RepairDateActToFilter extends DateFilter
     {
         if ($this->canTrack() && $this->filled($this->search)) {
             $builder->whereHas('act', function ($query) {
-                $query->where($this->column(), $this->operator(), $this->get($this->search) . ' 23:59:59');
+            //    $query->where($this->column(), $this->operator(), $this->get($this->search) . ' 23:59:59');
+				$query->where($this->column(), $this->operator(),  date('Y-m-d', strtotime($this->get($this->search))));
             });
+			
         }
         //dump($builder->toSql());
         //dd($builder->getBindings());

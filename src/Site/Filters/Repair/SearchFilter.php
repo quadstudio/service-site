@@ -46,12 +46,12 @@ class SearchFilter extends BaseFilter
 
     public function label()
     {
-        return trans('site::repair.placeholder.search_act');
+        return trans('site::repair.placeholder.search_serial');
     }
 
     public function tooltip()
     {
-        return trans('site::repair.help.search_act');
+        return trans('site::repair.help.search_serial');
     }
 
 }

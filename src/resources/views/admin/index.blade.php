@@ -102,6 +102,11 @@
                         <div class="col-md-6">
                             <div class="list-group">
 
+				<a class="list-group-item list-group-item-action py-1"
+                                   href="{{ route('admin.storehouses.index') }}">
+                                    <i class="fa fa-@lang('site::storehouse.icon')"></i> @lang('site::storehouse.storehouses')
+                                </a>
+				<hr />
                                 <a class="list-group-item list-group-item-action py-1"
                                    href="{{ route('admin.currencies.index') }}">
                                     <i class="fa fa-@lang('site::currency.icon')"></i> @lang('site::currency.currencies')
@@ -110,11 +115,8 @@
                                    href="{{ route('admin.currency_archives.index') }}">
                                     <i class="fa fa-@lang('site::archive.icon')"></i> @lang('site::archive.archives')
                                 </a>
-                                <a class="list-group-item list-group-item-action py-1"
-                                   href="{{ route('admin.warehouses.index') }}">
-                                    <i class="fa fa-@lang('site::warehouse.icon')"></i> @lang('site::warehouse.warehouses')
-                                </a>
-                                <a class="list-group-item list-group-item-action py-1"
+
+				<a class="list-group-item list-group-item-action py-1"
                                    href="{{ route('admin.organizations.index') }}">
                                     <i class="fa fa-@lang('site::organization.icon')"></i> @lang('site::organization.organizations')
                                 </a>
@@ -188,10 +190,6 @@
                                 <a class="list-group-item list-group-item-action py-1"
                                    href="{{ route('admin.contragents.index') }}">
                                     <i class="fa fa-@lang('site::contragent.icon')"></i> @lang('site::contragent.contragents')
-                                </a>
-                                <a class="list-group-item list-group-item-action py-1"
-                                   href="{{ route('admin.storehouses.index') }}">
-                                    <i class="fa fa-@lang('site::storehouse.icon')"></i> @lang('site::storehouse.storehouses')
                                 </a>
 
                                 <hr/>

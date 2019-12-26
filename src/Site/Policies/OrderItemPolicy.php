@@ -26,7 +26,7 @@ class OrderItemPolicy
 
 	public function edit(User $user, OrderItem $orderItem)
 	{
-		return  $user->admin == 1 && $orderItem->order->in_stock_type == 2 && in_array($orderItem->order->status_id, array(1,7));
+		return  $user->admin == 1 && in_array($orderItem->order->status_id, array(1,7));
 	}
 
 

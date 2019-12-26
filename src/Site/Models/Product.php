@@ -25,8 +25,8 @@ class Product extends Model implements Imageable
 	 */
 	protected $fillable = [
 		'name', 'sku', 'old_sku', 'enabled',
-		'show_ferroli', 'show_lamborghini',
-		'warranty', 'service', 'description',
+		'show_ferroli', 'show_lamborghini', 'forsale', 'for_preorder',
+		'warranty', 'service', 'not_available', 'description',
 		'h1', 'title', 'metadescription',
 		'specification', 'equipment_id', 'type_id',
 	];
@@ -45,6 +45,8 @@ class Product extends Model implements Imageable
 		'show_lamborghini' => 'boolean',
 		'warranty' => 'boolean',
 		'service' => 'boolean',
+		'forsale' => 'boolean',
+		'for_preorder' => 'boolean',
 		'equipment_id' => 'integer',
 		'type_id' => 'integer',
 	];
@@ -247,6 +249,7 @@ class Product extends Model implements Imageable
 						'id' => $address->id,
 						'name' => $address->name,
 						'quantity' => $storehouse_product->quantity,
+						'updated_at' => $storehouse_product->updated_at,
 					]);
 
 				}

@@ -58,7 +58,8 @@
                         <span data-toggle="tooltip"
                               data-placement="top"
                               title="@lang('site::order.in_stock_type')"
-                              class="badge badge-secondary">
+                              class="badge badge-secondary text-white" style="background-color: @lang('site::order.in_stock_type_color.'.$order->in_stock_type)">
+							  
                             @lang('site::order.help.in_stock_type.'.$order->in_stock_type)
                         </span>
                         <a href="{{route('admin.users.show', $order->user)}}">

@@ -1,7 +1,7 @@
 <div class="card my-2">
     <div class="card-body flex-grow-1 position-relative overflow-hidden">
         <h5 class="card-title">@lang('site::message.messages')</h5>
-        <div class="row no-gutters h-100">
+        <div class="row no-gutters">
             <div class="d-flex col flex-column">
                 <div class="flex-grow-1 position-relative">
                     <div id="messages" class="chat-messages p-2 ps">

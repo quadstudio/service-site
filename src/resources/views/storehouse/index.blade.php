@@ -69,12 +69,14 @@
                     <div class="col-xl-4 col-sm-6">
                         @if($storehouse->addresses()->exists())
                             <dl class="dl-horizontal mt-2">
+							<dt class="col-12">@lang('site::storehouse.linked_addresses')</dt>
                                 <dd class="col-12">
                                     <div class="list-group"></div>
                                     @foreach($storehouse->addresses as $address)
                                         <a href="{{route('addresses.show', $address)}}"
                                            class="list-group-item list-group-item-action p-1">
                                             <i class="fa fa-@lang('site::address.icon')"></i> {{ $address->full }}
+											<br><b>@lang('site::address.regions'): {{$address->regions->count()}}</b>
                                         </a>
                                     @endforeach
                                 </dd>

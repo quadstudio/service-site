@@ -128,7 +128,7 @@ class RegisterRequest extends FormRequest
                         }
                         //'regex:/^([0-9]{9})?$/'
                     ),
-//                    'contragent.ks'             => 'sometimes|digits:20',
+                    'contragent.ks'             => 'required|numeric|digits:20',
                     'contragent.rs'             => 'required|numeric|digits:20',
                     'contragent.bik'            => array(
                         'required',

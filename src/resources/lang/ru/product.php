@@ -28,7 +28,11 @@ return [
 	'enabled'             => 'Включен?',
 	'active'              => 'Отображать?',
 	'forsale'             => 'Для продажи?',
+	'forsale_help'	      => 'отображение кнопки купить',
+	'for_preorder_help'   => 'надпись не поставлется, если выкл',
+	'for_preorder'        => 'Для заказа?',
 	'warranty'            => 'На гарантии?',
+	'warranty_help'            => 'как оборудование в АГР',
 	'service'             => 'Услуга?',
 	//
 	'placeholder'         => [
@@ -47,6 +51,7 @@ return [
 	'no'                  => 'Нет',
 	'in_stock'            => 'В наличии',
 	'not_available'       => 'информация в СЦ',
+	'not_preorder'		  => 'Не поставляется',
 	'contact_the_manager' => 'Обратитесь к менеджеру',
 	'header'              => [
 		'boiler' => 'Оборудование'

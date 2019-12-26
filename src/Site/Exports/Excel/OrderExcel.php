@@ -44,6 +44,7 @@ class OrderExcel extends Excel
         $this->_sheet
             ->setCellValue('B1', $order->getAttribute('id'))
             ->setCellValue('B3', $order->contragent->name)
+	    ->setCellValue('C3', $order->contragent->inn)
             ->setCellValue('B4', $order->user->name)
             ->setCellValue('B5', $order->user->email)
             ->setCellValue('B6', $order->contacts_comment)
@@ -76,14 +77,13 @@ class OrderExcel extends Excel
     {
 
         $this->_sheet
-            ->setCellValue('A' . $count, $item->product->name)
-            ->setCellValue('B' . $count, $item->product->sku)
+            ->setCellValue('A' . $count, $item->product->sku)
+            ->setCellValue('B' . $count, $item->product->name)
             ->setCellValue('C' . $count, $item->quantity)
-            ->setCellValue('D' . $count, $item->product->unit)
-            ->setCellValue('E' . $count, $item->price > 0
+            ->setCellValue('D' . $count, $item->price > 0
 	            ? Site::convert($item->price, $item->currency_id, $item->currency_id, 1, false, false)
 	            : trans('site::price.help.price'))
-            ->setCellValue('F' . $count, $item->price > 0
+            ->setCellValue('E' . $count, $item->price > 0
 	            ? Site::convert($item->price, $item->currency_id, $item->currency_id, $item->quantity, false, false)
 	            : trans('site::price.help.price'));
         $count++;

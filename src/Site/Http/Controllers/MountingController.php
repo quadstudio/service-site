@@ -117,10 +117,12 @@ class MountingController extends Controller
     }
 
 
-    /**
-     * @param Mounting $mounting
-     * @return \Illuminate\Http\Response
-     */
+	/**
+	 * @param Mounting $mounting
+	 *
+	 * @return \Illuminate\Http\Response
+	 * @throws \Illuminate\Auth\Access\AuthorizationException
+	 */
     public function show(Mounting $mounting)
     {
         $this->authorize('view', $mounting);
@@ -135,10 +137,12 @@ class MountingController extends Controller
         ));
     }
 
-    /**
-     * @param MountingRequest $request
-     * @return \Illuminate\Http\Response
-     */
+	/**
+	 * @param MountingRequest $request
+	 *
+	 * @return \Illuminate\Http\Response
+	 * @throws \Illuminate\Auth\Access\AuthorizationException
+	 */
     public function create(MountingRequest $request)
     {
 

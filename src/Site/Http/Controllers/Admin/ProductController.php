@@ -3,16 +3,15 @@
 namespace QuadStudio\Service\Site\Http\Controllers\Admin;
 
 use Illuminate\Routing\Controller;
-use QuadStudio\Service\Site\Filters\Product\ProductBoolActiveFilter;
 use QuadStudio\Service\Site\Filters\Product\ProductBoolEnabledFilter;
 use QuadStudio\Service\Site\Filters\Product\ProductBoolForSaleFilter;
+use QuadStudio\Service\Site\Filters\Product\ProductBoolForPreorderFilter;
 use QuadStudio\Service\Site\Filters\Product\ProductBoolServiceFilter;
 use QuadStudio\Service\Site\Filters\Product\ProductBoolWarrantyFilter;
 use QuadStudio\Service\Site\Filters\Product\ProductHasAnalogsFilter;
 use QuadStudio\Service\Site\Filters\Product\ProductHasImagesFilter;
 use QuadStudio\Service\Site\Filters\Product\ProductHasMountingBonusFilter;
 use QuadStudio\Service\Site\Filters\Product\ProductHasPricesFilter;
-use QuadStudio\Service\Site\Filters\Product\ProductHasQuantityFilter;
 use QuadStudio\Service\Site\Filters\Product\ProductHasRelationsFilter;
 use QuadStudio\Service\Site\Filters\Product\ProductPerPage10Filter;
 use QuadStudio\Service\Site\Filters\Product\ProductShowFerroliBoolFilter;
@@ -54,7 +53,6 @@ class ProductController extends Controller
         $this->products->pushTrackFilter(TypeAdminFilter::class);
         $this->products->pushTrackFilter(ProductHasMountingBonusFilter::class);
         $this->products->pushTrackFilter(ProductHasPricesFilter::class);
-        $this->products->pushTrackFilter(ProductHasQuantityFilter::class);
         $this->products->pushTrackFilter(ProductHasImagesFilter::class);
         $this->products->pushTrackFilter(ProductHasAnalogsFilter::class);
         $this->products->pushTrackFilter(ProductHasRelationsFilter::class);
@@ -62,6 +60,7 @@ class ProductController extends Controller
         $this->products->pushTrackFilter(ProductShowFerroliBoolFilter::class);
         $this->products->pushTrackFilter(ProductShowLamborghiniBoolFilter::class);
         $this->products->pushTrackFilter(ProductBoolForSaleFilter::class);
+        $this->products->pushTrackFilter(ProductBoolForPreorderFilter::class);
         $this->products->pushTrackFilter(ProductBoolWarrantyFilter::class);
         $this->products->pushTrackFilter(ProductBoolServiceFilter::class);
         $this->products->pushTrackFilter(ProductPerPage10Filter::class);

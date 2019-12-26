@@ -31,7 +31,22 @@
                     <div class="card mb-4">
                         <div class="card-body">
 
+                            
                             <div class="form-row required">
+                                <div class="col mb-3">
+                                    <label class="control-label" for="name">@lang('site::user.name')</label>
+                                    <input type="text"
+                                           name="user[name]"
+                                           id="name"
+                                           required
+                                           class="form-control{{ $errors->has('user.name') ? ' is-invalid' : '' }}"
+                                           placeholder="@lang('site::user.placeholder.name')"
+                                           value="{{ old('user.name',$user->name) }}">
+                                    <span class="invalid-feedback">{{ $errors->first('user.name') }}</span>
+                                </div>
+                            </div>
+							
+							<div class="form-row required">
                                 <div class="col mb-3">
                                     <label class="control-label"
                                            for="user_warehouse_id">@lang('site::user.warehouse_id')</label>

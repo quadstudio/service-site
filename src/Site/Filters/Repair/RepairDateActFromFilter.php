@@ -18,7 +18,8 @@ class RepairDateActFromFilter extends DateFilter
     {
         if ($this->canTrack() && $this->filled($this->search)) {
             $builder->whereHas('act', function ($query) {
-                $query->where($this->column(), $this->operator(), $this->get($this->search) . ' 00:00:00');
+                //$query->where($this->column(), $this->operator(), $this->get($this->search) . ' 00:00:00');
+				$query->where($this->column(), $this->operator(), date('Y-m-d', strtotime($this->get($this->search))));
             });
         }
 
@@ -45,7 +46,7 @@ class RepairDateActFromFilter extends DateFilter
 
     protected function placeholder()
     {
-        return trans('site::repair.placeholder.date_to');
+        return trans('site::repair.placeholder.date_from');
     }
 
     protected function attributes()

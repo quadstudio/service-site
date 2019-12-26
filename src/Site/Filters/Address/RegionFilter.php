@@ -15,7 +15,11 @@ class RegionFilter extends Filter
     function apply($builder, RepositoryInterface $repository)
     {
         if (!is_null($this->region_id)) {
+			if($this->region_id == 'RU-MOW' OR $this->region_id == 'RU-MOS')
+			$builder->wherein('region_id',['RU-MOS','RU-MOW']);
+			else 
             $builder->where('region_id', $this->region_id);
+			
         }
 
         return $builder;

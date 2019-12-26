@@ -193,8 +193,9 @@
 
                         @endforeach
                     </div>
-                </div>
+                </div><div class="">
                 @include('site::message.create', ['messagable' => $order])
+		</div>
             </div>
         </div>
     </div>

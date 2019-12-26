@@ -48,7 +48,9 @@
                             </small>
                         </div>
                     </div>
-
+				
+				<a class="d-block d-sm-inline" href="{{ route('register_fl') }}"><b>Для регистрация в бонусной программе как физическое лицо (монтажники и продавцы) перейдите по этой ссылке</b></a>
+				
                     {{-- КОНТАКТНОЕ ЛИЦО --}}
 
                     <h4 class="my-4" id="sc_info">@lang('site::contact.header')</h4>
@@ -186,11 +188,12 @@
                                                    required
                                                    name="contragent[type_id]"
                                                    @if(old('contragent.type_id') == $type->id) checked @endif
+												   @if($type->id==3) disabled @endif
                                                    id="contragent_type_id_{{ $type->id }}"
                                                    value="{{ $type->id }}">
                                             <label class="custom-control-label"
                                                    for="contragent_type_id_{{ $type->id }}">
-                                                {{ $type->name }}
+                                                {{ $type->name }}@if($type->id==3) <a class="d-block d-sm-inline" href="{{ route('register_fl') }}">Регистрация ФЛ</a> @endif
                                             </label>
                                             @if($key == $types->count()-1)
                                                 <span class="invalid-feedback">{{ $errors->first('contragent.type_id') }}</span>
@@ -282,7 +285,7 @@
                                 <div class="col">
                                     <label class="control-label"
                                            for="contragent_inn">@lang('site::contragent.inn')</label>
-                                    <input type="number"
+                                    <input type="text"
                                            name="contragent[inn]"
                                            id="contragent_inn"
                                            maxlength="12"
@@ -299,7 +302,7 @@
                                 <div class="col">
                                     <label class="control-label"
                                            for="contragent_ogrn">@lang('site::contragent.ogrn')</label>
-                                    <input type="number"
+                                    <input type="text"
                                            name="contragent[ogrn]"
                                            id="contragent_ogrn"
                                            maxlength="15"
@@ -316,7 +319,7 @@
                                 <div class="col">
                                     <label class="control-label"
                                            for="contragent_okpo">@lang('site::contragent.okpo')</label>
-                                    <input type="number"
+                                    <input type="text"
                                            name="contragent[okpo]"
                                            id="contragent_okpo"
                                            maxlength="10"
@@ -333,7 +336,7 @@
                                 <div class="col">
                                     <label class="control-label"
                                            for="contragent_kpp">@lang('site::contragent.kpp')</label>
-                                    <input type="number"
+                                    <input type="text"
                                            name="contragent[kpp]"
                                            id="contragent_kpp"
                                            maxlength="9" pattern=".{0}|\d{9}"
@@ -351,7 +354,7 @@
                                 <div class="col">
                                     <label class="control-label"
                                            for="contragent_rs">@lang('site::contragent.rs')</label>
-                                    <input type="number"
+                                    <input type="text"
                                            name="contragent[rs]"
                                            required
                                            id="contragent_rs" maxlength="20"
@@ -368,7 +371,7 @@
                                 <div class="col">
                                     <label class="control-label"
                                            for="contragent_bik">@lang('site::contragent.bik')</label>
-                                    <input type="number"
+                                    <input type="text"
                                            name="contragent[bik]"
                                            id="contragent_bik"
                                            required
@@ -400,7 +403,7 @@
                                 <div class="col">
                                     <label class="control-label"
                                            for="contragent_ks">@lang('site::contragent.ks')</label>
-                                    <input type="number"
+                                    <input type="text"
                                            name="contragent[ks]"
                                            id="contragent_ks"
                                            maxlength="20"

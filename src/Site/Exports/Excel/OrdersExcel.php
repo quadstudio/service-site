@@ -65,7 +65,7 @@ class OrdersExcel extends Excel
             ->setCellValue('D' . $count, $order->address->name)
 			->setCellValue('E' . $count, $order->contragent->name)
             ->setCellValue('F' . $count, $order->user->name)
-			->setCellValue('G' . $count, $order->total())
+			->setCellValue('G' . $count, $order->total(978, false, false)) 
 			->setCellValue('H' . $count, $order->status->name)
 			->setCellValue('I' . $count, $order->contacts_comment);
     }

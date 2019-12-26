@@ -84,10 +84,6 @@
                             <div class="text-muted">@lang('site::product.type_id')</div>
                             <div>{{ $product->type->name }}</div>
                         </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center py-1">
-                            <div class="text-muted">@lang('site::product.quantity')</div>
-                            <div>{{ $product->quantity }}</div>
-                        </li>
                         @if($product->mounted($product->id)->exists())
                             <li class="list-group-item d-flex justify-content-between align-items-center py-1">
                                 <div class="text-muted">@lang('site::mounting_bonus.header.mounting_bonus')</div>
@@ -168,11 +164,15 @@
                             <div>@bool(['bool' => $product->show_lamborghini == 1])@endbool</div>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center py-1">
-                            <div class="text-muted">@lang('site::product.forsale')</div>
+                            <div class="text-muted">@lang('site::product.forsale') (@lang('site::product.forsale_help'))</div>
                             <div>@bool(['bool' => $product->forsale == 1])@endbool</div>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center py-1">
-                            <div class="text-muted">@lang('site::product.warranty')</div>
+                            <div class="text-muted">@lang('site::product.for_preorder') (@lang('site::product.for_preorder_help'))</div>
+                            <div>@bool(['bool' => $product->for_preorder == 1])@endbool</div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center py-1">
+                            <div class="text-muted">@lang('site::product.warranty') (@lang('site::product.warranty_help'))</div>
                             <div>@bool(['bool' => $product->warranty == 1])@endbool</div>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center py-1">

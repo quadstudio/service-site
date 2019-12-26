@@ -49,6 +49,10 @@ return [
 	//
 	'received_1' => 'Оригинал получен',
 	'received_0' => 'Оригинал не получен',
+	'called_1' => 'Прозвонен',
+	'called_0' => 'Не прозвонен',
+	'called_color_1' => '#81C784',
+	'called_color_0' => '#FFB74D',
 	'status_defaults' => '- выбрать -',
 	'icons' => [
 		'road' => 'car',
@@ -74,7 +78,8 @@ return [
 		'date_repair' => 'Кликните для выбора даты',
 		'search_part' => 'Поиск деталей',
 		'search_client' => 'Поиск клиентов',
-		'search_act' => 'Поиск по серийнику',
+		'search_serial' => 'Поиск по серийнику',
+		'search_act' => 'Поиск по номеру',
 		'search_sc' => 'Поиск СЦ',
 		'search_contragent' => 'Поиск контрагента',
 		'date_from' => 'С...',
@@ -83,6 +88,8 @@ return [
 	'error' => [
 		'serial_find' => 'Серийный номер не найден в базе данных',
 		'serial_id' => 'Серийный номер не найден в базе данных',
+		'serial_dup' => 'Найдены дубликаты серийника',
+		'phones_dup' => 'Найдены дубликаты телефона',
 	],
 	'success' => [
 		'serial_find' => 'Серийный номер найден в базе данных',
@@ -112,8 +119,9 @@ return [
 		'cost_parts' => 'Детали',
 		'duplicates' => 'Дубликаты',
 		'duplicates_link' => 'Серийный номер :serial найден в других отчетах. <a class="alert-link" href=":link">Показать</a>',
+		'duplicates_phones_link' => 'Номер телефона пользователя :phone_primary найден в других отчетах. <a class="alert-link" href=":link">Показать</a>',
 		'total' => 'Итого к оплате',
-		'search_act' => 'Поиск по серийному номеру',
+		'search_act' => 'Поиск по номеру',
 		'search_client' => 'Поиск по ФИО клиента, телефону и адресу',
 		'search_part' => 'Поиск по артикулу и наименованию детали',
 		'search_sc' => 'Поиск по наименованию и E-mail СЦ',

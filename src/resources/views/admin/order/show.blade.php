@@ -64,6 +64,17 @@
                         </div>
 
                         <div class="mb-2">
+                            <span class="text-muted">@lang('site::user.email'):</span>&nbsp;
+                            <span class="text-dark">{{$order->user->email}}</span>
+                        </div>
+
+                        <div class="mb-2">
+                            <span class="text-muted">@lang('site::order.contacts_comment'):</span>&nbsp;
+                            <span class="text-dark">{{$order->contacts_comment}}</span>
+                        </div>
+
+
+                        <div class="mb-2">
                             <span class="text-muted">@lang('site::order.address_id'):</span>&nbsp;
                             <span class="text-dark">{{ optional($order->address)->name }}</span>
                         </div>
@@ -154,7 +165,7 @@
                                         @endif
                                         @if($order->status_id == 8)
                                             <button name="order[status_id]"
-                                                    value="9"
+                                                    value="9" disabled
                                                     type="submit"
                                                     class="btn btn-success mb-1">
                                                 @lang('site::order.button.status.9')

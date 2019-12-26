@@ -23,12 +23,13 @@ class RepairRequest extends FormRequest
      * @return array
      */
     public function rules()
-    {
+    { 
         switch ($this->method()) {
-            case 'PUT':
+            case 'POST': 
+            case 'PUT': 
             case 'PATCH': {
                 return [
-                    'repair.status_id' => 'required|exists:repair_statuses,id',
+                    'repair.status_id' => 'exists:repair_statuses,id',
                 ];
             }
             default:
@@ -55,6 +56,7 @@ class RepairRequest extends FormRequest
     {
         return [
             'repair.status_id' => trans('site::repair.status_id'),
+            'repair.called_client' => trans('site::repair.status_id'),
         ];
     }
 }

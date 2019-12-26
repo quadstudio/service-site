@@ -33,7 +33,7 @@
                             <div class="form-row">
                                 <div class="col mb-3">
                                     <label class="control-label" for="display_name">@lang('site::price_type.display_name')</label>
-                                    <input type="text" name="display_name"
+                                    <input type="text" name="price_type[display_name]"
                                            id="display_name"
                                            class="form-control{{ $errors->has('display_name') ? ' is-invalid' : '' }}"
                                            placeholder="@lang('site::price_type.placeholder.display_name')"
@@ -41,6 +41,37 @@
                                     <span class="invalid-feedback">{{ $errors->first('display_name') }}</span>
                                 </div>
                             </div>
+
+			    <div class="form-row">
+                                        <div class="col">
+                                            <label class="control-label d-block"
+                                                   for="enabled">@lang('site::price_type.enabled')</label>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input class="custom-control-input
+                                                    {{$errors->has('price_type.enabled') ? ' is-invalid' : ''}}"
+                                                       type="radio"
+                                                       name="price_type[enabled]"
+                                                       @if(old('price_type.enabled', $price_type->enabled) == 1) checked
+                                                       @endif
+                                                       id="enabled_1"
+                                                       value="1">
+                                                <label class="custom-control-label"
+                                                       for="enabled_1">@lang('site::messages.yes')</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input class="custom-control-input
+                                                    {{$errors->has('price_type.enabled') ? ' is-invalid' : ''}}"
+                                                       type="radio"
+                                                       name="price_type[enabled]"
+                                                       @if(old('price_type.enabled', $price_type->enabled) == 0) checked
+                                                       @endif
+                                                       id="enabled_0"
+                                                       value="0">
+                                                <label class="custom-control-label"
+                                                       for="enabled_0">@lang('site::messages.no')</label>
+                                            </div>
+                                        </div>
+                                    </div>
 
                             <hr/>
                             <div class=" text-right">

@@ -33,7 +33,7 @@ class PriceTypeController extends Controller
 
         return view('site::admin.price_type.index', [
             'repository' => $this->types,
-            'types'      => $this->types->paginate(config('site.per_page.price_type', 12), ['price_types.*'])
+            'types'      => $this->types->paginate(config('site.per_page.price_type', 30), ['price_types.*'])
         ]);
     }
 
@@ -57,13 +57,13 @@ class PriceTypeController extends Controller
      */
     public function update(PriceTypeRequest $request, PriceType $price_type)
     {
-        $price_type->update($request->only(['display_name']));
+        $price_type->update($request->input('price_type'));
         if ($request->input('_stay') == 1) {
             $redirect = redirect()->route('admin.price_types.edit', $price_type)->with('success', trans('site::price_type.updated'));
         } else {
             $redirect = redirect()->route('admin.price_types.show', $price_type)->with('success', trans('site::price_type.updated'));
         }
-
+//	dd($request->input('price_type'));
         return $redirect;
     }
 

@@ -14,7 +14,7 @@
             <div class="col-md-8">
                 <strong class="project-attachment-filename">{{$image->name}}</strong>
                 <div class="text-muted small">{{formatFileSize($image->size)}}</div>
-                {{dd($image->width, $image->height)}}
+                
                 <div class="text-muted small">{{formatImageDimension(Storage::disk($image->storage)->url($image->path))}}</div>
                 <a class="btn btn-sm py-0 btn-ferroli"
                    href="{{route('admin.images.show', $image)}}">@lang('site::messages.download')</a>

@@ -32,10 +32,24 @@
                 <dl class="row">
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::storehouse.user_id')</dt>
-                    <dd class="col-sm-8">
-                        <a href="{{route('admin.users.show', $storehouse->user)}}">{{ $storehouse->user->name }}</a>
-                    </dd>
+                    <dd class="col-sm-8"><a href="{{route('admin.users.show', $storehouse->user)}}">{{ $storehouse->user->name }}</a></dd>
 
+                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::storehouse.linked_addresses')</dt>
+                       <dd class="col-sm-8">
+							@if($storehouse->addresses()->exists())
+                            <div class="list-group">
+                                @foreach($storehouse->addresses as $address)
+                                    <a href="{{route('admin.addresses.show', $address)}}"
+                                       class="list-group-item list-group-item-action p-1">
+                                        <i class="fa fa-@lang('site::address.icon')"></i> {{ $address->full }}
+                                    <br /><b>Зоны дистрибуции: {{ $address->regions->count() }}</b>
+									</a>
+                                @endforeach
+                            </div>
+							@endif
+                        </dd>
+                    
+					
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::storehouse.name')</dt>
                     <dd class="col-sm-8">{{ $storehouse->name }}</dd>
 

@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use QuadStudio\Service\Site\Http\Requests\RegisterRequest;
+use QuadStudio\Service\Site\Http\Requests\RegisterFlRequest;
 use QuadStudio\Service\Site\Models\Address;
 use QuadStudio\Service\Site\Models\Contact;
 use QuadStudio\Service\Site\Models\Contragent;
@@ -52,17 +53,22 @@ class RegisterController extends Controller
 
         return view('site::auth.register', compact('countries', 'types', 'address_legal_regions', 'address_postal_regions'));
     }
+	
+	/**
+	* Регистрация физических лиц без контрагентов
+	*/
+	public function showRegistrationFlForm()
+    {
+        $countries = Country::query()->where('id', config('site.country'))->get();
+        $address_sc_regions = Region::where('country_id', config('site.country'))->orderBy('name')->get();
+        
+        return view('site::auth.register_fl', compact('countries', 'address_sc_regions'));
+    }
 
-    /**
-     * Handle a registration request for the application.
-     *
-     * @param  RegisterRequest $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function register(RegisterRequest $request)
     {
         $user = $this->createUser($request->all());
-        /** @var $contact Contact */
         $user->contacts()->save($contact = Contact::query()->create($request->input('contact')));
         $contact->phones()->save(Phone::query()->create($request->input('phone.contact')));
 
@@ -86,7 +92,22 @@ class RegisterController extends Controller
         return redirect()->route('login')->with('success', trans('site::user.confirm_email', ['email' => $user->getEmailForPasswordReset()]));
 
     }
+	public function register_fl(RegisterFlRequest $request)
+    {
+        $user = $this->createUser($request->all());
+        /** @var $contact Contact */
+        $user->contacts()->save($contact = Contact::query()->create($request->input('contact')));
+        $contact->phones()->save(Phone::query()->create($request->input('phone.contact')));
+		$user->addresses()->save($address = Address::create($request->input('address.sc')));
+        /** @var $contragent Contragent */
+        $user->attachRole('14');
+        $user->update(['region_id' => $request->input('address.sc.region_id'), 'type_id' => '3']);
 
+        event(new Registered($user));
+
+        return redirect()->route('login')->with('success', trans('site::user.confirm_email', ['email' => $user->getEmailForPasswordReset()]));
+
+    }
     /**
      * Create a new user instance after a valid registration.
      *

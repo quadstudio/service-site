@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Routing\Controller;
 use QuadStudio\Service\Site\Filters\Equipment\HasProductFilter;
 use QuadStudio\Service\Site\Filters\Equipment\SortFilter;
+use QuadStudio\Service\Site\Filters\Equipment\EquipmentShowFilter;
 use QuadStudio\Service\Site\Filters\Product\BoilerFilter;
 use QuadStudio\Service\Site\Filters\Product\EquipmentFilter;
 use QuadStudio\Service\Site\Filters\Product\HasNameFilter;
@@ -56,8 +57,7 @@ class ProductController extends Controller
         $this->products->pushTrackFilter(TypeFilter::class);
         $this->products->pushTrackFilter(EquipmentFilter::class);
         $this->products->pushTrackFilter(BoilerFilter::class);
-        //dump($this->products->toSql());
-        //dump($this->products->getBindings());
+        
         return view('site::product.index', [
             'repository' => $this->products,
             'products'   => $this->products->paginate(config('site.per_page.product', 20)),
@@ -77,8 +77,7 @@ class ProductController extends Controller
         $this->products->applyFilter(new HasNameFilter());
         $this->products->pushTrackFilter(TypeFilter::class);
         $this->products->pushTrackFilter(EquipmentFilter::class);
-        //dump($this->products->toSql());
-        //dump($this->products->getBindings());
+        
         return view('site::product.list', [
             'repository' => $this->products,
             'products'   => $this->products->paginate(config('site.per_page.product_list', 50)),
@@ -100,11 +99,12 @@ class ProductController extends Controller
         $equipments = $this
             ->equipments
             ->applyFilter(new SortFilter())
+            ->applyFilter(new EquipmentShowFilter())
             ->applyFilter((new HasProductFilter())->setProduct($product))
             ->all();
-        $analogs = $product->analogs()->where('enabled', 1)->orderBy('name')->get();
-        $back_relations = $product->relations()->where('enabled', 1)->orderBy('name')->get();
-        $details = $product->details()->where('enabled', 1)->orderBy('name')->get();
+        $analogs = $product->analogs()->where('enabled', 1)->where(config('site.check_field'), 1)->orderBy('name')->get();
+        $back_relations = $product->relations()->where('enabled', 1)->where(config('site.check_field'), 1)->orderBy('name')->get();
+        $details = $product->details()->where('enabled', 1)->where(config('site.check_field'), 1)->orderBy('name')->get();
         $images = $product->images()->get();
         $schemes = $product->schemes()->get();
         $datasheets = $product->datasheets()->with('schemes')->get();

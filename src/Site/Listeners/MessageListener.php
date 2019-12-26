@@ -15,9 +15,13 @@ class MessageListener
      */
     public function onMessageCreate(MessageCreateEvent $event)
     {
-
-        // Отправка получателю уведомления о новом сообщении
-        Mail::to($event->message->receiver->email)->send(new MessageCreateEmail($event->message));
+		if($event->message->receiver->id == 1){
+		Mail::to(env('MAIL_TO_ADDRESS'))->send(new MessageCreateEmail($event->message));
+		}
+		else {
+        // Отправка получателю уведомления о новом сообщени
+	    Mail::to($event->message->receiver->email)->send(new MessageCreateEmail($event->message));}
+	    
 
     }
 

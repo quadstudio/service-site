@@ -108,7 +108,7 @@
                                             @foreach($storehouse_addresses as $address)
                                                 <tr>
                                                     <td class="pl-0">{{$address['name']}}</td>
-                                                    <td class="text-right pr-0">
+                                                    <td class="text-right pr-0">@if(!empty($address['updated_at'])){{$address['updated_at']->format('d.m.Y')}} @endif
                                                         <span class="badge badge-success">
                                                         {{number_format($address['quantity'], 0, '.', ' ')}} {{$product->unit}}
                                                         </span>
@@ -116,14 +116,12 @@
                                                 </tr>
                                             @endforeach
                                         </table>
-                                    @else
-                                        <span class="badge badge-light d-block d-md-inline-block">@lang('site::product.not_available')</span>
+                                    @elseif($product->for_preorder)
+										<span class="badge badge-light d-block d-md-inline-block">@lang('site::product.not_available')</span>
+									@else
+                                        <span style="font-weight:bold">@lang('site::product.not_preorder')</span>
                                     @endif
-                                    {{--@if($product->quantity > 0)--}}
-                                    {{--<span class="badge badge-success d-block d-md-inline-block">@lang('site::product.in_stock')</span>--}}
-                                    {{--@else--}}
-                                    {{--<span class="badge badge-light d-block d-md-inline-block">@lang('site::product.not_available')</span>--}}
-                                    {{--@endif--}}
+                                    
                                 </dd>
                                 @endauth
 
@@ -136,7 +134,7 @@
                                 @endif
                                 <dt class="col-sm-4"></dt>
                                 <dd class="col-sm-8">
-                                    @if($product->forsale)
+                                    @if($product->forsale & $product->for_preorder)
                                         @include('site::cart.buy.large')
                                     @endif
                                 </dd>

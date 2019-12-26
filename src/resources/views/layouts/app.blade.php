@@ -2,7 +2,7 @@
 <html lang="{{ app()->getLocale() }}">
 <head>
 
-    <title>@if($page_title) {{$page_title}} - @else @yield('title') @endif @lang('site::messages.title')</title>
+    <title>@auth()@lang('site::page.mirror') @endauth @if($page_title) {{$page_title}} - @else @yield('title') @endif @lang('site::messages.title')</title>
 
     <meta name="description" content="@if($page_description) {{$page_description}} @else @yield('description') @endif">
     <meta name="keyword" content="@lang('site::messages.keyword')">
@@ -67,7 +67,7 @@
                             <li><a class="title" href="/products" class="title">Запчасти</a></li>
                             <li><a class="title" href="/catalogs" class="title">Оборудование</a></li>
                             <li><a class="title" href="/datasheets" class="title">Документация</a></li>
-                            <li><a class="title" href="{{config('site.catalog_price_pdf')}}" target="_blank">Каталог и прайс (PDF)</a></li>
+                            <li><a class="title" href="{{config('site.catalog_price_pdf')}}" class="title">Каталог и прайс (PDF)</a></li>
                             <li><a class="title" href="/feedback">Контакты</a></li>
 
                         </ul>
@@ -111,11 +111,7 @@
                                 onmouseover="this.src='/images/inst-footer-hover.png';"
                                 onmouseout="this.src='images/inst-footer.png';" src="/images/inst-footer.png" />
                     </a>
-                    <a href="#"><img style="width: 30px; height: 30px; margin-right:22px;"
-                                     onmouseover="this.src='/images/fb-footer-hover.png';"
-                                     onmouseout="this.src='images/fb-footer.png';" src="/images/fb-footer.png">
-                    </a>
-                    <a href="#"><img style="width: 30px; height: 30px; margin-right:22px;"
+                    <a target="_blank" href="https://www.youtube.com/channel/UC9q1SNmiWzsFUysN-LPXHnw/videos"><img style="width: 30px; height: 30px; margin-right:22px;"
                                      onmouseover="this.src='/images/youtube-footer-hover.png';"
                                      onmouseout="this.src='images/youtube-footer.png';"
                                      src="/images/youtube-footer.png">

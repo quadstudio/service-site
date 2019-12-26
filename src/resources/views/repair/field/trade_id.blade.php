@@ -23,7 +23,7 @@
             </div>
         @endif
         <span class="invalid-feedback">{{ $errors->first('trade_id') }}</span>
-    @elseif(isset($repair) && $repair->trade)
-        <div class="text-success text-big">{{$repair->trade->name}}</div>
+    @elseif(isset($repair))
+        <div class="text-success text-big">@if($repair->trade){{$repair->trade->name}}@endif</div>
     @endif
 </div>

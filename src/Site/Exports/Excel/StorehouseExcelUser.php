@@ -45,14 +45,15 @@ class StorehouseExcelUser extends StorehouseExcel
 					->getNumberFormat()
 					->setFormatCode(NumberFormat::FORMAT_DATE_DDMMYYYY);
 				$this->_sheet
-					->setCellValue('F' . $count, $storehouseProduct->product->price->value)
+					->setCellValue('F' . $count, $storehouseProduct->product->price->price)
 					->getStyle('F' . $count)
 					->getNumberFormat()
-					->setFormatCode('# ##0.00_-"₽"');
+					->setFormatCode('# ##0.00_-"EUR"');
 
 				$this->_sheet
 					->setCellValue('G' . $count, $storehouse->name)
 					->setCellValue('H' . $count, $storehouse->addresses()->pluck('name')->implode(', '));
+					
 			}
 		}
 

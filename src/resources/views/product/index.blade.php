@@ -197,7 +197,11 @@
                                 @else
                                     <div style="height: 36px!important">@lang('site::price.price') @lang('site::price.help.price')</div>
                                 @endif
+								@if($product->for_preorder)
                                 @include('site::cart.buy.large')
+								@else 
+								@lang('site::product.not_available')
+								@endif
                             </div>
                         </div>
                     </div>

@@ -53,7 +53,7 @@
                 <hr/>
                 <dl class="row">
 
-                    <dt class="col-sm-4 text-left text-sm-right">@lang('site::repair.serial_id')</dt>
+                    <dt class="@if($fails->contains('field', 'serial_id')) bg-danger text-white @endif col-sm-4 text-left text-sm-right>">@lang('site::repair.serial_id')</dt>
                     <dd class="col-sm-8">{{ $repair->serial_id }}</dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::serial.product_id')</dt>
@@ -63,10 +63,10 @@
                     <dd class="col-sm-8">{{ $repair->product->sku }}</dd>
 
                     <dt class="col-sm-4 text-left text-sm-right">@lang('site::product.equipment_id')</dt>
-                    <dd class="col-sm-8"><a
+                    <dd class="col-sm-8">@if(!empty($repair->product->equipment))<a
                                 href="{{route('equipments.show', $repair->product->equipment)}}">
                             {{ $repair->product->equipment->catalog->name_plural }} {{ $repair->product->equipment->name }}
-                        </a>
+                        </a>@endif
                     </dd>
 
                 </dl>

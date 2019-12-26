@@ -35,15 +35,27 @@ class UserExcel extends Excel
         }
 
     }
-
+	
     private function _build(User $user, $count)
-    {
+    {	$ats="";
+		foreach($user->authorization_accepts as $authorization) {$ats=$ats .$authorization->role->description ." " .$authorization->type->name ." " .$authorization->type->brand->name ." ; ";}
+	
         $this->_sheet
             ->setCellValue('A' . $count, $count - 1)
             ->setCellValue('B' . $count, $user->getAttribute('name'))
             ->setCellValue('C' . $count, $user->getAttribute('email'))
             ->setCellValue('D' . $count, $user->getAttribute('guid'))
             ->setCellValue('F' . $count, $user->currency->getAttribute('name'))
-            ->setCellValue('G' . $count, $user->region->getAttribute('name'));
+	    ->setCellValue('I' . $count, $user->getAttribute('active'))
+            ->setCellValue('J' . $count, $user->getAttribute('verified'))
+	    ->setCellValue('K' . $count, $user->getAttribute('display'))
+            ->setCellValue('L' . $count, $user->getAttribute('created_at'))
+            ->setCellValue('M' . $count, $user->getAttribute('logged_at'));
+            if ( !empty($user->region) ) {
+	$this->_sheet
+	    ->setCellValue('G' . $count, $user->region->getAttribute('name'));
+	    }
+		$this->_sheet
+	    ->setCellValue('O' . $count, $ats);
     }
 }

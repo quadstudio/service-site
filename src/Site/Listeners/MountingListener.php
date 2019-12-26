@@ -4,9 +4,11 @@ namespace QuadStudio\Service\Site\Listeners;
 
 use Illuminate\Events\Dispatcher;
 use Illuminate\Support\Facades\Mail;
+use QuadStudio\Service\Site\Events\Digift\BonusCreateEvent;
 use QuadStudio\Service\Site\Events\MountingCreateEvent;
 use QuadStudio\Service\Site\Events\MountingStatusChangeEvent;
 use QuadStudio\Service\Site\Mail\Admin\Mounting\MountingCreateEmail;
+use QuadStudio\Service\Site\Mail\User\Mounting\BonusCreateEmail;
 use QuadStudio\Service\Site\Mail\User\Mounting\MountingStatusChangeEmail;
 
 class MountingListener
@@ -17,10 +19,7 @@ class MountingListener
      */
     public function onMountingCreate(MountingCreateEvent $event)
     {
-
-        // Отправка получателю уведомления о новом отчете по монтажу
         Mail::to(env('MAIL_TO_ADDRESS'))->send(new MountingCreateEmail($event->mounting));
-
     }
 
     /**
@@ -28,11 +27,17 @@ class MountingListener
      */
     public function onMountingStatusChange(MountingStatusChangeEvent $event)
     {
-
-        // Отправка пользователю уведомления о смене статуса отчета по монтажу
         Mail::to($event->mounting->user->email)->send(new MountingStatusChangeEmail($event->mounting));
-
     }
+
+
+	/**
+	 * @param BonusCreateEvent $event
+	 */
+	public function onBonusCreate(BonusCreateEvent $event)
+	{
+		Mail::to(env('MAIL_BONUS_ADDRESS'))->send(new BonusCreateEmail($event->mounting));
+	}
 
 
     /**
@@ -49,6 +54,11 @@ class MountingListener
         $events->listen(
             MountingStatusChangeEvent::class,
             'QuadStudio\Service\Site\Listeners\MountingListener@onMountingStatusChange'
+        );
+
+        $events->listen(
+	        BonusCreateEvent::class,
+            'QuadStudio\Service\Site\Listeners\MountingListener@onBonusCreate'
         );
 
     }

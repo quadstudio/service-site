@@ -3,6 +3,7 @@ return [
     'page'        => 'страницу',
     'pages'       => 'Страницы',
     'icon'        => 'file-text',
+    'mirror'      => 'RU',
     //
     'route'       => 'Маршрут',
     'h1'          => 'Тег H1',

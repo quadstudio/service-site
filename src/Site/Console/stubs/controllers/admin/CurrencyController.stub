@@ -1,0 +1,11 @@
+<?php
+
+namespace {{namespace}}Http\Controllers\Admin;
+
+use QuadStudio\Service\Site\Traits\Controllers\Admin\CurrencyController;
+use {{namespace}}Http\Controllers\Controller;
+
+class CurrencyController extends Controller
+{
+    use CurrencyController;
+}
