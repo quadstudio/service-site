@@ -6,12 +6,38 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Session;
-use QuadStudio\Service\Site\Models\DigiftBonus;
 use QuadStudio\Service\Site\Exceptions\Digift\DigiftException;
+use QuadStudio\Service\Site\Filters\DigiftBonus\DigiftBonusUnionExpenseFilter;
+use QuadStudio\Service\Site\Models\DigiftBonus;
+use QuadStudio\Service\Site\Repositories\DigiftBonusRepository;
 
 class DigiftBonusController extends Controller
 {
 
+	/**
+	 * @var DigiftBonusRepository
+	 */
+	private $digiftBonuses;
+
+
+	/**
+	 * DigiftUserController constructor.
+	 *
+	 * @param DigiftBonusRepository $digiftBonuses
+	 */
+	public function __construct(DigiftBonusRepository $digiftBonuses)
+	{
+		$this->digiftBonuses = $digiftBonuses;
+	}
+
+	public function index()
+	{
+		$this->digiftBonuses->trackFilter();
+		$repository = $this->digiftBonuses->applyFilter(new DigiftBonusUnionExpenseFilter());
+		$digiftBonuses = $this->digiftBonuses->all();
+
+		return view('site::admin.digift_bonus.index', compact('repository', 'digiftBonuses'));
+	}
 
 	/**
 	 * @param DigiftBonus $digiftBonus

@@ -1,7 +1,7 @@
 <?php
 return [
-	'digift_bonus' => 'Начисление',
-	'digift_bonuses' => 'Начисления',
+	'digift_bonus' => 'Бонус Дигифт',
+	'digift_bonuses' => 'Бонусы Дигифт',
 	'icon' => 'gift',
 	//
 
@@ -13,7 +13,10 @@ return [
 	'header' => [
 		'digift_bonus' => 'Бонус',
 	],
-
+	'placeholder' => [
+		'search' => 'Поиск пользователей'
+	],
+	'mountings' => 'Отчет по монтажу',
 	'rollbackBalanceChangeSuccess' => 'Бонусы успешно отменены',
 	'changeBalanceSuccess' => 'Бонусы успешно отправлены',
 	'button' => [
@@ -25,7 +28,7 @@ return [
 		'confirmCreate' => 'Вы уверены, что хотите начислить бонусы',
 	],
 	'error' => [
-		'alreadySended' => 'Бонус уже отправлен в Дигифт'
-	]
+		'alreadySended' => 'Бонус уже отправлен в Дигифт',
+	],
 
 ];

@@ -546,6 +546,11 @@ Route::group(['middleware' => ['online']],
 								'MountingDigiftBonusController@store')
 							->name('mountings.digift-bonuses.store');
 
+							// Отчет по бонусам
+							Route::get('/digift/bonuses',
+								'DigiftBonusController@index')
+								->name('digift.bonuses.index');
+
 							// Отправить бонус вручную в Дигифт
 							Route::patch('/digift/bonuses/{digiftBonus}/changeBalance',
 								'DigiftBonusController@changeBalance')

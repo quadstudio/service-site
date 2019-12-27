@@ -455,6 +455,7 @@ class User extends Authenticatable implements Addressable
 	 */
 	public function makeDigiftUser()
 	{
+		dd($this->getDigiftUserData());
 		if ($this->digiftUser()->doesntExist()) {
 			$response = (new Digift())->createParticipant($digiftUserData = $this->getDigiftUserData())->request();
 			if ($response->getStatusCode() === Response::HTTP_OK) {

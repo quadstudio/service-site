@@ -3,7 +3,7 @@
 namespace QuadStudio\Service\Site\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
-use QuadStudio\Service\Site\Models\Mounting;
+use Illuminate\Support\Facades\DB;
 
 class DigiftBonusRequest extends FormRequest
 {
@@ -60,10 +60,5 @@ class DigiftBonusRequest extends FormRequest
 		return [
 			'digift_bonus.operationValue' => trans('site::digift_bonus.operationValue'),
 		];
-	}
-
-	public function store_mounting(Mounting $mounting)
-	{
-
 	}
 }

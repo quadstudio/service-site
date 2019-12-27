@@ -31,12 +31,6 @@ class DigiftUserController extends Controller
 		$this->users = $users;
 	}
 
-
-	public function store(DigiftUserRequest $request, User $user)
-	{
-
-	}
-
 	/**
 	 * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
 	 */

@@ -73,7 +73,7 @@ class MountingRequest extends FormRequest
 		$mounting->fill($this->input('mounting'));
 		$status_changed = $mounting->isDirty('status_id');
 
-		if ($mounting->save()) {
+		//if ($mounting->save()) {
 			if ($mounting->getAttribute('status_id') == 2) {
 				/** @var User $user */
 				$user = $mounting->user;
@@ -82,11 +82,11 @@ class MountingRequest extends FormRequest
 					'user_id' => $user->digiftUser->id,
 					'operationValue' => $mounting->total
 				]);
-				event(new BonusCreateEvent($mounting));
+				//event(new BonusCreateEvent($mounting));
 			}
-			if ($status_changed) {
-				event(new MountingStatusChangeEvent($mounting));
-			}
-		}
+//			if ($status_changed) {
+//				event(new MountingStatusChangeEvent($mounting));
+//			}
+		//}
 	}
 }

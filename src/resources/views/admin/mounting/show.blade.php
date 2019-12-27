@@ -145,7 +145,7 @@
                 </dl>
             </div>
         </div>
-        @include('site::admin.digift_bonus.index', ['bonusable' => $mounting])
+        @include('site::admin.digift_bonus.user', ['bonusable' => $mounting])
         <div class="card mb-2">
             <div class="card-body">
                 <h5 class="card-title">@lang('site::mounting.header.client')</h5>

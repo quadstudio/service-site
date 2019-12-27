@@ -40,7 +40,7 @@ class MountingDigiftBonusController extends Controller
 			Session::flash('error', trans('site::digift.error.admin.unknown', ['message' => $e->getMessage()]));
 		} finally {
 			return response()->json(['replace' => [
-				'#digift-bonus' => view('site::admin.digift_bonus.index')->with('bonusable', $mounting)->render(),
+				'#digift-bonus' => view('site::admin.digift_bonus.user')->with('bonusable', $mounting)->render(),
 			]], Response::HTTP_OK);
 		}
 

@@ -7,6 +7,16 @@ return [
 	'operationValue' => 'Сумма списания',
 	'userDigiftId' => 'ID пользователя',
 	'digiftOperationId' => 'ID операции',
+	'increase' => [
+		'sign' => '+',
+		'title' => 'Начислено',
+		'class' => 'success',
+	],
+	'decrease' => [
+		'sign' => '-',
+		'title' => 'Списано',
+		'class' => 'danger',
+	],
 	'email' => [
 		'api' => [
 			'h1' => 'Ошибка списания бонусов',
