@@ -22,6 +22,11 @@ return [
 		'form_param_is_not_number' => 'Параметр :param должен быть числом',
 		'form_param_is_not_in' => 'Параметр :param должен быть значением из :in',
 	],
+	'total' => [
+		'bonuses' => 'Всего начислено',
+		'expenses' => 'Всего выплачено',
+		'diff' => 'Всего ожидающих выплат',
+	],
 	'error' => [
 		'admin' => [
 			'unknown' => 'Произошла ошибка: :message',

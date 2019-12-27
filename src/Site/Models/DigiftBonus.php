@@ -126,4 +126,12 @@ class DigiftBonus extends Model
 			throw new DigiftException(trans('site::digift_bonus.error.alreadySended'));
 		}
 	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getTotalAttribute()
+	{
+		return $this->newQuery()->where('blocked', 0)->sum('operationValue');
+	}
 }

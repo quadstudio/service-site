@@ -22,6 +22,32 @@
                 <span>@lang('site::messages.back_admin')</span>
             </a>
         </div>
+        <div class="row mb-2 text-center">
+            <div class="col-sm-4">
+                <div class="card text-white bg-success">
+                    <div class="card-body p-2">
+                        <h5 class="card-title">@lang('site::digift.total.bonuses')</h5>
+                        <h4 class="card-text text-white">+ {{Site::format($bonuses)}}</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card text-white bg-danger">
+                    <div class="card-body p-2">
+                        <h5 class="card-title">@lang('site::digift.total.expenses')</h5>
+                        <h4 class="card-text text-white">- {{Site::format($expenses)}}</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card text-white bg-primary">
+                    <div class="card-body p-2">
+                        <h5 class="card-title">@lang('site::digift.total.diff')</h5>
+                        <h4 class="card-text text-white">= {{Site::format($bonuses - $expenses)}}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
         @filter(['repository' => $repository])@endfilter
         {{--@pagination(['pagination' => $digiftBonuses])@endpagination--}}
         {{--{{$digiftBonuses->render()}}--}}
@@ -46,7 +72,7 @@
                                 <span>@lang('site::digift_expense.'.$digiftBonus->operationType.'.title')</span>
                             </dt>
                             <dd class="col-12">
-                                <span class="badge text-normal badge-@lang('site::digift_expense.'.$digiftBonus->operationType.'.class') mr-3 ml-0">
+                                <span class="badge text-normal @if($digiftBonus->blocked) badge-light @else badge-@lang('site::digift_expense.'.$digiftBonus->operationType.'.class') @endif mr-3 ml-0">
                                     @lang('site::digift_expense.'.$digiftBonus->operationType.'.sign')
                                     {{$digiftBonus->operationValue}}
                                 </span>

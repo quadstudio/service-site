@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Session;
 use QuadStudio\Service\Site\Exceptions\Digift\DigiftException;
 use QuadStudio\Service\Site\Filters\DigiftBonus\DigiftBonusUnionExpenseFilter;
 use QuadStudio\Service\Site\Models\DigiftBonus;
+use QuadStudio\Service\Site\Models\DigiftExpense;
 use QuadStudio\Service\Site\Repositories\DigiftBonusRepository;
 
 class DigiftBonusController extends Controller
@@ -18,7 +19,6 @@ class DigiftBonusController extends Controller
 	 * @var DigiftBonusRepository
 	 */
 	private $digiftBonuses;
-
 
 	/**
 	 * DigiftUserController constructor.
@@ -32,11 +32,15 @@ class DigiftBonusController extends Controller
 
 	public function index()
 	{
+
+		$bonuses = (new DigiftBonus)->total;
+		$expenses = (new DigiftExpense)->total;
+
 		$this->digiftBonuses->trackFilter();
 		$repository = $this->digiftBonuses->applyFilter(new DigiftBonusUnionExpenseFilter());
 		$digiftBonuses = $this->digiftBonuses->all();
 
-		return view('site::admin.digift_bonus.index', compact('repository', 'digiftBonuses'));
+		return view('site::admin.digift_bonus.index', compact('repository', 'digiftBonuses', 'bonuses', 'expenses'));
 	}
 
 	/**

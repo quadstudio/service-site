@@ -44,4 +44,12 @@ class DigiftExpense extends Model
 		return $this->belongsTo(DigiftUser::class, 'user_id');
 	}
 
+	/**
+	 * @return mixed
+	 */
+	public function getTotalAttribute()
+	{
+		return $this->newQuery()->sum('operationValue');
+	}
+
 }
