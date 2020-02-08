@@ -9,6 +9,7 @@
             <li class="breadcrumb-item active">@lang('site::messages.home')</li>
         </ol>
         <h1 class="header-title mb-4"><i class="fa fa-desktop"></i> @lang('site::messages.home')</h1>
+        @alert()@endalert
         <div class="row">
             <div class="col-xl-4">
                 <div class="card mb-4">
@@ -262,6 +263,32 @@
                 @if($user->digiftUser()->exists())
                     @include('site::digift_bonus.index', ['digiftUser' => $user->digiftUser])
                 @endif
+                @endpermission()
+                @permission('engineers')
+
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">@lang('site::certificate.header.mounting') </h5>
+                        @if($user->mountingCertificates()->exists())
+                            <a class="btn btn-success" href="{{route('certificates.show', $user->mountingCertificates()->first())}}">
+                                <i class="fa fa-download"></i>
+                                @lang('site::certificate.button.download')
+                            </a>
+                        @else
+                            <form action="{{route('certificates.store')}}" method="POST">
+                                @csrf
+                                <div class="form-group">
+                                    <input type="hidden" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{$user->email}}"/>
+                                    <span class="invalid-feedback">{!! $errors->first('email') !!}</span>
+                                </div>
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fa fa-download"></i>
+                                    @lang('site::certificate.button.get')
+                                </button>
+                            </form>
+                        @endif
+                    </div>
+                </div>
                 @endpermission()
             </div>
         </div>

@@ -243,6 +243,11 @@ Route::group(['middleware' => ['online']],
 					'EngineerController')
 					->middleware('permission:engineers')
 					->except(['show']);
+				// Сертификаты
+				Route::resource('/certificates',
+					'CertificateController')
+					->middleware('permission:engineers')
+					->only(['store', 'show']);
 
 				// Отчеты по монтажу
 				Route::resource('/mountings',

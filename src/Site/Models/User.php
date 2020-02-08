@@ -401,6 +401,19 @@ class User extends Authenticatable implements Addressable
 	}
 
 	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+	 */
+	public function certificates()
+	{
+		return $this->hasManyThrough(Certificate::class, Engineer::class);
+	}
+
+	public function mountingCertificates()
+	{
+		return $this->certificates()->where('type_id', 2);
+	}
+
+	/**
 	 * Файлы
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -509,6 +522,8 @@ class User extends Authenticatable implements Addressable
 		return [];
 
 	}
+
+
 
 
 	/**

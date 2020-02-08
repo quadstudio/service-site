@@ -64,11 +64,12 @@ class ProductController extends Controller
         ]);
     }
 
-    /**
-     * Show the shop index page
-     *
-     * @return \Illuminate\Http\Response
-     */
+	/**
+	 * Show the shop index page
+	 *
+	 * @return \Illuminate\Http\Response
+	 * @throws \Illuminate\Auth\Access\AuthorizationException
+	 */
     public function list()
     {
         $this->authorize('list', Product::class);

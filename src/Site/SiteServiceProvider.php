@@ -60,6 +60,7 @@ class SiteServiceProvider extends ServiceProvider
 		Models\Storehouse::class => Policies\StorehousePolicy::class,
 		Models\DigiftBonus::class => Policies\DigiftBonusPolicy::class,
 		Models\DigiftUser::class => Policies\DigiftUserPolicy::class,
+		Models\Certificate::class => Policies\CertificatePolicy::class,
 	];
 
 	/**
