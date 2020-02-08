@@ -73,8 +73,8 @@
         @endif
 		
 		@if($repair->date_trade->diffInDays($repair->date_call, false)>730 || $repair->date_launch->diffInDays($repair->date_call, false)>730)
-		<p>С даты продажи <b />{{ $repair->date_trade->diffInDays($repair->date_call, false) }} дней</b></p>
-		<p>С даты ввода в эксплуатацию <b />{{ $repair->date_launch->diffInDays($repair->date_call, false) }} дней</b></p>
+		<p>С даты продажи <b>{{ $repair->date_trade->diffInDays($repair->date_call, false) }} дней</b></p>
+		<p>С даты ввода в эксплуатацию <b>{{ $repair->date_launch->diffInDays($repair->date_call, false) }} дней</b></p>
 		@endif
 		
 		</div>
@@ -510,6 +510,7 @@
                 </div>
             </div>
         @endif
+        @include('site::message.comment', ['commentBox' => $commentBox])
     </div>
 @endsection
 

@@ -382,6 +382,7 @@
                         </div>
                     </div>
                 @endforeach
+                @include('site::message.comment', ['commentBox' => $commentBox])
             </div>
         </div>
 

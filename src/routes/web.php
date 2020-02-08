@@ -694,6 +694,10 @@ Route::group(['middleware' => ['online']],
 									'store' => 'users.password.store',
 								]);
 
+							Route::post('/users/{user}/message',
+								'UserController@message')
+								->name('users.message');
+
 							// Цены пользователя
 							Route::resource('/users/{user}/prices',
 								'UserPriceController')

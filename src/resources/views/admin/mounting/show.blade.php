@@ -222,5 +222,6 @@
                 @include('site::file.files')
             </div>
         </div>
+        @include('site::message.comment', ['commentBox' => $commentBox])
     </div>
 @endsection

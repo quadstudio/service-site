@@ -20,6 +20,7 @@ use QuadStudio\Service\Site\Models\User;
 use QuadStudio\Service\Site\Repositories\FileTypeRepository;
 use QuadStudio\Service\Site\Repositories\MountingRepository;
 use QuadStudio\Service\Site\Exceptions\Digift\DigiftException;
+use QuadStudio\Service\Site\Site\Support\CommentBox;
 
 class MountingController extends Controller
 {
@@ -87,16 +88,17 @@ class MountingController extends Controller
 		$mounting_statuses = $mounting->statuses();
 		$digift_user = [];
 		if ($mounting->user->digiftUser()->doesntExist()) {
-
 			$digift_user = $mounting->user->getDigiftUserData();
 		}
+		$commentBox = new CommentBox($mounting);
 
 		return view('site::admin.mounting.show', compact(
 			'digift_user',
 			'mounting',
 			'file_types',
 			'files',
-			'mounting_statuses'
+			'mounting_statuses',
+			'commentBox'
 		));
 	}
 

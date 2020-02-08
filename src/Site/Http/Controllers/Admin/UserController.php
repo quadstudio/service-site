@@ -10,6 +10,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use QuadStudio\Rbac\Repositories\RoleRepository;
+use QuadStudio\Service\Site\Concerns\StoreMessages;
 use QuadStudio\Service\Site\Events\UserScheduleEvent;
 use QuadStudio\Service\Site\Exports\Excel\UserExcel;
 use QuadStudio\Service\Site\Filters\District\SortFilter;
@@ -32,6 +33,7 @@ use QuadStudio\Service\Site\Filters\User\UserSortFilter;
 use QuadStudio\Service\Site\Filters\User\VerifiedFilter;
 use QuadStudio\Service\Site\Filters\UserSearchFilter;
 use QuadStudio\Service\Site\Http\Requests\Admin\UserRequest;
+use QuadStudio\Service\Site\Http\Requests\MessageRequest;
 use QuadStudio\Service\Site\Models\Address;
 use QuadStudio\Service\Site\Models\AuthorizationRole;
 use QuadStudio\Service\Site\Models\AuthorizationType;
@@ -46,11 +48,12 @@ use QuadStudio\Service\Site\Repositories\TemplateRepository;
 use QuadStudio\Service\Site\Repositories\UserRepository;
 use QuadStudio\Service\Site\Repositories\WarehouseRepository;
 use QuadStudio\Service\Site\Exceptions\Digift\DigiftException;
+use QuadStudio\Service\Site\Site\Support\CommentBox;
 
 class UserController extends Controller
 {
 
-	use AuthorizesRequests;
+	use AuthorizesRequests, StoreMessages;
 	/**
 	 * @var UserRepository
 	 */
@@ -214,6 +217,8 @@ class UserController extends Controller
 		$authorization_roles = AuthorizationRole::query()->get();
 		$authorization_types = AuthorizationType::query()->where('enabled', 1)->get();
 
+		$commentBox = new CommentBox($user);
+
 		return view('site::admin.user.show', compact(
 			'user',
 			'addresses',
@@ -221,7 +226,8 @@ class UserController extends Controller
 			'roles',
 			'authorization_types',
 			'authorization_roles',
-			'authorization_accepts'
+			'authorization_accepts',
+			'commentBox'
 		));
 	}
 
@@ -306,6 +312,18 @@ class UserController extends Controller
 
 		return redirect()->route('home');
 
+	}
+
+	/**
+	 * @param \QuadStudio\Service\Site\Http\Requests\MessageRequest $request
+	 * @param \QuadStudio\Service\Site\Models\User $user
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 * @throws \Throwable
+	 */
+	public function message(MessageRequest $request, User $user)
+	{
+		return $this->storeMessage($request, $user);
 	}
 
 }

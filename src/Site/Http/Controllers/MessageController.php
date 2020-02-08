@@ -4,6 +4,7 @@ namespace QuadStudio\Service\Site\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use QuadStudio\Service\Site\Filters\Message\BelongsScFilter;
+use QuadStudio\Service\Site\Filters\Message\NotPersonalFilter;
 use QuadStudio\Service\Site\Models\Message;
 use QuadStudio\Service\Site\Repositories\MessageRepository;
 
@@ -31,6 +32,7 @@ class MessageController extends Controller
     {
         $this->messages->trackFilter();
         $this->messages->pushTrackFilter(BelongsScFilter::class);
+        $this->messages->pushTrackFilter(NotPersonalFilter::class);
 
         return view('site::message.index', [
             'repository' => $this->messages,

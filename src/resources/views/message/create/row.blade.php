@@ -7,7 +7,8 @@
             {{ $message->created_at->format('d.m.Y H:i') }}
         </div>
     </div>
-    <div class="flex-shrink-1 bg-lighter rounded py-2 px-3
+    <div class="flex-shrink-1 rounded py-2 px-3
+        @if($message->personal == 0) bg-lighter @else bg-dark @endif
         @if($message->user_id == auth()->user()->getAuthIdentifier()) mr-3 @else ml-3 @endif">
         <div class="mb-1"><b>{{$message->user->name}}</b></div>
         <span class="text-big">{!! nl2br($message->text) !!}</span>

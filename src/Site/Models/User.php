@@ -16,10 +16,13 @@ use QuadStudio\Online\OnlineChecker;
 use QuadStudio\Rbac\Concerns\RbacUsers;
 use QuadStudio\Service\Site\Concerns\Schedulable;
 use QuadStudio\Service\Site\Contracts\Addressable;
+use QuadStudio\Service\Site\Contracts\Messagable;
+use QuadStudio\Service\Site\Http\Requests\MessageRequest;
 use QuadStudio\Service\Site\Services\Digift;
 use QuadStudio\Service\Site\Exceptions\Digift\DigiftException;
+use \Illuminate\Database\Eloquent\Relations\MorphMany;
 
-class User extends Authenticatable implements Addressable
+class User extends Authenticatable implements Addressable, Messagable
 {
 
 	use Notifiable, RbacUsers, OnlineChecker, Schedulable;
@@ -430,7 +433,7 @@ class User extends Authenticatable implements Addressable
 	 */
 	public function outbox()
 	{
-		return $this->hasMany(Message::class, 'user_id');
+		return $this->hasMany(Message::class, 'user_id')->where('personal', 0);
 	}
 
 	/**
@@ -440,7 +443,17 @@ class User extends Authenticatable implements Addressable
 	 */
 	public function inbox()
 	{
-		return $this->hasMany(Message::class, 'receiver_id');
+		return $this->hasMany(Message::class, 'receiver_id')->where('personal', 0);
+	}
+
+	/**
+	 * Сообщения
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+	 */
+	public function messages():MorphMany
+	{
+		return $this->morphMany(Message::class, 'messagable');
 	}
 
 	/**
@@ -551,5 +564,45 @@ class User extends Authenticatable implements Addressable
 	function lang()
 	{
 		return 'user';
+	}
+
+	/**
+	 * @return string
+	 */
+	function messageSubject()
+	{
+		return trans('site::message.message');
+	}
+
+	/**
+	 * @return \Illuminate\Routing\Route
+	 */
+	function messageRoute()
+	{
+		return route((auth()->user()->admin == 1 ? 'messages.index' : 'admin.users.show'), $this);
+	}
+
+	/**
+	 * @return \Illuminate\Routing\Route
+	 */
+	function messageMailRoute()
+	{
+		return route((auth()->user()->admin == 1 ? 'messages.index' : 'admin.users.show'), $this);
+	}
+
+	/**
+	 * @return \Illuminate\Routing\Route
+	 */
+	function messageStoreRoute()
+	{
+		return route('admin.users.message', $this);
+	}
+
+	/** @return User */
+	function messageReceiver()
+	{
+		return $this->id == auth()->user()->getAuthIdentifier()
+			? User::query()->findOrFail(config('site.receiver_id'))
+			: $this;
 	}
 }

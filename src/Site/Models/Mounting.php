@@ -3,6 +3,7 @@
 namespace QuadStudio\Service\Site\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Carbon;
 use QuadStudio\Service\Site\Contracts\Bonusable;
 use QuadStudio\Service\Site\Contracts\Messagable;
@@ -301,9 +302,17 @@ class Mounting extends Model implements Messagable, Bonusable
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\MorphMany
 	 */
-	public function messages()
+	public function messages(): MorphMany
 	{
 		return $this->morphMany(Message::class, 'messagable');
+	}
+
+	/**
+	 * @return MorphMany
+	 */
+	public function publicMessages()
+	{
+		return $this->messages()->where('personal', 0);
 	}
 
 	/**
